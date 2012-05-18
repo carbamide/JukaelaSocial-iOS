@@ -1,0 +1,38 @@
+////
+////  ShowUserViewController.h
+////  Jukaela
+////
+////  Created by Josh Barrow on 5/7/12.
+////  Copyright (c) 2012 Pacesetter Claims. All rights reserved.
+////
+//
+//#import <UIKit/UIKit.h>
+//
+//@interface ShowUserViewController : UIViewController
+//
+//@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+//@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
+//@property (strong, nonatomic) IBOutlet UILabel *usernameLabel;
+//@property (strong, nonatomic) IBOutlet UILabel *profileLabel;
+//@property (strong, nonatomic) IBOutlet UIButton *followButton;
+//
+//@property (strong, nonatomic) NSDictionary *userDict;
+//
+//-(IBAction)followUser:(id)sender;
+//
+//@end
+
+//
+//  ExampleViewController.h
+//  PrettyExample
+//
+//  Created by Víctor on 29/02/12.
+//  Copyright (c) 2012 Victor Pena Placer. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface ShowUserViewController : UITableViewController
+@property (strong, nonatomic) NSDictionary *userDict;
+
+@end

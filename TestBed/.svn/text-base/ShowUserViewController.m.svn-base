@@ -1,0 +1,478 @@
+//
+//  ExampleViewController.m
+//  PrettyExample
+//
+//  Created by Víctor on 29/02/12.
+//  Copyright (c) 2012 Victor Pena Placer. All rights reserved.
+//
+
+#import "ShowUserViewController.h"
+#import "PrettyKit.h"
+#import "GravatarHelper.h"
+#import "UIImage+Resize.h"
+#import "UIImage+RoundedCorner.h"
+#import "UIImage+Alpha.h"
+#import "JEImages.h"
+#import <objc/runtime.h>
+
+@implementation ShowUserViewController
+
+@synthesize userDict;
+
+-(void)customizeNavigationBar
+{
+    PrettyNavigationBar *navBar = (PrettyNavigationBar *)self.navigationController.navigationBar;
+    
+    [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
+    [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];
+    [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
+    [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
+    [navBar setTintColor:[navBar gradientEndColor]];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad
+{
+    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)]];
+    
+    [self customizeNavigationBar];
+    
+    [super viewDidLoad];
+    
+    [[self navigationItem] setTitle:@"Show User"];
+    
+    [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+}
+
+-(void)dismissSelf:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 3;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 1;
+    }
+    if (section == 1) {
+        return 1;
+    }
+    
+    return 0;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{ 
+    return 100;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    static NSString *ProfileCellIdentifier = @"ProfileCell";    
+    
+    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        
+        [cell setTableViewBackgroundColor:[tableView backgroundColor]];
+    }
+    
+    switch (indexPath.section) {
+        case 0: {
+            [cell prepareForTableView:tableView indexPath:indexPath];
+            
+            [[cell textLabel] setTextAlignment:UITextAlignmentRight];
+            [[cell textLabel] setText:[[self userDict] objectForKey:@"name"]];
+            [[cell detailTextLabel] setTextAlignment:UITextAlignmentRight];
+            [[cell detailTextLabel] setText:[[self userDict] objectForKey:@"username"]];
+            
+            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[self userDict] objectForKey:@"id"]]]]];
+            
+            if (image) {
+                [[cell imageView] setImage:image];
+            } 
+            else { 
+                dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+                
+                dispatch_async(queue, ^{            
+                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[self userDict] objectForKey:@"email"]]]];
+                    
+#if (TARGET_IPHONE_SIMULATOR)
+                    image = [JEImages normalize:image];
+#endif
+                    UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[cell imageView] setImage:resizedImage];
+                        [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[self userDict] objectForKey: @"id"]]];      
+                    });
+                });
+            }
+//            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+//            
+//            dispatch_async(queue, ^{            
+//                UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[self userDict] objectForKey:@"email"]]]];
+//                
+//                [[cell imageView] setImage:image];
+//            });
+        }
+            break;
+        case 1: {
+            switch (indexPath.row) {
+                case 0:
+                    if (cell == nil) {
+                        cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ProfileCellIdentifier];
+                        
+                        [cell setTableViewBackgroundColor:[tableView backgroundColor]];
+                    }
+                    
+                    [[cell detailTextLabel] setNumberOfLines:5];
+                    [[cell detailTextLabel] setText:[[self userDict] objectForKey:@"profile"]];
+                    [cell setCornerRadius:20];
+                    return cell;
+                default:
+                    break;
+            }
+        }
+            break;
+        default:
+            break;
+    }
+    
+    return cell;
+}
+
+/*
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
+
+/*
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }   
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }   
+ }
+ */
+
+/*
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
+
+/*
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
+
+#pragma mark - Table view delegate
+
+//-(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return tableView.rowHeight + [PrettyTableViewCell tableView:tableView neededHeightForIndexPath:indexPath];
+//}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Navigation logic may go here. Create and push another view controller.
+    /*
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+     [detailViewController release];
+     */
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(void)saveImage:(UIImage *)image withFileName:(NSString *)emailAddress
+{
+    if (image != nil)
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString* path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithString:[NSString stringWithFormat:@"%@.png", emailAddress]]];
+        NSData* data = UIImagePNGRepresentation(image);
+        [data writeToFile:path atomically:YES];
+    }
+}
+
+-(NSString *)documentsPath
+{
+    NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString *documentsDirectory = [tempArray objectAtIndex:0];
+    
+    return documentsDirectory;
+}
+
+
+@end
+
+
+////
+////  ShowUserViewController.m
+////  Jukaela
+////
+////  Created by Josh Barrow on 5/7/12.
+////  Copyright (c) 2012 Pacesetter Claims. All rights reserved.
+////
+//
+//#import "ShowUserViewController.h"
+//#import "GravatarHelper.h"
+//#import "PrettyKit.h"
+//#import "UIImage+Resize.h"
+//#import "UIImage+RoundedCorner.h"
+//#import "JEImages.h"
+//#import <objc/runtime.h>
+//
+//@interface ShowUserViewController ()
+//-(void)dismissSelf:(id)sender;
+//@end
+//
+//@implementation ShowUserViewController
+//
+//@synthesize imageView;
+//@synthesize nameLabel;
+//@synthesize usernameLabel;
+//@synthesize profileLabel;
+//@synthesize userDict;
+//@synthesize followButton;
+//
+//-(IBAction)followUser:(id)sender
+//{
+//    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//
+//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships.json", kSocialURL]];
+//    
+//    NSString *requestString = [NSString stringWithFormat:@"{\"relationship\": {\"followed_id\":\"%@\"}}", [[self userDict] objectForKey:@"id"]];
+//    
+//    NSLog(@"%@", requestString);
+//    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+//    
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+//    
+//    [request setHTTPMethod:@"POST"];
+//    [request setHTTPBody:requestData];
+//    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+//    [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
+//    
+//    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//
+//        id tempDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+//        
+//        NSLog(@"%@", tempDict);
+//        
+//        if (tempDict)
+//            [[self followButton] setTitle:@"Following" forState:UIControlStateNormal];
+//    }];
+//}
+//
+//-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+//{
+//    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+//    if (self) {
+//        
+//    }
+//    return self;
+//}
+//
+//-(void)customizeNavigationBar
+//{
+//    PrettyNavigationBar *navBar = (PrettyNavigationBar *)self.navigationController.navigationBar;
+//    
+//    [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
+//    [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];
+//    [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
+//    [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
+//    [navBar setTintColor:[navBar gradientEndColor]];
+//}
+//
+//-(void)dismissSelf:(id)sender
+//{
+//    [self dismissViewControllerAnimated:YES completion:nil];
+//}
+//
+//-(void)checkFollowing
+//{
+//    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//
+//    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/following.json", kSocialURL, [[self userDict] objectForKey:@"id"]]];
+//    
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+//    
+//    [request setHTTPMethod:@"GET"];
+//    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+//    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+//    
+//    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//
+//        id tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+//        
+//        NSLog(@"temp array is %@", tempArray);
+//        for (id dict in tempArray) {
+//            if ([[dict objectForKey:@"id"] isEqualToNumber:[[self userDict] objectForKey:@"id"]]) {
+//                [[self followButton] setTitle:@"Unfollow" forState:UIControlStateNormal];
+//            }
+//        }
+//    }];
+//}
+//
+//-(void)viewDidLoad
+//{
+//    NSLog(@"in showuser %@", [self userDict]);
+//    
+//    dispatch_queue_t feedViewQueue = dispatch_queue_create("com.jukaela.social", 0);
+//
+//    dispatch_async(feedViewQueue, ^{
+//        [self checkFollowing];            
+//    });
+//    
+//    [super viewDidLoad];
+//    
+//    [self customizeNavigationBar];
+//    
+//    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)];
+//    
+//    [[self navigationItem] setRightBarButtonItem:doneButton];
+//    
+//    [[self nameLabel] setText:[[self userDict] objectForKey:@"name"]];
+//    
+//    if ([[self userDict] objectForKey:@"username"] && [[self userDict] objectForKey:@"username"] != [NSNull null]) {
+//        [[self usernameLabel] setText:[[self userDict] objectForKey:@"username"]];
+//    }
+//    else {
+//        [[self usernameLabel] setText:@"No Username"];
+//    }
+//    
+//    if ([[self userDict] objectForKey:@"profile"] && [[self userDict] objectForKey:@"profile"] != [NSNull null]) {
+//        [[self profileLabel] setText:[[self userDict] objectForKey:@"profile"]];
+//    }
+//    else {
+//        [[self profileLabel] setText:@"No Profile"];
+//    }
+//    
+//    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[self userDict] objectForKey:@"id"]]]]];
+//    
+//	if (image) {
+//        [[self imageView] setImage:image];
+//	} 
+//    else { 
+//        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+//        
+//		dispatch_async(queue, ^{            
+//            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[self userDict] objectForKey:@"email"]]]];
+//			
+//#if (TARGET_IPHONE_SIMULATOR)
+//            image = [JEImages normalize:image];
+//#endif
+//            UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+//			
+//			dispatch_async(dispatch_get_main_queue(), ^{
+//                [[self imageView] setImage:resizedImage];
+//                [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[self userDict] objectForKey: @"id"]]];      
+//			});
+//		});
+//    }
+//    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+//    
+//    dispatch_async(queue, ^{            
+//        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[self userDict] objectForKey:@"email"]]]];
+//        
+//        [[self imageView] setImage:image];
+//    });
+//}
+//
+//-(void)viewDidUnload
+//{
+//    [super viewDidUnload];
+//}
+//
+//-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+//{
+//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+//}
+//
+//-(void)saveImage:(UIImage *)image withFileName:(NSString *)emailAddress
+//{
+//    if (image != nil)
+//    {
+//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//        NSString *documentsDirectory = [paths objectAtIndex:0];
+//        NSString* path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithString:[NSString stringWithFormat:@"%@.png", emailAddress]]];
+//        NSData* data = UIImagePNGRepresentation(image);
+//        [data writeToFile:path atomically:YES];
+//    }
+//}
+//
+//-(NSString *)documentsPath
+//{
+//    NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    
+//    NSString *documentsDirectory = [tempArray objectAtIndex:0];
+//    
+//    return documentsDirectory;
+//}
+//
+//@end

@@ -1,0 +1,47 @@
+//
+//  NetworkObject.m
+//  Jukaela
+//
+//  Created by Josh Barrow on 5/16/12.
+//  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
+//
+
+#import "NetworkObject.h"
+
+@implementation NetworkObject
+
++(void)performRequestWithUri:(NSString *)requestUri params:(NSDictionary *)params completionHandler:(void (^)(NSDictionary *, NSError *))completionBlock
+{
+    NSString *requestUrl = [NSString stringWithFormat:@"%@%@", kSocialURL, requestUri];
+    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:requestUrl]];
+    
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    [queue setName:@"com.jukaela.social"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                completionBlock(nil, error);
+            });
+            return;
+        }
+        
+        NSError *jsonError = nil;
+        
+        NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        
+        if (jsonError) {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+            });
+            return;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            completionBlock(responseDict, nil);
+        });
+    }];
+}
+
+@end

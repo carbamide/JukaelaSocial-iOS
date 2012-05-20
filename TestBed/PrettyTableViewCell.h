@@ -190,7 +190,7 @@ typedef enum {
  
  This call is mandatory. Include it in your tableView dataSource's 
  `tableView:cellForRowAtIndexPath:`. */
--(void) prepareForTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath;
+- (void) prepareForTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath;
 
 
 /** Returns the needed height for a cell placed in the given indexPath.
@@ -231,12 +231,12 @@ typedef enum {
  
  You don't have to release it after using it.
  */
--(CGGradientRef) createSelectionGradient;
+- (CGGradientRef) createSelectionGradient;
 
 /** Returns a new gradient with the configured normal gradient colors. 
  
  You don't have to release it after using it.
  */
--(CGGradientRef) createNormalGradient;
+- (CGGradientRef) createNormalGradient;
 
 @end

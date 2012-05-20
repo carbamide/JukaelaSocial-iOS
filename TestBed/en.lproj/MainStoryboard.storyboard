@@ -55,7 +55,6 @@
                     <navigationItem key="navigationItem" title="Users" id="oOI-gV-YTp"/>
                     <connections>
                         <segue destination="Bri-oI-JnH" kind="modal" identifier="ShowUser" id="flq-Ou-H4k"/>
-                        <segue destination="neM-n2-Hce" kind="push" identifier="ShowUserPosts" id="6H9-c9-Cyv"/>
                     </connections>
                 </tableViewController>
             </objects>
@@ -133,7 +132,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fQh-6i-SJo" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="neM-n2-Hce" customClass="UsersPostsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="PEU-sE-awm" customClass="ShadowedTableView">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -144,7 +143,7 @@
                     <navigationItem key="navigationItem" id="8LO-Hp-P1l"/>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="1569" y="208"/>
+            <point key="canvasLocation" x="3324" y="504"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="e5D-3a-0es">
@@ -176,6 +175,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="fFS-FC-5vs"/>
+                    <connections>
+                        <segue destination="OxX-B3-gA9" kind="push" identifier="ShowFollowers" id="Nhe-14-LGi"/>
+                        <segue destination="OxX-B3-gA9" kind="push" identifier="ShowFollowing" id="SlM-PC-dsU"/>
+                        <segue destination="neM-n2-Hce" kind="push" identifier="ShowUserPosts" id="ob3-sC-XBR"/>
+                    </connections>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="2902" y="-89"/>
@@ -251,6 +255,25 @@
             </objects>
             <point key="canvasLocation" x="2112" y="-562"/>
         </scene>
+        <!--Follower View Controller-->
+        <scene sceneID="S8X-6Y-VSO">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nHg-K7-1gD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="OxX-B3-gA9" customClass="FollowerViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="T9x-C6-hGr" customClass="ShadowedTableView">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="OxX-B3-gA9" id="Gvl-ZT-yyS"/>
+                            <outlet property="delegate" destination="OxX-B3-gA9" id="U1N-X7-FPq"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="lUN-I8-JtS"/>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="3324" y="-89"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Feed.png" width="30" height="30"/>
@@ -261,6 +284,9 @@
     <classes>
         <class className="FeedViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FeedViewController.h"/>
+        </class>
+        <class className="FollowerViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FollowerViewController.h"/>
         </class>
         <class className="LoginViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
@@ -301,7 +327,8 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Nfd-q2-QYn"/>
+        <segue reference="flq-Ou-H4k"/>
+        <segue reference="SlM-PC-dsU"/>
         <segue reference="ezA-tW-4Yz"/>
     </inferredMetricsTieBreakers>
 </document>

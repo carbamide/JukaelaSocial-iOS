@@ -10,7 +10,7 @@
 
 @interface UsersPostsViewController : UITableViewController
 
-@property (strong, nonatomic) NSMutableArray *userPostArray;
+@property (strong, nonatomic) NSArray *userPostArray;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end

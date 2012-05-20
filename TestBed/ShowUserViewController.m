@@ -14,10 +14,16 @@
 #import "UIImage+Alpha.h"
 #import "JEImages.h"
 #import <objc/runtime.h>
+#import "AppDelegate.h"
+#import "FollowerViewController.h"
+#import "UsersPostsViewController.h"
 
 @implementation ShowUserViewController
 
 @synthesize userDict;
+@synthesize followers;
+@synthesize following;
+@synthesize posts;
 
 -(void)customizeNavigationBar
 {
@@ -48,6 +54,12 @@
     [[self navigationItem] setTitle:@"Show User"];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [self getFollowers];
+        [self getFollowing];
+        [self getPosts];
+    });
 }
 
 -(void)dismissSelf:(id)sender
@@ -89,7 +101,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -97,7 +109,12 @@
     if (section == 0) {
         return 1;
     }
+    
     if (section == 1) {
+        return 1;
+    }
+    
+    if (section == 2) {
         return 1;
     }
     
@@ -106,12 +123,23 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 { 
-    return 100;
+    if ([indexPath section] == 0) {
+        return 100;
+    }
+    else if ([indexPath section] == 1) {
+        return 100;
+    }
+    else {
+        return 55;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
+    static NSString *SegmentedCellIdentifier = @"SegmentedCell";
+    
+    PrettyGridTableViewCell *segmentedCell;
     
     PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -127,7 +155,13 @@
             [[cell textLabel] setTextAlignment:UITextAlignmentRight];
             [[cell textLabel] setText:[[self userDict] objectForKey:@"name"]];
             [[cell detailTextLabel] setTextAlignment:UITextAlignmentRight];
-            [[cell detailTextLabel] setText:[[self userDict] objectForKey:@"username"]];
+            
+            if ([[self userDict] objectForKey:@"username"] && [[self userDict] objectForKey:@"username"] != [NSNull null]) {
+                [[cell detailTextLabel] setText:[[self userDict] objectForKey:@"username"]];
+            }
+            else {
+                [[cell detailTextLabel] setText:@"No username"];
+            }
             
             UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[self userDict] objectForKey:@"id"]]]]];
             
@@ -154,22 +188,60 @@
         }
             break;
         case 1: {
-            switch (indexPath.row) {
-                case 0:
-                   [[cell detailTextLabel] setNumberOfLines:5];
-                    
-                    if ([[self userDict] objectForKey:@"profile"] && [[self userDict] objectForKey:@"profile"] != [NSNull null] ) {
-                        [[cell detailTextLabel] setText:[[self userDict] objectForKey:@"profile"]];
-                    }
-                    else {
-                        [[cell detailTextLabel] setText:@"No user profile"];
-                    }
-                    
-                    return cell;
-                default:
-                    break;
+            [cell prepareForTableView:tableView indexPath:indexPath];
+            
+            [[cell detailTextLabel] setNumberOfLines:5];
+            
+            if ([[self userDict] objectForKey:@"profile"] && [[self userDict] objectForKey:@"profile"] != [NSNull null] ) {
+                [[cell detailTextLabel] setText:[[self userDict] objectForKey:@"profile"]];
             }
+            else {
+                [[cell detailTextLabel] setText:@"No user profile"];
+            }
+            
+            return cell;
         }
+        case 2: {
+            segmentedCell = [tableView dequeueReusableCellWithIdentifier:SegmentedCellIdentifier];
+            
+            if (segmentedCell == nil) {
+                segmentedCell = [[PrettySegmentedControlTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SegmentedCellIdentifier];
+            }
+            
+            __weak PrettyGridTableViewCell *tempSegContCell = segmentedCell;
+            
+            [segmentedCell prepareForTableView:tableView indexPath:indexPath];
+            
+            [segmentedCell setNumberOfElements:3];
+            
+            [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self following] count]] atIndex:0];
+            [segmentedCell setDetailText:@"Following" atIndex:0];
+            [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self followers] count]] atIndex:1];
+            [segmentedCell setDetailText:@"Followers" atIndex:1];
+            [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self posts] count]] atIndex:2];
+            [segmentedCell setDetailText:@"Posts" atIndex:2];
+            
+            [segmentedCell setTableViewBackgroundColor:[tableView backgroundColor]];
+            
+            [segmentedCell setActionBlock:^(NSIndexPath *indexPath, int selectedIndex) {
+                if (selectedIndex == 0) {    
+                    [tempSegContCell deselectAnimated:YES];
+                    
+                    [self performSegueWithIdentifier:@"ShowFollowing" sender:nil];
+                } 
+                else if (selectedIndex == 1) {
+                    [tempSegContCell deselectAnimated:YES];
+                    
+                    [self performSegueWithIdentifier:@"ShowFollowers" sender:nil];
+                }
+                else if (selectedIndex == 2) {
+                    [tempSegContCell deselectAnimated:YES];
+                    
+                    [self performSegueWithIdentifier:@"ShowUserPosts" sender:nil];
+                }
+            }];
+        }
+            return segmentedCell;
             break;
         default:
             break;
@@ -178,6 +250,34 @@
     return cell;
 }
 
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"ShowFollowers"]) {
+        PrettySegmentedControlTableViewCell *tempCell = (PrettySegmentedControlTableViewCell *)[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
+        
+        [tempCell deselectAnimated:YES];
+        
+        FollowerViewController *viewController = [segue destinationViewController];
+        
+        [viewController setUsersArray:[self followers]];
+        [viewController setTitle:@"Followers"];
+    }
+    else if ([[segue identifier] isEqualToString:@"ShowFollowing"]) {
+        PrettySegmentedControlTableViewCell *tempCell = (PrettySegmentedControlTableViewCell *)[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
+        
+        [tempCell deselectAnimated:YES];
+        
+        FollowerViewController *viewController = [segue destinationViewController];
+        
+        [viewController setUsersArray:[self following]];
+        [viewController setTitle:@"Following"];
+    }
+    else if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
+        UsersPostsViewController *viewController = [segue destinationViewController];
+        
+        [viewController setUserPostArray:[self posts]];
+    }
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -204,5 +304,69 @@
     return documentsDirectory;
 }
 
+-(void)getPosts
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [[self userDict] objectForKey:@"id"]]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    NSLog(@"%@", request);
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        [self setPosts:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }]; 
+}
+
+-(void)getFollowing
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/following.json", kSocialURL, [kAppDelegate userID]]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                
+        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+}
+
+-(void)getFollowers
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/followers.json", kSocialURL, [kAppDelegate userID]]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        [self setFollowers:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                
+        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+}
 
 @end

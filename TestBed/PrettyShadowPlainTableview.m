@@ -35,7 +35,7 @@
 @implementation PrettyShadowPlainTableview
 
 
--(id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         self.contentMode = UIViewContentModeRedraw;
@@ -53,7 +53,7 @@
 }
 
 
--(void)drawRect:(CGRect)rect
+- (void)drawRect:(CGRect)rect
 {
     // Drawing code
     

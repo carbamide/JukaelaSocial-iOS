@@ -77,7 +77,7 @@ typedef enum {
  
  @warning This method uses the UILayer shadow properties.
  */
--(void) dropShadowWithOpacity:(float)opacity;
+- (void) dropShadowWithOpacity:(float)opacity;
 
 @end
 

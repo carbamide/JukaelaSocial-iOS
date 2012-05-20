@@ -35,14 +35,14 @@
 
 #define shadow_margin 4 
 
--(void) dealloc 
+- (void) dealloc 
 {
     self.customView = nil;
     
     [super dealloc];
 }
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -52,7 +52,7 @@
 }
 
 
--(void) drawRect:(CGRect)rect 
+- (void) drawRect:(CGRect)rect 
 {
     [super drawRect:rect];
     
@@ -70,13 +70,13 @@
     }
 }
 
--(void) setBackgroundColor:(UIColor *)backgroundColor 
+- (void) setBackgroundColor:(UIColor *)backgroundColor 
 {
     [super setBackgroundColor:backgroundColor];
     self.customView.backgroundColor = backgroundColor;
 }
 
--(void) setCustomBackgroundColor:(UIColor *)customBackgroundColor 
+- (void) setCustomBackgroundColor:(UIColor *)customBackgroundColor 
 {
     [super setCustomBackgroundColor:customBackgroundColor];
     self.customView.backgroundColor = customBackgroundColor;

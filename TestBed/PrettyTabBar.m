@@ -37,7 +37,7 @@
 @implementation PrettyTabBar
 @synthesize gradientStartColor, gradientEndColor, separatorLineColor;
 
--(void) dealloc {
+- (void) dealloc {
     self.gradientStartColor = nil;
     self.gradientEndColor = nil;
     self.separatorLineColor = nil;
@@ -45,7 +45,7 @@
     [super dealloc];
 }
 
--(void) initializeVars 
+- (void) initializeVars 
 {
     self.contentMode = UIViewContentModeRedraw;
 
@@ -54,7 +54,7 @@
     self.separatorLineColor = default_separator_line_color;
 }
 
--(id)initWithCoder:(NSCoder *)coder {
+- (id)initWithCoder:(NSCoder *)coder {
     self = [super initWithCoder:coder];
     if (self) {
         [self initializeVars];
@@ -62,7 +62,7 @@
     return self;
 }
 
--(id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self initializeVars];
@@ -71,7 +71,7 @@
 }
 
 
--(id)init {
+- (id)init {
     self = [super init];
     if (self) {
         [self initializeVars];
@@ -80,7 +80,7 @@
 }
 
 
--(void) drawRect:(CGRect)rect {
+- (void) drawRect:(CGRect)rect {
     [super drawRect:rect];
     
     [PrettyDrawing drawGradient:rect fromColor:self.gradientStartColor toColor:self.gradientEndColor];

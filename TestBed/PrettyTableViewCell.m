@@ -59,17 +59,17 @@ typedef enum {
 
 @interface PrettyTableViewCell (Private)
 
--(float) shadowMargin;
--(BOOL) tableViewIsGrouped;
+- (float) shadowMargin;
+- (BOOL) tableViewIsGrouped;
 
 @end
 
 @implementation PrettyTableViewCell (Private)
--(BOOL) tableViewIsGrouped {
+- (BOOL) tableViewIsGrouped {
     return _tableViewStyle == UITableViewStyleGrouped;
 }
 
--(float) shadowMargin {
+- (float) shadowMargin {
     return [self tableViewIsGrouped] ? shadow_margin : 0;
 }
 
@@ -82,10 +82,10 @@ typedef enum {
 
 @interface PrettyTableViewCellBackground : UIView
 
-@property (nonatomic, retain) PrettyTableViewCell *cell;
+@property (nonatomic, assign) PrettyTableViewCell *cell;
 @property (nonatomic, assign) CellBackgroundBehavior behavior;
 
--(id) initWithFrame:(CGRect)frame behavior:(CellBackgroundBehavior)behavior;
+- (id) initWithFrame:(CGRect)frame behavior:(CellBackgroundBehavior)behavior;
 
 @end
 
@@ -94,7 +94,7 @@ typedef enum {
 @synthesize behavior;
 
 
--(CGPathRef) createRoundedPath:(CGRect)rect 
+- (CGPathRef) createRoundedPath:(CGRect)rect 
 {
     UIRectCorner corners;
 
@@ -120,7 +120,7 @@ typedef enum {
 }
 
 
--(CGGradientRef) createGradientFromType:(CellBackgroundGradient)type
+- (CGGradientRef) createGradientFromType:(CellBackgroundGradient)type
 {
     switch (type) 
     {
@@ -131,7 +131,7 @@ typedef enum {
     }
 }
 
--(void) drawGradient:(CGRect)rect type:(CellBackgroundGradient)type 
+- (void) drawGradient:(CGRect)rect type:(CellBackgroundGradient)type 
 {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextSaveGState(ctx);
@@ -153,7 +153,7 @@ typedef enum {
     CGContextRestoreGState(ctx);
 }
 
--(void) drawBackground:(CGRect)rect
+- (void) drawBackground:(CGRect)rect
 {
     if (self.behavior == CellBackgroundBehaviorSelected 
         && self.cell.selectionStyle != UITableViewCellSelectionStyleNone)
@@ -183,7 +183,7 @@ typedef enum {
     CGContextRestoreGState(ctx);
 }
 
--(void) drawLineSeparator:(CGRect)rect 
+- (void) drawLineSeparator:(CGRect)rect 
 {
     if (!self.cell.showsCustomSeparator) {
         return;
@@ -205,7 +205,7 @@ typedef enum {
 }
 
 
--(void) drawBorder:(CGRect)rect shadow:(BOOL)shadow 
+- (void) drawBorder:(CGRect)rect shadow:(BOOL)shadow 
 {
     CGRect innerRect = CGRectMake(rect.origin.x+0.5, rect.origin.y+0.5,
                                   rect.size.width-1, rect.size.height-1);
@@ -229,7 +229,7 @@ typedef enum {
     CGContextRestoreGState(ctx);
 }
 
--(CGRect) innerFrame:(CGRect)frame 
+- (CGRect) innerFrame:(CGRect)frame 
 {
     float y = 0;
     float h = 0;
@@ -258,7 +258,7 @@ typedef enum {
 }
 
 
--(void) drawRect:(CGRect)initialRect 
+- (void) drawRect:(CGRect)initialRect 
 {
     CGRect rect = [self innerFrame:initialRect];
     
@@ -288,14 +288,14 @@ typedef enum {
 
 
 
--(void) dealloc 
+- (void) dealloc 
 {
     self.cell = nil;
     
     [super dealloc];
 }
 
--(id) initWithFrame:(CGRect)frame behavior:(CellBackgroundBehavior)bbehavior 
+- (id) initWithFrame:(CGRect)frame behavior:(CellBackgroundBehavior)bbehavior 
 {
     if (self = [super initWithFrame:frame]) 
     {
@@ -323,7 +323,7 @@ typedef enum {
 @synthesize shadowOpacity;
 
 
--(void) dealloc
+- (void) dealloc
 {
     [self.contentView removeObserver:self forKeyPath:@"frame"];
     self.borderColor = nil;
@@ -338,7 +338,7 @@ typedef enum {
     [super dealloc];
 }
 
--(void)initializeVars
+- (void)initializeVars
 {
     // default values
     self.position = PrettyTableViewCellPositionMiddle;
@@ -353,7 +353,7 @@ typedef enum {
     self.shadowOpacity = default_shadow_opacity;
 }
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -421,7 +421,7 @@ typedef enum {
     return [PrettyTableViewCell neededHeightForPosition:position tableStyle:tableView.style];
 }
 
--(void) prepareForTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath 
+- (void) prepareForTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath 
 {
     _tableViewStyle = tableView.style;
     self.position = [PrettyTableViewCell positionForTableView:tableView indexPath:indexPath];
@@ -429,7 +429,7 @@ typedef enum {
 
 // Avoids contentView's frame auto-updating. It calculates the best size, taking
 // into account the cell's margin and so.
--(void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context 
 {
     if ([keyPath isEqualToString:@"frame"]) 
     {        
@@ -460,14 +460,14 @@ typedef enum {
     }
 }
 
--(void) prepareForReuse 
+- (void) prepareForReuse 
 {
     [super prepareForReuse];
     [self.backgroundView setNeedsDisplay];
     [self.selectedBackgroundView setNeedsDisplay];
 }
 
--(void) setTableViewBackgroundColor:(UIColor *)aBackgroundColor 
+- (void) setTableViewBackgroundColor:(UIColor *)aBackgroundColor 
 {
     [aBackgroundColor retain];
     if (tableViewBackgroundColor != nil) {
@@ -480,7 +480,7 @@ typedef enum {
 }
 
 
--(CGRect) innerFrame 
+- (CGRect) innerFrame 
 {
     float topMargin = 0;
     float bottomMargin = 0;
@@ -515,7 +515,7 @@ typedef enum {
 }
 
 
--(CAShapeLayer *) mask 
+- (CAShapeLayer *) mask 
 {
     UIRectCorner corners = 0;
     
@@ -549,12 +549,12 @@ typedef enum {
     return [maskLayer autorelease];
 }
 
--(BOOL) dropsShadow 
+- (BOOL) dropsShadow 
 {
     return dropsShadow && [self tableViewIsGrouped];
 }
 
--(float) cornerRadius
+- (float) cornerRadius
 {
     if ([self tableViewIsGrouped]) {
         return cornerRadius;
@@ -563,7 +563,7 @@ typedef enum {
     return 0;
 }
 
--(UIColor *) backgroundColor 
+- (UIColor *) backgroundColor 
 {
     if (customBackgroundColor) {
         return customBackgroundColor;
@@ -572,7 +572,7 @@ typedef enum {
     return [super backgroundColor];
 }
 
--(CGGradientRef) createSelectionGradient
+- (CGGradientRef) createSelectionGradient
 {
     CGFloat locations[] = { 0, 1 };    
     
@@ -585,7 +585,7 @@ typedef enum {
     return gradient;
 }
 
--(CGGradientRef) createNormalGradient
+- (CGGradientRef) createNormalGradient
 {
     CGFloat locations[] = { 0, 1 };    
     

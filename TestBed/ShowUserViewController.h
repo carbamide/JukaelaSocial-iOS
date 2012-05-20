@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface ShowUserViewController : UITableViewController
+
 @property (strong, nonatomic) NSDictionary *userDict;
+@property (strong, nonatomic) NSArray *followers;
+@property (strong, nonatomic) NSArray *following;
+@property (strong, nonatomic) NSArray *posts;
 
 @end

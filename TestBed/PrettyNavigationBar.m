@@ -30,9 +30,10 @@
 #import "PrettyNavigationBar.h"
 #import <QuartzCore/QuartzCore.h>
 #import "PrettyDrawing.h"
+#import <math.h>
 
 @implementation PrettyNavigationBar
-@synthesize shadowOpacity, gradientEndColor, gradientStartColor, topLineColor, bottomLineColor;
+@synthesize shadowOpacity, gradientEndColor, gradientStartColor, topLineColor, bottomLineColor, roundedCornerRadius, roundedCornerColor;
 
 
 #define default_shadow_opacity 0.5
@@ -41,18 +42,19 @@
 #define default_top_line_color          [UIColor colorWithHex:0x84B7D5]
 #define default_bottom_line_color       [UIColor colorWithHex:0x186399]
 #define default_tint_color              [UIColor colorWithHex:0x3D89BF]
+#define default_roundedcorner_color     [UIColor blackColor]
 
-
--(void)dealloc {
+- (void)dealloc {
     self.gradientStartColor = nil;
     self.gradientEndColor = nil;
     self.topLineColor = nil;
     self.bottomLineColor = nil;
+    self.roundedCornerColor = nil;    
     
     [super dealloc];
 }
 
--(void) initializeVars 
+- (void) initializeVars 
 {
     self.contentMode = UIViewContentModeRedraw;
     self.shadowOpacity = default_shadow_opacity;
@@ -61,9 +63,11 @@
     self.topLineColor = default_top_line_color;
     self.bottomLineColor = default_bottom_line_color;
     self.tintColor = default_tint_color;
+    self.roundedCornerColor = default_roundedcorner_color;
+    self.roundedCornerRadius = 0.0;
 }
 
--(id)initWithCoder:(NSCoder *)coder {
+- (id)initWithCoder:(NSCoder *)coder {
     self = [super initWithCoder:coder];
     if (self) {
         [self initializeVars];
@@ -71,7 +75,7 @@
     return self;
 }
 
--(id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self initializeVars];
@@ -80,7 +84,7 @@
 }
 
 
--(id)init {
+- (id)init {
     self = [super init];
     if (self) {
         [self initializeVars];
@@ -89,24 +93,49 @@
 }
 
 
+-(void) drawLeftRoundedCornerAtPoint:(CGPoint)point withRadius:(CGFloat)radius withTransformation:(CGAffineTransform)transform {
+    
+    // create the path. has to be done this way to allow use of the transform
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, &transform, point.x, point.y);
+    CGPathAddLineToPoint(path, &transform, point.x, point.y + radius);
+    CGPathAddArc(path, &transform, point.x + radius, point.y + radius, radius, (180) * M_PI/180, (-90) * M_PI/180, 0);
+    CGPathAddLineToPoint(path, &transform, point.x, point.y);
+    
+    // fill the path to create the illusion that the corner is rounded
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextAddPath(context, path);
+    CGContextSetFillColorWithColor(context, [self.roundedCornerColor CGColor]);
+    CGContextFillPath(context);
 
+    // appropriate memory management
+    CGPathRelease(path);
+}
 
--(void) drawTopLine:(CGRect)rect {
+- (void) drawTopLine:(CGRect)rect {
     [PrettyDrawing drawLineAtPosition:LinePositionTop rect:rect color:self.topLineColor];
 }
 
 
--(void) drawBottomLine:(CGRect)rect {
+- (void) drawBottomLine:(CGRect)rect {
     [PrettyDrawing drawLineAtPosition:LinePositionBottom rect:rect color:self.bottomLineColor];
 }
 
--(void) drawRect:(CGRect)rect {
+- (void) drawRect:(CGRect)rect {
     [super drawRect:rect];
     
     [self dropShadowWithOpacity:self.shadowOpacity];
     [PrettyDrawing drawGradient:rect fromColor:self.gradientStartColor toColor:self.gradientEndColor];
     [self drawTopLine:rect];        
     [self drawBottomLine:rect];
+    
+    if (self.roundedCornerRadius > 0) {
+        // draw the left rounded corner with a transform of 0 because nothing should be changed
+        [self drawLeftRoundedCornerAtPoint:CGPointMake(0, 0) withRadius:self.roundedCornerRadius withTransformation:CGAffineTransformMakeRotation(0)];
+        
+        // draw the right rounded corner with a 90degree transform. this means the x and y coords are flipped which means the point must also flip
+        [self drawLeftRoundedCornerAtPoint:CGPointMake(0, -self.frame.size.width) withRadius:self.roundedCornerRadius withTransformation:CGAffineTransformMakeRotation((90) * M_PI/180)];
+    }
 }
 
 

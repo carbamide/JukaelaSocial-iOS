@@ -33,14 +33,18 @@
 @implementation PrettySegmentedControlTableViewCell
 @synthesize selectedIndex;
 
--(void) updateButtonActions 
+- (void) updateButtonActions 
 {
     /* a bit of hacking. In this case, we don't care if the user drags the finger
-     or not, we still want te segment to be selected. */        
+     or not, we still want te segment to be selected. */    
+    [(UIButton *)self.customView removeTarget:self.customView
+                                       action:@selector(hardDeselect) 
+                             forControlEvents:UIControlEventTouchDragInside | UIControlEventTouchDragOutside | UIControlEventTouchUpOutside];
+    [(UIButton *)self.customView addTarget:self.customView action:@selector(fireButtonAction:event:) forControlEvents:UIControlEventTouchUpOutside];           
 }
 
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -63,22 +67,22 @@
 }
 
 
--(void) _setSelectedIndex:(NSInteger)sselectedIndex {
+- (void) _setSelectedIndex:(NSInteger)sselectedIndex {
     selectedIndex = sselectedIndex;
     
     [super selectIndex:selectedIndex];
 }
 
--(void) restartSelectedIndex {
+- (void) restartSelectedIndex {
     [self _setSelectedIndex:0];
 }
 
 
--(NSArray *) titles {
+- (NSArray *) titles {
     return self.texts;
 }
 
--(void) setTitles:(NSArray *)titles {
+- (void) setTitles:(NSArray *)titles {
     self.numberOfElements = [titles count];
     for (int i = 0; i < self.numberOfElements; i++) {
         [self setText:[titles objectAtIndex:i] atIndex:i];
@@ -87,11 +91,11 @@
 }
 
 
--(void) setSelectedIndex:(NSInteger)sselectedIndex {
+- (void) setSelectedIndex:(NSInteger)sselectedIndex {
     [self _setSelectedIndex:sselectedIndex];
 }
 
--(void) setActionBlock:(void (^)(NSIndexPath *indexPath, int sselectedIndex))actionBlock {
+- (void) setActionBlock:(void (^)(NSIndexPath *indexPath, int sselectedIndex))actionBlock {
     [super setActionBlock:^(NSIndexPath *indexPath, int sselectedIndex) {
         selectedIndex = sselectedIndex;
         actionBlock(indexPath, sselectedIndex);

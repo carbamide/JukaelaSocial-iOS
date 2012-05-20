@@ -1,12 +1,12 @@
 //
-//  UsersViewController.m
+//  FollowerViewController.m
 //  Jukaela
 //
 //  Created by Josh Barrow on 5/6/12.
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "UsersViewController.h"
+#import "FollowerViewController.h"
 #import "UIActionSheet+Blocks.h"
 #import "ClearLabelsCellView.h"
 #import "GradientView.h"
@@ -19,13 +19,13 @@
 #import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
 
-@interface UsersViewController ()
+@interface FollowerViewController ()
 @property (strong, nonatomic) NSMutableArray *tempArray;
 @property (strong, nonatomic) NSDictionary *tempDict;
 
 @end
 
-@implementation UsersViewController
+@implementation FollowerViewController
 
 @synthesize usersArray;
 @synthesize tempDict;
@@ -55,7 +55,7 @@
 {
     [self customizeNavigationBar];
     
-    [self getUsers];
+    NSLog(@"%@", [self usersArray]);
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     

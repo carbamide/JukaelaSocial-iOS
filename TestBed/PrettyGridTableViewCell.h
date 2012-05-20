@@ -130,29 +130,29 @@
 @property (nonatomic, assign) BOOL shadowOnlyOnSelected;
 
 /** Inserts a text in the given index. */
--(void) setText:(NSString *)text atIndex:(int)index;
+- (void) setText:(NSString *)text atIndex:(int)index;
 
 /** Returns the text in the given index. */
--(NSString *) textAtIndex:(int)index;
+- (NSString *) textAtIndex:(int)index;
 
 /** Inserts a detail text in the given index. */
--(void) setDetailText:(NSString *)detailText atIndex:(int)index;
+- (void) setDetailText:(NSString *)detailText atIndex:(int)index;
 
 /** Returns the detail text in the given index. */
--(NSString *) detailTextAtIndex:(int)index;
+- (NSString *) detailTextAtIndex:(int)index;
 
 
 /** @name Managing selection */
 
 /** Selects the element in the given index, drawing (if necessary) a blue 
  gradient in the background. */
--(void) selectIndex:(int)index;
+- (void) selectIndex:(int)index;
 
 /** Deselects the currently selected element.
  
  @params
  - animated: Specifies if the deselection should be animated or not. */
--(void) deselectAnimated:(BOOL)animated;
+- (void) deselectAnimated:(BOOL)animated;
 
 /** Deselects the currently selected element and performs the given block
  when the animation is completed.
@@ -161,7 +161,7 @@
  - animated: Specifies if the deselection should be animated or not.
  - block: the completion block. This block will be performed **only** if 
  animated is YES. */
--(void) deselectAnimated:(BOOL)animated completion:(void (^) (void))block;
+- (void) deselectAnimated:(BOOL)animated completion:(void (^) (void))block;
 
 
 /** Specifies the selection style used in the grids. */

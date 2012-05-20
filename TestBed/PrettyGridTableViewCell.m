@@ -40,8 +40,8 @@
 @property (nonatomic, assign) int selectedSegment;
 @property (nonatomic, readonly) CGFloat segmentWidth;
 
--(void) selectIndex:(int)index;
--(void) deselectAnimated:(BOOL)animated completion:(void (^)(void))block;
+- (void) selectIndex:(int)index;
+- (void) deselectAnimated:(BOOL)animated completion:(void (^)(void))block;
 
 @end
 
@@ -49,21 +49,21 @@
 @implementation PrettyGridSubview
 @synthesize cell, selectedSegment;
 
--(void) dealloc 
+- (void) dealloc 
 {
     self.cell = nil;
     
     [super dealloc];
 }
 
--(CGFloat) segmentWidth 
+- (CGFloat) segmentWidth 
 {
     float width = self.frame.size.width - 4/self.cell.numberOfElements;
     return width / self.cell.numberOfElements;
 }
 
 // draws vertical separator
--(void) drawLineAtX:(float)x inRect:(CGRect)rect 
+- (void) drawLineAtX:(float)x inRect:(CGRect)rect 
 {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextSaveGState(ctx); 
@@ -78,7 +78,7 @@
     CGContextRestoreGState(ctx);
 }
 
--(UIFont *) fontFromLabel:(UILabel *)label 
+- (UIFont *) fontFromLabel:(UILabel *)label 
 {
     UIFont *font = label.font;
     
@@ -113,7 +113,7 @@
     return font;
 }
 
--(CGSize) drawText:(NSString *)text basedOnLabel:(UILabel *)label inRect:(CGRect)rect showAsSelected:(BOOL)selected 
+- (CGSize) drawText:(NSString *)text basedOnLabel:(UILabel *)label inRect:(CGRect)rect showAsSelected:(BOOL)selected 
 {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextSaveGState(ctx);
@@ -143,12 +143,12 @@
     return textSize;
 }
 
--(void) drawSelectionGradientInRect:(CGRect)rect 
+- (void) drawSelectionGradientInRect:(CGRect)rect 
 {
     [PrettyDrawing drawGradient:rect fromColor:self.cell.selectionGradientStartColor toColor:self.cell.selectionGradientEndColor];
 }
 
--(CGSize) detailTextSizeAtIndex:(int)i width:(float)width rect:(CGRect)rect
+- (CGSize) detailTextSizeAtIndex:(int)i width:(float)width rect:(CGRect)rect
 {
     NSString *detailText = [self.cell detailTextAtIndex:i];
     
@@ -160,7 +160,7 @@
     return detailTextSize;
 }
 
--(CGSize) textSizeAtIndex:(int)i width:(float)width rect:(CGRect)rect
+- (CGSize) textSizeAtIndex:(int)i width:(float)width rect:(CGRect)rect
 {
     CGSize textSize = CGSizeZero;     
     CGSize detailTextSize = CGSizeZero;
@@ -180,7 +180,7 @@
 }
 
 
--(void) drawTextsAtIndex:(int)i width:(float)width rect:(CGRect)rect span:(float)x selected:(BOOL)selected
+- (void) drawTextsAtIndex:(int)i width:(float)width rect:(CGRect)rect span:(float)x selected:(BOOL)selected
 {
     CGSize textSize = [self textSizeAtIndex:i width:width rect:rect];     
     CGSize detailTextSize = [self detailTextSizeAtIndex:i width:width rect:rect];
@@ -201,8 +201,6 @@
         textSize = [self drawText:text
                      basedOnLabel:self.cell.textLabel
                            inRect:textRect showAsSelected:selected];
-        
-        NSLog(@"%@", NSStringFromCGSize(textSize));
     }
     
     if (detailText) 
@@ -214,7 +212,7 @@
     }
 }
 
--(void) drawBackground:(CGRect)rect
+- (void) drawBackground:(CGRect)rect
 {
     if (self.cell.gradientStartColor && self.cell.gradientEndColor) {
         [PrettyDrawing drawGradient:[(PrettyTableViewCell *)self.cell createNormalGradient] rect:rect];
@@ -230,7 +228,7 @@
     CGContextRestoreGState(ctx);
 }
 
--(void) drawRect:(CGRect)rect 
+- (void) drawRect:(CGRect)rect 
 {
     [self drawBackground:rect];
     
@@ -264,7 +262,7 @@
     }
 }
 
--(UIImage *) renderSelectionImage 
+- (UIImage *) renderSelectionImage 
 {
     // http://stackoverflow.com/questions/4965036/uigraphicsgetimagefromcurrentimagecontext-retina-resolution
     UIGraphicsBeginImageContextWithOptions(self.frame.size,YES,0.0f);
@@ -275,13 +273,13 @@
     return image;
 }
 
--(void) unselectAndRefresh 
+- (void) unselectAndRefresh 
 {
     self.selectedSegment = -1;
     [self setNeedsDisplay];
 }
 
--(void) deselectAnimated:(BOOL)animated completion:(void (^)(void))block
+- (void) deselectAnimated:(BOOL)animated completion:(void (^)(void))block
 {
     UIImageView *imageView = nil;
     
@@ -320,12 +318,12 @@
     }
 }
 
--(void) hardDeselect
+- (void) hardDeselect
 {
     [self deselectAnimated:NO completion:nil];
 }
 
--(void) selectIndex:(int)index
+- (void) selectIndex:(int)index
 {
     self.selectedSegment = index;
     [self setNeedsDisplay];
@@ -333,7 +331,7 @@
 
 
 
--(void) selectedButton:(id)sender event:(UIEvent *)event
+- (void) selectedButton:(id)sender event:(UIEvent *)event
 {
     float width = self.segmentWidth;
     UITouch *touch = [[event touchesForView:self] anyObject];
@@ -349,7 +347,7 @@
 }
 
 
--(void) fireButtonAction:(id)sender event:(UIEvent *)event
+- (void) fireButtonAction:(id)sender event:(UIEvent *)event
 {
     if (self.selectedSegment != -1 && self.cell.actionBlock != nil) 
     {
@@ -357,7 +355,7 @@
     }
 }
 
--(id) init 
+- (id) init 
 {
     if (self = [super init]) 
     {
@@ -372,7 +370,7 @@
     return self;
 }
 
--(UIColor *) backgroundColor 
+- (UIColor *) backgroundColor 
 {
     return self.cell.backgroundColor;
 }
@@ -385,7 +383,7 @@
 @synthesize numberOfElements, elementSelectionStyle, textAlignment, actionBlock;
 @synthesize shadowOnlyOnSelected;
 
--(void) dealloc 
+- (void) dealloc 
 {
     if (_texts != nil) {
         [_texts release];
@@ -404,7 +402,7 @@
     [super dealloc];
 }
 
--(void) initVars 
+- (void) initVars 
 {
     if (_texts != nil) {
         [_texts release];
@@ -420,12 +418,12 @@
 }
 
 
--(void) customPrepareForReuse 
+- (void) customPrepareForReuse 
 {
     [self.customView setNeedsDisplay];
 }
 
--(void) prepareForReuse 
+- (void) prepareForReuse 
 {
     [super prepareForReuse];
     
@@ -433,7 +431,7 @@
 }
 
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) 
@@ -451,7 +449,7 @@
     return self;
 }
 
--(NSArray *) sortDictionary:(NSDictionary *)dictionary 
+- (NSArray *) sortDictionary:(NSDictionary *)dictionary 
 {
     NSMutableArray *sortedArray = [NSMutableArray array];
     
@@ -467,32 +465,32 @@
     return sortedArray;
 }
 
--(NSArray *) texts 
+- (NSArray *) texts 
 {
     return [self sortDictionary:_texts];
 }
 
--(NSArray *) detailTexts 
+- (NSArray *) detailTexts 
 {
     return [self sortDictionary:_detailTexts];
 }
 
 
--(void) setText:(NSString *)text atIndex:(int)iindex 
+- (void) setText:(NSString *)text atIndex:(int)iindex 
 {
     NSNumber *index = [NSNumber numberWithInt:iindex];
     
     [_texts setObject:text forKey:index];
 }
 
--(NSString *)textAtIndex:(int)iindex 
+- (NSString *)textAtIndex:(int)iindex 
 {
     NSNumber *index = [NSNumber numberWithInt:iindex];
     
     return [_texts objectForKey:index];
 }
 
--(void) setDetailText:(NSString *)detailText atIndex:(int)iindex 
+- (void) setDetailText:(NSString *)detailText atIndex:(int)iindex 
 {
     NSNumber *index = [NSNumber numberWithInt:iindex];
     
@@ -500,7 +498,7 @@
 }
 
 
--(NSString *)detailTextAtIndex:(int)iindex 
+- (NSString *)detailTextAtIndex:(int)iindex 
 {
     NSNumber *index = [NSNumber numberWithInt:iindex];
     
@@ -508,14 +506,14 @@
 }
 
 
--(void) setNumberOfElements:(int)elements 
+- (void) setNumberOfElements:(int)elements 
 {
     numberOfElements = elements;
     
     [self initVars];
 }
 
--(void) prepareForTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath 
+- (void) prepareForTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath 
 {
     [super prepareForTableView:tableView indexPath:indexPath];
     
@@ -525,19 +523,19 @@
     _indexPath = [indexPath retain];
 }
 
--(void) selectIndex:(int)index 
+- (void) selectIndex:(int)index 
 {
     PrettyGridSubview *subview = (PrettyGridSubview *)self.customView;
     
     [subview selectIndex:index];
 }
 
--(void) deselectAnimated:(BOOL)animated 
+- (void) deselectAnimated:(BOOL)animated 
 {
     [self deselectAnimated:animated completion:nil];
 }
 
--(void) deselectAnimated:(BOOL)animated completion:(void (^) (void))block
+- (void) deselectAnimated:(BOOL)animated completion:(void (^) (void))block
 {
     PrettyGridSubview *subview = (PrettyGridSubview *)self.customView;
     

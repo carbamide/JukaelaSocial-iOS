@@ -7,8 +7,6 @@
 //
 
 #import "SettingsViewController.h"
-#import "PrettyKit.h"
-#import "UIActionSheet+Blocks.h"
 
 @interface SettingsViewController ()
 

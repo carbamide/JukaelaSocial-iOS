@@ -6,10 +6,9 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "PostViewController.h"
-#import "PrettyKit.h"
-#import "NSString+BackslashEscape.h"
 #import "AppDelegate.h"
+#import "PostViewController.h"
+#import "NSString+BackslashEscape.h"
 
 @interface PostViewController ()
 

@@ -6,16 +6,12 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "FollowerViewController.h"
-#import "UIActionSheet+Blocks.h"
-#import "ClearLabelsCellView.h"
-#import "GradientView.h"
-#import "PrettyKit.h"
 #import <objc/runtime.h>
+#import "ClearLabelsCellView.h"
+#import "FollowerViewController.h"
+#import "GradientView.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
-#import "UIImage+Resize.h"
-#import "UIImage+RoundedCorner.h"
 #import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
 

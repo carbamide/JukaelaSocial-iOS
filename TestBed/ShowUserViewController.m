@@ -6,16 +6,12 @@
 //  Copyright (c) 2012 Victor Pena Placer. All rights reserved.
 //
 
-#import "ShowUserViewController.h"
-#import "PrettyKit.h"
-#import "GravatarHelper.h"
-#import "UIImage+Resize.h"
-#import "UIImage+RoundedCorner.h"
-#import "UIImage+Alpha.h"
-#import "JEImages.h"
 #import <objc/runtime.h>
 #import "AppDelegate.h"
 #import "FollowerViewController.h"
+#import "GravatarHelper.h"
+#import "JEImages.h"
+#import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
 
 @implementation ShowUserViewController
@@ -54,6 +50,10 @@
     [[self navigationItem] setTitle:@"Show User"];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+    
+    [self setFollowers:nil];
+    [self setFollowing:nil];
+    [self setPosts:nil];
     
     dispatch_async(dispatch_get_main_queue(), ^(void) {
         [self getFollowers];
@@ -216,8 +216,10 @@
             
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self following] count]] atIndex:0];
             [segmentedCell setDetailText:@"Following" atIndex:0];
+            
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self followers] count]] atIndex:1];
             [segmentedCell setDetailText:@"Followers" atIndex:1];
+            
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self posts] count]] atIndex:2];
             [segmentedCell setDetailText:@"Posts" atIndex:2];
             

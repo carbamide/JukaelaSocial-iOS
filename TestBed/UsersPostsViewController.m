@@ -6,20 +6,15 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "UsersPostsViewController.h"
+#import <objc/runtime.h>
+#import "AppDelegate.h"
 #import "ClearLabelsCellView.h"
 #import "GradientView.h"
-#import <objc/runtime.h>
-#import "NSDate+RailsDateParser.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
-#import "UIImage+Resize.h"
-#import "UIImage+RoundedCorner.h"
-#import "Helpers.h"
-#import "UIActionSheet+Blocks.h"
-#import "UIAlertView+Blocks.h"
+#import "NSDate+RailsDateParser.h"
 #import "SVPullToRefresh.h"
-#import "AppDelegate.h"
+#import "UsersPostsViewController.h"
 
 @interface UsersPostsViewController ()
 

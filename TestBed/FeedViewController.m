@@ -5,25 +5,19 @@
 //  Created by Josh Barrow on 5/3/12.
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
-
+#import <objc/runtime.h>
+#import "AppDelegate.h"
+#import "ClearLabelsCellView.h"
 #import "FeedViewController.h"
+#import "GradientView.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
-#import "UIImage+RoundedCorner.h"
-#import "AppDelegate.h"
-#import <objc/runtime.h>
 #import "NSData+reallyMapped.h"
-#import "UIImage+Resize.h"
-#import "ClearLabelsCellView.h"
-#import "GradientView.h"
-#import "UIAlertView+Blocks.h"
-#import "UIActionSheet+Blocks.h"
-#import "SVPullToRefresh.h"
 #import "NSDate+RailsDateParser.h"
-#import "ShowUserViewController.h"
 #import "NSString+BackslashEscape.h"
 #import "PostViewController.h"
-#import "Helpers.h"
+#import "ShowUserViewController.h"
+#import "SVPullToRefresh.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;

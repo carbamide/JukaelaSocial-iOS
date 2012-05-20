@@ -6,14 +6,11 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "LoginViewController.h"
-#import "FeedViewController.h"
-#import "UIView+FindAndResignFirstResponder.h"
-#import "Helpers.h"
-#import "PrettyKit.h"
-#import "SFHFKeychainUtils.h"
-#import "NetworkObject.h"
 #import "AppDelegate.h"
+#import "FeedViewController.h"
+#import "LoginViewController.h"
+#import "SFHFKeychainUtils.h"
+#import "UIView+FindAndResignFirstResponder.h"
 
 @interface LoginViewController ()
 @property (strong, nonatomic) NSArray *tempFeed;

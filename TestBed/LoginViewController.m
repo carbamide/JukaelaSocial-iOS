@@ -40,14 +40,13 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [[self loginTableView] dequeueReusableCellWithIdentifier:@"LoginCell"];
+    static NSString *CellIdentifier = @"Cell";
     
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LoginCell"];
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
-        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];  
+        [cell setTableViewBackgroundColor:[tableView backgroundColor]];
         
         if ([indexPath section] == 0) {
             
@@ -114,12 +113,14 @@
         }
     }
     
+    [cell prepareForTableView:tableView indexPath:indexPath];
+    
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
     
     rememberUsername = [[CPCheckBox alloc] initWithFrame:CGRectMake(45, 0, 210, 25)];
     [rememberUsername setTitle:@"Automatically Login" forState:UIControlStateNormal];
     
-    [rememberUsername setTitleColor:kPerfectGreyShadow forState:UIControlStateNormal];
+    [rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [rememberUsername setTitleShadowColor:kPerfectGrey forState:UIControlStateNormal];
     
     
@@ -129,7 +130,7 @@
         [username setText:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
         
         [password setText:[SFHFKeychainUtils getPasswordForUsername:[username text] andServiceName:@"Jukaela Social" error:nil]];
-
+        
         [rememberUsername setChecked];
     }
     
@@ -168,7 +169,7 @@
 -(IBAction)loginAction:(id)sender
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
+    
     [[self view] findAndResignFirstResponder];
     
     NSError *error = nil;
@@ -181,7 +182,7 @@
     else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"read_username_from_defaults"];
     }
-        
+    
     [[NSUserDefaults standardUserDefaults] setValue:[username text] forKey:@"username"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
@@ -195,7 +196,7 @@
     [[self progressHUD] show:YES];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/sessions.json", kSocialURL]];
-        
+    
     NSString *requestString = [NSString stringWithFormat:@"{ \"session\": {\"email\" : \"%@\", \"password\" : \"%@\", \"apns\": \"%@\"}}", [username text], [password text], [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceToken"]];
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
@@ -206,11 +207,11 @@
     [request setHTTPBody:requestData];
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
-        
+    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (!data) {
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-
+            
             [[self progressHUD] hide:YES];
             
             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" 
@@ -230,9 +231,9 @@
             
             [[[[[self tabBarController] tabBar] items] objectAtIndex:1] setEnabled:YES];
             [[[[[self tabBarController] tabBar] items] objectAtIndex:2] setEnabled:YES];
-
+            
             [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", [loginDict objectForKey:@"id"]]];
-                        
+            
             [self getFeed];
         }
         else {
@@ -254,18 +255,18 @@
 -(void)getFeed
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
+    
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
-        
+    
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-   
+    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [self setTempFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-
+        
         NSLog(@"%@", tempFeed);
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -311,15 +312,17 @@
 }
 -(void)viewDidLoad
 {
+    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];  
+
     [[[[[self tabBarController] tabBar] items] objectAtIndex:1] setEnabled:NO];
     [[[[[self tabBarController] tabBar] items] objectAtIndex:2] setEnabled:NO];
-
+    
     [[[self imageView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
     [[[self imageView] layer] setShadowOffset:CGSizeMake(0, 1)];
     [[[self imageView] layer] setShadowOpacity:0.75];
     [[[self imageView] layer] setShadowRadius:3.0];
     [[self imageView] setClipsToBounds:NO];
-
+    
     [super viewDidLoad];
     
     [self customizeNavigationBar];

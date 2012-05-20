@@ -422,6 +422,8 @@
 			children = (
 				29204EEE1553684200D5479D /* FeedViewController.h */,
 				29204EEF1553684200D5479D /* FeedViewController.m */,
+				297FE037156846E0005FBFDA /* FollowerViewController.h */,
+				297FE038156846E0005FBFDA /* FollowerViewController.m */,
 				2956876F1552C96700FE741C /* LoginViewController.h */,
 				295687701552C96700FE741C /* LoginViewController.m */,
 				291EB58115649366005FB66D /* PostViewController.h */,
@@ -430,8 +432,6 @@
 				29AA10961557254500B8D3F5 /* SettingsViewController.m */,
 				29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */,
 				29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */,
-				297FE037156846E0005FBFDA /* FollowerViewController.h */,
-				297FE038156846E0005FBFDA /* FollowerViewController.m */,
 				2924346F1565E330007C8E8C /* UsersPostsViewController.h */,
 				292434701565E330007C8E8C /* UsersPostsViewController.m */,
 				290045D415576D5D004F113A /* UsersViewController.h */,

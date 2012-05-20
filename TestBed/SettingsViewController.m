@@ -27,7 +27,6 @@
 
 -(void)logOut:(id)sender
 {
-    
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"read_username_from_defaults"];
     
     [[[[self tabBarController] viewControllers] objectAtIndex:0] popToRootViewControllerAnimated:NO];
@@ -51,6 +50,8 @@
 {
     [self customizeNavigationBar];
     
+    [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];  
+
     [super viewDidLoad];
 }
 
@@ -80,14 +81,15 @@
 {    
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
-        [cell setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];  
-    } 
+        [cell setTableViewBackgroundColor:[tableView backgroundColor]];
+    }
     
+    [cell prepareForTableView:tableView indexPath:indexPath];
+
     if ([indexPath row] == 0) {
         [[cell textLabel] setText:@"Logout"];
     }

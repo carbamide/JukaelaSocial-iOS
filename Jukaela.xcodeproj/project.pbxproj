@@ -24,6 +24,7 @@
 		2956876E1552C96700FE741C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2956876C1552C96700FE741C /* MainStoryboard.storyboard */; };
 		295687711552C96700FE741C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295687701552C96700FE741C /* LoginViewController.m */; };
 		297FE039156846E0005FBFDA /* FollowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 297FE038156846E0005FBFDA /* FollowerViewController.m */; };
+		298F7E071569821200516858 /* EditUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298F7E061569821200516858 /* EditUserViewController.m */; };
 		29AA10381556238F00B8D3F5 /* RIButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10331556238F00B8D3F5 /* RIButtonItem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29AA10391556238F00B8D3F5 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10351556238F00B8D3F5 /* UIActionSheet+Blocks.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29AA103A1556238F00B8D3F5 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10371556238F00B8D3F5 /* UIAlertView+Blocks.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -108,6 +109,8 @@
 		295687701552C96700FE741C /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		297FE037156846E0005FBFDA /* FollowerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowerViewController.h; sourceTree = "<group>"; };
 		297FE038156846E0005FBFDA /* FollowerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowerViewController.m; sourceTree = "<group>"; };
+		298F7E051569821200516858 /* EditUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUserViewController.h; sourceTree = "<group>"; };
+		298F7E061569821200516858 /* EditUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUserViewController.m; sourceTree = "<group>"; };
 		29AA10321556238F00B8D3F5 /* RIButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIButtonItem.h; sourceTree = "<group>"; };
 		29AA10331556238F00B8D3F5 /* RIButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIButtonItem.m; sourceTree = "<group>"; };
 		29AA10341556238F00B8D3F5 /* UIActionSheet+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Blocks.h"; sourceTree = "<group>"; };
@@ -432,6 +435,8 @@
 				29AA10961557254500B8D3F5 /* SettingsViewController.m */,
 				29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */,
 				29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */,
+				298F7E051569821200516858 /* EditUserViewController.h */,
+				298F7E061569821200516858 /* EditUserViewController.m */,
 				2924346F1565E330007C8E8C /* UsersPostsViewController.h */,
 				292434701565E330007C8E8C /* UsersPostsViewController.m */,
 				290045D415576D5D004F113A /* UsersViewController.h */,
@@ -499,7 +504,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0430;
-				ORGANIZATIONNAME = "Pacesetter Claims";
+				ORGANIZATIONNAME = "Jukaela Enterprises";
 			};
 			buildConfigurationList = 295687501552C96700FE741C /* Build configuration list for PBXProject "Jukaela" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -598,6 +603,7 @@
 				291EB58315649366005FB66D /* PostViewController.m in Sources */,
 				292434711565E330007C8E8C /* UsersPostsViewController.m in Sources */,
 				297FE039156846E0005FBFDA /* FollowerViewController.m in Sources */,
+				298F7E071569821200516858 /* EditUserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

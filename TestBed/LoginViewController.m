@@ -117,7 +117,7 @@
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
     
-    rememberUsername = [[CPCheckBox alloc] initWithFrame:CGRectMake(45, 0, 210, 25)];
+    rememberUsername = [[CPCheckBox alloc] initWithFrame:CGRectMake(68, 0, 210, 25)];
     [rememberUsername setTitle:@"Automatically Login" forState:UIControlStateNormal];
     
     [rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];

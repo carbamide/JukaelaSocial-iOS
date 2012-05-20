@@ -90,7 +90,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="TCt-vC-S5I">
-                                <rect key="frame" x="20" y="156" width="280" height="140"/>
+                                <rect key="frame" x="0.0" y="156" width="320" height="140"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -122,9 +122,31 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="Xvw-6K-KbK"/>
+                    <connections>
+                        <segue destination="8At-Ku-Tcl" kind="push" identifier="EditUser" id="wqf-Dp-yED"/>
+                    </connections>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="932" y="722"/>
+        </scene>
+        <!--Edit User View Controller - Profile-->
+        <scene sceneID="voL-89-bza">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fEM-rG-zHH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="8At-Ku-Tcl" customClass="EditUserViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="w75-Pd-duh">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="8At-Ku-Tcl" id="Kex-C8-mbO"/>
+                            <outlet property="delegate" destination="8At-Ku-Tcl" id="lHV-GQ-ySf"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Profile" id="XGa-fU-eDA"/>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="1387" y="725"/>
         </scene>
         <!--Users Posts View Controller-->
         <scene sceneID="0xN-Hz-E1m">
@@ -282,6 +304,9 @@
         <image name="Users.png" width="30" height="30"/>
     </resources>
     <classes>
+        <class className="EditUserViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditUserViewController.h"/>
+        </class>
         <class className="FeedViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FeedViewController.h"/>
         </class>

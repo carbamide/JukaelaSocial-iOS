@@ -74,7 +74,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 3;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -96,6 +96,9 @@
     else if ([indexPath row] == 1) {
         [[cell textLabel] setText:@"Clear Image Cache"];
     }
+    else if ([indexPath row] == 2) {
+        [[cell textLabel] setText:@"Edit User..."];
+    }
     
     return cell;
 }
@@ -110,6 +113,9 @@
             break;
         case 1:
             [self clearImageCache];
+            break;
+        case 2:
+            [self performSegueWithIdentifier:@"EditUser" sender:self];
             break;
         default:
             break;

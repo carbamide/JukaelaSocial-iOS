@@ -51,7 +51,7 @@
         if ([indexPath section] == 0) {
             
             if ([indexPath row] == 0) {                
-                [username setFrame:CGRectMake(110, 10, 150, 30)];
+                [username setFrame:CGRectMake(110, 10, 185, 30)];
                 [username setAdjustsFontSizeToFitWidth:YES];
                 [username setTextColor:[UIColor blackColor]];
                 [username setKeyboardType:UIKeyboardTypeEmailAddress];
@@ -79,7 +79,7 @@
                 [cell addSubview:username];
             }
             else {                
-                [password setFrame:CGRectMake(110, 10, 150, 30)];
+                [password setFrame:CGRectMake(110, 10, 185, 30)];
                 
                 [password setAdjustsFontSizeToFitWidth:YES];
                 [password setTextColor:[UIColor blackColor]];
@@ -312,6 +312,12 @@
 }
 -(void)viewDidLoad
 {
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMyLove:)];
+    
+    [recognizer setNumberOfTapsRequired:2];
+    
+    [[self imageView] addGestureRecognizer:recognizer];
+    
     [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];  
 
     [[[[[self tabBarController] tabBar] items] objectAtIndex:1] setEnabled:NO];
@@ -329,6 +335,17 @@
     
     username = [[UITextField alloc] init];
     password = [[UITextField alloc] init];
+}
+
+-(void)showMyLove:(id)sender
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"My Love" 
+                                                    message:@"This app was inspired by my wife Candice. She's the most beautiful, caring, lovely woman that I've ever known. She is my inspiration, she is my heart and I wouldn't be the person that I am if it weren't for her.  Candice, I love you." 
+                                                   delegate:nil 
+                                          cancelButtonTitle:@"OK" 
+                                          otherButtonTitles:nil, nil];
+    
+    [alert show];
 }
 
 -(void)viewDidAppear:(BOOL)animated

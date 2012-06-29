@@ -15,6 +15,7 @@
 #import "NSDate+RailsDateParser.h"
 #import "SVPullToRefresh.h"
 #import "UsersPostsViewController.h"
+#import "PostViewController.h"
 
 @interface UsersPostsViewController ()
 
@@ -221,8 +222,28 @@
     
     [cellActionSheet setCancelButtonIndex:cancelIndex];
     
-    [cellActionSheet showFromTabBar:[[self tabBarController] tabBar]];
+    [cellActionSheet showInView:[self view]];
 
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"ShowReplyView"]) {
+        PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
+        
+        [viewController setReplyString:[NSString stringWithFormat:@"@%@ ", [[[self userPostArray] objectAtIndex:[[[self tableView] indexPathForSelectedRow] row]] objectForKey:@"username"]]];
+        
+        [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+    }
+    else if ([[segue identifier] isEqualToString:@"ShowRepostView"]) {
+        UITableViewCell *tempCell = [[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
+        
+        PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
+        
+        [viewController setRepostString:[NSString stringWithFormat:@"%@", [[tempCell textLabel] text]]];
+        
+        [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+    }
 }
 
 -(NSString *)documentsPath

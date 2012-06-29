@@ -17,7 +17,6 @@
 #import "NSString+BackslashEscape.h"
 #import "PostViewController.h"
 #import "ShowUserViewController.h"
-#import "SVPullToRefresh.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
@@ -44,6 +43,14 @@
 
 -(void)viewDidLoad
 {
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    
+    [refreshControl setTintColor:[UIColor blackColor]];
+  
+    [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+  
+    [self setRefreshControl:refreshControl];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableInformation) name:@"refresh_your_tables" object:nil];
     
     if (![self theFeed]) {
@@ -51,10 +58,6 @@
     }
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
-    
-    [[self tableView] addPullToRefreshWithActionHandler:^{        
-        [self refreshTableInformation];        
-    }];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
@@ -88,10 +91,10 @@
         [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
         
         [[self tableView] reloadData];
-        
-        [[[self tableView] pullToRefreshView] stopAnimating];
-        
+                
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        [[self refreshControl] endRefreshing];
     }];
 }
 

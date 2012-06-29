@@ -102,16 +102,4 @@
 	[self _updateShouldDrawPlaceholder];	
 }
 
-- (void)dictationRecognitionFailed
-{
-    //FIXME - I'm not sure if I want to implement this protocol here on in the YIPopupTextView, or in the caller of the YIPopupTextView.
-    NSLog(@"Recording Failed");
-}
-
-- (void)dictationRecordingDidEnd
-{
-    //FIXME - I'm not sure if I want to implement this protocol here on in the YIPopupTextView, or in the caller of the YIPopupTextView.
-    NSLog(@"Recording did end");
-}
-
 @end

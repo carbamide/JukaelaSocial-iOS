@@ -20,38 +20,40 @@
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
+@property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @end
 
 @implementation FeedViewController
-
-@synthesize theFeed;
-@synthesize textView;
-@synthesize popupTextView;
-@synthesize stringToPost;
-@synthesize nameDict;
-@synthesize dateFormatter;
-@synthesize tempDict;
 
 -(id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
-       
+        
     }
     return self;
 }
 
 -(void)viewDidLoad
 {
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    
-    [refreshControl setTintColor:[UIColor blackColor]];
-  
-    [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-  
-    [self setRefreshControl:refreshControl];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableInformation) name:@"refresh_your_tables" object:nil];
+    if (NSClassFromString(@"UIRefreshControl")) {
+        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+        
+        [refreshControl setTintColor:[UIColor blackColor]];
+        
+        [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+        
+        [self setRefreshControl:refreshControl];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableInformation) name:@"refresh_your_tables" object:nil];
+    }
+    else {
+        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
+        
+        [_oldRefreshControl setTintColor:[UIColor blackColor]];
+        
+        [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+    }
     
     if (![self theFeed]) {
         [self refreshTableInformation];
@@ -80,7 +82,7 @@
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
-            
+    
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
     [request setHTTPMethod:@"GET"];
@@ -91,10 +93,15 @@
         [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
         
         [[self tableView] reloadData];
-                
+        
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
-        [[self refreshControl] endRefreshing];
+        if (NSClassFromString(@"UIRefreshControl")) {
+            [[self refreshControl] endRefreshing];
+        }
+        else {
+            [_oldRefreshControl endRefreshing];
+        }
     }];
 }
 
@@ -116,7 +123,7 @@
 #pragma mark - Table view data source
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{ 
+{
     return 100;
 }
 
@@ -127,7 +134,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [theFeed count];
+    return [_theFeed count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -140,7 +147,7 @@
         cell = [[ClearLabelsCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         [cell setBackgroundView:[[GradientView alloc] init]];
-    } 
+    }
     
     [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
     
@@ -171,17 +178,17 @@
     [[cell dateLabel] setText:[NSString stringWithFormat:@"%@ ago", [[[NSDate alloc] init] distanceOfTimeInWordsSinceDate:tempDate]]];
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"email"]]]]];
-           
+    
 	if (image) {
 		[[cell imageView] setImage:image];
         [cell setNeedsDisplay];
-	} 
-    else {    
+	}
+    else {
 		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
 		objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
 		
-		dispatch_async(queue, ^{            
+		dispatch_async(queue, ^{
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"email"]]]];
 			
 #if (TARGET_IPHONE_SIMULATOR)
@@ -197,7 +204,7 @@
                     [cell setNeedsDisplay];
 				}
 				
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"email"]]];                
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"email"]]];
 			});
 		});
 	}
@@ -206,7 +213,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{    
+{
     RIButtonItem *replyButton = [RIButtonItem itemWithLabel:@"Reply"];
     RIButtonItem *repostButton = [RIButtonItem itemWithLabel:@"Repost"];
     RIButtonItem *showUserButton = [RIButtonItem itemWithLabel:@"Show User..."];
@@ -215,7 +222,7 @@
     
     [deleteButton setAction:^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
+        
         NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"id"]]];
@@ -235,13 +242,13 @@
         }];
     }];
     
-    [replyButton setAction:^{        
+    [replyButton setAction:^{
         [self performSegueWithIdentifier:@"ShowReplyView" sender:self];
     }];
     
     [showUserButton setAction:^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
+        
         NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"user_id"]]];
@@ -256,12 +263,12 @@
             [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-
+            
             [self performSegueWithIdentifier:@"ShowUser" sender:nil];
         }];
     }];
     
-    [repostButton setAction:^{        
+    [repostButton setAction:^{
         [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
     }];
     
@@ -271,9 +278,9 @@
         return;
     }];
     
-    UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil 
-                                                         cancelButtonItem:nil 
-                                                    destructiveButtonItem:nil 
+    UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                         cancelButtonItem:nil
+                                                    destructiveButtonItem:nil
                                                          otherButtonItems:replyButton, repostButton, showUserButton, nil];
     
     NSString *labelString = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
@@ -311,24 +318,24 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"ShowUser"]) {
-            UINavigationController *navigationController = [segue destinationViewController];
-            ShowUserViewController *viewController = (ShowUserViewController *)[navigationController topViewController];
-            
-            [viewController setUserDict:tempDict];
+        UINavigationController *navigationController = [segue destinationViewController];
+        ShowUserViewController *viewController = (ShowUserViewController *)[navigationController topViewController];
+        
+        [viewController setUserDict:_tempDict];
     }
-    else if ([[segue identifier] isEqualToString:@"ShowPostView"]) {        
+    else if ([[segue identifier] isEqualToString:@"ShowPostView"]) {
         [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
     }
     else if ([[segue identifier] isEqualToString:@"ShowReplyView"]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
         [viewController setReplyString:[NSString stringWithFormat:@"@%@ ", [[[self theFeed] objectAtIndex:[[[self tableView] indexPathForSelectedRow] row]] objectForKey:@"username"]]];
-
+        
         [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
     }
     else if ([[segue identifier] isEqualToString:@"ShowRepostView"]) {
         UITableViewCell *tempCell = [[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
-
+        
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
         [viewController setRepostString:[NSString stringWithFormat:@"%@", [[tempCell textLabel] text]]];

@@ -14,6 +14,17 @@
 
 @implementation EditUserViewController
 
+-(void)customizeNavigationBar
+{
+    PrettyNavigationBar *navBar = (PrettyNavigationBar *)self.navigationController.navigationBar;
+    
+    [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
+    [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];
+    [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
+    [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
+    [navBar setTintColor:[navBar gradientEndColor]];
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -25,16 +36,25 @@
 
 - (void)viewDidLoad
 {
+    [self customizeNavigationBar];
+    
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
     
-    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];  
+    [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
 
     [super viewDidLoad];
 }
 
+-(IBAction)cancel:(id)sender
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 -(void)saveProfile:(id)sender
 {
-    NSLog(@"Nothing here!");
+    NSLog(@"No saving has actually happened!");
+
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)viewDidUnload
@@ -64,8 +84,6 @@
     PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        
-        [cell setTableViewBackgroundColor:[tableView backgroundColor]];
     }
     
     [[cell textLabel] setText:[[self fieldsArray] objectAtIndex:[indexPath row]]];

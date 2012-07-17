@@ -10,9 +10,6 @@
 #import "YIPopupTextView.h"
 
 @interface FeedViewController : UITableViewController <YIPopupTextViewDelegate>
-{
-    UINib *cellLoader;
-}
 
 @property (strong, nonatomic) NSArray *theFeed;
 @property (strong, nonatomic) UITextView *textView;

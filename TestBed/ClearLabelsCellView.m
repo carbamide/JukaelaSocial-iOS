@@ -28,7 +28,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [nameLabel setTag:8];
         
         [self addSubview:nameLabel];
-                
+        
         dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, 140, 15)];
         [dateLabel setTextAlignment:UITextAlignmentLeft];
         [dateLabel setFont:[UIFont fontWithName:@"Helvetica" size:12]];
@@ -41,7 +41,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [[self textLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
 		[[self nameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
         [[self dateLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
-
+        
 	}
 	
 	return self;
@@ -50,7 +50,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 -(void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
 	[super setSelected:selected animated:animated];
-
+    
 	self.textLabel.backgroundColor = [UIColor clearColor];
 	self.detailTextLabel.backgroundColor = [UIColor clearColor];
 }
@@ -70,7 +70,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     else if (object == [self dateLabel] && [keyPath isEqualToString:@"text"] && ([change objectForKey:NSKeyValueChangeOldKey] == nil || [change objectForKey:NSKeyValueChangeOldKey] == [NSNull null])) {
         NSLog(@"The dateLabel is being set");
     }
-
+    
 }
 
 -(void)prepareForReuse

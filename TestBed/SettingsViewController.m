@@ -50,8 +50,12 @@
 {
     [self customizeNavigationBar];
     
-    [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];  
-
+    if ([UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]) {
+        NSLog(@"Hey there!!");
+    }
+    
+    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+    
     [super viewDidLoad];
 }
 
@@ -74,22 +78,20 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 5;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{    
+{
     static NSString *CellIdentifier = @"Cell";
     
     PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        
-        [cell setTableViewBackgroundColor:[tableView backgroundColor]];
     }
     
     [cell prepareForTableView:tableView indexPath:indexPath];
-
+    
     if ([indexPath row] == 0) {
         [[cell textLabel] setText:@"Logout"];
     }
@@ -97,10 +99,57 @@
         [[cell textLabel] setText:@"Clear Image Cache"];
     }
     else if ([indexPath row] == 2) {
-        [[cell textLabel] setText:@"Edit User..."];
+        [[cell textLabel] setText:@"Edit Profile..."];
+    }
+    else if ([indexPath row] == 3) {
+        [[cell textLabel] setText:@"Post to Facebook?"];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
+        [self setFacebookSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+            [[self facebookSwitch] setOn:YES];
+        }
+        else {
+            [[self facebookSwitch] setOn:NO];
+        }
+        
+        [cell setAccessoryView:[self facebookSwitch]];
+        
+        [[self facebookSwitch] addTarget:self action:@selector(facebookSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+    else if ([indexPath row] == 4) {
+        [[cell textLabel] setText:@"Post to Twitter?"];
+        
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
+        [self setTwitterSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+            [[self twitterSwitch] setOn:YES];
+        }
+        else {
+            [[self twitterSwitch] setOn:NO];
+        }
+        
+        [cell setAccessoryView:[self twitterSwitch]];
+        
+        [[self twitterSwitch] addTarget:self action:@selector(twitterSwitchChanged:) forControlEvents:UIControlEventValueChanged];
     }
     
     return cell;
+}
+
+-(void)facebookSwitchChanged:(id)sender
+{
+    [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(void)twitterSwitchChanged:(id)sender
+{
+    [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:@"post_to_twitter"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Table view delegate
@@ -130,21 +179,21 @@
     [eraseButton setAction:^{
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         if ([paths count] > 0) {
-            NSError *error = nil;  
+            NSError *error = nil;
             NSFileManager *fileManager = [NSFileManager defaultManager];
             
             NSString *directory = [paths objectAtIndex:0];
             
-            for (NSString *file in [fileManager contentsOfDirectoryAtPath:directory error:&error]) {    
+            for (NSString *file in [fileManager contentsOfDirectoryAtPath:directory error:&error]) {
                 NSString *filePath = [directory stringByAppendingPathComponent:file];
                 
                 BOOL fileDeleted = [fileManager removeItemAtPath:filePath error:&error];
                 
                 if (fileDeleted != YES || error != nil) {
-                    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" 
-                                                                         message:@"There has been an error.  Please reinstall Jukaela Social." 
-                                                                        delegate:nil 
-                                                               cancelButtonTitle:@"OK" 
+                    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                         message:@"There has been an error.  Please reinstall Jukaela Social."
+                                                                        delegate:nil
+                                                               cancelButtonTitle:@"OK"
                                                                otherButtonTitles:nil, nil];
                     
                     [errorAlert show];
@@ -154,12 +203,12 @@
     }];
     
     [cancelButton setAction:^{
-        return; 
+        return;
     }];
     
-    UIActionSheet *eraseAction = [[UIActionSheet alloc] initWithTitle:nil 
-                                                     cancelButtonItem:cancelButton 
-                                                destructiveButtonItem:eraseButton 
+    UIActionSheet *eraseAction = [[UIActionSheet alloc] initWithTitle:nil
+                                                     cancelButtonItem:cancelButton
+                                                destructiveButtonItem:eraseButton
                                                      otherButtonItems:nil, nil];
     
     [eraseAction showFromTabBar:[[self tabBarController] tabBar]];

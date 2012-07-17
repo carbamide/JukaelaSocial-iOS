@@ -24,6 +24,10 @@
 		2956876E1552C96700FE741C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2956876C1552C96700FE741C /* MainStoryboard.storyboard */; };
 		295687711552C96700FE741C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295687701552C96700FE741C /* LoginViewController.m */; };
 		297FE039156846E0005FBFDA /* FollowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 297FE038156846E0005FBFDA /* FollowerViewController.m */; };
+		2986774C15B4B9B80027C7CA /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2986774B15B4B9B80027C7CA /* ODRefreshControl.m */; };
+		2986775315B50CB70027C7CA /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775215B50CB70027C7CA /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		2986775515B50CBD0027C7CA /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775415B50CBD0027C7CA /* Twitter.framework */; };
+		2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775A15B5148B0027C7CA /* Accounts.framework */; };
 		298F7E071569821200516858 /* EditUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298F7E061569821200516858 /* EditUserViewController.m */; };
 		29AA10381556238F00B8D3F5 /* RIButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10331556238F00B8D3F5 /* RIButtonItem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29AA10391556238F00B8D3F5 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10351556238F00B8D3F5 /* UIActionSheet+Blocks.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -36,8 +40,6 @@
 		29AA10611556AEAC00B8D3F5 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10601556AEAC00B8D3F5 /* MBProgressHUD.m */; };
 		29AA10631556AEB900B8D3F5 /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA10621556AEB900B8D3F5 /* Checkmark.png */; };
 		29AA10651556C69100B8D3F5 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA10641556C69000B8D3F5 /* placeholder.png */; };
-		29AA10691557116D00B8D3F5 /* SVPullToRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29AA10661557116D00B8D3F5 /* SVPullToRefresh.bundle */; };
-		29AA106A1557116D00B8D3F5 /* SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10681557116D00B8D3F5 /* SVPullToRefresh.m */; };
 		29AA10751557153B00B8D3F5 /* PrettyDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA106D1557153A00B8D3F5 /* PrettyDrawing.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29AA10761557153B00B8D3F5 /* PrettyNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10701557153A00B8D3F5 /* PrettyNavigationBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29AA10771557153B00B8D3F5 /* PrettyShadowPlainTableview.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10721557153B00B8D3F5 /* PrettyShadowPlainTableview.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -109,6 +111,11 @@
 		295687701552C96700FE741C /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		297FE037156846E0005FBFDA /* FollowerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowerViewController.h; sourceTree = "<group>"; };
 		297FE038156846E0005FBFDA /* FollowerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowerViewController.m; sourceTree = "<group>"; };
+		2986774A15B4B9B80027C7CA /* ODRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODRefreshControl.h; sourceTree = "<group>"; };
+		2986774B15B4B9B80027C7CA /* ODRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRefreshControl.m; sourceTree = "<group>"; };
+		2986775215B50CB70027C7CA /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		2986775415B50CBD0027C7CA /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		2986775A15B5148B0027C7CA /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		298F7E051569821200516858 /* EditUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUserViewController.h; sourceTree = "<group>"; };
 		298F7E061569821200516858 /* EditUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUserViewController.m; sourceTree = "<group>"; };
 		29AA10321556238F00B8D3F5 /* RIButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIButtonItem.h; sourceTree = "<group>"; };
@@ -128,9 +135,6 @@
 		29AA10601556AEAC00B8D3F5 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		29AA10621556AEB900B8D3F5 /* Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checkmark.png; sourceTree = "<group>"; };
 		29AA10641556C69000B8D3F5 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
-		29AA10661557116D00B8D3F5 /* SVPullToRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVPullToRefresh.bundle; sourceTree = "<group>"; };
-		29AA10671557116D00B8D3F5 /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
-		29AA10681557116D00B8D3F5 /* SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVPullToRefresh.m; sourceTree = "<group>"; };
 		29AA106C1557153A00B8D3F5 /* PrettyDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyDrawing.h; sourceTree = "<group>"; };
 		29AA106D1557153A00B8D3F5 /* PrettyDrawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyDrawing.m; sourceTree = "<group>"; };
 		29AA106E1557153A00B8D3F5 /* PrettyKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyKit.h; sourceTree = "<group>"; };
@@ -209,6 +213,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */,
+				2986775515B50CBD0027C7CA /* Twitter.framework in Frameworks */,
+				2986775315B50CB70027C7CA /* Social.framework in Frameworks */,
 				293A7426155F68AA004D27D2 /* Security.framework in Frameworks */,
 				29D5B84915546055000D9374 /* QuartzCore.framework in Frameworks */,
 				2956875B1552C96700FE741C /* UIKit.framework in Frameworks */,
@@ -240,6 +247,9 @@
 		295687591552C96700FE741C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2986775215B50CB70027C7CA /* Social.framework */,
+				2986775415B50CBD0027C7CA /* Twitter.framework */,
+				2986775A15B5148B0027C7CA /* Accounts.framework */,
 				293A7425155F68AA004D27D2 /* Security.framework */,
 				29D5B84815546055000D9374 /* QuartzCore.framework */,
 				2956875A1552C96700FE741C /* UIKit.framework */,
@@ -448,14 +458,13 @@
 		29D5B860155476A4000D9374 /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2986774A15B4B9B80027C7CA /* ODRefreshControl.h */,
+				2986774B15B4B9B80027C7CA /* ODRefreshControl.m */,
 				293A7422155F6810004D27D2 /* SFHFKeychainUtils.h */,
 				293A7423155F6810004D27D2 /* SFHFKeychainUtils.m */,
 				29AA108E15571BD600B8D3F5 /* CPCheckBox.h */,
 				29AA108F15571BD600B8D3F5 /* CPCheckBox.m */,
 				29AA10851557154D00B8D3F5 /* PrettyKit */,
-				29AA10661557116D00B8D3F5 /* SVPullToRefresh.bundle */,
-				29AA10671557116D00B8D3F5 /* SVPullToRefresh.h */,
-				29AA10681557116D00B8D3F5 /* SVPullToRefresh.m */,
 				29AA105F1556AEAC00B8D3F5 /* MBProgressHUD.h */,
 				29AA10601556AEAC00B8D3F5 /* MBProgressHUD.m */,
 				29AA10541556AD6500B8D3F5 /* Helpers.h */,
@@ -539,7 +548,6 @@
 				29AA105A1556AE2E00B8D3F5 /* Default@2x.png in Resources */,
 				29AA10631556AEB900B8D3F5 /* Checkmark.png in Resources */,
 				29AA10651556C69100B8D3F5 /* placeholder.png in Resources */,
-				29AA10691557116D00B8D3F5 /* SVPullToRefresh.bundle in Resources */,
 				29AA109215571BE600B8D3F5 /* checkbox_ticked.png in Resources */,
 				29AA109415571BF100B8D3F5 /* checkbox_not_ticked.png in Resources */,
 				29AA10A01557263900B8D3F5 /* Feed@2x.png in Resources */,
@@ -584,7 +592,6 @@
 				29AA10531556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m in Sources */,
 				29AA10561556AD6500B8D3F5 /* Helpers.m in Sources */,
 				29AA10611556AEAC00B8D3F5 /* MBProgressHUD.m in Sources */,
-				29AA106A1557116D00B8D3F5 /* SVPullToRefresh.m in Sources */,
 				29AA10751557153B00B8D3F5 /* PrettyDrawing.m in Sources */,
 				29AA10761557153B00B8D3F5 /* PrettyNavigationBar.m in Sources */,
 				29AA10771557153B00B8D3F5 /* PrettyShadowPlainTableview.m in Sources */,
@@ -604,6 +611,7 @@
 				292434711565E330007C8E8C /* UsersPostsViewController.m in Sources */,
 				297FE039156846E0005FBFDA /* FollowerViewController.m in Sources */,
 				298F7E071569821200516858 /* EditUserViewController.m in Sources */,
+				2986774C15B4B9B80027C7CA /* ODRefreshControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

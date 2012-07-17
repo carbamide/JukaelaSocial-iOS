@@ -196,15 +196,14 @@
                                                          cancelButtonItem:cancelButton 
                                                     destructiveButtonItem:nil 
                                                          otherButtonItems:showUserButton, nil];
-    
-    [userActionSheet showFromTabBar:[[self tabBarController] tabBar]];
+
+    [userActionSheet showInView:[self view]];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"ShowUser"]) {
-        UINavigationController *navigationController = [segue destinationViewController];
-        ShowUserViewController *viewController = (ShowUserViewController *)[navigationController topViewController];
+        ShowUserViewController *viewController = [segue destinationViewController];
         
         [viewController setUserDict:tempDict];
     }

@@ -9,9 +9,13 @@
 #import "AppDelegate.h"
 #import "PostViewController.h"
 #import "NSString+BackslashEscape.h"
+#import <Accounts/Accounts.h>
+#import <Social/Social.h>
+#import <Twitter/Twitter.h>
 
 @interface PostViewController ()
-
+@property (strong, nonatomic) ACAccountStore *accountStore;
+@property (strong, nonatomic) ACAccount *facebookAccount;
 @end
 
 @implementation PostViewController
@@ -21,7 +25,7 @@
 @synthesize theTextView;
 
 - (void)viewDidLoad
-{    
+{
     [super viewDidLoad];
     
     [self customizeNavigationBar];
@@ -46,6 +50,7 @@
     
     [theTextView showInView:[self view]];
 }
+
 -(void)customizeNavigationBar
 {
     PrettyNavigationBar *navBar = (PrettyNavigationBar *)self.navigationController.navigationBar;
@@ -76,14 +81,14 @@
 -(void)sendPost:(id)sender
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
+    
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     
     [activityView sizeToFit];
     
-    [activityView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin | 
-                                       UIViewAutoresizingFlexibleRightMargin | 
-                                       UIViewAutoresizingFlexibleTopMargin | 
+    [activityView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin |
+                                       UIViewAutoresizingFlexibleRightMargin |
+                                       UIViewAutoresizingFlexibleTopMargin |
                                        UIViewAutoresizingFlexibleBottomMargin)];
     [activityView startAnimating];
     
@@ -108,13 +113,90 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
     
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {                
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+        [self sendTweet:stringToSendAsContent];
+    }
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+        [self sendFacebookPost:stringToSendAsContent];
+    }
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-
+        
         [self dismissViewControllerAnimated:YES completion:nil];
     }];
+}
+
+- (void)sendTweet:(NSString *)stringToSend
+{
+	ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+	
+    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+	
+    [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
+        if(granted) {
+            NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+			
+			if ([accountsArray count] > 0) {
+				ACAccount *twitterAccount = [accountsArray objectAtIndex:0];
+                
+				TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:[NSDictionary dictionaryWithObject:stringToSend forKey:@"status"] requestMethod:TWRequestMethodPOST];
+				
+				[postRequest setAccount:twitterAccount];
+				
+				[postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+					NSString *output = [NSString stringWithFormat:@"HTTP response status: %i", [urlResponse statusCode]];
+					NSLog(@"%@", output);
+				}];
+			}
+        }
+	}];
+}
+
+- (void)sendFacebookPost:(NSString *)stringToSend
+{
+    if (_accountStore == nil) {
+        _accountStore = [[ACAccountStore alloc] init];
+    }
+    ACAccountType *accountTypeFacebook = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    
+    NSDictionary *options = @{
+ACFacebookAppIdKey: @"493749340639998",
+ACFacebookPermissionGroupKey: @"write",
+ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
+    
+    [_accountStore requestAccessToAccountsWithType:accountTypeFacebook
+                                           options:options
+                                        completion:^(BOOL granted, NSError *error) {
+                                            
+                                            if(granted) {
+                                                NSArray *accounts = [self.accountStore accountsWithAccountType:accountTypeFacebook];
+                                                
+                                                [self setFacebookAccount:[accounts lastObject]];
+                                                
+                                                NSLog(@"Posting to Facebook");
+                                                NSLog(@"Account: %@", [[self facebookAccount] username]);
+                                                NSLog(@"Description: %@", [[self facebookAccount] accountDescription]);
+                                                NSLog(@"Identifier: %@", [[self facebookAccount] accountDescription]);
+                                                NSLog(@"Token: %@", [[[self facebookAccount] credential] oauthToken]);
+                                                
+                                                NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
+                                                NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
+                                                
+                                                SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
+                                                
+                                                [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{ NSLog(@"ERRO: [%@]", [errorDOIS localizedDescription]); } );}];
+                                                
+                                            }
+                                            else {
+                                                NSLog(@"Facebook access not granted.");
+                                                NSLog(@"[%@]",[error localizedDescription]);
+                                            }
+                                        }];
 }
 
 -(void)popupTextView:(YIPopupTextView*)textView willDismissWithText:(NSString*)text

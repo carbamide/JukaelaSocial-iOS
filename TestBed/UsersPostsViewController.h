@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic) NSArray *userPostArray;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSString *userID;
 
 @end

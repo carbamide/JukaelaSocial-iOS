@@ -2,6 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ACFacebookClientAccessInfo</key>
+	<dict>
+		<key>ACFacebookAppIdKey</key>
+		<string>493749340639998</string>
+		<key>ACFacebookAppVersionKey</key>
+		<string>1.0</string>
+		<key>ACFacebookPermissionGroupKey</key>
+		<string>read_write</string>
+		<key>ACFacebookPermissionsKey</key>
+		<array>
+			<string>read_write</string>
+		</array>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

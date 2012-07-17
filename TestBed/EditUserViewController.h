@@ -10,4 +10,6 @@
 
 @interface EditUserViewController : UITableViewController
 
+-(IBAction)cancel:(id)sender;
+
 @end

@@ -13,12 +13,11 @@
 #import "GravatarHelper.h"
 #import "JEImages.h"
 #import "NSDate+RailsDateParser.h"
-#import "SVPullToRefresh.h"
 #import "UsersPostsViewController.h"
 #import "PostViewController.h"
 
 @interface UsersPostsViewController ()
-
+@property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @end
 
 @implementation UsersPostsViewController
@@ -30,22 +29,37 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-       
+        
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
+    if (NSClassFromString(@"UIRefreshControl")) {
+        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+        
+        [refreshControl setTintColor:[UIColor blackColor]];
+        
+        [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+        
+        [self setRefreshControl:refreshControl];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableInformation) name:@"refresh_your_tables" object:nil];
+    }
+    else {
+        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
+        
+        [_oldRefreshControl setTintColor:[UIColor blackColor]];
+        
+        [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+    }
+    
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
-
+    
     [self setTitle:[[[self userPostArray] lastObject] objectForKey:@"name"]];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
-    
-    [[self tableView] addPullToRefreshWithActionHandler:^{        
-        [self refreshTableInformation];        
-    }];
     
     [super viewDidLoad];
 }
@@ -63,7 +77,7 @@
 #pragma mark - Table view data source
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{ 
+{
     return 100;
 }
 
@@ -87,7 +101,7 @@
         cell = [[ClearLabelsCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         [cell setBackgroundView:[[GradientView alloc] init]];
-    } 
+    }
     
     [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
     
@@ -114,13 +128,13 @@
 	if (image) {
 		[[cell imageView] setImage:image];
         [cell setNeedsDisplay];
-	} 
-    else {    
+	}
+    else {
 		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
 		objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
 		
-		dispatch_async(queue, ^{            
+		dispatch_async(queue, ^{
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"email"]]]];
 			
 #if (TARGET_IPHONE_SIMULATOR)
@@ -136,7 +150,7 @@
                     [cell setNeedsDisplay];
 				}
 				
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"email"]]];                
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"email"]]];
 			});
 		});
 	}
@@ -174,11 +188,11 @@
         }];
     }];
     
-    [replyButton setAction:^{        
+    [replyButton setAction:^{
         [self performSegueWithIdentifier:@"ShowReplyView" sender:self];
     }];
     
-    [repostButton setAction:^{        
+    [repostButton setAction:^{
         [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
     }];
     
@@ -188,9 +202,9 @@
         return;
     }];
     
-    UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil 
-                                                         cancelButtonItem:nil 
-                                                    destructiveButtonItem:nil 
+    UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                         cancelButtonItem:nil
+                                                    destructiveButtonItem:nil
                                                          otherButtonItems:replyButton, repostButton, nil];
     
     NSString *labelString = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
@@ -223,7 +237,7 @@
     [cellActionSheet setCancelButtonIndex:cancelIndex];
     
     [cellActionSheet showInView:[self view]];
-
+    
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -259,7 +273,7 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [self userID]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -272,7 +286,12 @@
         
         [[self tableView] reloadData];
         
-        [[[self tableView] pullToRefreshView] stopAnimating];
+        if (NSClassFromString(@"UIRefreshControl")) {
+            [[self refreshControl] endRefreshing];
+        }
+        else {
+            [_oldRefreshControl endRefreshing];
+        }
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }];

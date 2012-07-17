@@ -40,7 +40,7 @@
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
-{
+{    
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)]];
     
     [self customizeNavigationBar];
@@ -145,7 +145,7 @@
     if (cell == nil) {
         cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
-        [cell setTableViewBackgroundColor:[tableView backgroundColor]];
+        [cell setTableViewBackgroundColor:[UIColor clearColor]];
     }
     
     switch (indexPath.section) {
@@ -243,6 +243,8 @@
                 }
             }];
         }
+            [segmentedCell setTableViewBackgroundColor:[UIColor clearColor]];
+            
             return segmentedCell;
             break;
         default:
@@ -277,6 +279,7 @@
     else if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
         UsersPostsViewController *viewController = [segue destinationViewController];
         
+        [viewController setUserID:[[self userDict] objectForKey:@"id"]];
         [viewController setUserPostArray:[self posts]];
     }
 }

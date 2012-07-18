@@ -54,9 +54,7 @@
 -(void)saveProfile:(id)sender
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@", [kAppDelegate userID], kSocialURL]];
-//    
-//    "user"=>{"name"=>"Josh Barrow", "username"=>"josh", "email"=>"josh@jukaela.com", "password"=>"yOkzHT8d", "password_confirmation"=>"yOkzhT8d", "profile"=>"This is the song that never ends, yes it goes on and on my friends!", "show_username"=>"0"}, "commit"=>"Save changes", "action"=>"update", "controller"=>"users", "id"=>"101"}
-    
+
     NSString *requestString = [NSString stringWithFormat:@"{\"user\":\"%@\",\"username\":%@, \"email\":%@, \"password\":%@, \"password_confirmation\":%@, \"profile\":%@}", [[self nameTextField] text], [[self usernameTextField] text], [[self emailTextField] text], [[self passwordTextField] text], [[self passwordConfirmTextField] text], [[self profileTextField] text]];
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];

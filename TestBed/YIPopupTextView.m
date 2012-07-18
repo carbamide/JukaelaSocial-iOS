@@ -267,11 +267,6 @@
 {
     _shouldAnimate = YES;
     
-    // TODO: show in window + orientation handling
-    if (!view || [view isKindOfClass:[UIWindow class]]) {
-        NSLog(@"Warning: show in window currently doesn't support orientation.");
-    }
-    
     UIView* targetView = nil;
     CGRect frame;
     if (!view) {
@@ -340,10 +335,8 @@
     NSDictionary* userInfo = [notification userInfo];
     
     CGRect keyboardRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    //NSLog(@"keyboardRect = %f %f %f %f",keyboardRect.origin.x,keyboardRect.origin.y,keyboardRect.size.width,keyboardRect.size.height);
     
     CGPoint origin = [self.window convertPoint:_backgroundView.frame.origin fromView:_backgroundView];
-    //NSLog(@"origin = %f %f",origin.x,origin.y);
     
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     

@@ -316,9 +316,7 @@
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [[self userDict] objectForKey:@"id"]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    NSLog(@"%@", request);
-    
+        
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];

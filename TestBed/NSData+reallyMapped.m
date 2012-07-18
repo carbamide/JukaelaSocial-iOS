@@ -34,7 +34,6 @@
     mappedFile = mmap(0, statbuf.st_size, PROT_READ, MAP_FILE|MAP_PRIVATE, fd, 0);
     close(fd);
     if (mappedFile == MAP_FAILED) {
-        NSLog(@"Map failed, errno=%d, %s", errno, strerror(errno));
         return nil;
     }
 

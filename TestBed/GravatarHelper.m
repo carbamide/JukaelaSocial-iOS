@@ -12,9 +12,7 @@
 @implementation GravatarHelper
 
 +(NSURL *)getGravatarURL:(NSString *)emailAddress
-{
-    NSLog(@"%@", emailAddress);
-    
+{    
     if (!emailAddress) {
         return nil;
     }

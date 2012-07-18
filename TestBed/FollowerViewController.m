@@ -50,9 +50,7 @@
 -(void)viewDidLoad
 {
     [self customizeNavigationBar];
-    
-    NSLog(@"%@", [self usersArray]);
-    
+        
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
     [super viewDidLoad];
@@ -75,7 +73,6 @@
         
         [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
         
-        NSLog(@"%@", [self usersArray]);
         [[self tableView] reloadData];
     }];
 }
@@ -181,9 +178,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-            
-            NSLog(@"%@", [self tempDict]);
-            
+                        
             [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];

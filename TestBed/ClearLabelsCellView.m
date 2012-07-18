@@ -61,16 +61,6 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [self setNeedsLayout];
         [[self imageView] removeObserver:self forKeyPath:@"image"];
     }
-    else if (object == [self nameLabel] && [keyPath isEqualToString:@"text"] && ([change objectForKey:NSKeyValueChangeOldKey] == nil || [change objectForKey:NSKeyValueChangeOldKey] == [NSNull null])) {
-        NSLog(@"The nameLabel is being set");
-    }
-    else if (object == [self textLabel] && [keyPath isEqualToString:@"text"] && ([change objectForKey:NSKeyValueChangeOldKey] == nil || [change objectForKey:NSKeyValueChangeOldKey] == [NSNull null])) {
-        NSLog(@"The textLabel is being set");
-    }
-    else if (object == [self dateLabel] && [keyPath isEqualToString:@"text"] && ([change objectForKey:NSKeyValueChangeOldKey] == nil || [change objectForKey:NSKeyValueChangeOldKey] == [NSNull null])) {
-        NSLog(@"The dateLabel is being set");
-    }
-    
 }
 
 -(void)prepareForReuse
@@ -86,8 +76,6 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 {
     @try {
         if (![[self imageView] image]) {
-            NSLog(@"Removing observers.");
-            
             [[self imageView] removeObserver:self forKeyPath:@"image"];
             [[self nameLabel] removeObserver:self forKeyPath:@"image"];
             [[self textLabel] removeObserver:self forKeyPath:@"image"];

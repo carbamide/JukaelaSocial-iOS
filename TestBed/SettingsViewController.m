@@ -50,10 +50,6 @@
 {
     [self customizeNavigationBar];
     
-    if ([UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]) {
-        NSLog(@"Hey there!!");
-    }
-    
     [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
     [super viewDidLoad];

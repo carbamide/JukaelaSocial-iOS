@@ -227,8 +227,6 @@
         loginDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
         
         if (loginDict) {
-            NSLog(@"%@", loginDict);
-            
             [[[[[self tabBarController] tabBar] items] objectAtIndex:1] setEnabled:YES];
             [[[[[self tabBarController] tabBar] items] objectAtIndex:2] setEnabled:YES];
             
@@ -266,9 +264,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [self setTempFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-        
-        NSLog(@"%@", tempFeed);
-        
+                
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
         [self performSegueWithIdentifier:@"ShowFeed" sender:self];

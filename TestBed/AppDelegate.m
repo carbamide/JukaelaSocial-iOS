@@ -23,7 +23,7 @@
     [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:@"post_to_twitter", [NSNumber numberWithBool:NO],
                                                              @"post_to_facebook", [NSNumber numberWithBool:NO],
                                                              nil]];
-    NSLog(@"Registering for push notifications...");
+    
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
                                                                            UIRemoteNotificationTypeBadge |
                                                                            UIRemoteNotificationTypeSound)];
@@ -40,13 +40,12 @@
     
     [[NSUserDefaults standardUserDefaults] setValue:deviceTokenString forKey:@"deviceToken"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    NSLog(@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceToken"]);
 }
 
 -(void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
 {
     NSString *apnsErrorString = [NSString stringWithFormat:@"Error: %@", err];
+    
     NSLog(apnsErrorString, nil);
 }
 

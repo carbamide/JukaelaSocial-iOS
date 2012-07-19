@@ -1,9 +1,9 @@
 //
-//  ExampleViewController.m
-//  PrettyExample
+//  ShowUserViewController
+//  Jukaela Social
 //
-//  Created by Víctor on 29/02/12.
-//  Copyright (c) 2012 Victor Pena Placer. All rights reserved.
+//  Created by Josh Barrow on 07/19/2012.
+//  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
 #import <objc/runtime.h>

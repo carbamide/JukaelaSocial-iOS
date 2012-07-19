@@ -8,6 +8,7 @@
 
 #import "EditUserViewController.h"
 #import "AppDelegate.h"
+#import "PrettyKit.h"
 
 @interface EditUserViewController ()
 -(NSArray *)fieldsArray;

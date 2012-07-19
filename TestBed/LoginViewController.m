@@ -11,21 +11,13 @@
 #import "LoginViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "UIView+FindAndResignFirstResponder.h"
+#import "PrettyKit.h"
 
 @interface LoginViewController ()
 @property (strong, nonatomic) NSArray *tempFeed;
 @end
 
 @implementation LoginViewController
-
-@synthesize username;
-@synthesize password;
-@synthesize loginButton;
-@synthesize tempFeed;
-@synthesize loginTableView;
-@synthesize progressHUD;
-@synthesize rememberUsername;
-@synthesize imageView;
 
 -(void)customizeNavigationBar
 {
@@ -51,56 +43,56 @@
         if ([indexPath section] == 0) {
             
             if ([indexPath row] == 0) {                
-                [username setFrame:CGRectMake(110, 10, 185, 30)];
-                [username setAdjustsFontSizeToFitWidth:YES];
-                [username setTextColor:[UIColor blackColor]];
-                [username setKeyboardType:UIKeyboardTypeEmailAddress];
-                [username setReturnKeyType:UIReturnKeyNext];
-                [username setTag:10];
-                [username setBackgroundColor:[UIColor whiteColor]];
-                [username setAutocorrectionType:UITextAutocorrectionTypeNo];
-                [username setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-                [username setTextAlignment:UITextAlignmentLeft];
-                [username setDelegate:self];
-                [username setClearButtonMode:UITextFieldViewModeNever];
-                [username setEnabled:YES];
-                [username setBackgroundColor:[UIColor clearColor]];
-                [username setTextAlignment:UITextAlignmentRight];
-                [username setPlaceholder:@"email"];
+                [_username setFrame:CGRectMake(110, 10, 185, 30)];
+                [_username setAdjustsFontSizeToFitWidth:YES];
+                [_username setTextColor:[UIColor blackColor]];
+                [_username setKeyboardType:UIKeyboardTypeEmailAddress];
+                [_username setReturnKeyType:UIReturnKeyNext];
+                [_username setTag:10];
+                [_username setBackgroundColor:[UIColor whiteColor]];
+                [_username setAutocorrectionType:UITextAutocorrectionTypeNo];
+                [_username setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+                [_username setTextAlignment:UITextAlignmentLeft];
+                [_username setDelegate:self];
+                [_username setClearButtonMode:UITextFieldViewModeNever];
+                [_username setEnabled:YES];
+                [_username setBackgroundColor:[UIColor clearColor]];
+                [_username setTextAlignment:UITextAlignmentRight];
+                [_username setPlaceholder:@"email"];
                 
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
-                    [username setText:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
-                    [rememberUsername setChecked];
+                    [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
+                    [_rememberUsername setChecked];
                 }
                 
-                [username setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];             
+                [_username setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];             
                 
                 
-                [cell addSubview:username];
+                [cell addSubview:_username];
             }
             else {                
-                [password setFrame:CGRectMake(110, 10, 185, 30)];
+                [_password setFrame:CGRectMake(110, 10, 185, 30)];
                 
-                [password setAdjustsFontSizeToFitWidth:YES];
-                [password setTextColor:[UIColor blackColor]];
-                [password setKeyboardType:UIKeyboardTypeDefault];
-                [password setReturnKeyType:UIReturnKeyDone];
-                [password setSecureTextEntry:YES];
-                [password setTag:20];
-                [password setBackgroundColor:[UIColor whiteColor]];
-                [password setAutocorrectionType:UITextAutocorrectionTypeNo];
-                [password setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-                [password setTextAlignment:UITextAlignmentLeft];
-                [password setDelegate:self];
-                [password setClearButtonMode:UITextFieldViewModeNever];
-                [password setEnabled:YES];
-                [password setBackgroundColor:[UIColor clearColor]];
-                [password setTextAlignment:UITextAlignmentRight];
-                [password setPlaceholder:@"password"];
+                [_password setAdjustsFontSizeToFitWidth:YES];
+                [_password setTextColor:[UIColor blackColor]];
+                [_password setKeyboardType:UIKeyboardTypeDefault];
+                [_password setReturnKeyType:UIReturnKeyDone];
+                [_password setSecureTextEntry:YES];
+                [_password setTag:20];
+                [_password setBackgroundColor:[UIColor whiteColor]];
+                [_password setAutocorrectionType:UITextAutocorrectionTypeNo];
+                [_password setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+                [_password setTextAlignment:UITextAlignmentLeft];
+                [_password setDelegate:self];
+                [_password setClearButtonMode:UITextFieldViewModeNever];
+                [_password setEnabled:YES];
+                [_password setBackgroundColor:[UIColor clearColor]];
+                [_password setTextAlignment:UITextAlignmentRight];
+                [_password setPlaceholder:@"password"];
                 
-                [password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];             
+                [_password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];             
                 
-                [cell addSubview:password];
+                [cell addSubview:_password];
             }       
         }
     }
@@ -117,21 +109,21 @@
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
     
-    rememberUsername = [[CPCheckBox alloc] initWithFrame:CGRectMake(68, 0, 210, 25)];
-    [rememberUsername setTitle:@"Automatically Login" forState:UIControlStateNormal];
+    _rememberUsername = [[CPCheckBox alloc] initWithFrame:CGRectMake(68, 0, 210, 25)];
+    [_rememberUsername setTitle:@"Automatically Login" forState:UIControlStateNormal];
     
-    [rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-    [rememberUsername setTitleShadowColor:kPerfectGrey forState:UIControlStateNormal];
+    [_rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    [_rememberUsername setTitleShadowColor:kPerfectGrey forState:UIControlStateNormal];
     
     
-    [footerView addSubview:rememberUsername];
+    [footerView addSubview:_rememberUsername];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
-        [username setText:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
+        [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
         
-        [password setText:[SFHFKeychainUtils getPasswordForUsername:[username text] andServiceName:@"Jukaela Social" error:nil]];
+        [_password setText:[SFHFKeychainUtils getPasswordForUsername:[_username text] andServiceName:@"Jukaela Social" error:nil]];
         
-        [rememberUsername setChecked];
+        [_rememberUsername setChecked];
     }
     
     [tableView setTableFooterView:footerView];
@@ -143,10 +135,10 @@
 {
     switch ([indexPath row]) {
         case 0:
-            [username becomeFirstResponder];
+            [_username becomeFirstResponder];
             break;
         case 1:
-            [password becomeFirstResponder];
+            [_password becomeFirstResponder];
             break;
         default:
             break;
@@ -155,8 +147,8 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    [loginTableView setBackgroundView:nil];
-    [loginTableView setBackgroundColor:[UIColor clearColor]];
+    [_loginTableView setBackgroundView:nil];
+    [_loginTableView setBackgroundColor:[UIColor clearColor]];
     
     return 1;
 }
@@ -174,16 +166,16 @@
     
     NSError *error = nil;
     
-    if ([rememberUsername isChecked]) {
+    if ([_rememberUsername isChecked]) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"read_username_from_defaults"];
         
-        [SFHFKeychainUtils storeUsername:[username text] andPassword:[password text] forServiceName:@"Jukaela Social" updateExisting:YES error:&error];
+        [SFHFKeychainUtils storeUsername:[_username text] andPassword:[_password text] forServiceName:@"Jukaela Social" updateExisting:YES error:&error];
     }
     else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"read_username_from_defaults"];
     }
     
-    [[NSUserDefaults standardUserDefaults] setValue:[username text] forKey:@"username"];
+    [[NSUserDefaults standardUserDefaults] setValue:[_username text] forKey:@"username"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [self setProgressHUD:[[MBProgressHUD alloc] initWithView:[self view]]];
@@ -197,7 +189,7 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/sessions.json", kSocialURL]];
     
-    NSString *requestString = [NSString stringWithFormat:@"{ \"session\": {\"email\" : \"%@\", \"password\" : \"%@\", \"apns\": \"%@\"}}", [username text], [password text], [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceToken"]];
+    NSString *requestString = [NSString stringWithFormat:@"{ \"session\": {\"email\" : \"%@\", \"password\" : \"%@\", \"apns\": \"%@\"}}", [_username text], [_password text], [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceToken"]];
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
@@ -288,8 +280,8 @@
 
 -(BOOL)textFieldShouldReturn:(id)sender
 {
-	if (sender == username) {
-        [password becomeFirstResponder];
+	if (sender == _username) {
+        [_password becomeFirstResponder];
         return NO;
     }
     else {
@@ -329,8 +321,8 @@
     
     [self customizeNavigationBar];
     
-    username = [[UITextField alloc] init];
-    password = [[UITextField alloc] init];
+    _username = [[UITextField alloc] init];
+    _password = [[UITextField alloc] init];
 }
 
 -(void)showMyLove:(id)sender

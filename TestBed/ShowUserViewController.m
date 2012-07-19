@@ -13,13 +13,9 @@
 #import "JEImages.h"
 #import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
+#import "PrettyKit.h"
 
 @implementation ShowUserViewController
-
-@synthesize userDict;
-@synthesize followers;
-@synthesize following;
-@synthesize posts;
 
 -(void)customizeNavigationBar
 {
@@ -216,7 +212,7 @@
             
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self following] count]] atIndex:0];
             [segmentedCell setDetailText:@"Following" atIndex:0];
-            
+                        
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self followers] count]] atIndex:1];
             [segmentedCell setDetailText:@"Followers" atIndex:1];
             
@@ -344,6 +340,8 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
         
         [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
                 

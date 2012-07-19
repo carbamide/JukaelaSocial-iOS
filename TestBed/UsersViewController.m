@@ -14,6 +14,7 @@
 #import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
 #import "UsersViewController.h"
+#import "PrettyKit.h"
 
 @interface UsersViewController ()
 @property (strong, nonatomic) NSMutableArray *tempArray;
@@ -22,10 +23,6 @@
 @end
 
 @implementation UsersViewController
-
-@synthesize usersArray;
-@synthesize tempDict;
-@synthesize tempArray;
 
 -(void)customizeNavigationBar
 {
@@ -203,7 +200,7 @@
         UINavigationController *navigationController = [segue destinationViewController];
         ShowUserViewController *viewController = (ShowUserViewController *)[navigationController topViewController];
         
-        [viewController setUserDict:tempDict];
+        [viewController setUserDict:_tempDict];
     }
     else if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
         UsersPostsViewController *viewController = [segue destinationViewController];

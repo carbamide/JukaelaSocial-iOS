@@ -40,14 +40,6 @@
 		29AA10611556AEAC00B8D3F5 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10601556AEAC00B8D3F5 /* MBProgressHUD.m */; };
 		29AA10631556AEB900B8D3F5 /* Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA10621556AEB900B8D3F5 /* Checkmark.png */; };
 		29AA10651556C69100B8D3F5 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA10641556C69000B8D3F5 /* placeholder.png */; };
-		29AA10751557153B00B8D3F5 /* PrettyDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA106D1557153A00B8D3F5 /* PrettyDrawing.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29AA10761557153B00B8D3F5 /* PrettyNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10701557153A00B8D3F5 /* PrettyNavigationBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29AA10771557153B00B8D3F5 /* PrettyShadowPlainTableview.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10721557153B00B8D3F5 /* PrettyShadowPlainTableview.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29AA10781557153B00B8D3F5 /* PrettyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10741557153B00B8D3F5 /* PrettyTabBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29AA10811557154A00B8D3F5 /* PrettyCustomViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA107A1557154900B8D3F5 /* PrettyCustomViewTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29AA10821557154A00B8D3F5 /* PrettyGridTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA107C1557154900B8D3F5 /* PrettyGridTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29AA10831557154A00B8D3F5 /* PrettySegmentedControlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA107E1557154A00B8D3F5 /* PrettySegmentedControlTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29AA10841557154A00B8D3F5 /* PrettyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10801557154A00B8D3F5 /* PrettyTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29AA10891557161A00B8D3F5 /* NSDate+RailsDateParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10881557161A00B8D3F5 /* NSDate+RailsDateParser.m */; };
 		29AA109015571BD700B8D3F5 /* CPCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA108F15571BD600B8D3F5 /* CPCheckBox.m */; };
 		29AA109215571BE600B8D3F5 /* checkbox_ticked.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA109115571BE600B8D3F5 /* checkbox_ticked.png */; };
@@ -79,6 +71,15 @@
 		29D5B866155476D2000D9374 /* underPageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B865155476D2000D9374 /* underPageBackground.png */; };
 		29D5B868155478C5000D9374 /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B867155478C5000D9374 /* 114.png */; };
 		29D677D51555BF0B00C7D065 /* ClearLabelsCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B83A15545FC6000D9374 /* ClearLabelsCellView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29DB78C515B6F72D0056C68E /* PrettyCustomViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78B315B6F72D0056C68E /* PrettyCustomViewTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29DB78C615B6F72D0056C68E /* PrettyGridTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78B515B6F72D0056C68E /* PrettyGridTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29DB78C715B6F72D0056C68E /* PrettySegmentedControlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78B715B6F72D0056C68E /* PrettySegmentedControlTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29DB78C815B6F72D0056C68E /* PrettyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78B915B6F72D0056C68E /* PrettyTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29DB78C915B6F72D0056C68E /* PrettyDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78BB15B6F72D0056C68E /* PrettyDrawing.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29DB78CA15B6F72D0056C68E /* PrettyNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78BE15B6F72D0056C68E /* PrettyNavigationBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29DB78CB15B6F72D0056C68E /* PrettyShadowPlainTableview.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78C015B6F72D0056C68E /* PrettyShadowPlainTableview.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29DB78CC15B6F72D0056C68E /* PrettyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78C215B6F72D0056C68E /* PrettyTabBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29DB78CD15B6F72D0056C68E /* PrettyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78C415B6F72D0056C68E /* PrettyToolbar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29EA394515609BCE003A21E7 /* NSString+BackslashEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */; };
 /* End PBXBuildFile section */
 
@@ -135,23 +136,6 @@
 		29AA10601556AEAC00B8D3F5 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		29AA10621556AEB900B8D3F5 /* Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checkmark.png; sourceTree = "<group>"; };
 		29AA10641556C69000B8D3F5 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
-		29AA106C1557153A00B8D3F5 /* PrettyDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyDrawing.h; sourceTree = "<group>"; };
-		29AA106D1557153A00B8D3F5 /* PrettyDrawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyDrawing.m; sourceTree = "<group>"; };
-		29AA106E1557153A00B8D3F5 /* PrettyKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyKit.h; sourceTree = "<group>"; };
-		29AA106F1557153A00B8D3F5 /* PrettyNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyNavigationBar.h; sourceTree = "<group>"; };
-		29AA10701557153A00B8D3F5 /* PrettyNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyNavigationBar.m; sourceTree = "<group>"; };
-		29AA10711557153A00B8D3F5 /* PrettyShadowPlainTableview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyShadowPlainTableview.h; sourceTree = "<group>"; };
-		29AA10721557153B00B8D3F5 /* PrettyShadowPlainTableview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyShadowPlainTableview.m; sourceTree = "<group>"; };
-		29AA10731557153B00B8D3F5 /* PrettyTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyTabBar.h; sourceTree = "<group>"; };
-		29AA10741557153B00B8D3F5 /* PrettyTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyTabBar.m; sourceTree = "<group>"; };
-		29AA10791557154900B8D3F5 /* PrettyCustomViewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyCustomViewTableViewCell.h; sourceTree = "<group>"; };
-		29AA107A1557154900B8D3F5 /* PrettyCustomViewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyCustomViewTableViewCell.m; sourceTree = "<group>"; };
-		29AA107B1557154900B8D3F5 /* PrettyGridTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyGridTableViewCell.h; sourceTree = "<group>"; };
-		29AA107C1557154900B8D3F5 /* PrettyGridTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyGridTableViewCell.m; sourceTree = "<group>"; };
-		29AA107D1557154900B8D3F5 /* PrettySegmentedControlTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettySegmentedControlTableViewCell.h; sourceTree = "<group>"; };
-		29AA107E1557154A00B8D3F5 /* PrettySegmentedControlTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettySegmentedControlTableViewCell.m; sourceTree = "<group>"; };
-		29AA107F1557154A00B8D3F5 /* PrettyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyTableViewCell.h; sourceTree = "<group>"; };
-		29AA10801557154A00B8D3F5 /* PrettyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyTableViewCell.m; sourceTree = "<group>"; };
 		29AA10871557161A00B8D3F5 /* NSDate+RailsDateParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RailsDateParser.h"; sourceTree = "<group>"; };
 		29AA10881557161A00B8D3F5 /* NSDate+RailsDateParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RailsDateParser.m"; sourceTree = "<group>"; };
 		29AA108E15571BD600B8D3F5 /* CPCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPCheckBox.h; sourceTree = "<group>"; };
@@ -204,6 +188,25 @@
 		29D5B85A15547671000D9374 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
 		29D5B865155476D2000D9374 /* underPageBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = underPageBackground.png; sourceTree = "<group>"; };
 		29D5B867155478C5000D9374 /* 114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 114.png; sourceTree = "<group>"; };
+		29DB78B215B6F72D0056C68E /* PrettyCustomViewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyCustomViewTableViewCell.h; sourceTree = "<group>"; };
+		29DB78B315B6F72D0056C68E /* PrettyCustomViewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyCustomViewTableViewCell.m; sourceTree = "<group>"; };
+		29DB78B415B6F72D0056C68E /* PrettyGridTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyGridTableViewCell.h; sourceTree = "<group>"; };
+		29DB78B515B6F72D0056C68E /* PrettyGridTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyGridTableViewCell.m; sourceTree = "<group>"; };
+		29DB78B615B6F72D0056C68E /* PrettySegmentedControlTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettySegmentedControlTableViewCell.h; sourceTree = "<group>"; };
+		29DB78B715B6F72D0056C68E /* PrettySegmentedControlTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettySegmentedControlTableViewCell.m; sourceTree = "<group>"; };
+		29DB78B815B6F72D0056C68E /* PrettyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyTableViewCell.h; sourceTree = "<group>"; };
+		29DB78B915B6F72D0056C68E /* PrettyTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyTableViewCell.m; sourceTree = "<group>"; };
+		29DB78BA15B6F72D0056C68E /* PrettyDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyDrawing.h; sourceTree = "<group>"; };
+		29DB78BB15B6F72D0056C68E /* PrettyDrawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyDrawing.m; sourceTree = "<group>"; };
+		29DB78BC15B6F72D0056C68E /* PrettyKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyKit.h; sourceTree = "<group>"; };
+		29DB78BD15B6F72D0056C68E /* PrettyNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyNavigationBar.h; sourceTree = "<group>"; };
+		29DB78BE15B6F72D0056C68E /* PrettyNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyNavigationBar.m; sourceTree = "<group>"; };
+		29DB78BF15B6F72D0056C68E /* PrettyShadowPlainTableview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyShadowPlainTableview.h; sourceTree = "<group>"; };
+		29DB78C015B6F72D0056C68E /* PrettyShadowPlainTableview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyShadowPlainTableview.m; sourceTree = "<group>"; };
+		29DB78C115B6F72D0056C68E /* PrettyTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyTabBar.h; sourceTree = "<group>"; };
+		29DB78C215B6F72D0056C68E /* PrettyTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyTabBar.m; sourceTree = "<group>"; };
+		29DB78C315B6F72D0056C68E /* PrettyToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyToolbar.h; sourceTree = "<group>"; };
+		29DB78C415B6F72D0056C68E /* PrettyToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyToolbar.m; sourceTree = "<group>"; };
 		29EA394315609BCE003A21E7 /* NSString+BackslashEscape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BackslashEscape.h"; sourceTree = "<group>"; };
 		29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BackslashEscape.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -300,33 +303,20 @@
 		29AA10851557154D00B8D3F5 /* PrettyKit */ = {
 			isa = PBXGroup;
 			children = (
-				29AA106C1557153A00B8D3F5 /* PrettyDrawing.h */,
-				29AA106D1557153A00B8D3F5 /* PrettyDrawing.m */,
-				29AA106E1557153A00B8D3F5 /* PrettyKit.h */,
-				29AA106F1557153A00B8D3F5 /* PrettyNavigationBar.h */,
-				29AA10701557153A00B8D3F5 /* PrettyNavigationBar.m */,
-				29AA10711557153A00B8D3F5 /* PrettyShadowPlainTableview.h */,
-				29AA10721557153B00B8D3F5 /* PrettyShadowPlainTableview.m */,
-				29AA10731557153B00B8D3F5 /* PrettyTabBar.h */,
-				29AA10741557153B00B8D3F5 /* PrettyTabBar.m */,
-				29AA10861557155800B8D3F5 /* Cells */,
+				29DB78B115B6F72D0056C68E /* Cells */,
+				29DB78BA15B6F72D0056C68E /* PrettyDrawing.h */,
+				29DB78BB15B6F72D0056C68E /* PrettyDrawing.m */,
+				29DB78BC15B6F72D0056C68E /* PrettyKit.h */,
+				29DB78BD15B6F72D0056C68E /* PrettyNavigationBar.h */,
+				29DB78BE15B6F72D0056C68E /* PrettyNavigationBar.m */,
+				29DB78BF15B6F72D0056C68E /* PrettyShadowPlainTableview.h */,
+				29DB78C015B6F72D0056C68E /* PrettyShadowPlainTableview.m */,
+				29DB78C115B6F72D0056C68E /* PrettyTabBar.h */,
+				29DB78C215B6F72D0056C68E /* PrettyTabBar.m */,
+				29DB78C315B6F72D0056C68E /* PrettyToolbar.h */,
+				29DB78C415B6F72D0056C68E /* PrettyToolbar.m */,
 			);
 			name = PrettyKit;
-			sourceTree = "<group>";
-		};
-		29AA10861557155800B8D3F5 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				29AA10791557154900B8D3F5 /* PrettyCustomViewTableViewCell.h */,
-				29AA107A1557154900B8D3F5 /* PrettyCustomViewTableViewCell.m */,
-				29AA107B1557154900B8D3F5 /* PrettyGridTableViewCell.h */,
-				29AA107C1557154900B8D3F5 /* PrettyGridTableViewCell.m */,
-				29AA107D1557154900B8D3F5 /* PrettySegmentedControlTableViewCell.h */,
-				29AA107E1557154A00B8D3F5 /* PrettySegmentedControlTableViewCell.m */,
-				29AA107F1557154A00B8D3F5 /* PrettyTableViewCell.h */,
-				29AA10801557154A00B8D3F5 /* PrettyTableViewCell.m */,
-			);
-			name = Cells;
 			sourceTree = "<group>";
 		};
 		29D5B82A15545CA4000D9374 /* Image Handling */ = {
@@ -486,6 +476,21 @@
 			name = "Custom Classes";
 			sourceTree = "<group>";
 		};
+		29DB78B115B6F72D0056C68E /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				29DB78B215B6F72D0056C68E /* PrettyCustomViewTableViewCell.h */,
+				29DB78B315B6F72D0056C68E /* PrettyCustomViewTableViewCell.m */,
+				29DB78B415B6F72D0056C68E /* PrettyGridTableViewCell.h */,
+				29DB78B515B6F72D0056C68E /* PrettyGridTableViewCell.m */,
+				29DB78B615B6F72D0056C68E /* PrettySegmentedControlTableViewCell.h */,
+				29DB78B715B6F72D0056C68E /* PrettySegmentedControlTableViewCell.m */,
+				29DB78B815B6F72D0056C68E /* PrettyTableViewCell.h */,
+				29DB78B915B6F72D0056C68E /* PrettyTableViewCell.m */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -592,14 +597,6 @@
 				29AA10531556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m in Sources */,
 				29AA10561556AD6500B8D3F5 /* Helpers.m in Sources */,
 				29AA10611556AEAC00B8D3F5 /* MBProgressHUD.m in Sources */,
-				29AA10751557153B00B8D3F5 /* PrettyDrawing.m in Sources */,
-				29AA10761557153B00B8D3F5 /* PrettyNavigationBar.m in Sources */,
-				29AA10771557153B00B8D3F5 /* PrettyShadowPlainTableview.m in Sources */,
-				29AA10781557153B00B8D3F5 /* PrettyTabBar.m in Sources */,
-				29AA10811557154A00B8D3F5 /* PrettyCustomViewTableViewCell.m in Sources */,
-				29AA10821557154A00B8D3F5 /* PrettyGridTableViewCell.m in Sources */,
-				29AA10831557154A00B8D3F5 /* PrettySegmentedControlTableViewCell.m in Sources */,
-				29AA10841557154A00B8D3F5 /* PrettyTableViewCell.m in Sources */,
 				29AA10891557161A00B8D3F5 /* NSDate+RailsDateParser.m in Sources */,
 				29AA109015571BD700B8D3F5 /* CPCheckBox.m in Sources */,
 				29AA10971557254500B8D3F5 /* SettingsViewController.m in Sources */,
@@ -612,6 +609,15 @@
 				297FE039156846E0005FBFDA /* FollowerViewController.m in Sources */,
 				298F7E071569821200516858 /* EditUserViewController.m in Sources */,
 				2986774C15B4B9B80027C7CA /* ODRefreshControl.m in Sources */,
+				29DB78C515B6F72D0056C68E /* PrettyCustomViewTableViewCell.m in Sources */,
+				29DB78C615B6F72D0056C68E /* PrettyGridTableViewCell.m in Sources */,
+				29DB78C715B6F72D0056C68E /* PrettySegmentedControlTableViewCell.m in Sources */,
+				29DB78C815B6F72D0056C68E /* PrettyTableViewCell.m in Sources */,
+				29DB78C915B6F72D0056C68E /* PrettyDrawing.m in Sources */,
+				29DB78CA15B6F72D0056C68E /* PrettyNavigationBar.m in Sources */,
+				29DB78CB15B6F72D0056C68E /* PrettyShadowPlainTableview.m in Sources */,
+				29DB78CC15B6F72D0056C68E /* PrettyTabBar.m in Sources */,
+				29DB78CD15B6F72D0056C68E /* PrettyToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,11 +691,12 @@
 		295687751552C96700FE741C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_PEDANTIC = NO;
@@ -710,11 +717,12 @@
 		295687761552C96700FE741C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_PEDANTIC = NO;

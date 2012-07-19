@@ -198,9 +198,9 @@
         y = y / 2;
         textRect = CGRectMake(x, y, width, textSize.height);
 
-        textSize = [self drawText:text
-                     basedOnLabel:self.cell.textLabel
-                           inRect:textRect showAsSelected:selected];
+        [self drawText:text
+          basedOnLabel:self.cell.textLabel
+                inRect:textRect showAsSelected:selected];
     }
     
     if (detailText) 
@@ -214,8 +214,11 @@
 
 - (void) drawBackground:(CGRect)rect
 {
-    if (self.cell.gradientStartColor && self.cell.gradientEndColor) {
-        [PrettyDrawing drawGradient:[(PrettyTableViewCell *)self.cell createNormalGradient] rect:rect];
+    if (self.cell.gradientStartColor && self.cell.gradientEndColor) 
+    {
+        CGGradientRef gradient = [(PrettyTableViewCell *)self.cell newNormalGradient];
+        [PrettyDrawing drawGradient:gradient rect:rect];
+        CGGradientRelease(gradient);
         return;
     }
     
@@ -351,7 +354,7 @@
 {
     if (self.selectedSegment != -1 && self.cell.actionBlock != nil) 
     {
-        self.cell.actionBlock(self.cell->_indexPath, self.selectedSegment);
+        self.cell.actionBlock(self.cell->_indexPath2, self.selectedSegment);
     }
 }
 
@@ -393,9 +396,9 @@
         [_detailTexts release];
         _detailTexts = nil;
     }
-    if (_indexPath != nil) {
-        [_indexPath release];
-        _indexPath = nil;
+    if (_indexPath2 != nil) {
+        [_indexPath2 release];
+        _indexPath2 = nil;
     }
     
     
@@ -517,10 +520,10 @@
 {
     [super prepareForTableView:tableView indexPath:indexPath];
     
-    if (_indexPath != nil) {
-        [_indexPath release];
+    if (_indexPath2 != nil) {
+        [_indexPath2 release];
     }
-    _indexPath = [indexPath retain];
+    _indexPath2 = [indexPath retain];
 }
 
 - (void) selectIndex:(int)index 

@@ -96,6 +96,10 @@ typedef enum {
 
 - (CGPathRef) createRoundedPath:(CGRect)rect 
 {
+	if (!self.cell.cornerRadius) {
+		return [UIBezierPath bezierPathWithRect:rect].CGPath;
+	}
+	
     UIRectCorner corners;
 
     switch (self.cell.position) {
@@ -120,14 +124,14 @@ typedef enum {
 }
 
 
-- (CGGradientRef) createGradientFromType:(CellBackgroundGradient)type
+- (CGGradientRef) newGradientFromType:(CellBackgroundGradient)type
 {
     switch (type) 
     {
         case CellBackgroundGradientSelected:
-            return [self.cell createSelectionGradient];
+            return [self.cell newSelectionGradient];
         default:
-            return [self.cell createNormalGradient];
+            return [self.cell newNormalGradient];
     }
 }
 
@@ -141,13 +145,14 @@ typedef enum {
     
     CGContextAddPath(ctx, path);
         
-    CGGradientRef gradient = [self createGradientFromType:type];
+    CGGradientRef gradient = [self newGradientFromType:type];
     
     CGPoint startPoint = CGPointMake(CGRectGetMidX(rect), CGRectGetMinY(rect));
     CGPoint endPoint = CGPointMake(CGRectGetMidX(rect), CGRectGetMaxY(rect));
     
     CGContextClip(ctx);
     CGContextDrawLinearGradient(ctx, gradient, startPoint, endPoint, 0);
+    CGGradientRelease(gradient);
     
     CGContextRestoreGState(ctx);
 }
@@ -203,13 +208,43 @@ typedef enum {
     CGContextRestoreGState(ctx);
 }
 
+- (void) fixShadow:(CGContextRef)ctx rect:(CGRect)rect
+{
+    if (self.cell.position == PrettyTableViewCellPositionTop || self.cell.position == PrettyTableViewCellPositionAlone)
+    {
+        return;
+    }
+    
+    CGContextSaveGState(ctx);
+    CGContextMoveToPoint(ctx, CGRectGetMinX(rect), CGRectGetMinY(rect));
+    CGContextAddLineToPoint(ctx, CGRectGetMaxX(rect), CGRectGetMinY(rect));
+    CGContextSetStrokeColorWithColor(ctx, self.cell.borderColor.CGColor);
+    CGContextSetLineWidth(ctx, 5);
+
+    UIColor *shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:self.cell.shadowOpacity];
+    CGContextSetShadowWithColor(ctx, CGSizeMake(0, -1), 3, shadowColor.CGColor);
+
+    CGContextStrokePath(ctx);
+    
+    CGContextRestoreGState(ctx);
+
+}
 
 - (void) drawBorder:(CGRect)rect shadow:(BOOL)shadow 
 {
-    CGRect innerRect = CGRectMake(rect.origin.x+0.5, rect.origin.y+0.5,
-                                  rect.size.width-1, rect.size.height-1);
+    float shadowShift = 0.5 * self.cell.dropsShadow;
+    
+    CGRect innerRect = CGRectMake(rect.origin.x+shadowShift, rect.origin.y+shadowShift,
+                                  rect.size.width-shadowShift*2, rect.size.height-shadowShift*2);
     
     CGContextRef ctx = UIGraphicsGetCurrentContext();
+    
+    if (shadow) 
+    {
+        [self fixShadow:ctx rect:innerRect];
+    }
+
+    
     CGContextSaveGState(ctx);
 
     // draws body
@@ -222,7 +257,7 @@ typedef enum {
         CGContextSetShadowWithColor(ctx, CGSizeMake(0, 1), 3, shadowColor.CGColor);
     }   
     CGContextSetStrokeColorWithColor(ctx, self.cell.borderColor.CGColor);
-    CGContextSetLineWidth(ctx, 1.5);
+    CGContextSetLineWidth(ctx, 2 - shadowShift);
     CGContextStrokePath(ctx);
     
     CGContextRestoreGState(ctx);
@@ -261,27 +296,16 @@ typedef enum {
 {
     CGRect rect = [self innerFrame:initialRect];
     
-    float lineXSpan = 0;
-    if (self.cell.dropsShadow) {
-        [self drawBorder:rect shadow:YES];
-    }
-    else {
-        lineXSpan += 0.5;
-    }
+    [self drawBorder:rect shadow:self.cell.dropsShadow];
     
     [self drawBackground:rect];
     
     if (self.cell.position == PrettyTableViewCellPositionTop
         || self.cell.position == PrettyTableViewCellPositionMiddle)
     {
-        [self drawLineSeparator:CGRectMake(rect.origin.x+lineXSpan, rect.origin.y,
-                                           rect.size.width-lineXSpan*2, rect.size.height)];
+        [self drawLineSeparator:CGRectMake(rect.origin.x, rect.origin.y,
+                                           rect.size.width, rect.size.height)];
     } 
-
-    if ([self.cell tableViewIsGrouped] && !self.cell.dropsShadow) 
-    {
-        [self drawBorder:rect shadow:NO];
-    }
 }
 
 
@@ -555,23 +579,20 @@ typedef enum {
 
 - (float) cornerRadius
 {
-    if ([self tableViewIsGrouped]) {
-        return cornerRadius;
-    }
-    
-    return 0;
+    return [self tableViewIsGrouped] ? cornerRadius : 0;
 }
 
 - (UIColor *) backgroundColor 
 {
-    if (customBackgroundColor) {
-        return customBackgroundColor;
-    }
-    
-    return [super backgroundColor];
+    return customBackgroundColor ? customBackgroundColor : [super backgroundColor];
 }
 
 - (CGGradientRef) createSelectionGradient
+{
+    return [self newSelectionGradient];
+}
+
+- (CGGradientRef) newSelectionGradient
 {
     CGFloat locations[] = { 0, 1 };    
     
@@ -586,6 +607,11 @@ typedef enum {
 
 - (CGGradientRef) createNormalGradient
 {
+    return [self newNormalGradient];
+}
+
+- (CGGradientRef) newNormalGradient
+{
     CGFloat locations[] = { 0, 1 };    
     
     NSArray *colors = [NSArray arrayWithObjects:(id)self.gradientStartColor.CGColor, (id)self.gradientEndColor.CGColor, nil];
@@ -596,6 +622,7 @@ typedef enum {
     
     return gradient;
 }
+
 
 
 @end

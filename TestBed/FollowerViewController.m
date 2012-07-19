@@ -14,6 +14,7 @@
 #import "JEImages.h"
 #import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
+#import "PrettyKit.h"
 
 @interface FollowerViewController ()
 @property (strong, nonatomic) NSMutableArray *tempArray;
@@ -22,10 +23,6 @@
 @end
 
 @implementation FollowerViewController
-
-@synthesize usersArray;
-@synthesize tempDict;
-@synthesize tempArray;
 
 -(void)customizeNavigationBar
 {
@@ -200,7 +197,7 @@
     if ([[segue identifier] isEqualToString:@"ShowUser"]) {
         ShowUserViewController *viewController = [segue destinationViewController];
         
-        [viewController setUserDict:tempDict];
+        [viewController setUserDict:_tempDict];
     }
     else if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
         UsersPostsViewController *viewController = [segue destinationViewController];

@@ -12,6 +12,7 @@
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 #import <Twitter/Twitter.h>
+#import "PrettyKit.h"
 
 @interface PostViewController ()
 @property (strong, nonatomic) ACAccountStore *accountStore;
@@ -19,10 +20,6 @@
 @end
 
 @implementation PostViewController
-
-@synthesize replyString;
-@synthesize repostString;
-@synthesize theTextView;
 
 - (void)viewDidLoad
 {
@@ -35,20 +32,20 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    if (replyString) {
-        theTextView = [[YIPopupTextView alloc] initWithText:[self replyString] maxCount:140];
+    if (_replyString) {
+        _theTextView = [[YIPopupTextView alloc] initWithText:[self replyString] maxCount:140];
     }
-    else if (repostString) {
-        theTextView = [[YIPopupTextView alloc] initWithText:[self repostString] maxCount:140];
+    else if (_repostString) {
+        _theTextView = [[YIPopupTextView alloc] initWithText:[self repostString] maxCount:140];
     }
     else {
-        theTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Make a post, you guys!" maxCount:140];
+        _theTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Make a post, you guys!" maxCount:140];
     }
     
-    [theTextView setDelegate:self];
-    [theTextView setShowCloseButton:NO];
+    [_theTextView setDelegate:self];
+    [_theTextView setShowCloseButton:NO];
     
-    [theTextView showInView:[self view]];
+    [_theTextView showInView:[self view]];
 }
 
 -(void)customizeNavigationBar

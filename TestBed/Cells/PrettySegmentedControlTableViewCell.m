@@ -36,7 +36,7 @@
 - (void) updateButtonActions 
 {
     /* a bit of hacking. In this case, we don't care if the user drags the finger
-     or not, we still want te segment to be selected. */    
+     or not, we still want te segment to be selected. */
     [(UIButton *)self.customView removeTarget:self.customView
                                        action:@selector(hardDeselect) 
                              forControlEvents:UIControlEventTouchDragInside | UIControlEventTouchDragOutside | UIControlEventTouchUpOutside];

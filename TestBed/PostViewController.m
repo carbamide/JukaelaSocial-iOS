@@ -136,17 +136,17 @@
             NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
 			
 			if ([accountsArray count] > 0) {
-				ACAccount *twitterAccount = [accountsArray objectAtIndex:0];
+                ACAccount *twitterAccount = [accountsArray objectAtIndex:0];
                 
-				TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:[NSDictionary dictionaryWithObject:stringToSend forKey:@"status"] requestMethod:TWRequestMethodPOST];
-				
-				[postRequest setAccount:twitterAccount];
-				
-				[postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-					NSString *output = [NSString stringWithFormat:@"HTTP response status: %i", [urlResponse statusCode]];
-					NSLog(@"%@", output);
-				}];
-			}
+                TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:[NSDictionary dictionaryWithObject:stringToSend forKey:@"status"] requestMethod:TWRequestMethodPOST];
+                
+                [postRequest setAccount:twitterAccount];
+                
+                [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                    NSString *output = [NSString stringWithFormat:@"HTTP response status: %i", [urlResponse statusCode]];
+                    NSLog(@"%@", output);
+                }];
+            }
         }
 	}];
 }

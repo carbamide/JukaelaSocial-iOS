@@ -91,10 +91,10 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-        
-        //FIXME -- Need to add this in with a smooth animation instead of a pop when there are new messages
-        
-        [[self tableView] reloadData];
+                
+        [[self tableView] beginUpdates];
+        [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        [[self tableView] endUpdates];
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         

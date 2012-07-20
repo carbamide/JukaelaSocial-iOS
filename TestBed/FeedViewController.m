@@ -56,7 +56,7 @@
     }
     
     if (![self theFeed]) {
-        [self refreshTableInformation];
+        [self refreshTableInformation:OTHER_CHANGE_TYPE withIndexPath:nil];
     }
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
@@ -77,7 +77,7 @@
     [self performSegueWithIdentifier:@"ShowPostView" sender:self];
 }
 
--(void)refreshTableInformation
+-(void)refreshTableInformation:(ChangeType)changeType withIndexPath:(NSIndexPath *)indexPath
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -91,10 +91,20 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                
-        [[self tableView] beginUpdates];
-        [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-        [[self tableView] endUpdates];
+        
+        if (changeType == INSERT_POST) {
+            [[self tableView] beginUpdates];
+            [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] endUpdates];
+        }
+        else if (changeType == DELETE_POST) {
+            [[self tableView] beginUpdates];
+            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] endUpdates];
+        }
+        else {
+            [[self tableView] reloadData];
+        }
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
@@ -238,7 +248,7 @@
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
             
-            [self refreshTableInformation];
+            [self refreshTableInformation:DELETE_POST withIndexPath:indexPath];
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }];

@@ -11,6 +11,12 @@
 
 @interface FeedViewController : UITableViewController <YIPopupTextViewDelegate>
 
+typedef enum {
+    INSERT_POST = 0,
+    DELETE_POST,
+    OTHER_CHANGE_TYPE
+} ChangeType;
+
 @property (strong, nonatomic) NSArray *theFeed;
 @property (strong, nonatomic) UITextView *textView;
 @property (strong, nonatomic) YIPopupTextView *popupTextView;

@@ -27,7 +27,7 @@
 		2986774C15B4B9B80027C7CA /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2986774B15B4B9B80027C7CA /* ODRefreshControl.m */; };
 		2986775315B50CB70027C7CA /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775215B50CB70027C7CA /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		2986775515B50CBD0027C7CA /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775415B50CBD0027C7CA /* Twitter.framework */; };
-		2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775A15B5148B0027C7CA /* Accounts.framework */; };
+		2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775A15B5148B0027C7CA /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		298F7E071569821200516858 /* EditUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298F7E061569821200516858 /* EditUserViewController.m */; };
 		29AA10381556238F00B8D3F5 /* RIButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10331556238F00B8D3F5 /* RIButtonItem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29AA10391556238F00B8D3F5 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10351556238F00B8D3F5 /* UIActionSheet+Blocks.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };

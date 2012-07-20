@@ -92,6 +92,8 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
         
+        //FIXME -- Need to add this in with a smooth animation instead of a pop when there are new messages
+        
         [[self tableView] reloadData];
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];

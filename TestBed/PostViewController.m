@@ -153,36 +153,38 @@
 
 - (void)sendFacebookPost:(NSString *)stringToSend
 {
-    if (_accountStore == nil) {
-        _accountStore = [[ACAccountStore alloc] init];
+    if (NSStringFromClass([SLRequest class])) {
+        if (_accountStore == nil) {
+            _accountStore = [[ACAccountStore alloc] init];
+        }
+        
+        ACAccountType *accountTypeFacebook = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+        
+        NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookPermissionGroupKey: @"write", ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
+        
+        [_accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
+            if(granted) {
+                NSArray *accounts = [self.accountStore accountsWithAccountType:accountTypeFacebook];
+                
+                [self setFacebookAccount:[accounts lastObject]];
+                
+                NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
+                NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
+                
+                SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
+                
+                [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSLog(@"Error: [%@]", [errorDOIS localizedDescription]);
+                    });
+                }];
+            }
+            else {
+                NSLog(@"Facebook access not granted.");
+                NSLog(@"%@",[error localizedDescription]);
+            }
+        }];
     }
-    
-    ACAccountType *accountTypeFacebook = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-    
-    NSDictionary *options = @{ACFacebookAppIdKey: @"493749340639998", ACFacebookPermissionGroupKey: @"write", ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
-    
-    [_accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
-        if(granted) {
-            NSArray *accounts = [self.accountStore accountsWithAccountType:accountTypeFacebook];
-            
-            [self setFacebookAccount:[accounts lastObject]];
-            
-            NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
-            NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
-            
-            SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
-            
-            [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSLog(@"Error: [%@]", [errorDOIS localizedDescription]);
-                });
-            }];
-        }
-        else {
-            NSLog(@"Facebook access not granted.");
-            NSLog(@"%@",[error localizedDescription]);
-        }
-    }];
 }
 
 -(void)popupTextView:(YIPopupTextView*)textView willDismissWithText:(NSString*)text

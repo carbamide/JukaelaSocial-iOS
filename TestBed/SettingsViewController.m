@@ -8,6 +8,7 @@
 
 #import "SettingsViewController.h"
 #import "PrettyKit.h"
+#import <Social/Social.h>
 
 @interface SettingsViewController ()
 
@@ -75,7 +76,12 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    if (NSStringFromClass([SLRequest class])) {
+        return 5;
+    }
+    else {
+        return 4;
+    }
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -99,23 +105,6 @@
         [[cell textLabel] setText:@"Edit Profile..."];
     }
     else if ([indexPath row] == 3) {
-        [[cell textLabel] setText:@"Post to Facebook?"];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
-        [self setFacebookSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
-        
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
-            [[self facebookSwitch] setOn:YES];
-        }
-        else {
-            [[self facebookSwitch] setOn:NO];
-        }
-        
-        [cell setAccessoryView:[self facebookSwitch]];
-        
-        [[self facebookSwitch] addTarget:self action:@selector(facebookSwitchChanged:) forControlEvents:UIControlEventValueChanged];
-    }
-    else if ([indexPath row] == 4) {
         [[cell textLabel] setText:@"Post to Twitter?"];
         
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -132,6 +121,25 @@
         [cell setAccessoryView:[self twitterSwitch]];
         
         [[self twitterSwitch] addTarget:self action:@selector(twitterSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+    }
+    if (NSStringFromClass([SLRequest class])) {
+        if ([indexPath row] == 4) {
+            [[cell textLabel] setText:@"Post to Facebook?"];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            
+            [self setFacebookSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+            
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+                [[self facebookSwitch] setOn:YES];
+            }
+            else {
+                [[self facebookSwitch] setOn:NO];
+            }
+            
+            [cell setAccessoryView:[self facebookSwitch]];
+            
+            [[self facebookSwitch] addTarget:self action:@selector(facebookSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+        }
     }
     
     return cell;

@@ -109,11 +109,11 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
-        [self sendTweet:stringToSendAsContent];
+        [self sendTweet:[[self theTextView] text]];
     }
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
-        [self sendFacebookPost:stringToSendAsContent];
+        [self sendFacebookPost:[[self theTextView] text]];
     }
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {

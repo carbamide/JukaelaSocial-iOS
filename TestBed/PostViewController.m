@@ -77,6 +77,8 @@
 
 -(void)sendPost:(id)sender
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"set_change_type" object:[NSNumber numberWithInt:1]];
+    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];

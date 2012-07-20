@@ -21,6 +21,7 @@
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
+@property (nonatomic) ChangeType currentChangeType;
 @end
 
 @implementation FeedViewController
@@ -44,8 +45,6 @@
         [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
         
         [self setRefreshControl:refreshControl];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableInformation) name:@"refresh_your_tables" object:nil];
     }
     else {
         _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
@@ -55,8 +54,11 @@
         [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableInformation) name:@"refresh_your_tables" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setChangeType:) name:@"set_change_type" object:nil];
+    
     if (![self theFeed]) {
-        [self refreshTableInformation:OTHER_CHANGE_TYPE withIndexPath:nil];
+        [self refreshTableInformation];
     }
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
@@ -72,12 +74,21 @@
     [super viewDidLoad];
 }
 
+-(void)setChangeType:(NSNotification *)number
+{
+    int i = [[number object] intValue];
+    
+    if (i == 0) {
+        [self setChangeType:0];
+    }
+}
+
 -(void)composePost:(UIBarButtonItem *)sender
 {
     [self performSegueWithIdentifier:@"ShowPostView" sender:self];
 }
 
--(void)refreshTableInformation:(ChangeType)changeType withIndexPath:(NSIndexPath *)indexPath
+-(void)refreshTableInformation
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -92,19 +103,21 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
         
-        if (changeType == INSERT_POST) {
+        if ([self currentChangeType] == INSERT_POST) {
             [[self tableView] beginUpdates];
             [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             [[self tableView] endUpdates];
         }
-        else if (changeType == DELETE_POST) {
+        else if ([self currentChangeType] == DELETE_POST) {
             [[self tableView] beginUpdates];
-            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationFade];
             [[self tableView] endUpdates];
         }
         else {
             [[self tableView] reloadData];
         }
+        
+        [self setCurrentChangeType:-1];
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
@@ -248,7 +261,9 @@
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
             
-            [self refreshTableInformation:DELETE_POST withIndexPath:indexPath];
+            [self setCurrentChangeType:DELETE_POST];
+            
+            [self refreshTableInformation];
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }];

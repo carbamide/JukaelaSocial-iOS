@@ -71,6 +71,8 @@
     
     [[self navigationItem] setHidesBackButton:YES];
     
+    [self setCurrentChangeType:-1];
+    
     [super viewDidLoad];
 }
 

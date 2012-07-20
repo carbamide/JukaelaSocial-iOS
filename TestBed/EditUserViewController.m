@@ -75,6 +75,13 @@
     
     [self getUserInfo:[kAppDelegate userID]];
     
+    [self setNameTextField:[[UITextField alloc] init]];
+    [self setUsernameTextField:[[UITextField alloc] init]];
+    [self setEmailTextField:[[UITextField alloc] init]];
+    [self setPasswordTextField:[[UITextField alloc] init]];
+    [self setPasswordConfirmTextField:[[UITextField alloc] init]];
+    [self setProfileTextField:[[UITextField alloc] init]];
+    
     [super viewDidLoad];
 }
 
@@ -153,55 +160,59 @@
         [[cell textLabel] setText:@"Name"];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [self setNameTextField:[[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)]];
+        [[self nameTextField] setFrame:CGRectMake(110, 10, 185, 30)];
+        [[self nameTextField] setAutocapitalizationType:UITextAutocapitalizationTypeWords];
         
-        [cell setAccessoryView:[self nameTextField]];
+        [cell addSubview:[self nameTextField]];
     }
     if ([indexPath row] == 1) {
         [[cell textLabel] setText:@"Username"];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [self setUsernameTextField:[[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)]];
+        [[self usernameTextField] setFrame:CGRectMake(110, 10, 185, 30)];
+        [[self usernameTextField] setAutocapitalizationType:UITextAutocorrectionTypeNo];
         
-        [cell setAccessoryView:[self usernameTextField]];
+        [cell addSubview:[self usernameTextField]];
     }
     if ([indexPath row] == 2) {
         [[cell textLabel] setText:@"Email"];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [self setEmailTextField:[[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)]];
+        [[self emailTextField] setFrame:CGRectMake(110, 10, 185, 30)];
         
         [[self emailTextField] setKeyboardAppearance:UIKeyboardTypeEmailAddress];
-        
-        [cell setAccessoryView:[self emailTextField]];
+        [[self emailTextField] setAutocapitalizationType:UITextAutocorrectionTypeNo];
+
+        [cell addSubview:[self emailTextField]];
     }
     if ([indexPath row] == 3) {
         [[cell textLabel] setText:@"Password"];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [self setPasswordTextField:[[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)]];
+        [[self passwordTextField] setFrame:CGRectMake(110, 10, 185, 30)];
         
         [[self passwordTextField] setSecureTextEntry:YES];
         
-        [cell setAccessoryView:[self passwordTextField]];
+        [cell addSubview:[self passwordTextField]];
     }
     if ([indexPath row] == 4) {
         [[cell textLabel] setText:@"Confirm Password"];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [self setPasswordConfirmTextField:[[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)]];
+        [[self passwordConfirmTextField] setFrame:CGRectMake(110, 10, 185, 30)];
         
         [[self passwordConfirmTextField] setSecureTextEntry:YES];
         
-        [cell setAccessoryView:[self passwordConfirmTextField]];
+        [cell addSubview:[self passwordConfirmTextField]];
     }
     if ([indexPath row] == 5) {
         [[cell textLabel] setText:@"Profile"];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [self setProfileTextField:[[UITextField alloc] initWithFrame:CGRectMake(110, 10, 185, 30)]];
+        [[self profileTextField] setFrame:CGRectMake(110, 10, 185, 30)];
+        [[self profileTextField] setAutocapitalizationType:UITextAutocorrectionTypeDefault];
         
-        [cell setAccessoryView:[self profileTextField]];
+        [cell addSubview:[self profileTextField]];
     }
     [cell prepareForTableView:tableView indexPath:indexPath];
     

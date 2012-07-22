@@ -126,6 +126,15 @@
             
             [self dismissViewControllerAnimated:YES completion:nil];
         }
+        else {
+            UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
+                                                                                message:@"There has been an error posting to Jukaela Social."
+                                                                               delegate:nil
+                                                                      cancelButtonTitle:@"OK"
+                                                                      otherButtonTitles:nil, nil];
+            
+            [jukaelaSocialPostingError show];
+        }
     }];
 }
 
@@ -147,9 +156,19 @@
                 [postRequest setAccount:twitterAccount];
                 
                 [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                    NSString *output = [NSString stringWithFormat:@"HTTP response status: %i", [urlResponse statusCode]];
-                    NSLog(@"%@", output);
-                }];
+                    if (responseData) {
+                        NSLog(@"Successfully posted to Twitter");
+                    }
+                    else {
+                        UIAlertView *twitterPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
+                                                                                      message:@"There has been an error posting your Jukaela Social post to Twitter."
+                                                                                     delegate:nil
+                                                                            cancelButtonTitle:@"OK"
+                                                                            otherButtonTitles:nil, nil];
+                     
+                        [twitterPostingError show];
+                    }
+                 }];
             }
         }
 	}];
@@ -178,9 +197,18 @@
                 SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
                 
                 [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        NSLog(@"Error: [%@]", [errorDOIS localizedDescription]);
-                    });
+                    if (responseData) {
+                        NSLog(@"Successfully posted to Facebook");
+                    }
+                    else {
+                        UIAlertView *facebookPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
+                                                                                       message:@"There has been an error posting your Jukaela Social post to Twitter."
+                                                                                      delegate:nil
+                                                                             cancelButtonTitle:@"OK"
+                                                                             otherButtonTitles:nil, nil];
+                        
+                        [facebookPostingError show];
+                    }
                 }];
             }
             else {

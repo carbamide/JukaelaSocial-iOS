@@ -119,11 +119,13 @@
     }
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
-        
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
+        if (data) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
     }];
 }
 

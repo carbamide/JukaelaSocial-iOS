@@ -92,6 +92,18 @@
 
 -(void)saveProfile:(id)sender
 {
+    if (![[[self passwordTextField] text] isEqualToString:[[self passwordConfirmTextField] text]]) {
+        UIAlertView *passwordsDontMatchAlert = [[UIAlertView alloc] initWithTitle:@"Password"
+                                                                          message:@"The passwords must match."
+                                                                         delegate:nil
+                                                                cancelButtonTitle:@"OK"
+                                                                otherButtonTitles:nil, nil];
+        
+        [passwordsDontMatchAlert show];
+        
+        return;
+    }
+    
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@", kSocialURL, [kAppDelegate userID]]];
     
     NSString *requestString = [NSString stringWithFormat:@"{\"user\": { \"name\":\"%@\",\"username\":\"%@\", \"email\":\"%@\", \"password\":\"%@\", \"password_confirmation\":\"%@\", \"profile\":\"%@\"}}", [[self nameTextField] text], [[self usernameTextField] text], [[self emailTextField] text], [[self passwordTextField] text], [[self passwordConfirmTextField] text], [[self profileTextField] text]];

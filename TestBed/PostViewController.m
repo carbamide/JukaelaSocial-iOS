@@ -10,7 +10,9 @@
 #import "PostViewController.h"
 #import "NSString+BackslashEscape.h"
 #import <Accounts/Accounts.h>
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
 #import <Social/Social.h>
+#endif
 #import <Twitter/Twitter.h>
 #import "PrettyKit.h"
 
@@ -176,6 +178,7 @@
 
 - (void)sendFacebookPost:(NSString *)stringToSend
 {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
     if (NSStringFromClass([SLRequest class])) {
         if (_accountStore == nil) {
             _accountStore = [[ACAccountStore alloc] init];
@@ -217,6 +220,7 @@
             }
         }];
     }
+#endif
 }
 
 -(void)popupTextView:(YIPopupTextView*)textView willDismissWithText:(NSString*)text

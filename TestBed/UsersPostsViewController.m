@@ -33,6 +33,7 @@
 
 - (void)viewDidLoad
 {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
     if (NSClassFromString(@"UIRefreshControl")) {
         UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
         
@@ -51,7 +52,13 @@
         
         [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
     }
+#else
+    _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
     
+    [_oldRefreshControl setTintColor:[UIColor blackColor]];
+    
+    [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+#endif
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
     [self setTitle:[[[self userPostArray] lastObject] objectForKey:@"name"]];
@@ -282,14 +289,16 @@
         [self setUserPostArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
         
         [[self tableView] reloadData];
-        
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
         if (NSClassFromString(@"UIRefreshControl")) {
             [[self refreshControl] endRefreshing];
         }
         else {
             [_oldRefreshControl endRefreshing];
         }
-        
+#else
+        [_oldRefreshControl endRefreshing];
+#endif
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }];
 }

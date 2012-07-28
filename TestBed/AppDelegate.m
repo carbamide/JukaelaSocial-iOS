@@ -7,8 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#ifdef _USE_OS_6_OR_LATER
 #import <Social/Social.h>
-
+#endif
 @implementation AppDelegate
 
 @synthesize window = _window;

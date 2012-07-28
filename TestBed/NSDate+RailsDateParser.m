@@ -92,6 +92,7 @@
             
             timeValue = weeks;
             
+            NSLog(@"%d", timeValue);
             if (timeValue == 1) {
                 timeUnit = @"week";
             } 

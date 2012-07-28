@@ -13,6 +13,7 @@
 		291EB58315649366005FB66D /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291EB58215649366005FB66D /* PostViewController.m */; };
 		29204EF01553684200D5479D /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29204EEF1553684200D5479D /* FeedViewController.m */; };
 		292434711565E330007C8E8C /* UsersPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292434701565E330007C8E8C /* UsersPostsViewController.m */; };
+		29295F6415C3373700F1968B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775215B50CB70027C7CA /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		293A7424155F6810004D27D2 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 293A7423155F6810004D27D2 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		293A7426155F68AA004D27D2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 293A7425155F68AA004D27D2 /* Security.framework */; };
 		2956875B1552C96700FE741C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2956875A1552C96700FE741C /* UIKit.framework */; };
@@ -25,7 +26,6 @@
 		295687711552C96700FE741C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295687701552C96700FE741C /* LoginViewController.m */; };
 		297FE039156846E0005FBFDA /* FollowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 297FE038156846E0005FBFDA /* FollowerViewController.m */; };
 		2986774C15B4B9B80027C7CA /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2986774B15B4B9B80027C7CA /* ODRefreshControl.m */; };
-		2986775315B50CB70027C7CA /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775215B50CB70027C7CA /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		2986775515B50CBD0027C7CA /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775415B50CBD0027C7CA /* Twitter.framework */; };
 		2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775A15B5148B0027C7CA /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		298F7E071569821200516858 /* EditUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298F7E061569821200516858 /* EditUserViewController.m */; };
@@ -216,9 +216,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29295F6415C3373700F1968B /* Social.framework in Frameworks */,
 				2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */,
 				2986775515B50CBD0027C7CA /* Twitter.framework in Frameworks */,
-				2986775315B50CB70027C7CA /* Social.framework in Frameworks */,
 				293A7426155F68AA004D27D2 /* Security.framework in Frameworks */,
 				29D5B84915546055000D9374 /* QuartzCore.framework in Frameworks */,
 				2956875B1552C96700FE741C /* UIKit.framework in Frameworks */,
@@ -423,6 +423,8 @@
 		29D5B85F1554769D000D9374 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				298F7E051569821200516858 /* EditUserViewController.h */,
+				298F7E061569821200516858 /* EditUserViewController.m */,
 				29204EEE1553684200D5479D /* FeedViewController.h */,
 				29204EEF1553684200D5479D /* FeedViewController.m */,
 				297FE037156846E0005FBFDA /* FollowerViewController.h */,
@@ -435,8 +437,6 @@
 				29AA10961557254500B8D3F5 /* SettingsViewController.m */,
 				29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */,
 				29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */,
-				298F7E051569821200516858 /* EditUserViewController.h */,
-				298F7E061569821200516858 /* EditUserViewController.m */,
 				2924346F1565E330007C8E8C /* UsersPostsViewController.h */,
 				292434701565E330007C8E8C /* UsersPostsViewController.m */,
 				290045D415576D5D004F113A /* UsersViewController.h */,
@@ -692,7 +692,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Joshua Barrow";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -709,7 +709,7 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "03A0E2EB-E143-4DB6-998D-35E05C777AD0";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73B95949-314A-4B90-AB45-B84370C887D3";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -718,7 +718,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Joshua Barrow";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -735,7 +735,7 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "03A0E2EB-E143-4DB6-998D-35E05C777AD0";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73B95949-314A-4B90-AB45-B84370C887D3";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

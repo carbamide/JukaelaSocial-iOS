@@ -37,6 +37,7 @@
 
 -(void)viewDidLoad
 {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
     if (NSClassFromString(@"UIRefreshControl")) {
         UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
         
@@ -53,6 +54,13 @@
         
         [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
     }
+#else
+    _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
+    
+    [_oldRefreshControl setTintColor:[UIColor blackColor]];
+    
+    [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+#endif
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableInformation) name:@"refresh_your_tables" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setChangeType:) name:@"set_change_type" object:nil];
@@ -122,13 +130,17 @@
         [self setCurrentChangeType:-1];
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
         if (NSClassFromString(@"UIRefreshControl")) {
             [[self refreshControl] endRefreshing];
         }
         else {
             [_oldRefreshControl endRefreshing];
         }
+#else
+        [_oldRefreshControl endRefreshing];
+#endif
+        
     }];
 }
 
@@ -201,6 +213,8 @@
     }
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"created_at"] withFormatter:[self dateFormatter]];
+    
+    NSLog(@"%@", tempDate);
     
     [[cell dateLabel] setText:[NSString stringWithFormat:@"%@ ago", [[[NSDate alloc] init] distanceOfTimeInWordsSinceDate:tempDate]]];
     

@@ -78,12 +78,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
-    if (NSStringFromClass([SLRequest class])) {
-        return 5;
-    }
-    else {
-        return 4;
-    }
+    return 5;
 #else
     return 4;
 #endif

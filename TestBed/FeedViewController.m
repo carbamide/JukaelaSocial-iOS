@@ -38,22 +38,13 @@
 -(void)viewDidLoad
 {
 #if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
-    if (NSClassFromString(@"UIRefreshControl")) {
-        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-        
-        [refreshControl setTintColor:[UIColor blackColor]];
-        
-        [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-        
-        [self setRefreshControl:refreshControl];
-    }
-    else {
-        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
-        
-        [_oldRefreshControl setTintColor:[UIColor blackColor]];
-        
-        [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-    }
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    
+    [refreshControl setTintColor:[UIColor blackColor]];
+    
+    [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+    
+    [self setRefreshControl:refreshControl];
 #else
     _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
     
@@ -131,12 +122,7 @@
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 #if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
-        if (NSClassFromString(@"UIRefreshControl")) {
-            [[self refreshControl] endRefreshing];
-        }
-        else {
-            [_oldRefreshControl endRefreshing];
-        }
+        [[self refreshControl] endRefreshing];
 #else
         [_oldRefreshControl endRefreshing];
 #endif

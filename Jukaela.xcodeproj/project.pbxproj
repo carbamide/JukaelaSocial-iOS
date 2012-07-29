@@ -709,7 +709,7 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73B95949-314A-4B90-AB45-B84370C887D3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5F2A9175-35B9-4E58-86BA-32F83731D95F";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -735,7 +735,7 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73B95949-314A-4B90-AB45-B84370C887D3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5F2A9175-35B9-4E58-86BA-32F83731D95F";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

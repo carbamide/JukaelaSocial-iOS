@@ -199,9 +199,7 @@
     }
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"created_at"] withFormatter:[self dateFormatter]];
-    
-    NSLog(@"%@", tempDate);
-    
+        
     [[cell dateLabel] setText:[NSString stringWithFormat:@"%@ ago", [[[NSDate alloc] init] distanceOfTimeInWordsSinceDate:tempDate]]];
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"email"]]]]];

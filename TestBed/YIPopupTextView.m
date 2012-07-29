@@ -120,9 +120,9 @@
 #endif
         
         self.placeholder = placeHolder;
-        self.frame = UIEdgeInsetsInsetRect(_popupView.frame, TEXTVIEW_INSETS);
+        self.frame = UIEdgeInsetsInsetRect(_popupView.frame, UIEdgeInsetsMake(15, 15, 15, 15));
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.font = [UIFont systemFontOfSize:TEXT_SIZE];
+        self.font = [UIFont systemFontOfSize:16];
         self.keyboardAppearance = UIKeyboardAppearanceAlert;
         self.autocorrectionType = UITextAutocorrectionTypeYes;
         self.autocapitalizationType = UITextAutocapitalizationTypeSentences;

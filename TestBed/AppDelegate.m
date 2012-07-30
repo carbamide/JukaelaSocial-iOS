@@ -21,9 +21,8 @@
 {
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
-    [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:@"post_to_twitter", [NSNumber numberWithBool:NO],
-                                                             @"post_to_facebook", [NSNumber numberWithBool:NO],
-                                                             nil]];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@NO: @"post_to_twitter",
+                                                             @NO: @"post_to_facebook"}];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
                                                                            UIRemoteNotificationTypeBadge |
@@ -52,7 +51,7 @@
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSString *alertString = [NSString stringWithFormat:@"%@", [[userInfo objectForKey:@"aps"] objectForKey:@"alert"]];
+    NSString *alertString = [NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]];
     
     if ([application applicationState] == UIApplicationStateActive) {
         UIAlertView *pushAlert = [[UIAlertView alloc] initWithTitle:@"Jukaela Social"

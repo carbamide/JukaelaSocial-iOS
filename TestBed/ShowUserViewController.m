@@ -149,17 +149,17 @@
             [cell prepareForTableView:tableView indexPath:indexPath];
             
             [[cell textLabel] setTextAlignment:UITextAlignmentRight];
-            [[cell textLabel] setText:[[self userDict] objectForKey:@"name"]];
+            [[cell textLabel] setText:[self userDict][@"name"]];
             [[cell detailTextLabel] setTextAlignment:UITextAlignmentRight];
             
-            if ([[self userDict] objectForKey:@"username"] && [[self userDict] objectForKey:@"username"] != [NSNull null]) {
-                [[cell detailTextLabel] setText:[[self userDict] objectForKey:@"username"]];
+            if ([self userDict][@"username"] && [self userDict][@"username"] != [NSNull null]) {
+                [[cell detailTextLabel] setText:[self userDict][@"username"]];
             }
             else {
                 [[cell detailTextLabel] setText:@"No username"];
             }
             
-            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[self userDict] objectForKey:@"id"]]]]];
+            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]]];
             
             if (image) {
                 [[cell imageView] setImage:image];
@@ -168,7 +168,7 @@
                 dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
                 
                 dispatch_async(queue, ^{            
-                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[self userDict] objectForKey:@"email"]]]];
+                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][@"email"]]]];
                     
 #if (TARGET_IPHONE_SIMULATOR)
                     image = [JEImages normalize:image];
@@ -177,7 +177,7 @@
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[cell imageView] setImage:resizedImage];
-                        [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[self userDict] objectForKey: @"id"]]];      
+                        [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]];      
                     });
                 });
             }
@@ -188,8 +188,8 @@
             
             [[cell detailTextLabel] setNumberOfLines:5];
             
-            if ([[self userDict] objectForKey:@"profile"] && [[self userDict] objectForKey:@"profile"] != [NSNull null] ) {
-                [[cell detailTextLabel] setText:[[self userDict] objectForKey:@"profile"]];
+            if ([self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ) {
+                [[cell detailTextLabel] setText:[self userDict][@"profile"]];
             }
             else {
                 [[cell detailTextLabel] setText:@"No user profile"];
@@ -275,7 +275,7 @@
     else if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
         UsersPostsViewController *viewController = [segue destinationViewController];
         
-        [viewController setUserID:[[self userDict] objectForKey:@"id"]];
+        [viewController setUserID:[self userDict][@"id"]];
         [viewController setUserPostArray:[self posts]];
     }
 }
@@ -289,7 +289,7 @@
     if (image != nil)
     {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *documentsDirectory = paths[0];
         NSString* path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithString:[NSString stringWithFormat:@"%@.png", emailAddress]]];
         NSData* data = UIImagePNGRepresentation(image);
         [data writeToFile:path atomically:YES];
@@ -300,7 +300,7 @@
 {
     NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
-    NSString *documentsDirectory = [tempArray objectAtIndex:0];
+    NSString *documentsDirectory = tempArray[0];
     
     return documentsDirectory;
 }
@@ -309,7 +309,7 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [[self userDict] objectForKey:@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [self userDict][@"id"]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
         
@@ -330,7 +330,7 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/following.json", kSocialURL, [[self userDict] objectForKey:@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/following.json", kSocialURL, [self userDict][@"id"]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -353,7 +353,7 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/followers.json", kSocialURL, [[self userDict] objectForKey:@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/followers.json", kSocialURL, [self userDict][@"id"]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     

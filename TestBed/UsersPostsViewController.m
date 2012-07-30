@@ -52,7 +52,7 @@
 #endif
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
-    [self setTitle:[[[self userPostArray] lastObject] objectForKey:@"name"]];
+    [self setTitle:[[self userPostArray] lastObject][@"name"]];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     
@@ -103,22 +103,22 @@
     [[cell textLabel] setLineBreakMode:UILineBreakModeWordWrap];
     [[cell textLabel] setNumberOfLines:5];
     
-    if ([[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"content"]) {
-        [[cell textLabel] setText:[[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"content"]];
+    if ([self userPostArray][[indexPath row]][@"content"]) {
+        [[cell textLabel] setText:[self userPostArray][[indexPath row]][@"content"]];
     }
     else {
         [[cell textLabel] setText:@"Loading..."];
     }
     
-    if ([[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"name"] && [[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"name"] != [NSNull null]) {
-        [[cell nameLabel] setText:[[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"name"]];
+    if ([self userPostArray][[indexPath row]][@"name"] && [self userPostArray][[indexPath row]][@"name"] != [NSNull null]) {
+        [[cell nameLabel] setText:[self userPostArray][[indexPath row]][@"name"]];
     }
     
-    NSDate *tempDate = [NSDate dateWithISO8601String:[[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"created_at"] withFormatter:[self dateFormatter]];
+    NSDate *tempDate = [NSDate dateWithISO8601String:[self userPostArray][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
     
     [[cell dateLabel] setText:[NSString stringWithFormat:@"%@ ago", [[[NSDate alloc] init] distanceOfTimeInWordsSinceDate:tempDate]]];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"email"]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"email"]]]]];
     
 	if (image) {
 		[[cell imageView] setImage:image];
@@ -130,7 +130,7 @@
 		objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
 		
 		dispatch_async(queue, ^{
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"email"]]]];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userPostArray][[indexPath row]][@"email"]]]];
 			
 #if (TARGET_IPHONE_SIMULATOR)
             image = [JEImages normalize:image];
@@ -145,7 +145,7 @@
                     [cell setNeedsDisplay];
 				}
 				
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"email"]]];
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"email"]]];
 			});
 		});
 	}
@@ -166,7 +166,7 @@
         
         NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
         
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [[[self userPostArray] objectAtIndex:[indexPath row]] objectForKey:@"id"]]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [self userPostArray][[indexPath row]][@"id"]]];
         
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
         
@@ -221,7 +221,7 @@
         }
     }
     
-    if ([[NSString stringWithFormat:@"%@", [[[self userPostArray] objectAtIndex:[[[self tableView] indexPathForSelectedRow] row]] objectForKey:@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+    if ([[NSString stringWithFormat:@"%@", [self userPostArray][[[[self tableView] indexPathForSelectedRow] row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
         NSInteger deleteIndex = [cellActionSheet addButtonItem:deleteButton];
         
         [cellActionSheet setDestructiveButtonIndex:deleteIndex];
@@ -240,7 +240,7 @@
     if ([[segue identifier] isEqualToString:@"ShowReplyView"]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
-        [viewController setReplyString:[NSString stringWithFormat:@"@%@ ", [[[self userPostArray] objectAtIndex:[[[self tableView] indexPathForSelectedRow] row]] objectForKey:@"username"]]];
+        [viewController setReplyString:[NSString stringWithFormat:@"@%@ ", [self userPostArray][[[[self tableView] indexPathForSelectedRow] row]][@"username"]]];
         
         [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
     }
@@ -259,7 +259,7 @@
 {
     NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
-    NSString *documentsDirectory = [tempArray objectAtIndex:0];
+    NSString *documentsDirectory = tempArray[0];
     
     return documentsDirectory;
 }

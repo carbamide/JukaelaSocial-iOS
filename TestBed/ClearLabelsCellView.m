@@ -57,7 +57,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (object == [self imageView] && [keyPath isEqualToString:@"image"] && ([change objectForKey:NSKeyValueChangeOldKey] == nil || [change objectForKey:NSKeyValueChangeOldKey] == [NSNull null])) {
+	if (object == [self imageView] && [keyPath isEqualToString:@"image"] && (change[NSKeyValueChangeOldKey] == nil || change[NSKeyValueChangeOldKey] == [NSNull null])) {
         [self setNeedsLayout];
         [[self imageView] removeObserver:self forKeyPath:@"image"];
     }

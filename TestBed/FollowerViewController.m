@@ -108,16 +108,16 @@
         [cell setBackgroundView:[[GradientView alloc] init]];
     } 
     
-    [[cell textLabel] setText:[[[self usersArray] objectAtIndex:[indexPath row]] objectForKey:@"name"]];
+    [[cell textLabel] setText:[self usersArray][[indexPath row]][@"name"]];
     
-    if ([[[self usersArray] objectAtIndex:[indexPath row]] objectForKey:@"username"] && [[[self usersArray] objectAtIndex:[indexPath row]] objectForKey:@"username"] != [NSNull null]) {
-        [[cell detailTextLabel] setText:[[[self usersArray] objectAtIndex:[indexPath row]] objectForKey:@"username"]];
+    if ([self usersArray][[indexPath row]][@"username"] && [self usersArray][[indexPath row]][@"username"] != [NSNull null]) {
+        [[cell detailTextLabel] setText:[self usersArray][[indexPath row]][@"username"]];
     }
     else {
         [[cell detailTextLabel] setText:@"No username specified"];
     }
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[[self usersArray] objectAtIndex:[indexPath row]] objectForKey:@"id"]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]]]];
     
     if (image) {
 		[[cell imageView] setImage:image];
@@ -129,7 +129,7 @@
 		objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
 		
 		dispatch_async(queue, ^{            
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [[[self usersArray] objectAtIndex:[indexPath row]] objectForKey:@"email"]]]]];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]]]]];
 			
 #if (TARGET_IPHONE_SIMULATOR)
             image = [JEImages normalize:image];
@@ -144,7 +144,7 @@
                     [cell setNeedsDisplay];
 				}
 				
-                [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[[self usersArray] objectAtIndex:[indexPath row]] objectForKey:@"id"]]];             
+                [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]];             
 			});
 		});
 	}
@@ -165,7 +165,7 @@
     [showUserButton setAction:^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [[[self usersArray] objectAtIndex:[indexPath row]] objectForKey:@"id"]]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPath row]][@"id"]]];
         
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
         
@@ -221,7 +221,7 @@
 {
     NSArray *documentArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
-    NSString *documentsDirectory = [documentArray objectAtIndex:0];
+    NSString *documentsDirectory = documentArray[0];
     
     return documentsDirectory;
 }

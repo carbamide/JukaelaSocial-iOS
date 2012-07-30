@@ -32,12 +32,12 @@
 {
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"read_username_from_defaults"];
     
-    [[[[self tabBarController] viewControllers] objectAtIndex:0] popToRootViewControllerAnimated:NO];
+    [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
     
     [[self tabBarController] setSelectedIndex:0];
     
-    [[[[[self tabBarController] tabBar] items] objectAtIndex:1] setEnabled:NO];
-    [[[[[self tabBarController] tabBar] items] objectAtIndex:2] setEnabled:NO];
+    [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
+    [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
 }
 
 -(id)initWithStyle:(UITableViewStyle)style
@@ -188,7 +188,7 @@
             NSError *error = nil;
             NSFileManager *fileManager = [NSFileManager defaultManager];
             
-            NSString *directory = [paths objectAtIndex:0];
+            NSString *directory = paths[0];
             
             for (NSString *file in [fileManager contentsOfDirectoryAtPath:directory error:&error]) {
                 NSString *filePath = [directory stringByAppendingPathComponent:file];

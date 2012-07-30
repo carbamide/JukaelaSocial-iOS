@@ -219,10 +219,10 @@
         loginDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
         
         if (loginDict) {
-            [[[[[self tabBarController] tabBar] items] objectAtIndex:1] setEnabled:YES];
-            [[[[[self tabBarController] tabBar] items] objectAtIndex:2] setEnabled:YES];
+            [[[[self tabBarController] tabBar] items][1] setEnabled:YES];
+            [[[[self tabBarController] tabBar] items][2] setEnabled:YES];
             
-            [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", [loginDict objectForKey:@"id"]]];
+            [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[@"id"]]];
             
             [self getFeed];
         }
@@ -308,8 +308,8 @@
     
     [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];  
 
-    [[[[[self tabBarController] tabBar] items] objectAtIndex:1] setEnabled:NO];
-    [[[[[self tabBarController] tabBar] items] objectAtIndex:2] setEnabled:NO];
+    [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
+    [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
     
     [[[self imageView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
     [[[self imageView] layer] setShadowOffset:CGSizeMake(0, 1)];

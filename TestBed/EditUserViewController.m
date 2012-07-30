@@ -54,10 +54,10 @@
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
-        [[self nameTextField] setText:[[self tempDict] objectForKey:@"name"]];
-        [[self usernameTextField] setText:[[self tempDict] objectForKey:@"username"]];
-        [[self emailTextField] setText:[[self tempDict] objectForKey:@"email"]];
-        [[self profileTextField] setText:[[self tempDict] objectForKey:@"profile"]];
+        [[self nameTextField] setText:[self tempDict][@"name"]];
+        [[self usernameTextField] setText:[self tempDict][@"username"]];
+        [[self emailTextField] setText:[self tempDict][@"email"]];
+        [[self profileTextField] setText:[self tempDict][@"profile"]];
         
         NSLog(@"%@", [self tempDict]);
     }];
@@ -164,7 +164,7 @@
         cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
     }
     
-    [[cell textLabel] setText:[[self fieldsArray] objectAtIndex:[indexPath row]]];
+    [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
     
     if ([indexPath row] == 0) {
         [[cell textLabel] setText:@"Name"];
@@ -238,7 +238,7 @@
 
 -(NSArray *)fieldsArray
 {
-    NSArray *tempArray = [NSArray arrayWithObjects:@"Name", @"Username", @"Email", @"Password", @"Confirm Password", @"Profile", nil];
+    NSArray *tempArray = @[@"Name", @"Username", @"Email", @"Password", @"Confirm Password", @"Profile"];
     
     return tempArray;
 }

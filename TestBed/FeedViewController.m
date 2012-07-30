@@ -106,12 +106,12 @@
         
         if ([self currentChangeType] == INSERT_POST) {
             [[self tableView] beginUpdates];
-            [[self tableView] insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             [[self tableView] endUpdates];
         }
         else if ([self currentChangeType] == DELETE_POST) {
             [[self tableView] beginUpdates];
-            [[self tableView] deleteRowsAtIndexPaths:[NSArray arrayWithObject:[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationFade];
+            [[self tableView] deleteRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationFade];
             [[self tableView] endUpdates];
         }
         else {
@@ -179,30 +179,30 @@
     [[cell textLabel] setLineBreakMode:UILineBreakModeWordWrap];
     [[cell textLabel] setNumberOfLines:5];
     
-    if ([[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"content"]) {
-        [[cell textLabel] setText:[[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"content"]];
+    if ([self theFeed][[indexPath row]][@"content"]) {
+        [[cell textLabel] setText:[self theFeed][[indexPath row]][@"content"]];
     }
     else {
         [[cell textLabel] setText:@"Loading..."];
     }
     
-    if ([[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"name"] && [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"name"] != [NSNull null]) {
-        [[cell nameLabel] setText:[[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"name"]];
+    if ([self theFeed][[indexPath row]][@"name"] && [self theFeed][[indexPath row]][@"name"] != [NSNull null]) {
+        [[cell nameLabel] setText:[self theFeed][[indexPath row]][@"name"]];
     }
     else {
-        if ([[self nameDict] objectForKey:[[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"user_id"]]) {
-            [[cell nameLabel] setText:[NSString stringWithFormat:@"%@", [[self nameDict] objectForKey:[[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"user_id"]]]];
+        if ([self nameDict][[self theFeed][[indexPath row]][@"user_id"]]) {
+            [[cell nameLabel] setText:[NSString stringWithFormat:@"%@", [self nameDict][[self theFeed][[indexPath row]][@"user_id"]]]];
         }
         else {
             [[cell nameLabel] setText:@"Loading..."];
         }
     }
     
-    NSDate *tempDate = [NSDate dateWithISO8601String:[[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"created_at"] withFormatter:[self dateFormatter]];
+    NSDate *tempDate = [NSDate dateWithISO8601String:[self theFeed][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
         
     [[cell dateLabel] setText:[NSString stringWithFormat:@"%@ ago", [[[NSDate alloc] init] distanceOfTimeInWordsSinceDate:tempDate]]];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"email"]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]]];
     
 	if (image) {
 		[[cell imageView] setImage:image];
@@ -214,7 +214,7 @@
 		objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
 		
 		dispatch_async(queue, ^{
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"email"]]]];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self theFeed][[indexPath row]][@"email"]]]];
 			
 #if (TARGET_IPHONE_SIMULATOR)
             image = [JEImages normalize:image];
@@ -229,7 +229,7 @@
                     [cell setNeedsDisplay];
 				}
 				
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"email"]]];
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]];
 			});
 		});
 	}
@@ -250,7 +250,7 @@
         
         NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
         
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"id"]]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [self theFeed][[indexPath row]][@"id"]]];
         
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
         
@@ -278,7 +278,7 @@
         
         NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
         
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [[[self theFeed] objectAtIndex:[indexPath row]] objectForKey:@"user_id"]]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self theFeed][[indexPath row]][@"user_id"]]];
         
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
         
@@ -329,7 +329,7 @@
         }
     }
     
-    if ([[NSString stringWithFormat:@"%@", [[[self theFeed] objectAtIndex:[[[self tableView] indexPathForSelectedRow] row]] objectForKey:@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+    if ([[NSString stringWithFormat:@"%@", [self theFeed][[[[self tableView] indexPathForSelectedRow] row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
         NSInteger deleteIndex = [cellActionSheet addButtonItem:deleteButton];
         
         [cellActionSheet setDestructiveButtonIndex:deleteIndex];
@@ -356,7 +356,7 @@
     else if ([[segue identifier] isEqualToString:@"ShowReplyView"]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
-        [viewController setReplyString:[NSString stringWithFormat:@"@%@ ", [[[self theFeed] objectAtIndex:[[[self tableView] indexPathForSelectedRow] row]] objectForKey:@"username"]]];
+        [viewController setReplyString:[NSString stringWithFormat:@"@%@ ", [self theFeed][[[[self tableView] indexPathForSelectedRow] row]][@"username"]]];
         
         [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
     }
@@ -375,7 +375,7 @@
 {
     NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
-    NSString *documentsDirectory = [tempArray objectAtIndex:0];
+    NSString *documentsDirectory = tempArray[0];
     
     return documentsDirectory;
 }

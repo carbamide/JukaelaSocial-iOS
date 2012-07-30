@@ -121,7 +121,7 @@
         [self setCurrentChangeType:-1];
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
         [[self refreshControl] endRefreshing];
 #else
         [_oldRefreshControl endRefreshing];

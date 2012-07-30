@@ -24,6 +24,8 @@
 		2956876B1552C96700FE741C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2956876A1552C96700FE741C /* AppDelegate.m */; };
 		2956876E1552C96700FE741C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2956876C1552C96700FE741C /* MainStoryboard.storyboard */; };
 		295687711552C96700FE741C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295687701552C96700FE741C /* LoginViewController.m */; };
+		29714EA015C7204300109E5A /* SORelativeDateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29714EA115C7204300109E5A /* SORelativeDateTransformer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29714E9F15C7204300109E5A /* SORelativeDateTransformer.bundle */; };
 		297FE039156846E0005FBFDA /* FollowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 297FE038156846E0005FBFDA /* FollowerViewController.m */; };
 		2986774C15B4B9B80027C7CA /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2986774B15B4B9B80027C7CA /* ODRefreshControl.m */; };
 		2986775515B50CBD0027C7CA /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775415B50CBD0027C7CA /* Twitter.framework */; };
@@ -110,6 +112,9 @@
 		2956876D1552C96700FE741C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		2956876F1552C96700FE741C /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		295687701552C96700FE741C /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		29714E9D15C7204300109E5A /* SORelativeDateTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SORelativeDateTransformer.h; sourceTree = "<group>"; };
+		29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SORelativeDateTransformer.m; sourceTree = "<group>"; };
+		29714E9F15C7204300109E5A /* SORelativeDateTransformer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SORelativeDateTransformer.bundle; sourceTree = "<group>"; };
 		297FE037156846E0005FBFDA /* FollowerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowerViewController.h; sourceTree = "<group>"; };
 		297FE038156846E0005FBFDA /* FollowerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowerViewController.m; sourceTree = "<group>"; };
 		2986774A15B4B9B80027C7CA /* ODRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODRefreshControl.h; sourceTree = "<group>"; };
@@ -448,6 +453,9 @@
 		29D5B860155476A4000D9374 /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
+				29714E9D15C7204300109E5A /* SORelativeDateTransformer.h */,
+				29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */,
+				29714E9F15C7204300109E5A /* SORelativeDateTransformer.bundle */,
 				2986774A15B4B9B80027C7CA /* ODRefreshControl.h */,
 				2986774B15B4B9B80027C7CA /* ODRefreshControl.m */,
 				293A7422155F6810004D27D2 /* SFHFKeychainUtils.h */,
@@ -561,6 +569,7 @@
 				29AA10A31557263900B8D3F5 /* Settings@2x.png in Resources */,
 				290045DA15576D9C004F113A /* Users.png in Resources */,
 				290045DB15576D9C004F113A /* Users@2x.png in Resources */,
+				29714EA115C7204300109E5A /* SORelativeDateTransformer.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -618,6 +627,7 @@
 				29DB78CB15B6F72D0056C68E /* PrettyShadowPlainTableview.m in Sources */,
 				29DB78CC15B6F72D0056C68E /* PrettyTabBar.m in Sources */,
 				29DB78CD15B6F72D0056C68E /* PrettyToolbar.m in Sources */,
+				29714EA015C7204300109E5A /* SORelativeDateTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

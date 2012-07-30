@@ -15,9 +15,11 @@
 #import "NSDate+RailsDateParser.h"
 #import "UsersPostsViewController.h"
 #import "PostViewController.h"
+#import "SORelativeDateTransformer.h"
 
 @interface UsersPostsViewController ()
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
+@property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @end
 
 @implementation UsersPostsViewController
@@ -116,7 +118,7 @@
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[self userPostArray][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
     
-    [[cell dateLabel] setText:[NSString stringWithFormat:@"%@ ago", [[[NSDate alloc] init] distanceOfTimeInWordsSinceDate:tempDate]]];
+    [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"email"]]]]];
     

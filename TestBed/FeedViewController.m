@@ -17,11 +17,14 @@
 #import "NSString+BackslashEscape.h"
 #import "PostViewController.h"
 #import "ShowUserViewController.h"
+#import "SORelativeDateTransformer.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @property (nonatomic) ChangeType currentChangeType;
+@property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
+
 @end
 
 @implementation FeedViewController
@@ -71,6 +74,8 @@
     [[self navigationItem] setHidesBackButton:YES];
     
     [self setCurrentChangeType:-1];
+    
+    [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
     
     [super viewDidLoad];
 }
@@ -200,7 +205,7 @@
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[self theFeed][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
         
-    [[cell dateLabel] setText:[NSString stringWithFormat:@"%@ ago", [[[NSDate alloc] init] distanceOfTimeInWordsSinceDate:tempDate]]];
+    [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]]];
     

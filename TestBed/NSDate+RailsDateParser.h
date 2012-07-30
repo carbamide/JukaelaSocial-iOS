@@ -12,7 +12,4 @@
 
 + (NSDate *)dateWithISO8601String:(NSString *)dateString withFormatter:(NSDateFormatter *)formatter;
 + (NSDate *)dateFromString:(NSString *)dateString withFormat:(NSString *)dateFormat withFormatter:(NSDateFormatter *)formatter;
--(NSString *)distanceOfTimeInWordsSinceDate:(NSDate *)aDate;
--(NSString *)distanceOfTimeInWordsToNow;
-
 @end

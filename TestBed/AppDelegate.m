@@ -45,7 +45,7 @@
 
 -(void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
 {
-    NSString *apnsErrorString = [NSString stringWithFormat:@"Error: %@", err];
+    NSString *apnsErrorString = [NSString stringWithFormat:@"Error: %@", [err localizedDescription]];
     
     NSLog(apnsErrorString, nil);
 }

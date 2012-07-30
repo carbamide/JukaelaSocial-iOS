@@ -8,7 +8,7 @@
 
 #import "SettingsViewController.h"
 #import "PrettyKit.h"
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
 #import <Social/Social.h>
 #endif
 @interface SettingsViewController ()
@@ -77,7 +77,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
     return 5;
 #else
     return 4;
@@ -122,7 +122,7 @@
         
         [[self twitterSwitch] addTarget:self action:@selector(twitterSwitchChanged:) forControlEvents:UIControlEventValueChanged];
     }
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
     if (NSStringFromClass([SLRequest class])) {
         if ([indexPath row] == 4) {
             [[cell textLabel] setText:@"Post to Facebook?"];
@@ -206,6 +206,7 @@
                 }
             }
         }
+        [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
     }];
     
     [cancelButton setAction:^{

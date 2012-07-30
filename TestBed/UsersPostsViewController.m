@@ -33,7 +33,7 @@
 
 - (void)viewDidLoad
 {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];
@@ -280,7 +280,7 @@
         [self setUserPostArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
         
         [[self tableView] reloadData];
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
         [[self refreshControl] endRefreshing];
 #else
         [_oldRefreshControl endRefreshing];

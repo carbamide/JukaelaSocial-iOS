@@ -37,7 +37,7 @@
 
 -(void)viewDidLoad
 {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_0
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];

@@ -154,7 +154,12 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 100;
+    if ([[self theFeed][[indexPath row]][@"content"] length] > 120) {
+        return 120;
+    }
+    else {
+        return 110;
+    }
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -182,7 +187,6 @@
     [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
     
     [[cell textLabel] setLineBreakMode:UILineBreakModeWordWrap];
-    [[cell textLabel] setNumberOfLines:5];
     
     if ([self theFeed][[indexPath row]][@"content"]) {
         [[cell textLabel] setText:[self theFeed][[indexPath row]][@"content"]];
@@ -204,7 +208,7 @@
     }
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[self theFeed][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
-        
+    
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]]];
@@ -224,7 +228,7 @@
 #if (TARGET_IPHONE_SIMULATOR)
             image = [JEImages normalize:image];
 #endif
-            UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+            UIImage *resizedImage = [image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
 			
 			dispatch_async(dispatch_get_main_queue(), ^{
 				NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);

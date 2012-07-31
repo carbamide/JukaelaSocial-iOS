@@ -71,7 +71,7 @@ static NSString *RI_BUTTON_ASS_KEY = @"com.random-ideas.BUTTONS";
 {
     if (buttonIndex != -1)
     {
-        NSArray *buttonsArray = objc_getAssociatedObject(self, RI_BUTTON_ASS_KEY);
+        NSArray *buttonsArray = objc_getAssociatedObject(self, (RI_BUTTON_ASS_KEY));
         RIButtonItem *item = [buttonsArray objectAtIndex:buttonIndex];
         if(item.action)
             item.action();

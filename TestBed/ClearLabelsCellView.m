@@ -20,23 +20,23 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
-        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 140, 15)];
+        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 5, 140, 15)];
         
         [nameLabel setTextAlignment:UITextAlignmentLeft];
-        [nameLabel setFont:[UIFont fontWithName:@"Helvetica" size:12]];
+        [nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
         [nameLabel setBackgroundColor:[UIColor clearColor]];
         [nameLabel setTag:8];
         
         [self addSubview:nameLabel];
         
         dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, 140, 15)];
-        [dateLabel setTextAlignment:UITextAlignmentLeft];
+        [dateLabel setTextAlignment:UITextAlignmentCenter];
         [dateLabel setFont:[UIFont fontWithName:@"Helvetica" size:12]];
         [dateLabel setBackgroundColor:[UIColor clearColor]];
         [dateLabel setTag:8];
         
         [self addSubview:dateLabel];
-        
+                
         [[self imageView] addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionOld context:NULL];
         [[self textLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
 		[[self nameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
@@ -45,6 +45,24 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 	}
 	
 	return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [[self imageView] setBounds:CGRectMake(10, 0, 75, 75)];
+    [[self imageView] setFrame:CGRectMake(10, 0, 75, 75)];
+    [[self imageView] setContentMode:UIViewContentModeScaleAspectFit];
+    
+    [[self textLabel] setFrame:CGRectMake(90, 25, 215, 140)];
+    [[self textLabel] setNumberOfLines:0];
+    [[self textLabel] sizeToFit];
+        
+    [[self dateLabel] setCenter:[[self imageView] center]];
+    
+    [[self dateLabel] setFrame:CGRectMake(self.dateLabel.frame.origin.x, self.dateLabel.frame.origin.y + 60, self.dateLabel.frame.size.width, self.dateLabel.frame.size.height)];
+    
+
 }
 
 -(void)setSelected:(BOOL)selected animated:(BOOL)animated

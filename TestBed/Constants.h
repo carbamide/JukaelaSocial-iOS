@@ -25,6 +25,11 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 308;
 #define kSocialURL @"http://cold-planet-7717.herokuapp.com"
 #define kPerfectGrey [UIColor colorWithRed:0x71/255.0 green:0x78/255.0 blue:0x80/255.0 alpha:1.0]
 #define kPerfectGreyShadow [UIColor colorWithRed:0xe6/255.0 green:0xe7/255.0 blue:0xeb/255.0 alpha:1.0]
+#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
+#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 static char * const kIndexPathAssociationKey = "Jukaela_index_path";
 
 CGFloat animatedDistance;

@@ -58,9 +58,10 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self textLabel] setNumberOfLines:0];
     [[self textLabel] sizeToFit];
         
+    [[self detailTextLabel] setFrame:CGRectMake(90, 25, 150, 76)];
     [[self dateLabel] setCenter:[[self imageView] center]];
     
-    [[self dateLabel] setFrame:CGRectMake(self.dateLabel.frame.origin.x, self.dateLabel.frame.origin.y + 60, self.dateLabel.frame.size.width, self.dateLabel.frame.size.height)];
+    [[self dateLabel] setFrame:CGRectMake(self.dateLabel.frame.origin.x, self.imageView.frame.origin.y + self.imageView.frame.size.height, self.dateLabel.frame.size.width, self.dateLabel.frame.size.height)];
     
 
 }

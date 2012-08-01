@@ -206,6 +206,11 @@
     }
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 80;
+}
+
 -(void)saveImage:(UIImage *)image withFileName:(NSString *)emailAddress
 {
     if (image != nil) {

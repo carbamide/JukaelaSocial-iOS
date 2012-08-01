@@ -8,7 +8,7 @@
 
 #import "SettingsViewController.h"
 #import "PrettyKit.h"
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
+#ifdef __IPHONE_6_0
 #import <Social/Social.h>
 #endif
 @interface SettingsViewController ()
@@ -77,11 +77,12 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
-    return 5;
-#else
-    return 4;
-#endif
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        return 5;
+    }
+    else {
+        return 4;
+    }
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -122,8 +123,7 @@
         
         [[self twitterSwitch] addTarget:self action:@selector(twitterSwitchChanged:) forControlEvents:UIControlEventValueChanged];
     }
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
-    if (NSStringFromClass([SLRequest class])) {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         if ([indexPath row] == 4) {
             [[cell textLabel] setText:@"Post to Facebook?"];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -142,7 +142,6 @@
             [[self facebookSwitch] addTarget:self action:@selector(facebookSwitchChanged:) forControlEvents:UIControlEventValueChanged];
         }
     }
-#endif
     return cell;
 }
 

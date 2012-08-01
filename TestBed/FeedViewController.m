@@ -40,21 +40,22 @@
 
 -(void)viewDidLoad
 {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    
-    [refreshControl setTintColor:[UIColor blackColor]];
-    
-    [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-    
-    [self setRefreshControl:refreshControl];
-#else
-    _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
-    
-    [_oldRefreshControl setTintColor:[UIColor blackColor]];
-    
-    [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-#endif
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+        
+        [refreshControl setTintColor:[UIColor blackColor]];
+        
+        [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+        
+        [self setRefreshControl:refreshControl];
+    }
+    else {
+        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
+        
+        [_oldRefreshControl setTintColor:[UIColor blackColor]];
+        
+        [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableInformation) name:@"refresh_your_tables" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setChangeType:) name:@"set_change_type" object:nil];
@@ -126,12 +127,12 @@
         [self setCurrentChangeType:-1];
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
-        [[self refreshControl] endRefreshing];
-#else
-        [_oldRefreshControl endRefreshing];
-#endif
-        
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+            [[self refreshControl] endRefreshing];
+        }
+        else {
+            [_oldRefreshControl endRefreshing];
+        }
     }];
 }
 
@@ -154,11 +155,16 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[self theFeed][[indexPath row]][@"content"] length] > 120) {
-        return 120;
+    UIFont *cellFont = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
+    
+    CGSize constraintSize = CGSizeMake(215, 140);
+    CGSize labelSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+        
+    if (labelSize.height < 40) {
+        return 95;
     }
     else {
-        return 110;
+        return labelSize.height + 55;
     }
 }
 
@@ -213,35 +219,35 @@
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]]];
     
-	if (image) {
-		[[cell imageView] setImage:image];
+    if (image) {
+        [[cell imageView] setImage:image];
         [cell setNeedsDisplay];
-	}
+    }
     else {
-		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
-		objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
-		
-		dispatch_async(queue, ^{
+        objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
+        
+        dispatch_async(queue, ^{
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self theFeed][[indexPath row]][@"email"]]]];
-			
+            
 #if (TARGET_IPHONE_SIMULATOR)
             image = [JEImages normalize:image];
 #endif
             UIImage *resizedImage = [image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-			
-			dispatch_async(dispatch_get_main_queue(), ^{
-				NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
-				
-				if ([indexPath isEqual:cellIndexPath]) {
-					[[cell imageView] setImage:resizedImage];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
+                
+                if ([indexPath isEqual:cellIndexPath]) {
+                    [[cell imageView] setImage:resizedImage];
                     [cell setNeedsDisplay];
-				}
-				
+                }
+                
                 [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]];
-			});
-		});
-	}
+            });
+        });
+    }
     
     return cell;
 }

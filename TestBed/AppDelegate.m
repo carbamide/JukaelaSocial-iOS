@@ -44,9 +44,13 @@
 
 -(void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
 {
+#if (TARGET_IPHONE_SIMULATOR)
+    return;
+#else
     NSString *apnsErrorString = [NSString stringWithFormat:@"Error: %@", [err localizedDescription]];
     
     NSLog(apnsErrorString, nil);
+#endif
 }
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo

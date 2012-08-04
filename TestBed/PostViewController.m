@@ -79,7 +79,7 @@
 
 -(void)sendPost:(id)sender
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"set_change_type" object:@1];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"set_change_type" object:@0];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     

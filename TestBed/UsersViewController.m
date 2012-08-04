@@ -45,7 +45,7 @@
 }
 
 -(void)viewDidLoad
-{
+{    
     [self customizeNavigationBar];
     
     [self getUsers];

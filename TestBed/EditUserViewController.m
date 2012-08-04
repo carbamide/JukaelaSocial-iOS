@@ -58,8 +58,6 @@
         [[self usernameTextField] setText:[self tempDict][@"username"]];
         [[self emailTextField] setText:[self tempDict][@"email"]];
         [[self profileTextField] setText:[self tempDict][@"profile"]];
-        
-        NSLog(@"%@", [self tempDict]);
     }];
 }
 

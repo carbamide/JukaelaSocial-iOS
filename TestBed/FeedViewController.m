@@ -86,7 +86,22 @@
     int i = [[number object] intValue];
     
     if (i == 0) {
-        [self setChangeType:0];
+        [self setCurrentChangeType:0];
+    }
+    else if (i == 1) {
+        [self setCurrentChangeType:1];
+    }
+    else if (i == 2) {
+        [self setCurrentChangeType:2];
+    }
+    else {
+        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                             message:@"Some kind of madness has happened. Your post was posted but the view wasn't updated properly."
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil, nil];
+        
+        [errorAlert show];
     }
 }
 
@@ -107,9 +122,11 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
     
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {        
+        [self setTheFeed:nil];
         
+        [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                        
         if ([self currentChangeType] == INSERT_POST) {
             [[self tableView] beginUpdates];
             [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -127,6 +144,7 @@
         [self setCurrentChangeType:-1];
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
             [[self refreshControl] endRefreshing];
         }

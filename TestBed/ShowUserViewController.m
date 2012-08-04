@@ -36,7 +36,7 @@
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
-{    
+{
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)]];
     
     [self customizeNavigationBar];
@@ -140,8 +140,6 @@
     PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        
-        [cell setTableViewBackgroundColor:[UIColor clearColor]];
     }
     
     switch (indexPath.section) {
@@ -218,9 +216,7 @@
             
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self posts] count]] atIndex:2];
             [segmentedCell setDetailText:@"Posts" atIndex:2];
-            
-            [segmentedCell setTableViewBackgroundColor:[tableView backgroundColor]];
-            
+                        
             [segmentedCell setActionBlock:^(NSIndexPath *indexPath, int selectedIndex) {
                 if (selectedIndex == 0) {    
                     [tempSegContCell deselectAnimated:YES];
@@ -239,8 +235,6 @@
                 }
             }];
         }
-            [segmentedCell setTableViewBackgroundColor:[UIColor clearColor]];
-            
             return segmentedCell;
             break;
         default:
@@ -340,9 +334,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
-        
+                
         [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
                 
         [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];

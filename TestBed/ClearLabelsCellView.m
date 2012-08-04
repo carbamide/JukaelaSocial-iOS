@@ -29,7 +29,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         [self addSubview:nameLabel];
         
-        dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, 140, 15)];
+        dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 5, 80, 140, 15)];
         [dateLabel setTextAlignment:UITextAlignmentCenter];
         [dateLabel setFont:[UIFont fontWithName:@"Helvetica" size:12]];
         [dateLabel setBackgroundColor:[UIColor clearColor]];

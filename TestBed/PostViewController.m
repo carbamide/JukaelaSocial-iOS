@@ -124,6 +124,8 @@
         if (data) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
             
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -160,6 +162,8 @@
                 [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                     if (responseData) {
                         NSLog(@"Successfully posted to Twitter");
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"tweet_successful" object:nil];
                     }
                     else {
                         UIAlertView *twitterPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
@@ -167,10 +171,10 @@
                                                                                      delegate:nil
                                                                             cancelButtonTitle:@"OK"
                                                                             otherButtonTitles:nil, nil];
-                     
+                        
                         [twitterPostingError show];
                     }
-                 }];
+                }];
             }
         }
 	}];
@@ -178,49 +182,51 @@
 
 - (void)sendFacebookPost:(NSString *)stringToSend
 {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
-    if (NSStringFromClass([SLRequest class])) {
-        if (_accountStore == nil) {
-            _accountStore = [[ACAccountStore alloc] init];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        if (NSStringFromClass([SLRequest class])) {
+            if (_accountStore == nil) {
+                _accountStore = [[ACAccountStore alloc] init];
+            }
+            
+            ACAccountType *accountTypeFacebook = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+            
+            NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookPermissionGroupKey: @"write", ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
+            
+            [_accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
+                if(granted) {
+                    NSArray *accounts = [self.accountStore accountsWithAccountType:accountTypeFacebook];
+                    
+                    [self setFacebookAccount:[accounts lastObject]];
+                    
+                    NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
+                    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
+                    
+                    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
+                    
+                    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
+                        if (responseData) {
+                            NSLog(@"Successfully posted to Facebook");
+                            
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_successful" object:nil];
+                        }
+                        else {
+                            UIAlertView *facebookPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
+                                                                                           message:@"There has been an error posting your Jukaela Social post to Facebook."
+                                                                                          delegate:nil
+                                                                                 cancelButtonTitle:@"OK"
+                                                                                 otherButtonTitles:nil, nil];
+                            
+                            [facebookPostingError show];
+                        }
+                    }];
+                }
+                else {
+                    NSLog(@"Facebook access not granted.");
+                    NSLog(@"%@",[error localizedDescription]);
+                }
+            }];
         }
-        
-        ACAccountType *accountTypeFacebook = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-        
-        NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookPermissionGroupKey: @"write", ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
-        
-        [_accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
-            if(granted) {
-                NSArray *accounts = [self.accountStore accountsWithAccountType:accountTypeFacebook];
-                
-                [self setFacebookAccount:[accounts lastObject]];
-                
-                NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
-                NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
-                
-                SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
-                
-                [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
-                    if (responseData) {
-                        NSLog(@"Successfully posted to Facebook");
-                    }
-                    else {
-                        UIAlertView *facebookPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
-                                                                                       message:@"There has been an error posting your Jukaela Social post to Twitter."
-                                                                                      delegate:nil
-                                                                             cancelButtonTitle:@"OK"
-                                                                             otherButtonTitles:nil, nil];
-                        
-                        [facebookPostingError show];
-                    }
-                }];
-            }
-            else {
-                NSLog(@"Facebook access not granted.");
-                NSLog(@"%@",[error localizedDescription]);
-            }
-        }];
     }
-#endif
 }
 
 -(void)popupTextView:(YIPopupTextView*)textView willDismissWithText:(NSString*)text

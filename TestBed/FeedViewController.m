@@ -18,12 +18,25 @@
 #import "PostViewController.h"
 #import "ShowUserViewController.h"
 #import "SORelativeDateTransformer.h"
+#import "WBErrorNoticeView.h"
+#import "WBSuccessNoticeView.h"
+#import "WBStickyNoticeView.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @property (nonatomic) ChangeType currentChangeType;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
+@property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
+@property (strong, nonatomic) NSNotificationCenter *changeTypeNotificationCenter;
+@property (strong, nonatomic) NSNotificationCenter *tweetSuccessfullNotificationCenter;
+@property (strong, nonatomic) NSNotificationCenter *facebookSuccessfullNotificationCenter;
+@property (strong, nonatomic) NSNotificationCenter *jukaelaSuccessfullNotificationCenter;
+@property (nonatomic) BOOL fbSuccess;
+@property (nonatomic) BOOL twitterSuccess;
+@property (nonatomic) BOOL jukaelaSuccess;
+
+-(void)refreshTableInformation;
 
 @end
 
@@ -57,8 +70,7 @@
         [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableInformation) name:@"refresh_your_tables" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setChangeType:) name:@"set_change_type" object:nil];
+    [self setupNotifications];
     
     if (![self theFeed]) {
         [self refreshTableInformation];
@@ -81,27 +93,81 @@
     [super viewDidLoad];
 }
 
--(void)setChangeType:(NSNotification *)number
+-(void)setupNotifications
 {
-    int i = [[number object] intValue];
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     
-    if (i == 0) {
-        [self setCurrentChangeType:0];
+    [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"set_change_type" object:nil
+                                                                      queue:mainQueue usingBlock:^(NSNotification *number) {
+                                                                          int i = [[number object] intValue];
+                                                                          
+                                                                          if (i == 0) {
+                                                                              [self setCurrentChangeType:0];
+                                                                          }
+                                                                          else if (i == 1) {
+                                                                              [self setCurrentChangeType:1];
+                                                                          }
+                                                                          else if (i == 2) {
+                                                                              [self setCurrentChangeType:2];
+                                                                          }
+                                                                          else {
+                                                                              NSLog(@"Some kind of madness has happened");
+                                                                          }
+                                                                      }]];
+    
+    [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"refresh_your_tables" object:nil
+                                                                      queue:mainQueue usingBlock:^(NSNotification *number) {
+                                                                          [self refreshTableInformation];
+                                                                      }]];
+    
+    [self setTweetSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"tweet_successful" object:nil
+                                                                            queue:mainQueue usingBlock:^(NSNotification *number) {
+                                                                                [self setTwitterSuccess:YES];
+                                                                                
+                                                                                [self checkForFBAndTwitterSucess];
+                                                                            }]];
+    
+    [self setFacebookSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"facebook_successful" object:nil
+                                                                               queue:mainQueue usingBlock:^(NSNotification *number) {
+                                                                                   [self setFbSuccess:YES];
+                                                                                   
+                                                                                   [self checkForFBAndTwitterSucess];
+                                                                               }]];
+}
+
+-(void)checkForFBAndTwitterSucess
+{
+    if (([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) && ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"] == NO)) {
+        if ([self twitterSuccess]) {
+            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Tweet Tweeted"];
+            
+            [successNotice show];
+            
+            [self setTwitterSuccess:NO];
+        }
     }
-    else if (i == 1) {
-        [self setCurrentChangeType:1];
+    else if (([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) && ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"] == NO)) {
+        if ([self fbSuccess]) {
+            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Facebook Post Posted"];
+            
+            [successNotice show];
+            
+            [self setFbSuccess:NO];
+        }
     }
-    else if (i == 2) {
-        [self setCurrentChangeType:2];
+    else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"] && [[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+        if ([self twitterSuccess] && [self fbSuccess]) {
+            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Twitter and FB - Good to Go!"];
+            
+            [successNotice show];
+            
+            [self setTwitterSuccess:NO];
+            [self setFbSuccess:NO];
+        }
     }
     else {
-        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                             message:@"Some kind of madness has happened. Your post was posted but the view wasn't updated properly."
-                                                            delegate:nil
-                                                   cancelButtonTitle:@"OK"
-                                                   otherButtonTitles:nil, nil];
-        
-        [errorAlert show];
+        return;
     }
 }
 
@@ -122,11 +188,13 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
     
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {        
-        [self setTheFeed:nil];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        int oldNumberOfPosts = [[self theFeed] count];
         
         [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                        
+        
+        int newNumberOfPosts = [[self theFeed] count];
+        
         if ([self currentChangeType] == INSERT_POST) {
             [[self tableView] beginUpdates];
             [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -138,6 +206,21 @@
             [[self tableView] endUpdates];
         }
         else {
+            if (newNumberOfPosts > oldNumberOfPosts) {
+                NSString *tempString;
+                
+                if ((newNumberOfPosts - oldNumberOfPosts) == 1) {
+                    tempString = @"Post";
+                }
+                else {
+                    tempString = @"Posts";
+                }
+                
+                WBStickyNoticeView *notice = [WBStickyNoticeView stickyNoticeInView:[self view]
+                                                                              title:[NSString stringWithFormat:@"%d New %@", (newNumberOfPosts - oldNumberOfPosts), tempString]];
+                
+                [notice show];
+            }
             [[self tableView] reloadData];
         }
         
@@ -177,7 +260,7 @@
     
     CGSize constraintSize = CGSizeMake(215, 140);
     CGSize labelSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
-        
+    
     if (labelSize.height < 40) {
         return 95;
     }
@@ -413,4 +496,11 @@
     return documentsDirectory;
 }
 
+-(void)dealloc
+{
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    
+    [center removeObserver:[self refreshTableNotificationCenter]];
+    [center removeObserver:[self changeTypeNotificationCenter]];
+}
 @end

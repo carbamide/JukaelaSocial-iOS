@@ -20,6 +20,7 @@
 @interface UsersPostsViewController ()
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
+@property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
 @end
 
 @implementation UsersPostsViewController
@@ -35,23 +36,23 @@
 
 - (void)viewDidLoad
 {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+        
+        [refreshControl setTintColor:[UIColor blackColor]];
+        
+        [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+        
+        [self setRefreshControl:refreshControl];
+    }
+    else {
+        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
+        
+        [_oldRefreshControl setTintColor:[UIColor blackColor]];
+        
+        [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+    }
     
-    [refreshControl setTintColor:[UIColor blackColor]];
-    
-    [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-    
-    [self setRefreshControl:refreshControl];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshTableInformation) name:@"refresh_your_tables" object:nil];
-#else
-    _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
-    
-    [_oldRefreshControl setTintColor:[UIColor blackColor]];
-    
-    [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-#endif
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
     [self setTitle:[[self userPostArray] lastObject][@"name"]];
@@ -59,6 +60,16 @@
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     
     [super viewDidLoad];
+}
+
+-(void)setupNotifications
+{
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
+    
+    [defaultCenter addObserverForName:@"refresh_your_tables" object:nil queue:mainQueue usingBlock:^(NSNotification *notification) {
+        [self refreshTableInformation];
+    }];
 }
 
 - (void)viewDidUnload
@@ -282,11 +293,13 @@
         [self setUserPostArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
         
         [[self tableView] reloadData];
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
-        [[self refreshControl] endRefreshing];
-#else
-        [_oldRefreshControl endRefreshing];
-#endif
+        
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+            [[self refreshControl] endRefreshing];
+        }
+        else {
+            [_oldRefreshControl endRefreshing];
+        }
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }];
 }

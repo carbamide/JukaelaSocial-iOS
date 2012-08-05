@@ -50,6 +50,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
     [[self imageView] setBounds:CGRectMake(10, 0, 75, 75)];
     [[self imageView] setFrame:CGRectMake(10, 0, 75, 75)];
     [[self imageView] setContentMode:UIViewContentModeScaleAspectFit];
@@ -59,11 +60,12 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self textLabel] sizeToFit];
         
     [[self detailTextLabel] setFrame:CGRectMake(90, 25, 150, 76)];
+    
+    [[self dateLabel] sizeToFit];
+    
     [[self dateLabel] setCenter:[[self imageView] center]];
-    
-    [[self dateLabel] setFrame:CGRectMake(self.dateLabel.frame.origin.x, self.imageView.frame.origin.y + self.imageView.frame.size.height, self.dateLabel.frame.size.width, self.dateLabel.frame.size.height)];
-    
 
+    [[self dateLabel] setFrame:CGRectMake(self.dateLabel.frame.origin.x, self.imageView.frame.origin.y + self.imageView.frame.size.height, self.dateLabel.frame.size.width, self.dateLabel.frame.size.height)];
 }
 
 -(void)setSelected:(BOOL)selected animated:(BOOL)animated

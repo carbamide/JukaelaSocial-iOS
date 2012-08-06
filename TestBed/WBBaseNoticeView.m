@@ -14,7 +14,7 @@
 {
     [WBBaseNoticeView raiseIfObjectIsNil:theView named:@"view"];
     
-    if (self == [super init]) {
+    if (self = [super init]) {
         self.view = theView;
         self.title = theTitle;
     }
@@ -32,7 +32,6 @@
 {
     if (nil == object) {
         // If the name has not been supplied, name it generically
-        if (nil == name) name = @"<name not supplied>";
         
         // Log the stack trace
         NSLog(@"%@", [NSThread callStackSymbols]);

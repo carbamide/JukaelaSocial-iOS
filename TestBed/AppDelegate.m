@@ -25,6 +25,9 @@
     CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
     NSString *UUID = [NSString stringWithFormat:@"%@", UUIDSRef];
     
+    CFRelease(UUIDSRef);
+    CFRelease(UUIDRef);
+    
     [TestFlight takeOff:@"52ea4c59079a890422488d9748b00b72_OTE5NDkyMDEyLTA3LTI3IDE3OjA1OjE1LjEyMTE1OA"];
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {

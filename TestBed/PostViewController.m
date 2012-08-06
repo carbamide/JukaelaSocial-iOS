@@ -190,7 +190,7 @@
             
             ACAccountType *accountTypeFacebook = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
             
-            NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookPermissionGroupKey: @"write", ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
+            NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
             
             [_accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
                 if(granted) {

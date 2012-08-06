@@ -10,6 +10,8 @@
 #ifdef _USE_OS_6_OR_LATER
 #import <Social/Social.h>
 #endif
+#import "TestFlight.h"
+
 @implementation AppDelegate
 
 @synthesize window = _window;
@@ -19,10 +21,23 @@
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
+    CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
+    NSString *UUID = [NSString stringWithFormat:@"%@", UUIDSRef];
+    
+    [TestFlight takeOff:@"52ea4c59079a890422488d9748b00b72_OTE5NDkyMDEyLTA3LTI3IDE3OjA1OjE1LjEyMTE1OA"];
+    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
+    }
+    else {
+        [TestFlight setDeviceIdentifier:UUID];
+    }
+    
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{@NO: @"post_to_twitter",
-                                                             @NO: @"post_to_facebook"}];
+     @NO: @"post_to_facebook"}];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
                                                                            UIRemoteNotificationTypeBadge |

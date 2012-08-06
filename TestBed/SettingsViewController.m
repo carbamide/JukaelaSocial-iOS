@@ -12,6 +12,8 @@
 #ifdef __IPHONE_6_0
 #import <Social/Social.h>
 #endif
+#import "TestFlight.h"
+
 @interface SettingsViewController ()
 
 @end
@@ -79,10 +81,10 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        return 5;
+        return 6;
     }
     else {
-        return 4;
+        return 5;
     }
 }
 
@@ -107,6 +109,9 @@
         [[cell textLabel] setText:@"Edit Profile..."];
     }
     else if ([indexPath row] == 3) {
+        [[cell textLabel] setText:@"Submit Feedback..."];
+    }
+    else if ([indexPath row] == 4) {
         [[cell textLabel] setText:@"Post to Twitter?"];
         
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -125,7 +130,7 @@
         [[self twitterSwitch] addTarget:self action:@selector(twitterSwitchChanged:) forControlEvents:UIControlEventValueChanged];
     }
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        if ([indexPath row] == 4) {
+        if ([indexPath row] == 5) {
             [[cell textLabel] setText:@"Post to Facebook?"];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             
@@ -211,6 +216,12 @@
             break;
         case 2:
             [self performSegueWithIdentifier:@"EditUser" sender:self];
+            break;
+        case 3:
+            [TestFlight openFeedbackView];
+            
+            [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
+
             break;
         default:
             break;

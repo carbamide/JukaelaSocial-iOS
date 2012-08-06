@@ -52,12 +52,12 @@
                 [_username setBackgroundColor:[UIColor whiteColor]];
                 [_username setAutocorrectionType:UITextAutocorrectionTypeNo];
                 [_username setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-                [_username setTextAlignment:UITextAlignmentLeft];
+                [_username setTextAlignment:NSTextAlignmentLeft];
                 [_username setDelegate:self];
                 [_username setClearButtonMode:UITextFieldViewModeNever];
                 [_username setEnabled:YES];
                 [_username setBackgroundColor:[UIColor clearColor]];
-                [_username setTextAlignment:UITextAlignmentRight];
+                [_username setTextAlignment:NSTextAlignmentRight];
                 [_username setPlaceholder:@"email"];
                 
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
@@ -82,12 +82,12 @@
                 [_password setBackgroundColor:[UIColor whiteColor]];
                 [_password setAutocorrectionType:UITextAutocorrectionTypeNo];
                 [_password setAutocapitalizationType:UITextAutocapitalizationTypeNone];
-                [_password setTextAlignment:UITextAlignmentLeft];
+                [_password setTextAlignment:NSTextAlignmentLeft];
                 [_password setDelegate:self];
                 [_password setClearButtonMode:UITextFieldViewModeNever];
                 [_password setEnabled:YES];
                 [_password setBackgroundColor:[UIColor clearColor]];
-                [_password setTextAlignment:UITextAlignmentRight];
+                [_password setTextAlignment:NSTextAlignmentRight];
                 [_password setPlaceholder:@"password"];
                 
                 [_password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];             

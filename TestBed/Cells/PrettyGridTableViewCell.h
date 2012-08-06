@@ -116,7 +116,7 @@
 /** @name Managing the labels */
 
 /** Specifies the text alignment used in the grids. */
-@property (nonatomic, assign) UITextAlignment textAlignment;
+@property (nonatomic, assign) NSTextAlignment textAlignment;
 
 /** Returns an array with all the texts in the grid. */
 @property (nonatomic, readonly) NSArray *texts;

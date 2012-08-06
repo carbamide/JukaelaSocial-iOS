@@ -14,5 +14,6 @@ extern NSString * const kJKPrepareForReuseNotification;
 
 @property (nonatomic, retain) UILabel *nameLabel;
 @property (nonatomic, retain) UILabel *dateLabel;
+@property (strong, retain) UILabel *usernameLabel;
 
 @end

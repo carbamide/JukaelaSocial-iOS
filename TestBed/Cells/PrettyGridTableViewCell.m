@@ -446,7 +446,7 @@
         [subview release];
         
         self.elementSelectionStyle = UITableViewCellSelectionStyleBlue;
-        self.textAlignment = UITextAlignmentCenter;
+        self.textAlignment = NSTextAlignmentCenter;
         [self initVars];
     }
     return self;

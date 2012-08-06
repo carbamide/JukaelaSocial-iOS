@@ -14,6 +14,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 
 @synthesize nameLabel;
 @synthesize dateLabel;
+@synthesize usernameLabel;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -22,7 +23,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 	if (self) {
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 5, 140, 15)];
         
-        [nameLabel setTextAlignment:UITextAlignmentLeft];
+        [nameLabel setTextAlignment:NSTextAlignmentLeft];
         [nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
         [nameLabel setBackgroundColor:[UIColor clearColor]];
         [nameLabel setTag:8];
@@ -30,18 +31,28 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [self addSubview:nameLabel];
         
         dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 5, 80, 140, 15)];
-        [dateLabel setTextAlignment:UITextAlignmentCenter];
+        [dateLabel setTextAlignment:NSTextAlignmentCenter];
         [dateLabel setFont:[UIFont fontWithName:@"Helvetica" size:12]];
         [dateLabel setBackgroundColor:[UIColor clearColor]];
         [dateLabel setTag:8];
         
         [self addSubview:dateLabel];
-                
+            
+        usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(180, 5, 140, 15)];
+        [usernameLabel setTextAlignment:NSTextAlignmentRight];
+        [usernameLabel setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+        [usernameLabel setBackgroundColor:[UIColor clearColor]];
+        [usernameLabel setTextColor:[UIColor darkGrayColor]];
+        [usernameLabel setTag:8];
+        [usernameLabel sizeToFit];
+        
+        [self addSubview:usernameLabel];
+        
         [[self imageView] addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionOld context:NULL];
         [[self textLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
 		[[self nameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
         [[self dateLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
-        
+        [[self usernameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
 	}
 	
 	return self;
@@ -59,6 +70,8 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self textLabel] setNumberOfLines:0];
     [[self textLabel] sizeToFit];
         
+    [[self usernameLabel] setFrame:CGRectMake(self.frame.size.width - self.usernameLabel.frame.size.width - 5, 3, 140, 15)];
+
     [[self detailTextLabel] setFrame:CGRectMake(90, 25, 150, 76)];
     
     [[self dateLabel] sizeToFit];

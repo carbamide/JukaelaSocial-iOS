@@ -146,9 +146,9 @@
         case 0: {
             [cell prepareForTableView:tableView indexPath:indexPath];
             
-            [[cell textLabel] setTextAlignment:UITextAlignmentRight];
+            [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
             [[cell textLabel] setText:[self userDict][@"name"]];
-            [[cell detailTextLabel] setTextAlignment:UITextAlignmentRight];
+            [[cell detailTextLabel] setTextAlignment:NSTextAlignmentRight];
             
             if ([self userDict][@"username"] && [self userDict][@"username"] != [NSNull null]) {
                 [[cell detailTextLabel] setText:[self userDict][@"username"]];

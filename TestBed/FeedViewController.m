@@ -314,6 +314,10 @@
         }
     }
     
+    if ([self theFeed][[indexPath row]][@"username"] && [self theFeed][[indexPath row]][@"username"] != [NSNull null]) {
+        [[cell usernameLabel] setText:[self theFeed][[indexPath row]][@"username"]];
+    }
+    
     NSDate *tempDate = [NSDate dateWithISO8601String:[self theFeed][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];

@@ -40,7 +40,8 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{@NO: @"post_to_twitter",
-     @NO: @"post_to_facebook"}];
+     @NO: @"post_to_facebook",
+     @NO: @"confirm_post"}];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
                                                                            UIRemoteNotificationTypeBadge |

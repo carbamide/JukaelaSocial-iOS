@@ -15,6 +15,7 @@
 #endif
 #import <Twitter/Twitter.h>
 #import "PrettyKit.h"
+#import "UIAlertView+Blocks.h"
 
 @interface PostViewController ()
 @property (strong, nonatomic) ACAccountStore *accountStore;
@@ -79,6 +80,52 @@
 
 -(void)sendPost:(id)sender
 {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"]) {
+        RIButtonItem *confirmButton = [RIButtonItem itemWithLabel:@"Do it!"];
+        RIButtonItem *jukaelaButton = [RIButtonItem itemWithLabel:@"Just to Jukaela!"];
+        RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
+        
+        [confirmButton setAction:^{
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+                [self sendTweet:[[self theTextView] text]];
+            }
+            
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+                [self sendFacebookPost:[[self theTextView] text]];
+            }
+            
+            [self sendJukaelaPost];
+        }];
+        
+        [jukaelaButton setAction:^{
+            [self sendJukaelaPost];
+        }];
+        
+        [cancelButton setAction:^{
+            return;
+        }];
+        
+        UIAlertView *confirmAlert = [[UIAlertView alloc] initWithTitle:@"Confirm" message:@"Confirm sending to other services?" cancelButtonItem:cancelButton otherButtonItems:confirmButton, jukaelaButton, nil];
+        
+        [confirmAlert show];
+    }
+    else {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+            [self sendTweet:[[self theTextView] text]];
+        }
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+            [self sendFacebookPost:[[self theTextView] text]];
+        }
+        
+        [self sendJukaelaPost];
+    }
+    
+    
+}
+
+-(void)sendJukaelaPost
+{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"set_change_type" object:@0];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -112,20 +159,12 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
-        [self sendTweet:[[self theTextView] text]];
-    }
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
-        [self sendFacebookPost:[[self theTextView] text]];
-    }
-    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
-
+            
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -144,15 +183,15 @@
 
 - (void)sendTweet:(NSString *)stringToSend
 {
-	ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-	
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    
     ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-	
+    
     [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
         if(granted) {
             NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-			
-			if ([accountsArray count] > 0) {
+            
+            if ([accountsArray count] > 0) {
                 ACAccount *twitterAccount = accountsArray[0];
                 
                 TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:@{@"status": stringToSend} requestMethod:TWRequestMethodPOST];
@@ -177,7 +216,7 @@
                 }];
             }
         }
-	}];
+    }];
 }
 
 - (void)sendFacebookPost:(NSString *)stringToSend

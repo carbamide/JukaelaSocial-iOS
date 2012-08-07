@@ -16,6 +16,15 @@
 
 @interface SettingsViewController ()
 
+typedef enum {
+    FacebookType,
+    TwitterType,
+    ConfirmType
+} SocialTypes;
+
+@property (strong, nonatomic) UISwitch *facebookSwitch;
+@property (strong, nonatomic) UISwitch *twitterSwitch;
+@property (strong, nonatomic) UISwitch *confirmSwitch;
 @end
 
 @implementation SettingsViewController
@@ -81,10 +90,10 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        return 6;
+        return 7;
     }
     else {
-        return 5;
+        return 6;
     }
 }
 
@@ -117,6 +126,7 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [self setTwitterSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+        [[self twitterSwitch] setTag:TwitterType];
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
             [[self twitterSwitch] setOn:YES];
@@ -127,7 +137,7 @@
         
         [cell setAccessoryView:[self twitterSwitch]];
         
-        [[self twitterSwitch] addTarget:self action:@selector(twitterSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+        [[self twitterSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     }
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         if ([indexPath row] == 5) {
@@ -135,7 +145,8 @@
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             
             [self setFacebookSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
-            
+            [[self facebookSwitch] setTag:FacebookType];
+
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
                 [[self facebookSwitch] setOn:YES];
             }
@@ -145,62 +156,95 @@
             
             [cell setAccessoryView:[self facebookSwitch]];
             
-            [[self facebookSwitch] addTarget:self action:@selector(facebookSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+            [[self facebookSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         }
+    }
+    if ([indexPath row] == 6) {
+        [[cell textLabel] setText:@"Confirm before posting to other social networks?"];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
+        [self setConfirmSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+        [[self confirmSwitch] setTag:ConfirmType];
+
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"]) {
+            [[self confirmSwitch] setOn:YES];
+        }
+        else {
+            [[self confirmSwitch] setOn:NO];
+        }
+        
+        [cell setAccessoryView:[self confirmSwitch]];
+        
+        [[self confirmSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     }
     return cell;
 }
 
--(void)facebookSwitchChanged:(id)sender
+-(void)switchChanged:(id)sender
 {
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-        
-        ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-        
-        NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-        
-        if ([accountsArray count] > 0) {
-            [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
+    switch ([sender tag]) {
+        case 0:
+        {
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+                ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+                
+                ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+                
+                NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+                
+                if ([accountsArray count] > 0) {
+                    [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+                else {
+                    [[self facebookSwitch] setOn:NO animated:YES];
+                    
+                    UIAlertView *noAccounts = [[UIAlertView alloc] initWithTitle:@"No Account"
+                                                                         message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."
+                                                                        delegate:nil
+                                                               cancelButtonTitle:@"OK"
+                                                               otherButtonTitles:nil, nil];
+                    
+                    [noAccounts show];
+                }
+            }
+        }
+            break;
+        case 1:
+        {
+            ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+            
+            ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+            
+            NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+            
+            if ([accountsArray count] > 0) {
+                [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:@"post_to_twitter"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            else {
+                [[self twitterSwitch] setOn:NO animated:YES];
+                
+                UIAlertView *noAccounts = [[UIAlertView alloc] initWithTitle:@"No Account"
+                                                                     message:@"You don't seem to have a Twitter account set up.  Please set one up in the Settings app."
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"OK"
+                                                           otherButtonTitles:nil, nil];
+                
+                [noAccounts show];
+            }
+        }
+            break;
+        case 2:
+        {
+            [[NSUserDefaults standardUserDefaults] setBool:[[self confirmSwitch] isOn] forKey:@"confirm_post"];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
-        else {
-            [[self facebookSwitch] setOn:NO animated:YES];
-            
-            UIAlertView *noAccounts = [[UIAlertView alloc] initWithTitle:@"No Account"
-                                                                 message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."
-                                                                delegate:nil
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil, nil];
-            
-            [noAccounts show];
-        }
+            break;
+        default:
+            break;
     }
-}
 
--(void)twitterSwitchChanged:(id)sender
-{
-    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-	
-    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-	
-    NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-    
-    if ([accountsArray count] > 0) {
-        [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:@"post_to_twitter"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    else {
-        [[self twitterSwitch] setOn:NO animated:YES];
-        
-        UIAlertView *noAccounts = [[UIAlertView alloc] initWithTitle:@"No Account"
-                                                             message:@"You don't seem to have a Twitter account set up.  Please set one up in the Settings app."
-                                                            delegate:nil
-                                                   cancelButtonTitle:@"OK"
-                                                   otherButtonTitles:nil, nil];
-        
-        [noAccounts show];
-    }
 }
 
 #pragma mark - Table view delegate

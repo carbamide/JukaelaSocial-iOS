@@ -10,9 +10,6 @@
 
 @interface SettingsViewController : UITableViewController
 
-@property (strong, nonatomic) UISwitch *facebookSwitch;
-@property (strong, nonatomic) UISwitch *twitterSwitch;
-
 -(void)logOut:(id)sender;
 
 @end

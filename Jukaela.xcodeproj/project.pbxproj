@@ -788,7 +788,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Joshua Barrow";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -806,7 +806,7 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5F2A9175-35B9-4E58-86BA-32F83731D95F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "03A0E2EB-E143-4DB6-998D-35E05C777AD0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -815,7 +815,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Joshua Barrow";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
 				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
@@ -834,7 +834,7 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5F2A9175-35B9-4E58-86BA-32F83731D95F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "03A0E2EB-E143-4DB6-998D-35E05C777AD0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

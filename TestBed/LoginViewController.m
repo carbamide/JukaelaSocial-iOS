@@ -11,24 +11,12 @@
 #import "LoginViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "UIView+FindAndResignFirstResponder.h"
-#import "PrettyKit.h"
 
 @interface LoginViewController ()
 @property (strong, nonatomic) NSArray *tempFeed;
 @end
 
 @implementation LoginViewController
-
--(void)customizeNavigationBar
-{
-    PrettyNavigationBar *navBar = (PrettyNavigationBar *)self.navigationController.navigationBar;
-    
-    [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
-    [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];
-    [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
-    [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
-    [navBar setTintColor:[navBar gradientEndColor]];
-}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -318,9 +306,7 @@
     [[self imageView] setClipsToBounds:NO];
     
     [super viewDidLoad];
-    
-    [self customizeNavigationBar];
-    
+        
     _username = [[UITextField alloc] init];
     _password = [[UITextField alloc] init];
 }

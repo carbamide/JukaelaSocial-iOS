@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ShowUserViewController : UITableViewController
+@interface ShowUserViewController : JukaelaTableViewController
 
 @property (strong, nonatomic) NSDictionary *userDict;
 @property (strong, nonatomic) NSArray *followers;

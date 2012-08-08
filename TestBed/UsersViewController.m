@@ -14,7 +14,6 @@
 #import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
 #import "UsersViewController.h"
-#import "PrettyKit.h"
 
 @interface UsersViewController ()
 @property (strong, nonatomic) NSMutableArray *tempArray;
@@ -23,17 +22,6 @@
 @end
 
 @implementation UsersViewController
-
--(void)customizeNavigationBar
-{
-    PrettyNavigationBar *navBar = (PrettyNavigationBar *)self.navigationController.navigationBar;
-    
-    [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
-    [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];
-    [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
-    [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
-    [navBar setTintColor:[navBar gradientEndColor]];
-}
 
 -(id)initWithStyle:(UITableViewStyle)style
 {
@@ -45,14 +33,12 @@
 }
 
 -(void)viewDidLoad
-{    
-    [self customizeNavigationBar];
-    
+{
+    [super viewDidLoad];
+
     [self getUsers];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
-    
-    [super viewDidLoad];
 }
 
 -(void)getUsers

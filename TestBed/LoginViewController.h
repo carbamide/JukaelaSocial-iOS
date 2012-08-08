@@ -10,7 +10,7 @@
 #import "MBProgressHUD.h"
 #import "CPCheckBox.h"
 
-@interface LoginViewController : UIViewController <NSURLConnectionDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, MBProgressHUDDelegate>
+@interface LoginViewController : JukaelaViewController <NSURLConnectionDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, MBProgressHUDDelegate>
 {
     NSDictionary *loginDict;
 }

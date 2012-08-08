@@ -8,7 +8,6 @@
 
 #import "EditUserViewController.h"
 #import "AppDelegate.h"
-#import "PrettyKit.h"
 
 @interface EditUserViewController ()
 -(NSArray *)fieldsArray;
@@ -16,17 +15,6 @@
 @end
 
 @implementation EditUserViewController
-
--(void)customizeNavigationBar
-{
-    PrettyNavigationBar *navBar = (PrettyNavigationBar *)self.navigationController.navigationBar;
-    
-    [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
-    [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];
-    [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
-    [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
-    [navBar setTintColor:[navBar gradientEndColor]];
-}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -62,9 +50,7 @@
 }
 
 - (void)viewDidLoad
-{
-    [self customizeNavigationBar];
-    
+{    
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];

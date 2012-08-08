@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EditUserViewController : UITableViewController
+@interface EditUserViewController : JukaelaTableViewController
 
 @property (strong, nonatomic) UITextField *nameTextField;
 @property (strong, nonatomic) UITextField *usernameTextField;

@@ -10,6 +10,8 @@
 		290045D615576D5D004F113A /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 290045D515576D5D004F113A /* UsersViewController.m */; };
 		290045DA15576D9C004F113A /* Users.png in Resources */ = {isa = PBXBuildFile; fileRef = 290045D815576D9C004F113A /* Users.png */; };
 		290045DB15576D9C004F113A /* Users@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 290045D915576D9C004F113A /* Users@2x.png */; };
+		29084D5B15D2B2BC00CB7FFF /* JukaelaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */; };
+		29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */; };
 		291EB58315649366005FB66D /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291EB58215649366005FB66D /* PostViewController.m */; };
 		29204EF01553684200D5479D /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29204EEF1553684200D5479D /* FeedViewController.m */; };
 		292434711565E330007C8E8C /* UsersPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292434701565E330007C8E8C /* UsersPostsViewController.m */; };
@@ -102,6 +104,10 @@
 		290045D515576D5D004F113A /* UsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersViewController.m; sourceTree = "<group>"; };
 		290045D815576D9C004F113A /* Users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Users.png; sourceTree = "<group>"; };
 		290045D915576D9C004F113A /* Users@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Users@2x.png"; sourceTree = "<group>"; };
+		29084D5915D2B2BC00CB7FFF /* JukaelaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaViewController.h; sourceTree = "<group>"; };
+		29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaViewController.m; sourceTree = "<group>"; };
+		29084D5D15D2B36D00CB7FFF /* JukaelaTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaTableViewController.h; sourceTree = "<group>"; };
+		29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaTableViewController.m; sourceTree = "<group>"; };
 		291EB58115649366005FB66D /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
 		291EB58215649366005FB66D /* PostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostViewController.m; sourceTree = "<group>"; };
 		29204EEE1553684200D5479D /* FeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedViewController.h; sourceTree = "<group>"; };
@@ -508,6 +514,10 @@
 				29204EEF1553684200D5479D /* FeedViewController.m */,
 				297FE037156846E0005FBFDA /* FollowerViewController.h */,
 				297FE038156846E0005FBFDA /* FollowerViewController.m */,
+				29084D5D15D2B36D00CB7FFF /* JukaelaTableViewController.h */,
+				29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */,
+				29084D5915D2B2BC00CB7FFF /* JukaelaViewController.h */,
+				29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */,
 				2956876F1552C96700FE741C /* LoginViewController.h */,
 				295687701552C96700FE741C /* LoginViewController.m */,
 				291EB58115649366005FB66D /* PostViewController.h */,
@@ -714,6 +724,8 @@
 				2975293E15CEF6BE00A3E71D /* WBBlueGradientView.m in Sources */,
 				2975293F15CEF6BE00A3E71D /* WBGrayGradientView.m in Sources */,
 				2975294015CEF6BE00A3E71D /* WBRedGradientView.m in Sources */,
+				29084D5B15D2B2BC00CB7FFF /* JukaelaViewController.m in Sources */,
+				29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -787,15 +799,21 @@
 		295687751552C96700FE741C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
-				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
@@ -814,16 +832,22 @@
 		295687761552C96700FE741C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
 				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
-				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;

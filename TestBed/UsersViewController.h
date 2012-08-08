@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UsersViewController : UITableViewController
+@interface UsersViewController : JukaelaTableViewController
 
 @property (strong, nonatomic) NSArray *usersArray;
 

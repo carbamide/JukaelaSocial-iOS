@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FollowerViewController : UITableViewController
+@interface FollowerViewController : JukaelaTableViewController
 
 @property (strong, nonatomic) NSArray *usersArray;
 

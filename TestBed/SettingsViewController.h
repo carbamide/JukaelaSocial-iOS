@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingsViewController : UITableViewController
+@interface SettingsViewController : JukaelaTableViewController
 
 -(void)logOut:(id)sender;
 

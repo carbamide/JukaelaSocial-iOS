@@ -7,6 +7,9 @@
 //
 
 #import "Helpers.h"
+#import "JukaelaViewController.h"
+#import "JukaelaTableViewController.h"
+#import "PrettyKit.h"
 #import "ODRefreshControl.h"
 #import "UIAlertView+Blocks.h"
 #import "UIActionSheet+Blocks.h"
@@ -31,5 +34,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 308;
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 static char * const kIndexPathAssociationKey = "Jukaela_index_path";
+#define jMIN(a,b) (((a)<(b))?(a):(b))
+#define jMAX(a,b) (((a)>(b))?(a):(b))
 
 CGFloat animatedDistance;

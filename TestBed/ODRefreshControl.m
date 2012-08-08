@@ -112,7 +112,7 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
             _shapeLayer.position = CGPointMake(0, kMaxDistance + offset + kOpenedViewHeight);
             [CATransaction commit];
             //_activity.center = CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(self.frame.size.height / 2), floor(self.frame.size.height / 2)));
-            _activity.center = CGPointMake(floor(self.frame.size.width / 2), MIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2));
+            _activity.center = CGPointMake(floor(self.frame.size.width / 2), jMIN(offset + self.frame.size.height + floor(kOpenedViewHeight / 2), self.frame.size.height - kOpenedViewHeight/ 2));
             
             // Set the inset only when bouncing back and not dragging
             if (offset >= -kOpenedViewHeight && !self.scrollView.dragging) {
@@ -136,8 +136,8 @@ static inline CGFloat lerp(CGFloat a, CGFloat b, CGFloat p)
     CGMutablePathRef path = CGPathCreateMutable();
     
     //Calculate some useful points and values
-    CGFloat verticalShift = MAX(0, -((kMaxTopRadius + kMaxBottomRadius + kMaxTopPadding + kMaxBottomPadding) + offset));
-    CGFloat distance = MIN(kMaxDistance, fabs(verticalShift));
+    CGFloat verticalShift = jMAX(0, -((kMaxTopRadius + kMaxBottomRadius + kMaxTopPadding + kMaxBottomPadding) + offset));
+    CGFloat distance = jMIN(kMaxDistance, fabs(verticalShift));
     CGFloat percentage = 1 - (distance / kMaxDistance);
     
     CGFloat currentTopPadding = lerp(kMinTopPadding, kMaxTopPadding, percentage);

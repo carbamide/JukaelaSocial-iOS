@@ -1,6 +1,7 @@
 #import "UIImage+Resize.h"
 #import "UIImage+RoundedCorner.h"
 #import "UIImage+Alpha.h"
+#import "Constants.h"
 
 // Private helper methods
 @interface UIImage ()
@@ -85,11 +86,11 @@
     
     switch (contentMode) {
         case UIViewContentModeScaleAspectFill:
-            ratio = MAX(horizontalRatio, verticalRatio);
+            ratio = jMAX(horizontalRatio, verticalRatio);
             break;
             
         case UIViewContentModeScaleAspectFit:
-            ratio = MIN(horizontalRatio, verticalRatio);
+            ratio = jMIN(horizontalRatio, verticalRatio);
             break;
             
         default:

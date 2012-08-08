@@ -14,7 +14,6 @@
 #import <Social/Social.h>
 #endif
 #import <Twitter/Twitter.h>
-#import "PrettyKit.h"
 #import "UIAlertView+Blocks.h"
 
 @interface PostViewController ()
@@ -27,9 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self customizeNavigationBar];
-    
+        
     [self setupNavbarForPosting];
 }
 
@@ -49,17 +46,6 @@
     [_theTextView setShowCloseButton:NO];
     
     [_theTextView showInView:[self view]];
-}
-
--(void)customizeNavigationBar
-{
-    PrettyNavigationBar *navBar = (PrettyNavigationBar *)self.navigationController.navigationBar;
-    
-    [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
-    [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];
-    [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
-    [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
-    [navBar setTintColor:[navBar gradientEndColor]];
 }
 
 -(void)setupNavbarForPosting

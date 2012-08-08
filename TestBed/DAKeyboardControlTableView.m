@@ -170,7 +170,7 @@
             CGPoint touchLocation = [self.panGestureRecognizer locationInView:activeKeyboard];
             
             CGRect newFrame = activeKeyboard.frame;
-            CGFloat newY = MAX(activeKeyboard.frame.origin.y + touchLocation.y + keyboardTriggerOffset, originalKeyboardFrame.origin.y);
+            CGFloat newY = jMAX(activeKeyboard.frame.origin.y + touchLocation.y + keyboardTriggerOffset, originalKeyboardFrame.origin.y);
             newFrame.origin.y = newY;
             
             if(self.delegate && [self.delegate respondsToSelector:@selector(keyboardFrameWillChange:from:over:)] && !activeKeyboard.hidden)

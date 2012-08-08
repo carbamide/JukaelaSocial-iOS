@@ -8,7 +8,6 @@
 
 #import <Accounts/Accounts.h>
 #import "SettingsViewController.h"
-#import "PrettyKit.h"
 #ifdef __IPHONE_6_0
 #import <Social/Social.h>
 #endif
@@ -28,17 +27,6 @@ typedef enum {
 @end
 
 @implementation SettingsViewController
-
--(void)customizeNavigationBar
-{
-    PrettyNavigationBar *navBar = (PrettyNavigationBar *)self.navigationController.navigationBar;
-    
-    [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
-    [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];
-    [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
-    [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
-    [navBar setTintColor:[navBar gradientEndColor]];
-}
 
 -(void)logOut:(id)sender
 {
@@ -62,9 +50,7 @@ typedef enum {
 }
 
 -(void)viewDidLoad
-{
-    [self customizeNavigationBar];
-    
+{    
     [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
     [super viewDidLoad];

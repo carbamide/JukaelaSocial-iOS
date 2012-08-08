@@ -42,10 +42,21 @@
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
-        [[self nameTextField] setText:[self tempDict][@"name"]];
-        [[self usernameTextField] setText:[self tempDict][@"username"]];
-        [[self emailTextField] setText:[self tempDict][@"email"]];
-        [[self profileTextField] setText:[self tempDict][@"profile"]];
+        if ([self tempDict][@"name"]) {
+            [[self nameTextField] setText:[self tempDict][@"name"]];
+        }
+        
+        if ([self tempDict][@"username"]) {
+            [[self usernameTextField] setText:[self tempDict][@"username"]];
+        }
+        
+        if ([self tempDict][@"email"]) {
+            [[self emailTextField] setText:[self tempDict][@"email"]];
+        }
+        
+        if ([self tempDict][@"profile"]) {
+            [[self profileTextField] setText:[self tempDict][@"profile"]];
+        }
     }];
 }
 

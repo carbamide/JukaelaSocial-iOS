@@ -70,7 +70,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self textLabel] setNumberOfLines:0];
     [[self textLabel] sizeToFit];
         
-    [[self usernameLabel] setFrame:CGRectMake(self.frame.size.width - self.usernameLabel.frame.size.width - 5, 3, 140, 15)];
+    [[self usernameLabel] setFrame:CGRectMake(self.frame.size.width - self.usernameLabel.frame.size.width - 5, 5, 140, 15)];
 
     [[self detailTextLabel] setFrame:CGRectMake(90, 25, 150, 76)];
     
@@ -79,20 +79,26 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self dateLabel] setCenter:[[self imageView] center]];
 
     [[self dateLabel] setFrame:CGRectMake(self.dateLabel.frame.origin.x, self.imageView.frame.origin.y + self.imageView.frame.size.height, self.dateLabel.frame.size.width, self.dateLabel.frame.size.height)];
+    
+    if (![[self imageView] image]) {
+        [[self imageView] addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionOld context:NULL];
+    }
 }
 
 -(void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
 	[super setSelected:selected animated:animated];
     
-	self.textLabel.backgroundColor = [UIColor clearColor];
-	self.detailTextLabel.backgroundColor = [UIColor clearColor];
+    [[self textLabel] setBackgroundColor:[UIColor clearColor]];
+    [[self detailTextLabel] setBackgroundColor:[UIColor clearColor]];
 }
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if (object == [self imageView] && [keyPath isEqualToString:@"image"] && (change[NSKeyValueChangeOldKey] == nil || change[NSKeyValueChangeOldKey] == [NSNull null])) {
+        [[self imageView] setNeedsLayout];
         [self setNeedsLayout];
+        
         [[self imageView] removeObserver:self forKeyPath:@"image"];
     }
 }

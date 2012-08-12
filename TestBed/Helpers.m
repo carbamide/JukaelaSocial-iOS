@@ -74,4 +74,27 @@
         [data writeToFile:path atomically:YES];
     }
 }
+
++(NSMutableURLRequest *)getRequestWithURL:(NSURL *)url
+{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    
+    return request;
+}
+
++(NSMutableURLRequest *)postRequestWithURL:(NSURL *)url withData:(NSData *)data
+{
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:data];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
+    
+    return request;
+}
 @end

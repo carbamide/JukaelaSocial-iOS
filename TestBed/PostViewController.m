@@ -138,13 +138,8 @@
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:requestData];
-    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
-    
+    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+        
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];

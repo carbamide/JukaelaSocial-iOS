@@ -15,4 +15,7 @@
 +(void)moveViewDown:(UIView *)aView;
 +(void)saveImage:(UIImage *)image withFileName:(NSString *)emailAddress;
 
++(NSMutableURLRequest *)getRequestWithURL:(NSURL *)url;
++(NSMutableURLRequest *)postRequestWithURL:(NSURL *)url withData:(NSData *)data;
+
 @end

@@ -35,7 +35,7 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     [self getUsers];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
@@ -50,11 +50,16 @@
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-        
-        [[self tableView] reloadData];
+        if (data) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            [[self tableView] reloadData];
+        }
+        else {
+            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
+        }
     }];
 }
 
@@ -90,7 +95,7 @@
         cell = [[ClearLabelsCellView alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
         [cell setBackgroundView:[[GradientView alloc] init]];
-    } 
+    }
     
     [[cell textLabel] setText:[self usersArray][[indexPath row]][@"name"]];
     
@@ -106,13 +111,13 @@
     if (image) {
 		[[cell imageView] setImage:image];
         [cell setNeedsDisplay];
-	} 
-    else {    
+	}
+    else {
 		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
 		objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
 		
-		dispatch_async(queue, ^{            
+		dispatch_async(queue, ^{
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]]]]];
 			
 #if (TARGET_IPHONE_SIMULATOR)
@@ -128,7 +133,7 @@
                     [cell setNeedsDisplay];
 				}
 				
-                [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]];             
+                [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]];
 			});
 		});
 	}
@@ -138,7 +143,7 @@
 #pragma mark - Table view delegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{       
+{
     RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
     RIButtonItem *showUserButton = [RIButtonItem itemWithLabel:@"Show User..."];
     
@@ -158,19 +163,24 @@
         [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                        
-            [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
-            
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            
-            [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+            if (data) {
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                
+                [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+                
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                
+                [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+            }
+            else {
+                [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
+            }
         }];
     }];
     
-    UIActionSheet *userActionSheet = [[UIActionSheet alloc] initWithTitle:nil 
-                                                         cancelButtonItem:cancelButton 
-                                                    destructiveButtonItem:nil 
+    UIActionSheet *userActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                         cancelButtonItem:cancelButton
+                                                    destructiveButtonItem:nil
                                                          otherButtonItems:showUserButton, nil];
     
     [userActionSheet showFromTabBar:[[self tabBarController] tabBar]];

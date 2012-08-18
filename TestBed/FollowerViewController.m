@@ -48,11 +48,16 @@
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-        
-        [[self tableView] reloadData];
+        if (data) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            [[self tableView] reloadData];
+        }
+        else {
+            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user list.  Please logout and log back in."];
+        }
     }];
 }
 
@@ -156,13 +161,42 @@
         [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                        
-            [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+            if (data) {
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                
+                [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+                
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                
+                [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+            }
+            else {
+                RIButtonItem *logoutButton = [RIButtonItem itemWithLabel:@"Logout"];
+                RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
+                
+                [logoutButton setAction:^{
+                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"read_username_from_defaults"];
+                    
+                    [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
+                    
+                    [[self tabBarController] setSelectedIndex:0];
+                    
+                    [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
+                    [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
+                }];
+                
+                [cancelButton setAction:^{
+                    return;
+                }];
+                
+                UIAlertView *errorReloadingAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                              message:@"There was an error showing the user.  Please logout and log back in."
+                                                                     cancelButtonItem:cancelButton
+                                                                     otherButtonItems:logoutButton, nil];;
+                
+                [errorReloadingAlert show];
+            }
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            
-            [self performSegueWithIdentifier:@"ShowUser" sender:nil];
         }];
     }];
     

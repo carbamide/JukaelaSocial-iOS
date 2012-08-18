@@ -26,8 +26,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)]];        
+    
+    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)]];
     
     [[self navigationItem] setTitle:@"Show User"];
     
@@ -104,7 +104,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{ 
+{
     if ([indexPath section] == 0) {
         return 100;
     }
@@ -147,11 +147,11 @@
             
             if (image) {
                 [[cell imageView] setImage:image];
-            } 
-            else { 
+            }
+            else {
                 dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
                 
-                dispatch_async(queue, ^{            
+                dispatch_async(queue, ^{
                     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][@"email"]]]];
                     
 #if (TARGET_IPHONE_SIMULATOR)
@@ -161,7 +161,7 @@
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[cell imageView] setImage:resizedImage];
-                        [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]];      
+                        [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]];
                     });
                 });
             }
@@ -196,19 +196,19 @@
             
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self following] count]] atIndex:0];
             [segmentedCell setDetailText:@"Following" atIndex:0];
-                        
+            
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self followers] count]] atIndex:1];
             [segmentedCell setDetailText:@"Followers" atIndex:1];
             
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self posts] count]] atIndex:2];
             [segmentedCell setDetailText:@"Posts" atIndex:2];
-                        
+            
             [segmentedCell setActionBlock:^(NSIndexPath *indexPath, int selectedIndex) {
-                if (selectedIndex == 0) {    
+                if (selectedIndex == 0) {
                     [tempSegContCell deselectAnimated:YES];
                     
                     [self performSegueWithIdentifier:@"ShowFollowing" sender:nil];
-                } 
+                }
                 else if (selectedIndex == 1) {
                     [tempSegContCell deselectAnimated:YES];
                     
@@ -292,18 +292,24 @@
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [self userDict][@"id"]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        
+    
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [self setPosts:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                        
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        if (data) {
+            [self setPosts:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else {
+            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's posts.  Please logout and log back in."];
+        }
         
-        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }]; 
+    }];
 }
 
 -(void)getFollowing
@@ -315,11 +321,16 @@
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                
-        [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                
-        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+        if (data) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else {
+            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
+        }
     }];
 }
 
@@ -332,11 +343,17 @@
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        [self setFollowers:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                
-        [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+        if (data) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [self setFollowers:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else {
+            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
+
+        }
     }];
 }
 

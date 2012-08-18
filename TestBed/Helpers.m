@@ -97,4 +97,32 @@
     
     return request;
 }
+
++(void)errorAndLogout:(UIViewController *)aViewController withMessage:(NSString *)aMessage;
+{
+    RIButtonItem *logoutButton = [RIButtonItem itemWithLabel:@"Logout"];
+    RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
+    
+    [logoutButton setAction:^{
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"read_username_from_defaults"];
+        
+        [[[aViewController tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
+        
+        [[aViewController tabBarController] setSelectedIndex:0];
+        
+        [[[[aViewController tabBarController] tabBar] items][1] setEnabled:NO];
+        [[[[aViewController tabBarController] tabBar] items][2] setEnabled:NO];
+    }];
+    
+    [cancelButton setAction:^{
+        return;
+    }];
+    
+    UIAlertView *errorReloadingAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                  message:aMessage
+                                                         cancelButtonItem:cancelButton
+                                                         otherButtonItems:logoutButton, nil];;
+    
+    [errorReloadingAlert show];
+}
 @end

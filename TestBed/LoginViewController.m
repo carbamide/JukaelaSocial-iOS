@@ -190,7 +190,7 @@
             [[self progressHUD] hide:YES];
             
             UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" 
-                                                                 message:@"Either the server just crapped itself or you have no internet connection.  At all." 
+                                                                 message:@"Unable to login" 
                                                                 delegate:nil 
                                                        cancelButtonTitle:@"OK"
                                                        otherButtonTitles:nil, nil];
@@ -234,11 +234,16 @@
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [self setTempFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        [self performSegueWithIdentifier:@"ShowFeed" sender:self];
+        if (data) {
+            [self setTempFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [self performSegueWithIdentifier:@"ShowFeed" sender:self];
+        }
+        else {
+            [Helpers errorAndLogout:self withMessage:@"There was an error loading your feed.  Please logout and log back in."];
+        }
     }];
 }
 

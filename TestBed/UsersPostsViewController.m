@@ -129,8 +129,6 @@
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[self userPostArray][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
     
-    NSLog(@"%@", tempDate);
-
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"email"]]]]];
@@ -288,17 +286,22 @@
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [self setUserPostArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-        
-        [[self tableView] reloadData];
-        
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-            [[self refreshControl] endRefreshing];
+        if (data) {
+            [self setUserPostArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            [[self tableView] reloadData];
+            
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+                [[self refreshControl] endRefreshing];
+            }
+            else {
+                [_oldRefreshControl endRefreshing];
+            }
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }
         else {
-            [_oldRefreshControl endRefreshing];
+            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
         }
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }];
 }
 @end

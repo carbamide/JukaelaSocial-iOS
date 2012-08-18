@@ -30,34 +30,39 @@
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, userID]];
-        
+    
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-        
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        if ([self tempDict][@"name"]) {
-            [[self nameTextField] setText:[self tempDict][@"name"]];
+        if (data) {
+            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            if ([self tempDict][@"name"]) {
+                [[self nameTextField] setText:[self tempDict][@"name"]];
+            }
+            
+            if ([self tempDict][@"username"]) {
+                [[self usernameTextField] setText:[self tempDict][@"username"]];
+            }
+            
+            if ([self tempDict][@"email"]) {
+                [[self emailTextField] setText:[self tempDict][@"email"]];
+            }
+            
+            if ([self tempDict][@"profile"]) {
+                [[self profileTextField] setText:[self tempDict][@"profile"]];
+            }
         }
-        
-        if ([self tempDict][@"username"]) {
-            [[self usernameTextField] setText:[self tempDict][@"username"]];
-        }
-        
-        if ([self tempDict][@"email"]) {
-            [[self emailTextField] setText:[self tempDict][@"email"]];
-        }
-        
-        if ([self tempDict][@"profile"]) {
-            [[self profileTextField] setText:[self tempDict][@"profile"]];
+        else {
+            [Helpers errorAndLogout:self withMessage:@"There was an error reloading your feed.  Please logout and log back in."];
         }
     }];
 }
 
 - (void)viewDidLoad
-{    
+{
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
@@ -120,10 +125,10 @@
                                                                 delegate:nil
                                                        cancelButtonTitle:@"OK"
                                                        otherButtonTitles:nil, nil];
-         
+            
             [errorAlert show];
         }
-     }];
+    }];
 }
 
 - (void)viewDidUnload
@@ -183,7 +188,7 @@
         
         [[self emailTextField] setKeyboardAppearance:UIKeyboardTypeEmailAddress];
         [[self emailTextField] setAutocapitalizationType:UITextAutocorrectionTypeNo];
-
+        
         [cell addSubview:[self emailTextField]];
     }
     if ([indexPath row] == 3) {

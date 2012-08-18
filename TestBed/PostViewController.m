@@ -26,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
     [self setupNavbarForPosting];
 }
 
@@ -139,7 +139,7 @@
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
-        
+    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
@@ -181,9 +181,18 @@
                 
                 [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                     if (responseData) {
-                        NSLog(@"Successfully posted to Twitter");
+                        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
                         
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"tweet_successful" object:nil];
+                        NSLog(@"The Twitter response was \n%@", jsonData);
+                        
+                        if (!jsonData[@"error"]) {
+                            NSLog(@"Successfully posted to Twitter");
+                            
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"tweet_successful" object:nil];
+                        }
+                        else {
+                            NSLog(@"Not posted to Twitter");
+                        }
                     }
                     else {
                         UIAlertView *twitterPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
@@ -196,6 +205,10 @@
                     }
                 }];
             }
+        }
+        else {
+            NSLog(@"Twitter access not granted.");
+            NSLog(@"%@", [error localizedDescription]);
         }
     }];
 }
@@ -218,6 +231,8 @@
                     
                     [self setFacebookAccount:[accounts lastObject]];
                     
+                    NSAssert([[[self facebookAccount] credential] oauthToken], @"The OAuth token is invalid", nil);
+                    
                     NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
                     NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
                     
@@ -225,9 +240,18 @@
                     
                     [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
                         if (responseData) {
-                            NSLog(@"Successfully posted to Facebook");
+                            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
                             
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_successful" object:nil];
+                            NSLog(@"The Facebook response was \n%@", jsonData);
+                            
+                            if (!jsonData[@"error"]) {
+                                NSLog(@"Successfully posted to Facebook");
+                                
+                                [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_successful" object:nil];
+                            }
+                            else {
+                                NSLog(@"Not posted to Facebook");
+                            }
                         }
                         else {
                             UIAlertView *facebookPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
@@ -242,7 +266,7 @@
                 }
                 else {
                     NSLog(@"Facebook access not granted.");
-                    NSLog(@"%@",[error localizedDescription]);
+                    NSLog(@"%@", [error localizedDescription]);
                 }
             }];
         }

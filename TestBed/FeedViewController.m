@@ -185,50 +185,55 @@
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        int oldNumberOfPosts = [[self theFeed] count];
-        
-        [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-        
-        int newNumberOfPosts = [[self theFeed] count];
-        
-        if ([self currentChangeType] == INSERT_POST) {
-            [[self tableView] beginUpdates];
-            [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-            [[self tableView] endUpdates];
-        }
-        else if ([self currentChangeType] == DELETE_POST) {
-            [[self tableView] beginUpdates];
-            [[self tableView] deleteRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationFade];
-            [[self tableView] endUpdates];
-        }
-        else {
-            if (newNumberOfPosts > oldNumberOfPosts) {
-                NSString *tempString;
-                
-                if ((newNumberOfPosts - oldNumberOfPosts) == 1) {
-                    tempString = @"Post";
-                }
-                else {
-                    tempString = @"Posts";
-                }
-                
-                WBStickyNoticeView *notice = [WBStickyNoticeView stickyNoticeInView:[self view]
-                                                                              title:[NSString stringWithFormat:@"%d New %@", (newNumberOfPosts - oldNumberOfPosts), tempString]];
-                
-                [notice show];
+        if (data) {
+            int oldNumberOfPosts = [[self theFeed] count];
+            
+            [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            int newNumberOfPosts = [[self theFeed] count];
+            
+            if ([self currentChangeType] == INSERT_POST) {
+                [[self tableView] beginUpdates];
+                [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                [[self tableView] endUpdates];
             }
-            [[self tableView] reloadData];
-        }
-        
-        [self setCurrentChangeType:-1];
-        
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-            [[self refreshControl] endRefreshing];
+            else if ([self currentChangeType] == DELETE_POST) {
+                [[self tableView] beginUpdates];
+                [[self tableView] deleteRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationFade];
+                [[self tableView] endUpdates];
+            }
+            else {
+                if (newNumberOfPosts > oldNumberOfPosts) {
+                    NSString *tempString;
+                    
+                    if ((newNumberOfPosts - oldNumberOfPosts) == 1) {
+                        tempString = @"Post";
+                    }
+                    else {
+                        tempString = @"Posts";
+                    }
+                    
+                    WBStickyNoticeView *notice = [WBStickyNoticeView stickyNoticeInView:[self view]
+                                                                                  title:[NSString stringWithFormat:@"%d New %@", (newNumberOfPosts - oldNumberOfPosts), tempString]];
+                    
+                    [notice show];
+                }
+                [[self tableView] reloadData];
+            }
+            
+            [self setCurrentChangeType:-1];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+                [[self refreshControl] endRefreshing];
+            }
+            else {
+                [_oldRefreshControl endRefreshing];
+            }
         }
         else {
-            [_oldRefreshControl endRefreshing];
+            [Helpers errorAndLogout:self withMessage:@"There was an error reloading your feed.  Please logout and log back in."];
         }
     }];
 }
@@ -315,7 +320,7 @@
     }
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[self theFeed][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
-        
+    
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]]];
@@ -403,8 +408,12 @@
         [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-            
+            if (data) {
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            }
+            else {
+                [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
+            }
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [self performSegueWithIdentifier:@"ShowUser" sender:nil];

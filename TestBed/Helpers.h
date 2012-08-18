@@ -18,4 +18,6 @@
 +(NSMutableURLRequest *)getRequestWithURL:(NSURL *)url;
 +(NSMutableURLRequest *)postRequestWithURL:(NSURL *)url withData:(NSData *)data;
 
++(void)errorAndLogout:(UIViewController *)aViewController withMessage:(NSString *)aMessage;
+
 @end

@@ -257,17 +257,18 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIFont *cellFont = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
+    NSString *contentText = [self theFeed][[indexPath row]][@"content"];
+    NSString *nameText = [self theFeed][[indexPath row]][@"name"];
     
-    CGSize constraintSize = CGSizeMake(215, 140);
-    CGSize labelSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+    CGSize constraint = CGSizeMake(215 - (7.5 * 2), 20000);
     
-    if (labelSize.height < 40) {
-        return 95;
-    }
-    else {
-        return labelSize.height + 55;
-    }
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    
+    CGSize nameSize = [nameText sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    
+    CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
+        
+    return height + (10 * 2);
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

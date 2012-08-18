@@ -56,7 +56,7 @@
             }
         }
         else {
-            [Helpers errorAndLogout:self withMessage:@"There was an error reloading your feed.  Please logout and log back in."];
+            [Helpers errorAndLogout:self withMessage:@"There was an error downloading user information.  Please logout and log back in."];
         }
     }];
 }

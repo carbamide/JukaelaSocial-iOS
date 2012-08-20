@@ -62,8 +62,8 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 {
     [super layoutSubviews];
     
-    [[self imageView] setBounds:CGRectMake(10, 0, 75, 75)];
-    [[self imageView] setFrame:CGRectMake(10, 0, 75, 75)];
+    [[self imageView] setBounds:CGRectMake(7, 0, 75, 75)];
+    [[self imageView] setFrame:CGRectMake(7, 0, 75, 75)];
     [[self imageView] setContentMode:UIViewContentModeScaleAspectFit];
     
     [[self textLabel] setFrame:CGRectMake(90, 25, 215, 140)];

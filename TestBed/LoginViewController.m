@@ -189,11 +189,9 @@
             
             [[self progressHUD] hide:YES];
             
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" 
-                                                                 message:@"Unable to login" 
-                                                                delegate:nil 
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil, nil];
+            BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"Unable to login"];
+            
+            [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
             
             [errorAlert show];
             
@@ -212,13 +210,11 @@
         else {
             [[self progressHUD] hide:YES];
             
-            UIAlertView *loginFailed = [[UIAlertView alloc] initWithTitle:@"Login Failed" 
-                                                                  message:@"The login has failed. Sorry!" 
-                                                                 delegate:nil 
-                                                        cancelButtonTitle:@"OK" 
-                                                        otherButtonTitles:nil, nil];
+            BlockAlertView *loginFailedAlert = [[BlockAlertView alloc] initWithTitle:@"Login Failed" message:@"The login has failed. Sorry!"];
             
-            [loginFailed show];
+            [loginFailedAlert setCancelButtonWithTitle:@"OK" block:nil];
+            
+            [loginFailedAlert show];
         }
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -309,11 +305,9 @@
 
 -(void)showMyLove:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"My Love" 
-                                                    message:@"This app was inspired by my wife Candice. She's the most beautiful, caring, lovely woman that I've ever known. She is my inspiration, she is my heart and I wouldn't be the person that I am if it weren't for her.  Candice, I love you." 
-                                                   delegate:nil 
-                                          cancelButtonTitle:@"OK" 
-                                          otherButtonTitles:nil, nil];
+    BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"My Love" message:@"This app was inspired by my wife Candice. She's the most beautiful, caring, lovely woman that I've ever known. She is my inspiration, she is my heart and I wouldn't be the person that I am if it weren't for her.  Candice, I love you."];
+    
+    [alert setCancelButtonWithTitle:@"OK" block:nil];
     
     [alert show];
 }

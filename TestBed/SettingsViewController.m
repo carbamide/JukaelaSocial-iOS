@@ -185,13 +185,11 @@ typedef enum {
                 else {
                     [[self facebookSwitch] setOn:NO animated:YES];
                     
-                    UIAlertView *noAccounts = [[UIAlertView alloc] initWithTitle:@"No Account"
-                                                                         message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."
-                                                                        delegate:nil
-                                                               cancelButtonTitle:@"OK"
-                                                               otherButtonTitles:nil, nil];
+                    BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."];
                     
-                    [noAccounts show];
+                    [noAccount setCancelButtonWithTitle:@"OK" block:nil];
+                    
+                    [noAccount show];
                 }
             }
         }
@@ -211,13 +209,11 @@ typedef enum {
             else {
                 [[self twitterSwitch] setOn:NO animated:YES];
                 
-                UIAlertView *noAccounts = [[UIAlertView alloc] initWithTitle:@"No Account"
-                                                                     message:@"You don't seem to have a Twitter account set up.  Please set one up in the Settings app."
-                                                                    delegate:nil
-                                                           cancelButtonTitle:@"OK"
-                                                           otherButtonTitles:nil, nil];
+                BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Twitter account set up.  Please set one up in the Settings app."];
                 
-                [noAccounts show];
+                [noAccount setCancelButtonWithTitle:@"OK" block:nil];
+                
+                [noAccount show];
             }
         }
             break;
@@ -277,11 +273,9 @@ typedef enum {
                 BOOL fileDeleted = [fileManager removeItemAtPath:filePath error:&error];
                 
                 if (fileDeleted != YES || error != nil) {
-                    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                         message:@"There has been an error.  Please reinstall Jukaela Social."
-                                                                        delegate:nil
-                                                               cancelButtonTitle:@"OK"
-                                                               otherButtonTitles:nil, nil];
+                    BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"There has been an error.  Please reinstall Jukaela Social."];
+                    
+                    [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
                     
                     [errorAlert show];
                 }

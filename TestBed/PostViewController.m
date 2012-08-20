@@ -67,11 +67,9 @@
 -(void)sendPost:(id)sender
 {
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"]) {
-        RIButtonItem *confirmButton = [RIButtonItem itemWithLabel:@"Do it!"];
-        RIButtonItem *jukaelaButton = [RIButtonItem itemWithLabel:@"Just to Jukaela!"];
-        RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
+        BlockAlertView *confirmAlert = [[BlockAlertView alloc] initWithTitle:@"Confirm" message:@"Confirm sending to other services?"];
         
-        [confirmButton setAction:^{
+        [confirmAlert addButtonWithTitle:@"Do it!" block:^{
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
                 [self sendTweet:[[self theTextView] text]];
             }
@@ -83,15 +81,11 @@
             [self sendJukaelaPost];
         }];
         
-        [jukaelaButton setAction:^{
+        [confirmAlert addButtonWithTitle:@"Just to Jukaela!" block:^{
             [self sendJukaelaPost];
         }];
         
-        [cancelButton setAction:^{
-            return;
-        }];
-        
-        UIAlertView *confirmAlert = [[UIAlertView alloc] initWithTitle:@"Confirm" message:@"Confirm sending to other services?" cancelButtonItem:cancelButton otherButtonItems:confirmButton, jukaelaButton, nil];
+        [confirmAlert setCancelButtonWithTitle:@"Cancel" block:nil];
         
         [confirmAlert show];
     }
@@ -151,11 +145,9 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         }
         else {
-            UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
-                                                                                message:@"There has been an error posting to Jukaela Social."
-                                                                               delegate:nil
-                                                                      cancelButtonTitle:@"OK"
-                                                                      otherButtonTitles:nil, nil];
+            BlockAlertView *jukaelaSocialPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting to Jukaela Social"];
+            
+            [jukaelaSocialPostingError setCancelButtonWithTitle:@"OK" block:nil];
             
             [jukaelaSocialPostingError show];
         }
@@ -195,11 +187,9 @@
                         }
                     }
                     else {
-                        UIAlertView *twitterPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
-                                                                                      message:@"There has been an error posting your Jukaela Social post to Twitter."
-                                                                                     delegate:nil
-                                                                            cancelButtonTitle:@"OK"
-                                                                            otherButtonTitles:nil, nil];
+                        BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Twitter."];
+                        
+                        [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
                         
                         [twitterPostingError show];
                     }
@@ -254,11 +244,9 @@
                             }
                         }
                         else {
-                            UIAlertView *facebookPostingError = [[UIAlertView alloc] initWithTitle:@"Oh No!"
-                                                                                           message:@"There has been an error posting your Jukaela Social post to Facebook."
-                                                                                          delegate:nil
-                                                                                 cancelButtonTitle:@"OK"
-                                                                                 otherButtonTitles:nil, nil];
+                            BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Facebook."];
+                            
+                            [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
                             
                             [facebookPostingError show];
                         }

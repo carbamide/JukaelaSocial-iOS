@@ -89,11 +89,9 @@
 -(void)saveProfile:(id)sender
 {
     if (![[[self passwordTextField] text] isEqualToString:[[self passwordConfirmTextField] text]]) {
-        UIAlertView *passwordsDontMatchAlert = [[UIAlertView alloc] initWithTitle:@"Password"
-                                                                          message:@"The passwords must match."
-                                                                         delegate:nil
-                                                                cancelButtonTitle:@"OK"
-                                                                otherButtonTitles:nil, nil];
+        BlockAlertView *passwordsDontMatchAlert = [[BlockAlertView alloc] initWithTitle:@"Password" message:@"The passwords must match"];
+        
+        [passwordsDontMatchAlert setCancelButtonWithTitle:@"OK" block:nil];
         
         [passwordsDontMatchAlert show];
         
@@ -120,13 +118,7 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         }
         else {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                 message:@"There has been an error saving your updated user information."
-                                                                delegate:nil
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil, nil];
-            
-            [errorAlert show];
+            [Helpers errorAndLogout:self withMessage:@"There has been an error saving your updated user information."];
         }
     }];
 }

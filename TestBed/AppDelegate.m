@@ -77,11 +77,10 @@
     NSString *alertString = [NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]];
     
     if ([application applicationState] == UIApplicationStateActive) {
-        UIAlertView *pushAlert = [[UIAlertView alloc] initWithTitle:@"Jukaela Social"
-                                                            message:alertString
-                                                           delegate:self
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
+        BlockAlertView *pushAlert = [[BlockAlertView alloc] initWithTitle:@"Jukaela Social" message:alertString];
+        
+        [pushAlert setCancelButtonWithTitle:@"OK" block:nil];
+        
         [pushAlert show];
     }
 }

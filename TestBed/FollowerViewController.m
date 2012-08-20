@@ -189,12 +189,7 @@
                     return;
                 }];
                 
-                UIAlertView *errorReloadingAlert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                              message:@"There was an error showing the user.  Please logout and log back in."
-                                                                     cancelButtonItem:cancelButton
-                                                                     otherButtonItems:logoutButton, nil];;
-                
-                [errorReloadingAlert show];
+                [Helpers errorAndLogout:self withMessage:@"There was an error showing the user.  Please logout and log back in."];
             }
             
         }];

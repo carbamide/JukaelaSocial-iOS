@@ -169,12 +169,35 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RIButtonItem *replyButton = [RIButtonItem itemWithLabel:@"Reply"];
-    RIButtonItem *repostButton = [RIButtonItem itemWithLabel:@"Repost"];
-    RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
-    RIButtonItem *deleteButton = [RIButtonItem itemWithLabel:@"Delete Post"];
+    BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
-    [deleteButton setAction:^{
+    [cellActionSheet addButtonWithTitle:@"Reply" block:^{
+        [self performSegueWithIdentifier:@"ShowReplyView" sender:self];
+    }];
+    
+    [cellActionSheet addButtonWithTitle:@"Repost" block:^{
+        [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
+    }];
+    
+    NSString *labelString = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+    
+    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+    
+    NSArray *matches = [linkDetector matchesInString:labelString options:0 range:NSMakeRange(0, [labelString length])];
+    
+    for (NSTextCheckingResult *match in matches) {
+        if ([match resultType] == NSTextCheckingTypeLink) {
+            NSURL *url = [match URL];
+            
+            [cellActionSheet addButtonWithTitle:[url absoluteString] block:^{
+                [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+
+                [[UIApplication sharedApplication] openURL:url];
+            }];
+        }
+    }
+    
+    [cellActionSheet addButtonWithTitle:@"Delete" block:^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
         NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
@@ -196,56 +219,13 @@
         }];
     }];
     
-    [replyButton setAction:^{
-        [self performSegueWithIdentifier:@"ShowReplyView" sender:self];
-    }];
-    
-    [repostButton setAction:^{
-        [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
-    }];
-    
-    [cancelButton setAction:^{
+    [cellActionSheet setCancelButtonWithTitle:@"Cancel" block:^{
         [[[self tableView] cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
         
         return;
     }];
     
-    UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                         cancelButtonItem:nil
-                                                    destructiveButtonItem:nil
-                                                         otherButtonItems:replyButton, repostButton, nil];
-    
-    NSString *labelString = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-    
-    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
-    
-    NSArray *matches = [linkDetector matchesInString:labelString options:0 range:NSMakeRange(0, [labelString length])];
-    
-    for (NSTextCheckingResult *match in matches) {
-        if ([match resultType] == NSTextCheckingTypeLink) {
-            NSURL *url = [match URL];
-            RIButtonItem *urlButton = [RIButtonItem itemWithLabel:[url absoluteString]];
-            
-            [urlButton setAction:^{
-                [[UIApplication sharedApplication] openURL:url];
-            }];
-            
-            [cellActionSheet addButtonItem:urlButton];
-        }
-    }
-    
-    if ([[NSString stringWithFormat:@"%@", [self userPostArray][[[[self tableView] indexPathForSelectedRow] row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
-        NSInteger deleteIndex = [cellActionSheet addButtonItem:deleteButton];
-        
-        [cellActionSheet setDestructiveButtonIndex:deleteIndex];
-    }
-    
-    NSInteger cancelIndex = [cellActionSheet addButtonItem:cancelButton];
-    
-    [cellActionSheet setCancelButtonIndex:cancelIndex];
-    
-    [cellActionSheet showInView:[self view]];
-    
+    [cellActionSheet showInView:[self view]];    
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

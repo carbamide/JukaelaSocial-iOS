@@ -11,6 +11,7 @@
 #import <Social/Social.h>
 #endif
 #import "TestFlight.h"
+#import "TMImgurUploader.h"
 
 @implementation AppDelegate
 
@@ -28,8 +29,10 @@
     CFRelease(UUIDSRef);
     CFRelease(UUIDRef);
     
-    [TestFlight takeOff:@"52ea4c59079a890422488d9748b00b72_OTE5NDkyMDEyLTA3LTI3IDE3OjA1OjE1LjEyMTE1OA"];
+    [TestFlight takeOff:kTestFlightAPIKey];
     
+    [[TMImgurUploader sharedInstance] setAPIKey:kImgurAPIKey];
+
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
     }

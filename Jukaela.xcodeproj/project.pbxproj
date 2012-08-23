@@ -26,6 +26,10 @@
 		2956876B1552C96700FE741C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2956876A1552C96700FE741C /* AppDelegate.m */; };
 		2956876E1552C96700FE741C /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2956876C1552C96700FE741C /* MainStoryboard.storyboard */; };
 		295687711552C96700FE741C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295687701552C96700FE741C /* LoginViewController.m */; };
+		295CB26D15E528EA001A43DA /* TMImgurUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB26C15E528EA001A43DA /* TMImgurUploader.m */; };
+		295CB27415E528F4001A43DA /* TMNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB26F15E528F4001A43DA /* TMNetworkActivityIndicatorManager.m */; };
+		295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB27115E528F4001A43DA /* TMHTTPClient.m */; };
+		295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB27315E528F4001A43DA /* TMHTTPRequest.m */; };
 		29714EA015C7204300109E5A /* SORelativeDateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29714EA115C7204300109E5A /* SORelativeDateTransformer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29714E9F15C7204300109E5A /* SORelativeDateTransformer.bundle */; };
 		2975292915CEF6AE00A3E71D /* WBErrorNoticeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2975292415CEF6AE00A3E71D /* WBErrorNoticeView.m */; };
@@ -156,6 +160,14 @@
 		2956876D1552C96700FE741C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		2956876F1552C96700FE741C /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		295687701552C96700FE741C /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		295CB26B15E528EA001A43DA /* TMImgurUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMImgurUploader.h; sourceTree = "<group>"; };
+		295CB26C15E528EA001A43DA /* TMImgurUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMImgurUploader.m; sourceTree = "<group>"; };
+		295CB26E15E528F4001A43DA /* TMNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		295CB26F15E528F4001A43DA /* TMNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
+		295CB27015E528F4001A43DA /* TMHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMHTTPClient.h; sourceTree = "<group>"; };
+		295CB27115E528F4001A43DA /* TMHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMHTTPClient.m; sourceTree = "<group>"; };
+		295CB27215E528F4001A43DA /* TMHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMHTTPRequest.h; sourceTree = "<group>"; };
+		295CB27315E528F4001A43DA /* TMHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMHTTPRequest.m; sourceTree = "<group>"; };
 		29714E9D15C7204300109E5A /* SORelativeDateTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SORelativeDateTransformer.h; sourceTree = "<group>"; };
 		29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SORelativeDateTransformer.m; sourceTree = "<group>"; };
 		29714E9F15C7204300109E5A /* SORelativeDateTransformer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SORelativeDateTransformer.bundle; sourceTree = "<group>"; };
@@ -392,6 +404,21 @@
 				295687681552C96700FE741C /* Jukaela-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		295CB26915E528DA001A43DA /* TM HTTP Stuff */ = {
+			isa = PBXGroup;
+			children = (
+				295CB26E15E528F4001A43DA /* TMNetworkActivityIndicatorManager.h */,
+				295CB26F15E528F4001A43DA /* TMNetworkActivityIndicatorManager.m */,
+				295CB27015E528F4001A43DA /* TMHTTPClient.h */,
+				295CB27115E528F4001A43DA /* TMHTTPClient.m */,
+				295CB27215E528F4001A43DA /* TMHTTPRequest.h */,
+				295CB27315E528F4001A43DA /* TMHTTPRequest.m */,
+				295CB26B15E528EA001A43DA /* TMImgurUploader.h */,
+				295CB26C15E528EA001A43DA /* TMImgurUploader.m */,
+			);
+			name = "TM HTTP Stuff";
 			sourceTree = "<group>";
 		};
 		2975292015CEF69800A3E71D /* WBNoticeView */ = {
@@ -648,6 +675,7 @@
 		29D5B860155476A4000D9374 /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
+				295CB26915E528DA001A43DA /* TM HTTP Stuff */,
 				298A643B15E267C9009BF175 /* Alert and Action Sheet */,
 				2975554115CF2B2400CAA9A7 /* TestFlight.h */,
 				2975292015CEF69800A3E71D /* WBNoticeView */,
@@ -864,6 +892,10 @@
 				298A644515E267D7009BF175 /* BlockAlertView.m in Sources */,
 				298A644615E267D7009BF175 /* BlockBackground.m in Sources */,
 				298A644715E267D7009BF175 /* BlockTextPromptAlertView.m in Sources */,
+				295CB26D15E528EA001A43DA /* TMImgurUploader.m in Sources */,
+				295CB27415E528F4001A43DA /* TMNetworkActivityIndicatorManager.m in Sources */,
+				295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */,
+				295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

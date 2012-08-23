@@ -38,5 +38,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 308;
 static char * const kIndexPathAssociationKey = "Jukaela_index_path";
 #define jMIN(a,b) (((a)<(b))?(a):(b))
 #define jMAX(a,b) (((a)>(b))?(a):(b))
-
+#define kTestFlightAPIKey @"52ea4c59079a890422488d9748b00b72_OTE5NDkyMDEyLTA3LTI3IDE3OjA1OjE1LjEyMTE1OA"
+#define kImgurAPIKey @"ee66d23c163a5da80cf7a861dc2a3185"
 CGFloat animatedDistance;

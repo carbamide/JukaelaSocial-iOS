@@ -15,10 +15,14 @@
 #endif
 #import <Twitter/Twitter.h>
 #import "UIAlertView+Blocks.h"
+#import "TMImgurUploader.h"
+#import "UIImage+Resize.h"
 
 @interface PostViewController ()
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *facebookAccount;
+
+@property (strong, nonatomic) NSData *tempImageData;
 @end
 
 @implementation PostViewController
@@ -30,13 +34,54 @@
     [self setupNavbarForPosting];
 }
 
+-(void)photoSheet:(id)sender
+{
+    BlockActionSheet *photoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Photo Source"];
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [photoActionSheet addButtonWithTitle:@"Take Photo" block:^{
+            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            
+            [imagePicker setDelegate:self];
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+            [imagePicker setAllowsEditing:NO];
+            
+            [self presentViewController:imagePicker animated:YES completion:nil];
+        }];
+    }
+    
+    [photoActionSheet addButtonWithTitle:@"Choose Existing" block:^{
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        
+        [imagePicker setDelegate:self];
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [imagePicker setAllowsEditing:NO];
+        
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }];
+    
+    [photoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+    
+    [photoActionSheet showInView:[self view]];
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
+    NSString *tempString = [_theTextView text];
+    
     if (_replyString) {
         _theTextView = [[YIPopupTextView alloc] initWithText:[self replyString] maxCount:140];
     }
     else if (_repostString) {
         _theTextView = [[YIPopupTextView alloc] initWithText:[self repostString] maxCount:140];
+    }
+    else if (_urlString) {
+        if (tempString) {
+            _theTextView = [[YIPopupTextView alloc] initWithText:[[tempString stringByAppendingString:@" "] stringByAppendingString:[self urlString]] maxCount:140];
+        }
+        else {
+            _theTextView = [[YIPopupTextView alloc] initWithText:[self urlString] maxCount:140];
+        }
     }
     else {
         _theTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Make a post, you guys!" maxCount:140];
@@ -52,7 +97,9 @@
 {
     UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendPost:)];
     
-    [[self navigationItem] setRightBarButtonItem:sendButton];
+    UIBarButtonItem *photoButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(photoSheet:)];
+    
+    [[self navigationItem] setRightBarButtonItems:@[sendButton, photoButton]];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelPost:)];
     
@@ -160,6 +207,10 @@
     
     ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     
+    if ([self tempImageData]) {
+        stringToSend = [stringToSend stringByReplacingOccurrencesOfString:[self urlString] withString:@""];
+    }
+    
     [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
         if(granted) {
             NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
@@ -167,33 +218,72 @@
             if ([accountsArray count] > 0) {
                 ACAccount *twitterAccount = accountsArray[0];
                 
-                TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:@{@"status": stringToSend} requestMethod:TWRequestMethodPOST];
+                TWRequest *postRequest = nil;
                 
-                [postRequest setAccount:twitterAccount];
-                
-                [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                    if (responseData) {
-                        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
-                        
-                        NSLog(@"The Twitter response was \n%@", jsonData);
-                        
-                        if (!jsonData[@"error"]) {
-                            NSLog(@"Successfully posted to Twitter");
+                if ([self tempImageData]) {
+                    postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"] parameters:nil requestMethod:TWRequestMethodPOST];
+                    
+                    [postRequest addMultiPartData:[self tempImageData] withName:@"media[]" type:@"multipart/form-data"];
+                    
+                    [postRequest addMultiPartData:[stringToSend dataUsingEncoding:NSUTF8StringEncoding] withName:@"status" type:@"multipart/form-data"];
+                    
+                    [postRequest setAccount:twitterAccount];
+                    
+                    [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                        if (responseData) {
+                            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
                             
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"tweet_successful" object:nil];
+                            NSLog(@"The Twitter response was \n%@", jsonData);
+                            
+                            if (!jsonData[@"error"]) {
+                                NSLog(@"Successfully posted to Twitter");
+                                
+                                [[NSNotificationCenter defaultCenter] postNotificationName:@"tweet_successful" object:nil];
+                            }
+                            else {
+                                NSLog(@"Not posted to Twitter");
+                            }
                         }
                         else {
-                            NSLog(@"Not posted to Twitter");
+                            BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Twitter."];
+                            
+                            [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
+                            
+                            [twitterPostingError show];
                         }
-                    }
-                    else {
-                        BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Twitter."];
-                        
-                        [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                        
-                        [twitterPostingError show];
-                    }
-                }];
+                    }];
+                }
+                else {
+                    postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:@{@"status": stringToSend} requestMethod:TWRequestMethodPOST];
+                    
+                    [postRequest setAccount:twitterAccount];
+                    
+                    [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                        if (responseData) {
+                            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
+                            
+                            NSLog(@"The Twitter response was \n%@", jsonData);
+                            
+                            if (!jsonData[@"error"]) {
+                                NSLog(@"Successfully posted to Twitter");
+                                
+                                [[NSNotificationCenter defaultCenter] postNotificationName:@"tweet_successful" object:nil];
+                            }
+                            else {
+                                NSLog(@"Not posted to Twitter");
+                            }
+                        }
+                        else {
+                            BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Twitter."];
+                            
+                            [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
+                            
+                            [twitterPostingError show];
+                        }
+                    }];
+                }
+                
+
             }
         }
         else {
@@ -205,6 +295,10 @@
 
 - (void)sendFacebookPost:(NSString *)stringToSend
 {
+    if ([self tempImageData]) {
+        stringToSend = [stringToSend stringByReplacingOccurrencesOfString:[self urlString] withString:@""];
+    }
+    
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         if (NSStringFromClass([SLRequest class])) {
             if (_accountStore == nil) {
@@ -223,34 +317,68 @@
                     
                     NSAssert([[[self facebookAccount] credential] oauthToken], @"The OAuth token is invalid", nil);
                     
-                    NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
-                    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
-                    
-                    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
-                    
-                    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
-                        if (responseData) {
-                            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
-                            
-                            NSLog(@"The Facebook response was \n%@", jsonData);
-                            
-                            if (!jsonData[@"error"]) {
-                                NSLog(@"Successfully posted to Facebook");
+                    if ([self tempImageData]) {
+                        NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
+                        NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/photos"];
+                        
+                        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
+                        
+                        [request addMultipartData:[self tempImageData] withName:stringToSend type:@"multipart/form-data" filename:@"image.jpg"];
+                        
+                        [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
+                            if (responseData) {
+                                NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
                                 
-                                [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_successful" object:nil];
+                                NSLog(@"The Facebook response was \n%@", jsonData);
+                                
+                                if (!jsonData[@"error"]) {
+                                    NSLog(@"Successfully posted to Facebook");
+                                    
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_successful" object:nil];
+                                }
+                                else {
+                                    NSLog(@"Not posted to Facebook");
+                                }
                             }
                             else {
-                                NSLog(@"Not posted to Facebook");
+                                BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Facebook."];
+                                
+                                [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
+                                
+                                [facebookPostingError show];
                             }
-                        }
-                        else {
-                            BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Facebook."];
-                            
-                            [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                            
-                            [facebookPostingError show];
-                        }
-                    }];
+                        }];
+                    }
+                    else {
+                        NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
+                        NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
+                        
+                        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
+                        
+                        [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
+                            if (responseData) {
+                                NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
+                                
+                                NSLog(@"The Facebook response was \n%@", jsonData);
+                                
+                                if (!jsonData[@"error"]) {
+                                    NSLog(@"Successfully posted to Facebook");
+                                    
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_successful" object:nil];
+                                }
+                                else {
+                                    NSLog(@"Not posted to Facebook");
+                                }
+                            }
+                            else {
+                                BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Facebook."];
+                                
+                                [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
+                                
+                                [facebookPostingError show];
+                            }
+                        }];
+                    }
                 }
                 else {
                     NSLog(@"Facebook access not granted.");
@@ -274,6 +402,38 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    originalImage = [originalImage scaleAndRotateImage:originalImage withMaxSize:640];
+    
+    [self setTempImageData:UIImageJPEGRepresentation(originalImage, 10)];
+    
+    [[TMImgurUploader sharedInstance] uploadImage:originalImage finishedBlock:^(NSDictionary *result, NSError *error){
+        NSLog(@"%@", result[@"upload"][@"links"][@"imgur_page"]);
+        
+        if (error) {
+            NSLog(@"%@", [error description]);
+            
+            BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription]];
+            
+            [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
+            
+            [errorAlert show];
+        }
+        else {
+            [self setUrlString:result[@"upload"][@"links"][@"imgur_page"]];
+            
+            [picker dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
+}
+-(void)image:(UIImage *)image finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    return;
 }
 
 @end

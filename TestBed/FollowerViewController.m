@@ -141,15 +141,10 @@
 #pragma mark - Table view delegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{       
-    RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
-    RIButtonItem *showUserButton = [RIButtonItem itemWithLabel:@"Show User..."];
+{
+    BlockActionSheet *userActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
-    [cancelButton setAction:^{
-        return;
-    }];
-    
-    [showUserButton setAction:^{
+    [userActionSheet addButtonWithTitle:@"Show User" block:^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPath row]][@"id"]]];
@@ -195,11 +190,8 @@
         }];
     }];
     
-    UIActionSheet *userActionSheet = [[UIActionSheet alloc] initWithTitle:nil 
-                                                         cancelButtonItem:cancelButton 
-                                                    destructiveButtonItem:nil 
-                                                         otherButtonItems:showUserButton, nil];
-
+    [userActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+    
     [userActionSheet showInView:[self view]];
 }
 

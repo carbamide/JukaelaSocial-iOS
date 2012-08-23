@@ -361,41 +361,18 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RIButtonItem *replyButton = [RIButtonItem itemWithLabel:@"Reply"];
-    RIButtonItem *repostButton = [RIButtonItem itemWithLabel:@"Repost"];
-    RIButtonItem *showUserButton = [RIButtonItem itemWithLabel:@"Show User..."];
-    RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
-    RIButtonItem *deleteButton = [RIButtonItem itemWithLabel:@"Delete Post"];
+    BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
-    [deleteButton setAction:^{
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        
-        NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
-        
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [self theFeed][[indexPath row]][@"id"]]];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        
-        [request setHTTPMethod:@"DELETE"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
-            
-            [self setCurrentChangeType:DELETE_POST];
-            
-            [self refreshTableInformation];
-            
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        }];
-    }];
-    
-    [replyButton setAction:^{
+    [cellActionSheet addButtonWithTitle:@"Reply" block:^{
         [self performSegueWithIdentifier:@"ShowReplyView" sender:self];
+
     }];
     
-    [showUserButton setAction:^{
+    [cellActionSheet addButtonWithTitle:@"Repost" block:^{
+        [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
+
+    }];
+    [cellActionSheet addButtonWithTitle:@"Show User" block:^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
         NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
@@ -420,22 +397,7 @@
             [self performSegueWithIdentifier:@"ShowUser" sender:nil];
         }];
     }];
-    
-    [repostButton setAction:^{
-        [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
-    }];
-    
-    [cancelButton setAction:^{
-        [[[self tableView] cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
-        
-        return;
-    }];
-    
-    UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                         cancelButtonItem:nil
-                                                    destructiveButtonItem:nil
-                                                         otherButtonItems:replyButton, repostButton, showUserButton, nil];
-    
+
     NSString *labelString = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
     
     NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
@@ -445,27 +407,46 @@
     for (NSTextCheckingResult *match in matches) {
         if ([match resultType] == NSTextCheckingTypeLink) {
             NSURL *url = [match URL];
-            RIButtonItem *urlButton = [RIButtonItem itemWithLabel:[url absoluteString]];
             
-            [urlButton setAction:^{
+            [cellActionSheet addButtonWithTitle:[url absoluteString] block:^{
+                [[[self tableView] cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+                
                 [[UIApplication sharedApplication] openURL:url];
             }];
-            
-            [cellActionSheet addButtonItem:urlButton];
         }
     }
     
-    if ([[NSString stringWithFormat:@"%@", [self theFeed][[[[self tableView] indexPathForSelectedRow] row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
-        NSInteger deleteIndex = [cellActionSheet addButtonItem:deleteButton];
+    [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
-        [cellActionSheet setDestructiveButtonIndex:deleteIndex];
-    }
+        NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [self theFeed][[indexPath row]][@"id"]]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+        
+        [request setHTTPMethod:@"DELETE"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+            
+            [self setCurrentChangeType:DELETE_POST];
+            
+            [self refreshTableInformation];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        }];
+    }];
+
+    [cellActionSheet setCancelButtonWithTitle:@"Cancel" block:^{
+        [[[self tableView] cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+        
+        return;
+    }];
     
-    NSInteger cancelIndex = [cellActionSheet addButtonItem:cancelButton];
-    
-    [cellActionSheet setCancelButtonIndex:cancelIndex];
-    
-    [cellActionSheet showFromTabBar:[[self tabBarController] tabBar]];
+    [cellActionSheet showInView:[self view]];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

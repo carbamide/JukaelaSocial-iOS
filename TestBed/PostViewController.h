@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "YIPopupTextView.h"
 
-@interface PostViewController : JukaelaViewController <YIPopupTextViewDelegate>
+@interface PostViewController : JukaelaViewController <YIPopupTextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (strong, nonatomic) NSString *replyString;
 @property (strong, nonatomic) NSString *repostString;
+@property (strong, nonatomic) NSString *urlString;
+
 @property (strong, nonatomic) YIPopupTextView *theTextView;
 
 @end

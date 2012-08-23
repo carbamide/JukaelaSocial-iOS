@@ -256,10 +256,9 @@ typedef enum {
 
 -(void)clearImageCache
 {
-    RIButtonItem *eraseButton = [RIButtonItem itemWithLabel:@"Clear Cache"];
-    RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
+    BlockActionSheet *eraseAction = [[BlockActionSheet alloc] initWithTitle:nil];
     
-    [eraseButton setAction:^{
+    [eraseAction addButtonWithTitle:@"Clear Cache" block:^{
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         if ([paths count] > 0) {
             NSError *error = nil;
@@ -284,16 +283,9 @@ typedef enum {
         [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
     }];
     
-    [cancelButton setAction:^{
-        return;
-    }];
+    [eraseAction setCancelButtonWithTitle:@"Cancel" block:nil];
     
-    UIActionSheet *eraseAction = [[UIActionSheet alloc] initWithTitle:nil
-                                                     cancelButtonItem:cancelButton
-                                                destructiveButtonItem:eraseButton
-                                                     otherButtonItems:nil, nil];
-    
-    [eraseAction showFromTabBar:[[self tabBarController] tabBar]];
+    [eraseAction showInView:[self view]];
 }
 
 @end

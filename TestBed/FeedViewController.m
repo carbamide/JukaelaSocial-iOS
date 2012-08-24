@@ -98,7 +98,8 @@
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     
-    [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"set_change_type" object:nil
+    [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"set_change_type"
+                                                                     object:nil
                                                                       queue:mainQueue usingBlock:^(NSNotification *number) {
                                                                           int i = [[number object] intValue];
                                                                           
@@ -116,24 +117,56 @@
                                                                           }
                                                                       }]];
     
-    [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"refresh_your_tables" object:nil
+    [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"refresh_your_tables"
+                                                                     object:nil
                                                                       queue:mainQueue usingBlock:^(NSNotification *number) {
                                                                           [self refreshTableInformation];
                                                                       }]];
     
-    [self setTweetSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"tweet_successful" object:nil
+    [self setTweetSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"tweet_successful"
+                                                                           object:nil
                                                                             queue:mainQueue usingBlock:^(NSNotification *number) {
                                                                                 [self setTwitterSuccess:YES];
                                                                                 
                                                                                 [self checkForFBAndTwitterSucess];
                                                                             }]];
     
-    [self setFacebookSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"facebook_successful" object:nil
+    [self setFacebookSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"facebook_successful"
+                                                                              object:nil
                                                                                queue:mainQueue usingBlock:^(NSNotification *number) {
                                                                                    [self setFbSuccess:YES];
                                                                                    
                                                                                    [self checkForFBAndTwitterSucess];
                                                                                }]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
+}
+
+-(void)switchToSelectedUser:(NSNotification *)aNotification
+{
+    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][@"user_id"]]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+        }
+        else {
+            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
+        }
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+    }];
 }
 
 -(void)checkForFBAndTwitterSucess

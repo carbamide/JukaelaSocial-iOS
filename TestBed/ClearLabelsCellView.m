@@ -55,6 +55,10 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [[self usernameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
 	}
 	
+    [[self imageView] setUserInteractionEnabled:YES];
+    
+    [[self imageView] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendToUser:)]];
+    
 	return self;
 }
 
@@ -140,6 +144,13 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     }
     
     [super dealloc];
+}
+
+-(void)sendToUser:(UITableViewCell *)sender
+{   
+    NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+        
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"send_to_user" object:nil userInfo:@{@"indexPath" : indexPath}];
 }
 
 @end

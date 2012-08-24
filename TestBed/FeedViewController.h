@@ -6,10 +6,11 @@
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
 
+#import "MBProgressHUD.h"
 #import <UIKit/UIKit.h>
 #import "YIPopupTextView.h"
 
-@interface FeedViewController : UITableViewController <YIPopupTextViewDelegate>
+@interface FeedViewController : UITableViewController <YIPopupTextViewDelegate, MBProgressHUDDelegate>
 
 typedef enum {
     INSERT_POST = 0,

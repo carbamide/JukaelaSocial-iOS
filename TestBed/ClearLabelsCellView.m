@@ -169,7 +169,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 }
 
 -(void)sendToUser:(UITableViewCell *)sender
-{   
+{
     NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
         
     [[NSNotificationCenter defaultCenter] postNotificationName:@"send_to_user" object:nil userInfo:@{@"indexPath" : indexPath}];

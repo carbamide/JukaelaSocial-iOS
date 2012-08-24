@@ -145,6 +145,15 @@
 
 -(void)switchToSelectedUser:(NSNotification *)aNotification
 {
+    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
+    [progressHUD setMode:MBProgressHUDModeIndeterminate];
+    [progressHUD setLabelText:@"Loading User..."];
+    [progressHUD setDelegate:self];
+    
+    [[self view] addSubview:progressHUD];
+
+    [progressHUD show:YES];
+    
     NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -165,6 +174,8 @@
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
         }
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        [progressHUD hide:YES];
         
         [self performSegueWithIdentifier:@"ShowUser" sender:nil];
     }];
@@ -491,5 +502,10 @@
     
     [center removeObserver:[self refreshTableNotificationCenter]];
     [center removeObserver:[self changeTypeNotificationCenter]];
+}
+
+-(void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
 }
 @end

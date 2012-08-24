@@ -140,6 +140,7 @@
                                                                                }]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
 }
 
 -(void)switchToSelectedUser:(NSNotification *)aNotification
@@ -326,15 +327,15 @@
         [cell setBackgroundView:[[GradientView alloc] init]];
     }
     
-    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+    [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
     
-    [[cell textLabel] setLineBreakMode:UILineBreakModeWordWrap];
+    //[[cell contentText] setLineBreakMode:UILineBreakModeWordWrap];
     
     if ([self theFeed][[indexPath row]][@"content"]) {
-        [[cell textLabel] setText:[self theFeed][[indexPath row]][@"content"]];
+        [[cell contentText] setText:[self theFeed][[indexPath row]][@"content"]];
     }
     else {
-        [[cell textLabel] setText:@"Loading..."];
+        [[cell contentText] setText:@"Loading..."];
     }
     
     if ([self theFeed][[indexPath row]][@"name"] && [self theFeed][[indexPath row]][@"name"] != [NSNull null]) {
@@ -394,35 +395,24 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+}
+
+-(void)doubleTap:(NSNotification *)aNotification
+{
+    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+
     BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
     [cellActionSheet addButtonWithTitle:@"Reply" block:^{
         [self performSegueWithIdentifier:@"ShowReplyView" sender:self];
-
+        
     }];
     
     [cellActionSheet addButtonWithTitle:@"Repost" block:^{
         [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
-
+        
     }];
-
-    NSString *labelString = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-    
-    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
-    
-    NSArray *matches = [linkDetector matchesInString:labelString options:0 range:NSMakeRange(0, [labelString length])];
-    
-    for (NSTextCheckingResult *match in matches) {
-        if ([match resultType] == NSTextCheckingTypeLink) {
-            NSURL *url = [match URL];
-            
-            [cellActionSheet addButtonWithTitle:[url absoluteString] block:^{
-                [[[self tableView] cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
-                
-                [[UIApplication sharedApplication] openURL:url];
-            }];
-        }
-    }
     
     [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -447,9 +437,9 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }];
     }];
-
+    
     [cellActionSheet setCancelButtonWithTitle:@"Cancel" block:^{
-        [[[self tableView] cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+        [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
         
         return;
     }];

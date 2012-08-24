@@ -15,12 +15,26 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 @synthesize nameLabel;
 @synthesize dateLabel;
 @synthesize usernameLabel;
+@synthesize contentText;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
+        contentText = [[UITextView alloc] initWithFrame:CGRectMake(82, 17, 235, 140)];
+        [contentText setEditable:NO];
+        [contentText setDataDetectorTypes:UIDataDetectorTypeLink];
+        [contentText setBackgroundColor:[UIColor clearColor]];
+        [contentText setClipsToBounds:YES];
+        
+        [[self contentView] addSubview:contentText];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
+        [tapGesture setNumberOfTapsRequired:2];
+        
+        [contentText addGestureRecognizer:tapGesture];
+        
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 5, 140, 15)];
         
         [nameLabel setTextAlignment:NSTextAlignmentLeft];
@@ -73,7 +87,8 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self textLabel] setFrame:CGRectMake(90, 25, 215, 140)];
     [[self textLabel] setNumberOfLines:0];
     [[self textLabel] sizeToFit];
-        
+    [[self textLabel] setHidden:YES];
+    
     [[self usernameLabel] setFrame:CGRectMake(self.frame.size.width - self.usernameLabel.frame.size.width - 5, 5, 140, 15)];
 
     [[self detailTextLabel] setFrame:CGRectMake(90, 25, 150, 76)];
@@ -144,6 +159,13 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     }
     
     [super dealloc];
+}
+
+-(void)doubleTapAction:(UITableViewCell *)sender
+{
+    NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"double_tap" object:nil userInfo:@{@"indexPath" : indexPath}];
 }
 
 -(void)sendToUser:(UITableViewCell *)sender

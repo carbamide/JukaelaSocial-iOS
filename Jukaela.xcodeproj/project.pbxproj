@@ -127,6 +127,7 @@
 		29DB78CC15B6F72D0056C68E /* PrettyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78C215B6F72D0056C68E /* PrettyTabBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29DB78CD15B6F72D0056C68E /* PrettyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78C415B6F72D0056C68E /* PrettyToolbar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29EA394515609BCE003A21E7 /* NSString+BackslashEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */; };
+		29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29EB71BD15E811D50072B97A /* CoreText.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -324,6 +325,7 @@
 		29DB78C415B6F72D0056C68E /* PrettyToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyToolbar.m; sourceTree = "<group>"; };
 		29EA394315609BCE003A21E7 /* NSString+BackslashEscape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BackslashEscape.h"; sourceTree = "<group>"; };
 		29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BackslashEscape.m"; sourceTree = "<group>"; };
+		29EB71BD15E811D50072B97A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +333,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */,
 				2975554315CF2DF800CAA9A7 /* libz.dylib in Frameworks */,
 				29295F6415C3373700F1968B /* Social.framework in Frameworks */,
 				2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */,
@@ -367,6 +370,7 @@
 		295687591552C96700FE741C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29EB71BD15E811D50072B97A /* CoreText.framework */,
 				2975554215CF2DF800CAA9A7 /* libz.dylib */,
 				2975553F15CF2B1100CAA9A7 /* libTestFlight.a */,
 				2986775215B50CB70027C7CA /* Social.framework */,

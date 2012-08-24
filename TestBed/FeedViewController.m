@@ -405,31 +405,6 @@
         [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
 
     }];
-    [cellActionSheet addButtonWithTitle:@"Show User" block:^{
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        
-        NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
-        
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self theFeed][[indexPath row]][@"user_id"]]];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        
-        [request setHTTPMethod:@"GET"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            if (data) {
-                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-            }
-            else {
-                [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
-            }
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            
-            [self performSegueWithIdentifier:@"ShowUser" sender:nil];
-        }];
-    }];
 
     NSString *labelString = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
     

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JTextView.h"
 
 extern NSString * const kJKPrepareForReuseNotification;
 
@@ -15,6 +16,6 @@ extern NSString * const kJKPrepareForReuseNotification;
 @property (nonatomic, retain) UILabel *nameLabel;
 @property (nonatomic, retain) UILabel *dateLabel;
 @property (strong, retain) UILabel *usernameLabel;
-@property (strong, retain) UITextView *contentText;
+@property (strong, retain) JTextView *contentText;
 
 @end

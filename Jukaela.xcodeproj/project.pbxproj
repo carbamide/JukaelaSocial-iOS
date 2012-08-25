@@ -128,6 +128,7 @@
 		29DB78CD15B6F72D0056C68E /* PrettyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78C415B6F72D0056C68E /* PrettyToolbar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29EA394515609BCE003A21E7 /* NSString+BackslashEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */; };
 		29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29EB71BD15E811D50072B97A /* CoreText.framework */; };
+		29FC657615E97D3B00E9133E /* JTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FC657515E97D3B00E9133E /* JTextView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -326,6 +327,8 @@
 		29EA394315609BCE003A21E7 /* NSString+BackslashEscape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BackslashEscape.h"; sourceTree = "<group>"; };
 		29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BackslashEscape.m"; sourceTree = "<group>"; };
 		29EB71BD15E811D50072B97A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		29FC657415E97D3B00E9133E /* JTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JTextView.h; sourceTree = "<group>"; };
+		29FC657515E97D3B00E9133E /* JTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JTextView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -710,6 +713,8 @@
 				29AA10881557161A00B8D3F5 /* NSDate+RailsDateParser.m */,
 				29EA394315609BCE003A21E7 /* NSString+BackslashEscape.h */,
 				29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */,
+				29FC657415E97D3B00E9133E /* JTextView.h */,
+				29FC657515E97D3B00E9133E /* JTextView.m */,
 			);
 			name = "Custom Classes";
 			sourceTree = "<group>";
@@ -900,6 +905,7 @@
 				295CB27415E528F4001A43DA /* TMNetworkActivityIndicatorManager.m in Sources */,
 				295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */,
 				295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */,
+				29FC657615E97D3B00E9133E /* JTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

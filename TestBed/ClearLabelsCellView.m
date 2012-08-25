@@ -10,15 +10,6 @@
 
 NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_PrepareForReuse";
 
-@implementation UITextView (DisableCopyPaste)
-
--(BOOL)canBecomeFirstResponder
-{
-    return NO;
-}
-
-@end
-
 @implementation ClearLabelsCellView
 
 @synthesize nameLabel;
@@ -31,7 +22,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
-        contentText = [[UITextView alloc] initWithFrame:CGRectMake(82, 17, 235, 140)];
+        contentText = [[JTextView alloc] initWithFrame:CGRectMake(82, 17, 235, 140)];
         [contentText setEditable:NO];
         [contentText setDataDetectorTypes:UIDataDetectorTypeLink];
         [contentText setBackgroundColor:[UIColor clearColor]];

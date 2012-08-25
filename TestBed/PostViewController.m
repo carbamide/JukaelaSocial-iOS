@@ -197,6 +197,10 @@
             [jukaelaSocialPostingError setCancelButtonWithTitle:@"OK" block:nil];
             
             [jukaelaSocialPostingError show];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [self setupNavbarForPosting];
         }
     }];
 }

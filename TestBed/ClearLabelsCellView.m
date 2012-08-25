@@ -10,6 +10,15 @@
 
 NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_PrepareForReuse";
 
+@implementation UITextView (DisableCopyPaste)
+
+-(BOOL)canBecomeFirstResponder
+{
+    return NO;
+}
+
+@end
+
 @implementation ClearLabelsCellView
 
 @synthesize nameLabel;

@@ -57,6 +57,8 @@
     
     [self setTitle:[[self userPostArray] lastObject][@"name"]];
     
+    [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
+
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     
     [super viewDidLoad];
@@ -86,7 +88,18 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 100;
+    NSString *contentText = [self userPostArray][[indexPath row]][@"content"];
+    NSString *nameText = [self userPostArray][[indexPath row]][@"name"];
+    
+    CGSize constraint = CGSizeMake(215 - (7.5 * 2), 20000);
+    
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    
+    CGSize nameSize = [nameText sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    
+    CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
+    
+    return height + (10 * 2);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -110,17 +123,14 @@
         
         [cell setBackgroundView:[[GradientView alloc] init]];
     }
-    
-    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
-    
-    [[cell textLabel] setLineBreakMode:UILineBreakModeWordWrap];
-    [[cell textLabel] setNumberOfLines:5];
-    
+        
+    [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+        
     if ([self userPostArray][[indexPath row]][@"content"]) {
-        [[cell textLabel] setText:[self userPostArray][[indexPath row]][@"content"]];
+        [[cell contentText] setText:[self userPostArray][[indexPath row]][@"content"]];
     }
     else {
-        [[cell textLabel] setText:@"Loading..."];
+        [[cell contentText] setText:@"Loading..."];
     }
     
     if ([self userPostArray][[indexPath row]][@"name"] && [self userPostArray][[indexPath row]][@"name"] != [NSNull null]) {
@@ -128,6 +138,9 @@
     }
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[self userPostArray][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
+    NSLog(@"%@", tempDate);
+    
+    NSLog(@"%@", [[self dateTransformer] transformedValue:tempDate]);
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     

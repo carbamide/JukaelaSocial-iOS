@@ -72,7 +72,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self imageView] setUserInteractionEnabled:YES];
     
     [[self imageView] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendToUser:)]];
-    
+
 	return self;
 }
 

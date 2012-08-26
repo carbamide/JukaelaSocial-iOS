@@ -14,5 +14,6 @@
 @property (strong, nonatomic) NSCache *imageCache;
 @property (strong, nonatomic) NSCache *nameCache;
 @property (strong, nonatomic) NSString *userID;
+@property (nonatomic, assign) id currentViewController;
 
 @end

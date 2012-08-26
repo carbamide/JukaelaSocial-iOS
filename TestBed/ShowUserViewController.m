@@ -23,6 +23,13 @@
 
 #pragma mark - View lifecycle
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [kAppDelegate setCurrentViewController:self];
+    
+    [super viewDidAppear:animated];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -59,11 +66,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

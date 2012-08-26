@@ -316,6 +316,8 @@
 {
     [super viewDidAppear:animated];
     
+    [kAppDelegate setCurrentViewController:self];
+
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
         if ([[self rememberUsername] isChecked] == NO) {
             [[self rememberUsername] setChecked];

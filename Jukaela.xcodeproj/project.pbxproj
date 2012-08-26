@@ -16,6 +16,10 @@
 		29204EF01553684200D5479D /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29204EEF1553684200D5479D /* FeedViewController.m */; };
 		292434711565E330007C8E8C /* UsersPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292434701565E330007C8E8C /* UsersPostsViewController.m */; };
 		29295F6415C3373700F1968B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775215B50CB70027C7CA /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		293751ED15EA63E10082864C /* SVModalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 293751E915EA63E10082864C /* SVModalWebViewController.m */; };
+		293751EE15EA63E10082864C /* SVWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 293751EB15EA63E10082864C /* SVWebViewController.m */; };
+		293751EF15EA63E10082864C /* SVWebViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 293751EC15EA63E10082864C /* SVWebViewController.bundle */; };
+		293751F515EA65F10082864C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 293751F415EA65F10082864C /* MessageUI.framework */; };
 		293A7424155F6810004D27D2 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 293A7423155F6810004D27D2 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		293A7426155F68AA004D27D2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 293A7425155F68AA004D27D2 /* Security.framework */; };
 		2956875B1552C96700FE741C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2956875A1552C96700FE741C /* UIKit.framework */; };
@@ -146,6 +150,12 @@
 		29204EEF1553684200D5479D /* FeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedViewController.m; sourceTree = "<group>"; };
 		2924346F1565E330007C8E8C /* UsersPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersPostsViewController.h; sourceTree = "<group>"; };
 		292434701565E330007C8E8C /* UsersPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersPostsViewController.m; sourceTree = "<group>"; };
+		293751E815EA63E10082864C /* SVModalWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVModalWebViewController.h; sourceTree = "<group>"; };
+		293751E915EA63E10082864C /* SVModalWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVModalWebViewController.m; sourceTree = "<group>"; };
+		293751EA15EA63E10082864C /* SVWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVWebViewController.h; sourceTree = "<group>"; };
+		293751EB15EA63E10082864C /* SVWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVWebViewController.m; sourceTree = "<group>"; };
+		293751EC15EA63E10082864C /* SVWebViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVWebViewController.bundle; sourceTree = "<group>"; };
+		293751F415EA65F10082864C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		293A7422155F6810004D27D2 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		293A7423155F6810004D27D2 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		293A7425155F68AA004D27D2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -336,6 +346,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				293751F515EA65F10082864C /* MessageUI.framework in Frameworks */,
 				29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */,
 				2975554315CF2DF800CAA9A7 /* libz.dylib in Frameworks */,
 				29295F6415C3373700F1968B /* Social.framework in Frameworks */,
@@ -353,6 +364,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		293751E615EA63D00082864C /* SVWebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				293751E815EA63E10082864C /* SVModalWebViewController.h */,
+				293751E915EA63E10082864C /* SVModalWebViewController.m */,
+				293751EA15EA63E10082864C /* SVWebViewController.h */,
+				293751EB15EA63E10082864C /* SVWebViewController.m */,
+				293751EC15EA63E10082864C /* SVWebViewController.bundle */,
+			);
+			name = SVWebViewController;
+			sourceTree = "<group>";
+		};
 		2956874B1552C96700FE741C = {
 			isa = PBXGroup;
 			children = (
@@ -373,6 +396,7 @@
 		295687591552C96700FE741C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				293751F415EA65F10082864C /* MessageUI.framework */,
 				29EB71BD15E811D50072B97A /* CoreText.framework */,
 				2975554215CF2DF800CAA9A7 /* libz.dylib */,
 				2975553F15CF2B1100CAA9A7 /* libTestFlight.a */,
@@ -682,6 +706,7 @@
 		29D5B860155476A4000D9374 /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
+				293751E615EA63D00082864C /* SVWebViewController */,
 				295CB26915E528DA001A43DA /* TM HTTP Stuff */,
 				298A643B15E267C9009BF175 /* Alert and Action Sheet */,
 				2975554115CF2B2400CAA9A7 /* TestFlight.h */,
@@ -828,6 +853,7 @@
 				298A643815E267BA009BF175 /* alert-red-button@2x.png in Resources */,
 				298A643915E267BA009BF175 /* alert-window.png in Resources */,
 				298A643A15E267BA009BF175 /* alert-window@2x.png in Resources */,
+				293751EF15EA63E10082864C /* SVWebViewController.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -906,6 +932,8 @@
 				295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */,
 				295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */,
 				29FC657615E97D3B00E9133E /* JTextView.m in Sources */,
+				293751ED15EA63E10082864C /* SVModalWebViewController.m in Sources */,
+				293751EE15EA63E10082864C /* SVWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

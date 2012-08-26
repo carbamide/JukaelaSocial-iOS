@@ -18,6 +18,7 @@
 #import "PostViewController.h"
 #import "ShowUserViewController.h"
 #import "SORelativeDateTransformer.h"
+#import "SVModalWebViewController.h"
 #import "WBErrorNoticeView.h"
 #import "WBSuccessNoticeView.h"
 #import "WBStickyNoticeView.h"
@@ -37,7 +38,7 @@
 @property (nonatomic) BOOL twitterSuccess;
 @property (nonatomic) BOOL jukaelaSuccess;
 
--(void)refreshTableInformation;
+-(void)refreshTableInformation:(NSIndexPath *)indexPath;
 
 @end
 
@@ -52,6 +53,13 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [kAppDelegate setCurrentViewController:self];
+    
+    [super viewDidAppear:animated];
+}
+
 -(void)viewDidLoad
 {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
@@ -59,7 +67,7 @@
         
         [refreshControl setTintColor:[UIColor blackColor]];
         
-        [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+        [refreshControl addTarget:self action:@selector(refreshTableInformation:) forControlEvents:UIControlEventValueChanged];
         
         [self setRefreshControl:refreshControl];
     }
@@ -68,13 +76,13 @@
         
         [_oldRefreshControl setTintColor:[UIColor blackColor]];
         
-        [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+        [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation:) forControlEvents:UIControlEventValueChanged];
     }
     
     [self setupNotifications];
     
     if (![self theFeed]) {
-        [self refreshTableInformation];
+        [self refreshTableInformation:nil];
     }
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
@@ -121,7 +129,7 @@
     [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"refresh_your_tables"
                                                                      object:nil
                                                                       queue:mainQueue usingBlock:^(NSNotification *aNotification) {
-                                                                          [self refreshTableInformation];
+                                                                          [self refreshTableInformation:nil];
                                                                       }]];
     
     [self setTweetSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"tweet_successful"
@@ -246,7 +254,7 @@
     [self performSegueWithIdentifier:@"ShowPostView" sender:self];
 }
 
--(void)refreshTableInformation
+-(void)refreshTableInformation:(NSIndexPath *)indexPath
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -267,9 +275,9 @@
                 [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                 [[self tableView] endUpdates];
             }
-            else if ([self currentChangeType] == DELETE_POST) {
+            else if ([self currentChangeType] == DELETE_POST) {                
                 [[self tableView] beginUpdates];
-                [[self tableView] deleteRowsAtIndexPaths:@[[[self tableView] indexPathForSelectedRow]] withRowAnimation:UITableViewRowAnimationFade];
+                [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 [[self tableView] endUpdates];
             }
             else {
@@ -468,7 +476,7 @@
             
             [self setCurrentChangeType:DELETE_POST];
             
-            [self refreshTableInformation];
+            [self refreshTableInformation:indexPathOfTappedRow];
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }];
@@ -532,6 +540,15 @@
 -(void)hudWasHidden:(MBProgressHUD *)hud
 {
     [hud removeFromSuperview];
+}
+
+- (void)handleURL:(NSURL*)url
+{
+    SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
+    
+    [webViewController setBarsTintColor:[UIColor darkGrayColor]];
+    
+    [self presentModalViewController:webViewController animated:YES];
 }
 
 @end

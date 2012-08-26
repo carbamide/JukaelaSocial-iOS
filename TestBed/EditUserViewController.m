@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "EditUserViewController.h"
 #import "AppDelegate.h"
+#import "EditUserViewController.h"
 
 @interface EditUserViewController ()
 -(NSArray *)fieldsArray;
@@ -23,6 +23,13 @@
         
     }
     return self;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [kAppDelegate setCurrentViewController:self];
+    
+    [super viewDidAppear:animated];
 }
 
 -(void)getUserInfo:(NSString *)userID

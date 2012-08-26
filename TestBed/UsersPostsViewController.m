@@ -34,6 +34,13 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [kAppDelegate setCurrentViewController:self];
+    
+    [super viewDidAppear:animated];
+}
+
 - (void)viewDidLoad
 {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {

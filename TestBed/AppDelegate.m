@@ -6,12 +6,28 @@
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
 
+#import <objc/runtime.h>
 #import "AppDelegate.h"
 #ifdef _USE_OS_6_OR_LATER
 #import <Social/Social.h>
 #endif
 #import "TestFlight.h"
 #import "TMImgurUploader.h"
+
+@implementation UIApplication (Private)
+
+- (BOOL)customOpenURL:(NSURL*)url
+{
+    SEL selector = @selector(handleURL:);
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    if (appDelegate.currentViewController) {
+        [appDelegate.currentViewController performSelectorOnMainThread:selector withObject:url waitUntilDone:NO];
+        return YES;
+    }
+    return NO;
+}
+
+@end
 
 @implementation AppDelegate
 
@@ -52,6 +68,11 @@
     
     [self setImageCache:[[NSCache alloc] init]];
     [self setNameCache:[[NSCache alloc] init]];
+    
+    Method customOpenUrl = class_getInstanceMethod([UIApplication class], @selector(customOpenURL:));
+    Method openUrl = class_getInstanceMethod([UIApplication class], @selector(openURL:));
+    
+    method_exchangeImplementations(openUrl, customOpenUrl);
     
     return YES;
 }

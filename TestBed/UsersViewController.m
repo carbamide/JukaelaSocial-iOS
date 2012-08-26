@@ -7,6 +7,7 @@
 //
 
 #import <objc/runtime.h>
+#import "AppDelegate.h"
 #import "ClearLabelsCellView.h"
 #import "GradientView.h"
 #import "GravatarHelper.h"
@@ -30,6 +31,13 @@
         
     }
     return self;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [kAppDelegate setCurrentViewController:self];
+    
+    [super viewDidAppear:animated];
 }
 
 -(void)viewDidLoad

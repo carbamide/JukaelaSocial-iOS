@@ -6,16 +6,17 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "AppDelegate.h"
-#import "PostViewController.h"
-#import "NSString+BackslashEscape.h"
 #import <Accounts/Accounts.h>
 #if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
 #import <Social/Social.h>
 #endif
 #import <Twitter/Twitter.h>
-#import "UIAlertView+Blocks.h"
+#import "AppDelegate.h"
+#import "PostViewController.h"
+#import "NSString+BackslashEscape.h"
+#import "SVModalWebViewController.h"
 #import "TMImgurUploader.h"
+#import "UIAlertView+Blocks.h"
 #import "UIImage+Resize.h"
 
 @interface PostViewController ()
@@ -443,9 +444,18 @@
         }
     }];
 }
+
 -(void)image:(UIImage *)image finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     return;
 }
 
+- (void)handleURL:(NSURL*)url
+{
+    SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
+    
+    [webViewController setBarsTintColor:[UIColor darkGrayColor]];
+    
+    [self presentModalViewController:webViewController animated:YES];
+}
 @end

@@ -7,9 +7,10 @@
 //
 
 #import <Accounts/Accounts.h>
+#import <Social/Social.h>
+#import "AppDelegate.h"
 #import "SettingsViewController.h"
 #ifdef __IPHONE_6_0
-#import <Social/Social.h>
 #endif
 #import "TestFlight.h"
 
@@ -27,6 +28,13 @@ typedef enum {
 @end
 
 @implementation SettingsViewController
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [kAppDelegate setCurrentViewController:self];
+    
+    [super viewDidAppear:animated];
+}
 
 -(void)logOut:(id)sender
 {

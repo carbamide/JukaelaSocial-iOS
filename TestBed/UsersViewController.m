@@ -97,7 +97,9 @@
         [cell setBackgroundView:[[GradientView alloc] init]];
     }
     
-    [[cell textLabel] setText:[self usersArray][[indexPath row]][@"name"]];
+    [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18]];
+
+    [[cell contentText] setText:[self usersArray][[indexPath row]][@"name"]];
     
     if ([self usersArray][[indexPath row]][@"username"] && [self usersArray][[indexPath row]][@"username"] != [NSNull null]) {
         [[cell detailTextLabel] setText:[self usersArray][[indexPath row]][@"username"]];

@@ -207,6 +207,8 @@
 
 - (void)sendTweet:(NSString *)stringToSend
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_or_twitter_sending" object:nil];
+    
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     
     ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -255,6 +257,7 @@
                             
                             [twitterPostingError show];
                         }
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"stop_animating" object:nil];
                     }];
                 }
                 else {
@@ -284,6 +287,7 @@
                             
                             [twitterPostingError show];
                         }
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"stop_animating" object:nil];
                     }];
                 }
                 
@@ -299,6 +303,8 @@
 
 - (void)sendFacebookPost:(NSString *)stringToSend
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_or_twitter_sending" object:nil];
+
     if ([self tempImageData]) {
         stringToSend = [stringToSend stringByReplacingOccurrencesOfString:[self urlString] withString:@""];
     }
@@ -351,6 +357,7 @@
                                 
                                 [facebookPostingError show];
                             }
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"stop_animating" object:nil];
                         }];
                     }
                     else {
@@ -381,6 +388,7 @@
                                 
                                 [facebookPostingError show];
                             }
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"stop_animating" object:nil];
                         }];
                     }
                 }

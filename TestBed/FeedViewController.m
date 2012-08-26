@@ -27,6 +27,7 @@
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @property (nonatomic) ChangeType currentChangeType;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
+@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
 @property (strong, nonatomic) NSNotificationCenter *changeTypeNotificationCenter;
 @property (strong, nonatomic) NSNotificationCenter *tweetSuccessfullNotificationCenter;
@@ -119,13 +120,13 @@
     
     [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"refresh_your_tables"
                                                                      object:nil
-                                                                      queue:mainQueue usingBlock:^(NSNotification *number) {
+                                                                      queue:mainQueue usingBlock:^(NSNotification *aNotification) {
                                                                           [self refreshTableInformation];
                                                                       }]];
     
     [self setTweetSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"tweet_successful"
                                                                            object:nil
-                                                                            queue:mainQueue usingBlock:^(NSNotification *number) {
+                                                                            queue:mainQueue usingBlock:^(NSNotification *aNotification) {
                                                                                 [self setTwitterSuccess:YES];
                                                                                 
                                                                                 [self checkForFBAndTwitterSucess];
@@ -133,11 +134,29 @@
     
     [self setFacebookSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"facebook_successful"
                                                                               object:nil
-                                                                               queue:mainQueue usingBlock:^(NSNotification *number) {
+                                                                               queue:mainQueue usingBlock:^(NSNotification *aNotification) {
                                                                                    [self setFbSuccess:YES];
                                                                                    
                                                                                    [self checkForFBAndTwitterSucess];
                                                                                }]];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"facebook_or_twitter_sending" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
+        if (![self activityIndicator]) {
+            [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
+        }
+        
+        [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
+        
+        if (![[self activityIndicator] isAnimating]) {
+            [[self activityIndicator] startAnimating];
+        }
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"stop_animating" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
+        if ([[self activityIndicator] isAnimating]) {
+            [[self activityIndicator] stopAnimating];
+        }
+    }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
@@ -151,13 +170,13 @@
     [progressHUD setDelegate:self];
     
     [[self view] addSubview:progressHUD];
-
+    
     [progressHUD show:YES];
     
     NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        
+    
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][@"user_id"]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -190,6 +209,8 @@
             [successNotice show];
             
             [self setTwitterSuccess:NO];
+            
+            [[self activityIndicator] startAnimating];
         }
     }
     else if (([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) && ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"] == NO)) {
@@ -199,6 +220,8 @@
             [successNotice show];
             
             [self setFbSuccess:NO];
+            
+            [[self activityIndicator] startAnimating];
         }
     }
     else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"] && [[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
@@ -209,6 +232,8 @@
             
             [self setTwitterSuccess:NO];
             [self setFbSuccess:NO];
+            
+            [[self activityIndicator] startAnimating];
         }
     }
     else {
@@ -312,7 +337,7 @@
     CGSize nameSize = [nameText sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
-        
+    
     return height + (10 * 2);
 }
 
@@ -412,7 +437,7 @@
 -(void)doubleTap:(NSNotification *)aNotification
 {
     NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
-
+    
     BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
     [cellActionSheet addButtonWithTitle:@"Reply" block:^{

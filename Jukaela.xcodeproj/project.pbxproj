@@ -22,6 +22,7 @@
 		293751F515EA65F10082864C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 293751F415EA65F10082864C /* MessageUI.framework */; };
 		293A7424155F6810004D27D2 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 293A7423155F6810004D27D2 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		293A7426155F68AA004D27D2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 293A7425155F68AA004D27D2 /* Security.framework */; };
+		293B952315EB0B740036A7FF /* NewUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 293B952215EB0B730036A7FF /* NewUserViewController.m */; };
 		2956875B1552C96700FE741C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2956875A1552C96700FE741C /* UIKit.framework */; };
 		2956875D1552C96700FE741C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2956875C1552C96700FE741C /* Foundation.framework */; };
 		2956875F1552C96700FE741C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2956875E1552C96700FE741C /* CoreGraphics.framework */; };
@@ -159,6 +160,8 @@
 		293A7422155F6810004D27D2 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		293A7423155F6810004D27D2 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		293A7425155F68AA004D27D2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		293B952115EB0B730036A7FF /* NewUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewUserViewController.h; sourceTree = "<group>"; };
+		293B952215EB0B730036A7FF /* NewUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewUserViewController.m; sourceTree = "<group>"; };
 		295687561552C96700FE741C /* Jukaela.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Jukaela.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2956875A1552C96700FE741C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2956875C1552C96700FE741C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -689,6 +692,8 @@
 				29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */,
 				2956876F1552C96700FE741C /* LoginViewController.h */,
 				295687701552C96700FE741C /* LoginViewController.m */,
+				293B952115EB0B730036A7FF /* NewUserViewController.h */,
+				293B952215EB0B730036A7FF /* NewUserViewController.m */,
 				291EB58115649366005FB66D /* PostViewController.h */,
 				291EB58215649366005FB66D /* PostViewController.m */,
 				29AA10951557254400B8D3F5 /* SettingsViewController.h */,
@@ -934,6 +939,7 @@
 				29FC657615E97D3B00E9133E /* JTextView.m in Sources */,
 				293751ED15EA63E10082864C /* SVModalWebViewController.m in Sources */,
 				293751EE15EA63E10082864C /* SVWebViewController.m in Sources */,
+				293B952315EB0B740036A7FF /* NewUserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

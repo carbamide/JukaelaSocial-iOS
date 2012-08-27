@@ -99,7 +99,13 @@
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Login" id="Sw5-4o-rqO"/>
+                    <navigationItem key="navigationItem" title="Login" id="Sw5-4o-rqO">
+                        <barButtonItem key="rightBarButtonItem" title="New User?" id="OZ2-Lg-HsZ">
+                            <connections>
+                                <segue destination="X61-CP-44v" kind="modal" identifier="NewUser" id="vwk-Uh-vBY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="W4X-yi-ift" id="4Z3-CN-bku"/>
                         <outlet property="loginTableView" destination="TCt-vC-S5I" id="OWx-iI-aLn"/>
@@ -324,6 +330,46 @@
             </objects>
             <point key="canvasLocation" x="3324" y="-89"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="VV8-ui-rvF">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="X61-CP-44v" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dKh-nV-K3m" customClass="PrettyNavigationBar">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="kpd-3f-tb7" kind="relationship" relationship="rootViewController" id="mKg-2u-SkM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Gf-Ab-7Oa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="939" y="-1226"/>
+        </scene>
+        <!--New User View Controller - New User-->
+        <scene sceneID="CXz-da-QyF">
+            <objects>
+                <tableViewController id="kpd-3f-tb7" customClass="NewUserViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="grl-Ki-Uk3">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="kpd-3f-tb7" id="CeA-WQ-HLn"/>
+                            <outlet property="delegate" destination="kpd-3f-tb7" id="TuU-uP-8En"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="New User" id="kmZ-l2-2rN">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="aXv-46-CoM">
+                            <connections>
+                                <action selector="cancel:" destination="kpd-3f-tb7" id="LXo-5K-4hq"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="32X-p4-Dtw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1345" y="-1226"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Feed.png" width="30" height="30"/>
@@ -331,61 +377,6 @@
         <image name="Settings.png" width="30" height="30"/>
         <image name="Users.png" width="30" height="30"/>
     </resources>
-    <classes>
-        <class className="EditUserViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditUserViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel:"/>
-            </relationships>
-        </class>
-        <class className="FeedViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FeedViewController.h"/>
-        </class>
-        <class className="FollowerViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FollowerViewController.h"/>
-        </class>
-        <class className="JukaelaTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JukaelaTableViewController.h"/>
-        </class>
-        <class className="JukaelaViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JukaelaViewController.h"/>
-        </class>
-        <class className="LoginViewController" superclassName="JukaelaViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="loginAction:"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="loginButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="loginTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="password" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="username" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="PostViewController" superclassName="JukaelaViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PostViewController.h"/>
-        </class>
-        <class className="PrettyNavigationBar" superclassName="UINavigationBar">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyNavigationBar.h"/>
-        </class>
-        <class className="PrettyTabBar" superclassName="UITabBar">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyTabBar.h"/>
-        </class>
-        <class className="SettingsViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
-        </class>
-        <class className="ShadowedTableView" superclassName="UITableView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShadowedTableView.h"/>
-        </class>
-        <class className="ShowUserViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowUserViewController.h"/>
-        </class>
-        <class className="UsersPostsViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UsersPostsViewController.h"/>
-        </class>
-        <class className="UsersViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UsersViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

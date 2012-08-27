@@ -59,7 +59,7 @@
             }
             
             if ([self tempDict][@"profile"]) {
-                [[self profileTextField] setText:[self tempDict][@"profile"]];
+                [[self profileTextView] setText:[self tempDict][@"profile"]];
             }
         }
         else {
@@ -83,7 +83,7 @@
     [self setEmailTextField:[[UITextField alloc] init]];
     [self setPasswordTextField:[[UITextField alloc] init]];
     [self setPasswordConfirmTextField:[[UITextField alloc] init]];
-    [self setProfileTextField:[[UITextField alloc] init]];
+    [self setProfileTextView:[[UITextView alloc] init]];
     
     [super viewDidLoad];
 }
@@ -107,7 +107,7 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@", kSocialURL, [kAppDelegate userID]]];
     
-    NSString *requestString = [NSString stringWithFormat:@"{\"user\": { \"name\":\"%@\",\"username\":\"%@\", \"email\":\"%@\", \"password\":\"%@\", \"password_confirmation\":\"%@\", \"profile\":\"%@\"}}", [[self nameTextField] text], [[self usernameTextField] text], [[self emailTextField] text], [[self passwordTextField] text], [[self passwordConfirmTextField] text], [[self profileTextField] text]];
+    NSString *requestString = [NSString stringWithFormat:@"{\"user\": { \"name\":\"%@\",\"username\":\"%@\", \"email\":\"%@\", \"password\":\"%@\", \"password_confirmation\":\"%@\", \"profile\":\"%@\"}}", [[self nameTextField] text], [[self usernameTextField] text], [[self emailTextField] text], [[self passwordTextField] text], [[self passwordConfirmTextField] text], [[self profileTextView] text]];
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
@@ -214,14 +214,25 @@
         [[cell textLabel] setText:@"Profile"];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [[self profileTextField] setFrame:CGRectMake(110, 10, 185, 30)];
-        [[self profileTextField] setAutocapitalizationType:UITextAutocorrectionTypeDefault];
+        [[self profileTextView] setFrame:CGRectMake(110, 10, 195, 100)];
+        [[self profileTextView] setAutocapitalizationType:UITextAutocorrectionTypeDefault];
+        [[self profileTextView] setBackgroundColor:[UIColor clearColor]];
         
-        [cell addSubview:[self profileTextField]];
+        [cell addSubview:[self profileTextView]];
     }
     [cell prepareForTableView:tableView indexPath:indexPath];
     
     return cell;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath row] == 5) {
+        return 100;
+    }
+    else {
+        return 44;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

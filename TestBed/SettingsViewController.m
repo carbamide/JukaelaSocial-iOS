@@ -58,7 +58,7 @@ typedef enum {
 }
 
 -(void)viewDidLoad
-{    
+{
     [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
     [super viewDidLoad];
@@ -140,7 +140,7 @@ typedef enum {
             
             [self setFacebookSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
             [[self facebookSwitch] setTag:FacebookType];
-
+            
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
                 [[self facebookSwitch] setOn:YES];
             }
@@ -152,14 +152,32 @@ typedef enum {
             
             [[self facebookSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         }
+        if ([indexPath row] == 6) {
+            [[cell textLabel] setText:@"Confirm Posting?"];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            
+            [self setConfirmSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+            [[self confirmSwitch] setTag:ConfirmType];
+            
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"]) {
+                [[self confirmSwitch] setOn:YES];
+            }
+            else {
+                [[self confirmSwitch] setOn:NO];
+            }
+            
+            [cell setAccessoryView:[self confirmSwitch]];
+            
+            [[self confirmSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+        }
     }
-    if ([indexPath row] == 6) {
-        [[cell textLabel] setText:@"Confirm before posting to other social networks?"];
+    else if ([indexPath row] == 5) {
+        [[cell textLabel] setText:@"Confirm Posting?"];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [self setConfirmSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
         [[self confirmSwitch] setTag:ConfirmType];
-
+        
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"]) {
             [[self confirmSwitch] setOn:YES];
         }
@@ -171,6 +189,7 @@ typedef enum {
         
         [[self confirmSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     }
+    
     return cell;
 }
 
@@ -234,7 +253,7 @@ typedef enum {
         default:
             break;
     }
-
+    
 }
 
 #pragma mark - Table view delegate
@@ -255,7 +274,7 @@ typedef enum {
             [TestFlight openFeedbackView];
             
             [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
-
+            
             break;
         default:
             break;

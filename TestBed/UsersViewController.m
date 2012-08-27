@@ -37,7 +37,16 @@
 {
     [kAppDelegate setCurrentViewController:self];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
+
     [super viewDidAppear:animated];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"double_tap" object:nil];
+    
+    [super viewDidDisappear:animated];
 }
 
 -(void)viewDidLoad
@@ -47,6 +56,46 @@
     [self getUsers];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+}
+
+-(void)doubleTap:(NSNotification *)aNotification
+{
+    if ([[self tabBarController] selectedIndex] == 1) {
+        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+        
+        BlockActionSheet *userActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
+        
+        [userActionSheet addButtonWithTitle:@"Show User" block:^{
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"id"]]];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+            
+            [request setHTTPMethod:@"GET"];
+            [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+            [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+            
+            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                if (data) {
+                    [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                    
+                    [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
+                    
+                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    
+                    [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+                }
+                else {
+                    [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
+                }
+            }];
+        }];
+        
+        [userActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+        
+        [userActionSheet showInView:[self view]];
+    }
 }
 
 -(void)getUsers
@@ -106,7 +155,7 @@
     }
     
     [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18]];
-
+    
     [[cell contentText] setText:[self usersArray][[indexPath row]][@"name"]];
     
     if ([self usersArray][[indexPath row]][@"username"] && [self usersArray][[indexPath row]][@"username"] != [NSNull null]) {
@@ -154,38 +203,6 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BlockActionSheet *userActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
-    
-    [userActionSheet addButtonWithTitle:@"Show User" block:^{
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPath row]][@"id"]]];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        
-        [request setHTTPMethod:@"GET"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            if (data) {
-                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                
-                [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
-                
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                
-                [self performSegueWithIdentifier:@"ShowUser" sender:nil];
-            }
-            else {
-                [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
-            }
-        }];
-    }];
-    
-    [userActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-
-    [userActionSheet showInView:[self view]];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

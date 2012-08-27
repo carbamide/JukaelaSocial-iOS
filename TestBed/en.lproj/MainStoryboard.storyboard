@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2818" systemVersion="12A269" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="dso-3y-mmV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2829" systemVersion="12C31a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="dso-3y-mmV">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1900"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1914"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller - Feed-->
@@ -173,7 +173,7 @@
             <objects>
                 <tableViewController id="neM-n2-Hce" customClass="UsersPostsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="PEU-sE-awm" customClass="ShadowedTableView">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -212,9 +212,9 @@
             <objects>
                 <tableViewController id="XZz-3J-zhK" customClass="ShowUserViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="HDr-HG-Tzr">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         <connections>
                             <outlet property="dataSource" destination="XZz-3J-zhK" id="ZuO-hA-m8G"/>
                             <outlet property="delegate" destination="XZz-3J-zhK" id="5lP-Ae-HsA"/>
@@ -332,7 +332,7 @@
         <image name="Users.png" width="30" height="30"/>
     </resources>
     <classes>
-        <class className="EditUserViewController" superclassName="UITableViewController">
+        <class className="EditUserViewController" superclassName="JukaelaTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/EditUserViewController.h"/>
             <relationships>
                 <relationship kind="action" name="cancel:"/>
@@ -341,10 +341,16 @@
         <class className="FeedViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FeedViewController.h"/>
         </class>
-        <class className="FollowerViewController" superclassName="UITableViewController">
+        <class className="FollowerViewController" superclassName="JukaelaTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FollowerViewController.h"/>
         </class>
-        <class className="LoginViewController" superclassName="UIViewController">
+        <class className="JukaelaTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/JukaelaTableViewController.h"/>
+        </class>
+        <class className="JukaelaViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/JukaelaViewController.h"/>
+        </class>
+        <class className="LoginViewController" superclassName="JukaelaViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
             <relationships>
                 <relationship kind="action" name="loginAction:"/>
@@ -355,7 +361,7 @@
                 <relationship kind="outlet" name="username" candidateClass="UITextField"/>
             </relationships>
         </class>
-        <class className="PostViewController" superclassName="UIViewController">
+        <class className="PostViewController" superclassName="JukaelaViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/PostViewController.h"/>
         </class>
         <class className="PrettyNavigationBar" superclassName="UINavigationBar">
@@ -364,19 +370,19 @@
         <class className="PrettyTabBar" superclassName="UITabBar">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyTabBar.h"/>
         </class>
-        <class className="SettingsViewController" superclassName="UITableViewController">
+        <class className="SettingsViewController" superclassName="JukaelaTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
         </class>
         <class className="ShadowedTableView" superclassName="UITableView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ShadowedTableView.h"/>
         </class>
-        <class className="ShowUserViewController" superclassName="UITableViewController">
+        <class className="ShowUserViewController" superclassName="JukaelaTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowUserViewController.h"/>
         </class>
         <class className="UsersPostsViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UsersPostsViewController.h"/>
         </class>
-        <class className="UsersViewController" superclassName="UITableViewController">
+        <class className="UsersViewController" superclassName="JukaelaTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UsersViewController.h"/>
         </class>
     </classes>

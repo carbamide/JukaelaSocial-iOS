@@ -37,15 +37,24 @@
 {
     [kAppDelegate setCurrentViewController:self];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
+    
     [super viewDidAppear:animated];
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"double_tap" object:nil];
+    
+    [super viewDidDisappear:animated];
+}
+
 -(void)viewDidLoad
-{        
+{
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
-
+    
     [super viewDidLoad];
 }
 
@@ -63,7 +72,7 @@
     NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        
+    
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"id"]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -141,7 +150,7 @@
         cell = [[ClearLabelsCellView alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
         [cell setBackgroundView:[[GradientView alloc] init]];
-    } 
+    }
     
     [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18]];
     
@@ -159,13 +168,13 @@
     if (image) {
 		[[cell imageView] setImage:image];
         [cell setNeedsDisplay];
-	} 
-    else {    
+	}
+    else {
 		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
 		objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
 		
-		dispatch_async(queue, ^{            
+		dispatch_async(queue, ^{
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]]]]];
 			
 #if (TARGET_IPHONE_SIMULATOR)
@@ -181,7 +190,7 @@
                     [cell setNeedsDisplay];
 				}
 				
-                [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]];             
+                [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]];
 			});
 		});
 	}
@@ -192,57 +201,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BlockActionSheet *userActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
-    [userActionSheet addButtonWithTitle:@"Show User" block:^{
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPath row]][@"id"]]];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        
-        [request setHTTPMethod:@"GET"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            if (data) {
-                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                
-                [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
-                
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                
-                [self performSegueWithIdentifier:@"ShowUser" sender:nil];
-            }
-            else {
-                RIButtonItem *logoutButton = [RIButtonItem itemWithLabel:@"Logout"];
-                RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
-                
-                [logoutButton setAction:^{
-                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"read_username_from_defaults"];
-                    
-                    [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
-                    
-                    [[self tabBarController] setSelectedIndex:0];
-                    
-                    [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
-                    [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
-                }];
-                
-                [cancelButton setAction:^{
-                    return;
-                }];
-                
-                [Helpers errorAndLogout:self withMessage:@"There was an error showing the user.  Please logout and log back in."];
-            }
-            
-        }];
-    }];
-    
-    [userActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-    
-    [userActionSheet showInView:[self view]];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -289,4 +248,60 @@
     [hud removeFromSuperview];
 }
 
+-(void)doubleTap:(NSNotification *)aNotification
+{
+    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+    
+    BlockActionSheet *userActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
+    
+    [userActionSheet addButtonWithTitle:@"Show User" block:^{
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"id"]]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+        
+        [request setHTTPMethod:@"GET"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                
+                [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
+                
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                
+                [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+            }
+            else {
+                RIButtonItem *logoutButton = [RIButtonItem itemWithLabel:@"Logout"];
+                RIButtonItem *cancelButton = [RIButtonItem itemWithLabel:@"Cancel"];
+                
+                [logoutButton setAction:^{
+                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"read_username_from_defaults"];
+                    
+                    [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
+                    
+                    [[self tabBarController] setSelectedIndex:0];
+                    
+                    [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
+                    [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
+                }];
+                
+                [cancelButton setAction:^{
+                    return;
+                }];
+                
+                [Helpers errorAndLogout:self withMessage:@"There was an error showing the user.  Please logout and log back in."];
+            }
+            
+        }];
+    }];
+    
+    [userActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+    
+    [userActionSheet showInView:[self view]];
+}
 @end

@@ -38,6 +38,7 @@
     [kAppDelegate setCurrentViewController:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
     
     [super viewDidAppear:animated];
 }
@@ -45,6 +46,7 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"double_tap" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"send_to_user" object:nil];
     
     [super viewDidDisappear:animated];
 }
@@ -52,9 +54,7 @@
 -(void)viewDidLoad
 {
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
-    
+        
     [super viewDidLoad];
 }
 
@@ -255,6 +255,15 @@
     BlockActionSheet *userActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
     [userActionSheet addButtonWithTitle:@"Show User" block:^{
+        MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
+        [progressHUD setMode:MBProgressHUDModeIndeterminate];
+        [progressHUD setLabelText:@"Loading User..."];
+        [progressHUD setDelegate:self];
+        
+        [[self view] addSubview:progressHUD];
+        
+        [progressHUD show:YES];
+        
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"id"]]];
@@ -296,7 +305,7 @@
                 
                 [Helpers errorAndLogout:self withMessage:@"There was an error showing the user.  Please logout and log back in."];
             }
-            
+            [progressHUD hide:YES];
         }];
     }];
     

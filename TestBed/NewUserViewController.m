@@ -39,7 +39,7 @@
 
 - (void)viewDidLoad
 {
-    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
+    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
@@ -59,7 +59,7 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
--(void)saveProfile:(id)sender
+-(void)attemptToCreateUser:(id)sender
 {
     if (![[[self passwordTextField] text] isEqualToString:[[self passwordConfirmTextField] text]]) {
         BlockAlertView *passwordsDontMatchAlert = [[BlockAlertView alloc] initWithTitle:@"Password" message:@"The passwords must match"];
@@ -88,10 +88,12 @@
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
         if (data) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"new_user" object:nil userInfo:@{@"email" : [[self emailTextField] text]}];
+            
             [self dismissViewControllerAnimated:YES completion:nil];
         }
         else {
-            [Helpers errorAndLogout:self withMessage:@"There has been an error saving your updated user information."];
+            [Helpers errorAndLogout:self withMessage:@"There has been an error creating your user.  Try again."];
         }
     }];
 }
@@ -128,7 +130,7 @@
     [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
     
     if ([indexPath row] == 0) {
-        [[cell textLabel] setText:@"Name"];
+        [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self nameTextField] setFrame:CGRectMake(110, 10, 185, 30)];
@@ -137,7 +139,7 @@
         [cell addSubview:[self nameTextField]];
     }
     if ([indexPath row] == 1) {
-        [[cell textLabel] setText:@"Username"];
+        [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self usernameTextField] setFrame:CGRectMake(110, 10, 185, 30)];
@@ -146,7 +148,7 @@
         [cell addSubview:[self usernameTextField]];
     }
     if ([indexPath row] == 2) {
-        [[cell textLabel] setText:@"Email"];
+        [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self emailTextField] setFrame:CGRectMake(110, 10, 185, 30)];
@@ -157,7 +159,7 @@
         [cell addSubview:[self emailTextField]];
     }
     if ([indexPath row] == 3) {
-        [[cell textLabel] setText:@"Password"];
+        [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self passwordTextField] setFrame:CGRectMake(110, 10, 185, 30)];
@@ -167,7 +169,7 @@
         [cell addSubview:[self passwordTextField]];
     }
     if ([indexPath row] == 4) {
-        [[cell textLabel] setText:@"Confirm Password"];
+        [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self passwordConfirmTextField] setFrame:CGRectMake(110, 10, 185, 30)];
@@ -191,7 +193,7 @@
 
 -(NSArray *)fieldsArray
 {
-    NSArray *tempArray = @[@"Name", @"Username", @"Email", @"Password", @"Confirm Password"];
+    NSArray *tempArray = @[@"Name", @"Username", @"Email", @"Password", @"Confirm"];
     
     return tempArray;
 }

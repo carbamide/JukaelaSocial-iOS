@@ -35,6 +35,10 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         [contentText addGestureRecognizer:tapGesture];
         
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
+        
+        [contentText addGestureRecognizer:longPressGesture];
+        
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 5, 140, 15)];
         
         [nameLabel setTextAlignment:NSTextAlignmentLeft];
@@ -51,7 +55,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [dateLabel setTag:8];
         
         [self addSubview:dateLabel];
-            
+        
         usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(180, 5, 140, 15)];
         [usernameLabel setTextAlignment:NSTextAlignmentRight];
         [usernameLabel setFont:[UIFont fontWithName:@"Helvetica" size:14]];
@@ -72,7 +76,10 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self imageView] setUserInteractionEnabled:YES];
     
     [[self imageView] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendToUser:)]];
-
+    
+    [[[self imageView] layer] setBorderColor: [[UIColor blackColor] CGColor]];
+    [[[self imageView] layer] setBorderWidth: 2.0];
+    
 	return self;
 }
 
@@ -90,13 +97,13 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self textLabel] setHidden:YES];
     
     [[self usernameLabel] setFrame:CGRectMake(self.frame.size.width - self.usernameLabel.frame.size.width - 5, 5, 140, 15)];
-
+    
     [[self detailTextLabel] setFrame:CGRectMake(90, 25, 150, 76)];
     
     [[self dateLabel] sizeToFit];
     
     [[self dateLabel] setCenter:[[self imageView] center]];
-
+    
     [[self dateLabel] setFrame:CGRectMake(self.dateLabel.frame.origin.x, self.imageView.frame.origin.y + self.imageView.frame.size.height, self.dateLabel.frame.size.width, self.dateLabel.frame.size.height)];
     
     if (![[self imageView] image]) {
@@ -161,18 +168,28 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [super dealloc];
 }
 
--(void)doubleTapAction:(UITableViewCell *)sender
+-(void)doubleTapAction:(UIGestureRecognizer *)gesture
+{
+    if([gesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        if(UIGestureRecognizerStateBegan == gesture.state) {
+            NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"double_tap" object:nil userInfo:@{@"indexPath" : indexPath}];
+        }
+    }
+    else {
+        NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"double_tap" object:nil userInfo:@{@"indexPath" : indexPath}];
+    }
+}
+
+-(void)sendToUser:(UIGestureRecognizer *)gesture
 {
     NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"double_tap" object:nil userInfo:@{@"indexPath" : indexPath}];
-}
-
--(void)sendToUser:(UITableViewCell *)sender
-{
-    NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
-        
     [[NSNotificationCenter defaultCenter] postNotificationName:@"send_to_user" object:nil userInfo:@{@"indexPath" : indexPath}];
+    
 }
 
 @end

@@ -298,7 +298,10 @@
     [[self imageView] setClipsToBounds:NO];
     
     [super viewDidLoad];
-        
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"new_user" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
+        [[self username] setText:[aNotification userInfo][@"email"]];
+    }];
     _username = [[UITextField alloc] init];
     _password = [[UITextField alloc] init];
 }

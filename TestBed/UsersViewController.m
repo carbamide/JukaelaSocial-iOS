@@ -38,13 +38,15 @@
     [kAppDelegate setCurrentViewController:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
+    
     [super viewDidAppear:animated];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"double_tap" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"send_to_user" object:nil];
     
     [super viewDidDisappear:animated];
 }
@@ -66,7 +68,18 @@
         BlockActionSheet *userActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
         
         [userActionSheet addButtonWithTitle:@"Show User" block:^{
+            MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
+            [progressHUD setMode:MBProgressHUDModeIndeterminate];
+            [progressHUD setLabelText:@"Loading User..."];
+            [progressHUD setDelegate:self];
+            
+            [[self view] addSubview:progressHUD];
+            
+            [progressHUD show:YES];
+            
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            
+            NSLog(@"%@", [self usersArray]);
             
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"id"]]];
             
@@ -89,6 +102,7 @@
                 else {
                     [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
                 }
+                [progressHUD hide:YES];
             }];
         }];
         
@@ -243,5 +257,48 @@
     NSString *documentsDirectory = documentArray[0];
     
     return documentsDirectory;
+}
+
+-(void)switchToSelectedUser:(NSNotification *)aNotification
+{
+    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
+    [progressHUD setMode:MBProgressHUDModeIndeterminate];
+    [progressHUD setLabelText:@"Loading User..."];
+    [progressHUD setDelegate:self];
+    
+    [[self view] addSubview:progressHUD];
+    
+    [progressHUD show:YES];
+    
+    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"id"]]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+        }
+        else {
+            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
+        }
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        [progressHUD hide:YES];
+        
+        [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+    }];
+}
+
+-(void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
 }
 @end

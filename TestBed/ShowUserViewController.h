@@ -14,5 +14,7 @@
 @property (strong, nonatomic) NSArray *followers;
 @property (strong, nonatomic) NSArray *following;
 @property (strong, nonatomic) NSArray *posts;
+@property (strong, nonatomic) NSArray *imFollowing;
+@property (strong, nonatomic) NSArray *relationships;
 
 @end

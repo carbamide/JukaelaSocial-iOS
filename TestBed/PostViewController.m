@@ -77,7 +77,7 @@
         _theTextView = [[YIPopupTextView alloc] initWithText:[self repostString] maxCount:140];
     }
     else if (_urlString) {
-        if (tempString) {
+        if ([tempString length] > 0) {
             _theTextView = [[YIPopupTextView alloc] initWithText:[[tempString stringByAppendingString:@" "] stringByAppendingString:[self urlString]] maxCount:140];
         }
         else {

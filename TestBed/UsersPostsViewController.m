@@ -21,6 +21,8 @@
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
+@property (strong, nonatomic) NSIndexPath *tempIndexPath;
+
 @end
 
 @implementation UsersPostsViewController
@@ -38,7 +40,18 @@
 {
     [kAppDelegate setCurrentViewController:self];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
+    
     [super viewDidAppear:animated];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"double_tap" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"send_to_user" object:nil];
+    
+    [super viewDidDisappear:animated];
 }
 
 - (void)viewDidLoad
@@ -65,7 +78,7 @@
     [self setTitle:[[self userPostArray] lastObject][@"name"]];
     
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
-
+    
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     
     [super viewDidLoad];
@@ -130,9 +143,9 @@
         
         [cell setBackgroundView:[[GradientView alloc] init]];
     }
-        
+    
     [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
-        
+    
     if ([self userPostArray][[indexPath row]][@"content"]) {
         [[cell contentText] setText:[self userPostArray][[indexPath row]][@"content"]];
     }
@@ -189,63 +202,60 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
-    [cellActionSheet addButtonWithTitle:@"Reply" block:^{
-        [self performSegueWithIdentifier:@"ShowReplyView" sender:self];
-    }];
-    
-    [cellActionSheet addButtonWithTitle:@"Repost" block:^{
-        [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
-    }];
-    
-    NSString *labelString = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-    
-    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
-    
-    NSArray *matches = [linkDetector matchesInString:labelString options:0 range:NSMakeRange(0, [labelString length])];
-    
-    for (NSTextCheckingResult *match in matches) {
-        if ([match resultType] == NSTextCheckingTypeLink) {
-            NSURL *url = [match URL];
-            
-            [cellActionSheet addButtonWithTitle:[url absoluteString] block:^{
-                [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+}
 
-                [[UIApplication sharedApplication] openURL:url];
+-(void)doubleTap:(NSNotification *)aNotification
+{
+    if ([[self tabBarController] selectedIndex] == 0) {
+        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+        
+        [self setTempIndexPath:indexPathOfTappedRow];
+        
+        BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
+        
+        [cellActionSheet addButtonWithTitle:@"Reply" block:^{
+            [self performSegueWithIdentifier:@"ShowReplyView" sender:self];
+            
+        }];
+        
+        [cellActionSheet addButtonWithTitle:@"Repost" block:^{
+            [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
+            
+        }];
+        
+        if ([[NSString stringWithFormat:@"%@", [self userPostArray][[indexPathOfTappedRow row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+            [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+                
+                NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
+                
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [self userPostArray][[indexPath row]][@"id"]]];
+                
+                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+                
+                [request setHTTPMethod:@"DELETE"];
+                [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+                [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+                
+                [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                    [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+                    
+                    [self refreshTableInformation];
+                    
+                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                }];
             }];
         }
-    }
-    
-    [cellActionSheet addButtonWithTitle:@"Delete" block:^{
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
-        NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
-        
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [self userPostArray][[indexPath row]][@"id"]]];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        
-        [request setHTTPMethod:@"DELETE"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+        [cellActionSheet setCancelButtonWithTitle:@"Cancel" block:^{
+            [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
             
-            [self refreshTableInformation];
-            
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            return;
         }];
-    }];
-    
-    [cellActionSheet setCancelButtonWithTitle:@"Cancel" block:^{
-        [[[self tableView] cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
         
-        return;
-    }];
-    
-    [cellActionSheet showInView:[self view]];    
+        [cellActionSheet showInView:[self view]];
+    }
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

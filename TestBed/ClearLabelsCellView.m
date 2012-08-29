@@ -74,12 +74,16 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 		[[self nameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
         [[self dateLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
         [[self usernameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
+        
+        [[self imageView] setUserInteractionEnabled:YES];
+        
+        UITapGestureRecognizer *imageTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendToUser:)];
+        
+        [[self imageView] addGestureRecognizer:imageTapGesture];
+        
+        [imageTapGesture release];
 	}
 	
-    [[self imageView] setUserInteractionEnabled:YES];
-    
-    [[self imageView] addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendToUser:)]];
-    
 	return self;
 }
 

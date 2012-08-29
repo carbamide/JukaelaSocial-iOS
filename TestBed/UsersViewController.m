@@ -57,7 +57,16 @@
     
     [self getUsers];
     
+    UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
+    
+    [[self navigationItem] setRightBarButtonItem:composeButton];
+    
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+}
+
+-(void)composePost:(UIBarButtonItem *)sender
+{
+    [self performSegueWithIdentifier:@"ShowPostView" sender:self];
 }
 
 -(void)doubleTap:(NSNotification *)aNotification

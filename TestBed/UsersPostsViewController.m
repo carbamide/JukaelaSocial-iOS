@@ -36,24 +36,6 @@
     return self;
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [kAppDelegate setCurrentViewController:self];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
-    
-    [super viewDidAppear:animated];
-}
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"double_tap" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"send_to_user" object:nil];
-    
-    [super viewDidDisappear:animated];
-}
-
 - (void)viewDidLoad
 {
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
@@ -157,11 +139,12 @@
         [[cell nameLabel] setText:[self userPostArray][[indexPath row]][@"name"]];
     }
     
+    if ([self userPostArray][[indexPath row]][@"username"] && [self userPostArray][[indexPath row]][@"username"] != [NSNull null]) {
+        [[cell usernameLabel] setText:[self userPostArray][[indexPath row]][@"username"]];
+    }
+    
     NSDate *tempDate = [NSDate dateWithISO8601String:[self userPostArray][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
-    NSLog(@"%@", tempDate);
-    
-    NSLog(@"%@", [[self dateTransformer] transformedValue:tempDate]);
-    
+        
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"email"]]]]];
@@ -314,4 +297,10 @@
         }
     }];
 }
+
+-(void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
+}
+
 @end

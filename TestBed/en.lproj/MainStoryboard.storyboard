@@ -32,8 +32,9 @@
                     </tabBar>
                     <connections>
                         <segue destination="i81-bH-OLq" kind="relationship" relationship="viewControllers" id="lby-fh-tU8"/>
-                        <segue destination="3ax-J6-0PH" kind="relationship" relationship="viewControllers" id="NZo-NI-3U5"/>
-                        <segue destination="txF-kK-p6a" kind="relationship" relationship="viewControllers" id="62o-HO-HYg"/>
+                        <segue destination="DKi-a0-jxj" kind="relationship" relationship="viewControllers" id="8Lh-Mm-BR5"/>
+                        <segue destination="3ax-J6-0PH" kind="relationship" relationship="viewControllers" id="BYR-rz-K8R"/>
+                        <segue destination="txF-kK-p6a" kind="relationship" relationship="viewControllers" id="O7T-y9-7er"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ro6-nM-llJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -52,6 +53,7 @@
                     <navigationItem key="navigationItem" title="Users" id="oOI-gV-YTp"/>
                     <connections>
                         <segue destination="Bri-oI-JnH" kind="modal" identifier="ShowUser" id="flq-Ou-H4k"/>
+                        <segue destination="9YE-cx-WSu" kind="modal" identifier="ShowPostView" id="6zt-bi-MwF"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E50-be-wtY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -133,6 +135,43 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zZE-DO-6da" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="932" y="722"/>
+        </scene>
+        <!--Mentions View Controller - Mentions-->
+        <scene sceneID="apJ-6f-eKg">
+            <objects>
+                <tableViewController id="rJh-ZE-bJ6" customClass="MentionsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="uBN-UR-TOj" customClass="ShadowedTableView">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Mentions" id="9QU-ds-m0w"/>
+                    <connections>
+                        <segue destination="9YE-cx-WSu" kind="modal" identifier="ShowReplyView" id="Lrs-hW-7UZ"/>
+                        <segue destination="9YE-cx-WSu" kind="modal" identifier="ShowRepostView" id="ilt-Mo-CmO"/>
+                        <segue destination="Bri-oI-JnH" kind="modal" identifier="ShowUser" id="hlx-W1-dR2"/>
+                        <segue destination="9YE-cx-WSu" kind="modal" identifier="ShowPostView" id="SJR-XZ-vv3"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g2o-EK-jmF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="939" y="1323"/>
+        </scene>
+        <!--Navigation Controller - Mentions-->
+        <scene sceneID="TqI-QN-u4n">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="DKi-a0-jxj" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Mentions" image="mention.png" id="Ips-VP-Rjg"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="igr-Xs-YIW" customClass="PrettyNavigationBar">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="rJh-ZE-bJ6" kind="relationship" relationship="rootViewController" id="ay7-Qq-1w8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oZ0-DA-MQ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="407" y="1323"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ihF-to-U7f">
@@ -381,16 +420,84 @@
         <image name="JukaelaLogo.png" width="500" height="330"/>
         <image name="Settings.png" width="30" height="30"/>
         <image name="Users.png" width="30" height="30"/>
+        <image name="mention.png" width="30" height="30"/>
     </resources>
+    <classes>
+        <class className="EditUserViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditUserViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel:"/>
+            </relationships>
+        </class>
+        <class className="FeedViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FeedViewController.h"/>
+        </class>
+        <class className="FollowerViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FollowerViewController.h"/>
+        </class>
+        <class className="JukaelaTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/JukaelaTableViewController.h"/>
+        </class>
+        <class className="JukaelaViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/JukaelaViewController.h"/>
+        </class>
+        <class className="LoginViewController" superclassName="JukaelaViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="loginAction:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="loginButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="loginTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="password" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="username" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="MentionsViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MentionsViewController.h"/>
+        </class>
+        <class className="NewUserViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NewUserViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel:"/>
+            </relationships>
+        </class>
+        <class className="PostViewController" superclassName="JukaelaViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PostViewController.h"/>
+        </class>
+        <class className="PrettyNavigationBar" superclassName="UINavigationBar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyNavigationBar.h"/>
+        </class>
+        <class className="PrettyTabBar" superclassName="UITabBar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyTabBar.h"/>
+        </class>
+        <class className="PrettyToolbar" superclassName="UIToolbar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyToolbar.h"/>
+        </class>
+        <class className="SettingsViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
+        </class>
+        <class className="ShadowedTableView" superclassName="UITableView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShadowedTableView.h"/>
+        </class>
+        <class className="ShowUserViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowUserViewController.h"/>
+        </class>
+        <class className="UsersPostsViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UsersPostsViewController.h"/>
+        </class>
+        <class className="UsersViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UsersViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="flq-Ou-H4k"/>
+        <segue reference="6zt-bi-MwF"/>
         <segue reference="CJw-IH-p8F"/>
-        <segue reference="Nfd-q2-QYn"/>
-        <segue reference="pVl-wR-5FD"/>
         <segue reference="Nhe-14-LGi"/>
     </inferredMetricsTieBreakers>
 </document>

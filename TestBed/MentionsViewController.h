@@ -1,5 +1,5 @@
 //
-//  UsersPostsViewController.h
+//  MentionsViewController.h
 //  Jukaela
 //
 //  Created by Josh Barrow on 5/17/12.
@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 
-@interface UsersPostsViewController : UITableViewController <MBProgressHUDDelegate>
+@interface MentionsViewController : JukaelaTableViewController <MBProgressHUDDelegate>
 
-@property (strong, nonatomic) NSArray *userPostArray;
+@property (strong, nonatomic) NSArray *mentions;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSDictionary *tempDict;

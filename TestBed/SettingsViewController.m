@@ -46,6 +46,7 @@ typedef enum {
     
     [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
     [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
+    [[[[self tabBarController] tabBar] items][3] setEnabled:NO];
 }
 
 -(id)initWithStyle:(UITableViewStyle)style

@@ -53,15 +53,20 @@
     
     [[self navigationController] setToolbarHidden:NO];
     
+    [self changeToActivityIndicator];
+
+    [self performSelector:@selector(setupArraysDispatch) withObject:nil afterDelay:0];
+}
+
+-(void)setupArraysDispatch
+{
     dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [self changeToActivityIndicator];
         [self getFollowers];
         [self getFollowing];
         [self getPosts];
         [self getimFollowing];
     });
 }
-
 -(void)setupToolbar
 {
     PrettyToolbar *toolbar = (PrettyToolbar *)self.navigationController.toolbar;
@@ -105,6 +110,13 @@
     }
     if (following == YES) {
         [followOrUnfollow setDestructiveButtonWithTitle:@"Unfollow" block:^{
+            [self setImFollowing:nil];
+            [self setRelationships:nil];
+            
+            [self changeToActivityIndicator];
+            
+            [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
+            
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
             
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships/%@.json", kSocialURL, unfollowID]];
@@ -133,6 +145,13 @@
     }
     else {
         [followOrUnfollow addButtonWithTitle:@"Follow" block:^{
+            [self setImFollowing:nil];
+            [self setRelationships:nil];
+            
+            [self changeToActivityIndicator];
+            
+            [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
+            
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
             
             UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
@@ -195,16 +214,14 @@
     [followOrUnfollow setCancelButtonWithTitle:@"Cancel" block:nil];
     
     [followOrUnfollow showInView:[self view]];
-    
+}
+
+-(void)followingAndRelationshipsDispatch
+{
     dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [self changeToActivityIndicator];
-        
-        [self setImFollowing:nil];
-        [self setRelationships:nil];
         [self getimFollowing];
     });
 }
-
 -(void)changeToActivityIndicator
 {
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];

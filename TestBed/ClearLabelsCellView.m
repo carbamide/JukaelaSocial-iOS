@@ -39,6 +39,9 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         [contentText addGestureRecognizer:longPressGesture];
         
+        [longPressGesture release];
+        [tapGesture release];
+        
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 5, 140, 15)];
         
         [nameLabel setTextAlignment:NSTextAlignmentLeft];
@@ -161,6 +164,11 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     @catch (id anException) {
         NSLog(@"Trying to remove an observer when none was attached.");
     }
+    
+    [[self nameLabel] release], [self setNameLabel:nil];
+    [[self dateLabel] release], [self setDateLabel:nil];
+    [[self usernameLabel] release], [self setUsernameLabel:nil];
+    [[self contentText] release], [self setContentText:nil];
     
     [super dealloc];
 }

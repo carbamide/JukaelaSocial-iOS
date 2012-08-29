@@ -518,7 +518,7 @@
     else if ([[segue identifier] isEqualToString:@"ShowReplyView"]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
-        [viewController setReplyString:[[NSString stringWithFormat:@"@%@", [self theFeed][[[self tempIndexPath] row]][@"username"]] stringByAppendingString:@" "]];
+        [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self theFeed][[[self tempIndexPath] row]][@"username"]]];
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }

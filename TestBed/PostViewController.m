@@ -88,6 +88,11 @@
         _theTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Make a post, you guys!" maxCount:140];
     }
     
+    if ([[_theTextView text] length] > 0) {
+        [_theTextView setEditable:YES];
+        
+        [_theTextView setText:[[_theTextView text] stringByAppendingString:@" "]];
+    }
     [_theTextView setDelegate:self];
     [_theTextView setShowCloseButton:NO];
     

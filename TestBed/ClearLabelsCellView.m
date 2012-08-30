@@ -169,11 +169,6 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         NSLog(@"Trying to remove an observer when none was attached.");
     }
     
-    [[self nameLabel] release], [self setNameLabel:nil];
-    [[self dateLabel] release], [self setDateLabel:nil];
-    [[self usernameLabel] release], [self setUsernameLabel:nil];
-    [[self contentText] release], [self setContentText:nil];
-    
     [super dealloc];
 }
 

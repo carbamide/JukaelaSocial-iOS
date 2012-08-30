@@ -281,6 +281,12 @@
 }
 -(void)viewDidLoad
 {
+    PrettyTabBar *tabBar = (PrettyTabBar *)[[[self navigationController] tabBarController] tabBar];
+    
+    [tabBar setGradientStartColor:[UIColor colorWithHex:0x3e3e3e]];
+    [tabBar setGradientEndColor:[UIColor colorWithHex:0x1c1c1c]];
+    [tabBar setSeparatorLineColor:[UIColor darkGrayColor]];
+    
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMyLove:)];
     
     [recognizer setNumberOfTapsRequired:2];

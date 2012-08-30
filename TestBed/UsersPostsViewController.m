@@ -63,6 +63,8 @@
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     
+    [[self navigationController] setToolbarHidden:YES animated:YES];
+    
     [super viewDidLoad];
 }
 
@@ -246,9 +248,9 @@
     if ([[segue identifier] isEqualToString:@"ShowReplyView"]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
-        [viewController setReplyString:[NSString stringWithFormat:@"@%@ ", [self userPostArray][[[[self tableView] indexPathForSelectedRow] row]][@"username"]]];
+        [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self userPostArray][[[self tempIndexPath] row]][@"username"]]];
         
-        [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+        [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }
     else if ([[segue identifier] isEqualToString:@"ShowRepostView"]) {
         UITableViewCell *tempCell = [[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
@@ -257,7 +259,7 @@
         
         [viewController setRepostString:[NSString stringWithFormat:@"%@", [[tempCell textLabel] text]]];
         
-        [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+        [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }
 }
 

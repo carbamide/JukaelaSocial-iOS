@@ -274,7 +274,7 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             int oldNumberOfPosts = [[self theFeed] count];
-            
+                        
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
             int newNumberOfPosts = [[self theFeed] count];

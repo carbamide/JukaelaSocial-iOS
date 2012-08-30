@@ -701,6 +701,8 @@
 				29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */,
 				2956876F1552C96700FE741C /* LoginViewController.h */,
 				295687701552C96700FE741C /* LoginViewController.m */,
+				292C8CBF15EE923700E8B046 /* MentionsViewController.h */,
+				292C8CC015EE923700E8B046 /* MentionsViewController.m */,
 				293B952115EB0B730036A7FF /* NewUserViewController.h */,
 				293B952215EB0B730036A7FF /* NewUserViewController.m */,
 				291EB58115649366005FB66D /* PostViewController.h */,
@@ -713,8 +715,6 @@
 				292434701565E330007C8E8C /* UsersPostsViewController.m */,
 				290045D415576D5D004F113A /* UsersViewController.h */,
 				290045D515576D5D004F113A /* UsersViewController.m */,
-				292C8CBF15EE923700E8B046 /* MentionsViewController.h */,
-				292C8CC015EE923700E8B046 /* MentionsViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";

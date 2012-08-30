@@ -16,7 +16,7 @@
 
 -(void)customizeNavigationBar
 {
-    PrettyNavigationBar *navBar = (PrettyNavigationBar *)self.navigationController.navigationBar;
+    PrettyNavigationBar *navBar = (PrettyNavigationBar *)[[self navigationController] navigationBar];
     
     [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
     [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];

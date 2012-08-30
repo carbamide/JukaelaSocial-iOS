@@ -30,6 +30,8 @@
 {
     [kAppDelegate setCurrentViewController:self];
     
+    [[self navigationController] setToolbarHidden:NO animated:YES];
+
     [super viewDidAppear:animated];
 }
 

@@ -178,12 +178,10 @@
     [[self navigationItem] setRightBarButtonItem:loadingView];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts.json", kSocialURL]];
+        
+    NSData *tempData = [[[[self theTextView] text] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     
-    NSString *stringToSendAsContent = [[[self theTextView] text] stringWithSlashEscapes];
-    
-    NSData *tempData = [stringToSendAsContent dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    
-    stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
+    NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
     
     NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
     

@@ -181,6 +181,10 @@
     
     NSString *stringToSendAsContent = [[[self theTextView] text] stringWithSlashEscapes];
     
+    NSData *tempData = [stringToSendAsContent dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    
+    stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
+    
     NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];

@@ -18,4 +18,6 @@ extern NSString * const kJKPrepareForReuseNotification;
 @property (strong, retain) UILabel *usernameLabel;
 @property (strong, retain) JTextView *contentText;
 
+-(void)disableCell;
+
 @end

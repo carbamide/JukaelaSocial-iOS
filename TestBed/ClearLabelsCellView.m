@@ -196,4 +196,20 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     
 }
 
+-(void)disableCell
+{
+    float disabledAlpha = 0.439216;
+    
+    [UIView animateWithDuration:0.4 animations:^(void) {
+        [[self contentText] setAlpha:disabledAlpha];
+        [[self imageView] setAlpha:disabledAlpha];
+        [[self nameLabel] setAlpha:disabledAlpha];
+        [[self textLabel] setAlpha:disabledAlpha];
+        [[self dateLabel] setAlpha:disabledAlpha];
+        [[self usernameLabel] setAlpha:disabledAlpha];
+        
+        [self setUserInteractionEnabled:YES];
+    }];
+}
+
 @end

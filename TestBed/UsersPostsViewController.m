@@ -213,9 +213,11 @@
             [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
                 
-                NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
+                ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
                 
-                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [self userPostArray][[indexPath row]][@"id"]]];
+                [tempCell disableCell];
+                
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [self userPostArray][[indexPathOfTappedRow row]][@"id"]]];
                 
                 NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
                 

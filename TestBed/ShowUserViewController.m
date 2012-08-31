@@ -386,7 +386,7 @@
             
             [segmentedCell setNumberOfElements:3];
             
-            [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self following] count]] atIndex:0];
+            [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self following][@"user"] count]] atIndex:0];
             [segmentedCell setDetailText:@"Following" atIndex:0];
             
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self followers] count]] atIndex:1];
@@ -431,6 +431,7 @@
         
         FollowerViewController *viewController = [segue destinationViewController];
         
+        
         [viewController setUsersArray:[self followers]];
         [viewController setTitle:@"Followers"];
     }
@@ -440,8 +441,9 @@
         [tempCell deselectAnimated:YES];
         
         FollowerViewController *viewController = [segue destinationViewController];
+
+        [viewController setUsersArray:[self following][@"user"]];
         
-        [viewController setUsersArray:[self following]];
         [viewController setTitle:@"Following"];
     }
     else if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
@@ -517,6 +519,8 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            NSLog(@"%@", [self following]);
             
             [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
         }

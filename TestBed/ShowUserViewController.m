@@ -97,9 +97,7 @@
     NSString *followOrUnfollowString = @"Now following ";
     
     for (NSDictionary *dict in [self imFollowing]) {
-        if ([dict[@"id"] isEqualToNumber:[self userDict][@"id"]]) {
-            NSLog(@"Already following");
-            
+        if ([dict[@"id"] isEqualToNumber:[self userDict][@"id"]]) {            
             followOrUnfollowString = @"Unfollowed ";
             following = YES;
         }

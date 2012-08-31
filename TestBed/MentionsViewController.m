@@ -313,7 +313,7 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             [self setMentions:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-            
+                        
             [[self tableView] reloadData];
             
             if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {

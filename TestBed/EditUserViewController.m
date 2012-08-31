@@ -46,19 +46,19 @@
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
-            if ([self tempDict][@"name"]) {
+            if ([self tempDict][@"name"] && [self tempDict][@"name"] != [NSNull null]) {
                 [[self nameTextField] setText:[self tempDict][@"name"]];
             }
             
-            if ([self tempDict][@"username"]) {
+            if ([self tempDict][@"username"] && [self tempDict][@"username"] != [NSNull null]) {
                 [[self usernameTextField] setText:[self tempDict][@"username"]];
             }
             
-            if ([self tempDict][@"email"]) {
+            if ([self tempDict][@"email"] && [self tempDict][@"email"] != [NSNull null]) {
                 [[self emailTextField] setText:[self tempDict][@"email"]];
             }
             
-            if ([self tempDict][@"profile"]) {
+            if ([self tempDict][@"profile"] && [self tempDict][@"profile"] != [NSNull null]) {
                 [[self profileTextView] setText:[self tempDict][@"profile"]];
             }
         }

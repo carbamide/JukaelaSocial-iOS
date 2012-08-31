@@ -19,6 +19,7 @@
 		292C8CC115EE923700E8B046 /* MentionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292C8CC015EE923700E8B046 /* MentionsViewController.m */; };
 		292C8CC415EE972100E8B046 /* mention.png in Resources */ = {isa = PBXBuildFile; fileRef = 292C8CC215EE972100E8B046 /* mention.png */; };
 		292C8CC515EE972100E8B046 /* mention@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 292C8CC315EE972100E8B046 /* mention@2x.png */; };
+		292F052F15F1341200E6BC51 /* NSNull+DontCrash.m in Sources */ = {isa = PBXBuildFile; fileRef = 292F052E15F1341200E6BC51 /* NSNull+DontCrash.m */; };
 		293751ED15EA63E10082864C /* SVModalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 293751E915EA63E10082864C /* SVModalWebViewController.m */; };
 		293751EE15EA63E10082864C /* SVWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 293751EB15EA63E10082864C /* SVWebViewController.m */; };
 		293751EF15EA63E10082864C /* SVWebViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 293751EC15EA63E10082864C /* SVWebViewController.bundle */; };
@@ -158,6 +159,8 @@
 		292C8CC015EE923700E8B046 /* MentionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MentionsViewController.m; sourceTree = "<group>"; };
 		292C8CC215EE972100E8B046 /* mention.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mention.png; sourceTree = "<group>"; };
 		292C8CC315EE972100E8B046 /* mention@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mention@2x.png"; sourceTree = "<group>"; };
+		292F052D15F1341200E6BC51 /* NSNull+DontCrash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+DontCrash.h"; sourceTree = "<group>"; };
+		292F052E15F1341200E6BC51 /* NSNull+DontCrash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+DontCrash.m"; sourceTree = "<group>"; };
 		293751E815EA63E10082864C /* SVModalWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVModalWebViewController.h; sourceTree = "<group>"; };
 		293751E915EA63E10082864C /* SVModalWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVModalWebViewController.m; sourceTree = "<group>"; };
 		293751EA15EA63E10082864C /* SVWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVWebViewController.h; sourceTree = "<group>"; };
@@ -756,6 +759,8 @@
 				29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */,
 				29FC657415E97D3B00E9133E /* JTextView.h */,
 				29FC657515E97D3B00E9133E /* JTextView.m */,
+				292F052D15F1341200E6BC51 /* NSNull+DontCrash.h */,
+				292F052E15F1341200E6BC51 /* NSNull+DontCrash.m */,
 			);
 			name = "Custom Classes";
 			sourceTree = "<group>";
@@ -954,6 +959,7 @@
 				293751EE15EA63E10082864C /* SVWebViewController.m in Sources */,
 				293B952315EB0B740036A7FF /* NewUserViewController.m in Sources */,
 				292C8CC115EE923700E8B046 /* MentionsViewController.m in Sources */,
+				292F052F15F1341200E6BC51 /* NSNull+DontCrash.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1031,7 +1037,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Joshua Barrow";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
@@ -1053,7 +1059,7 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5F2A9175-35B9-4E58-86BA-32F83731D95F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "03A0E2EB-E143-4DB6-998D-35E05C777AD0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1065,7 +1071,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Joshua Barrow";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1088,7 +1094,7 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5F2A9175-35B9-4E58-86BA-32F83731D95F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "03A0E2EB-E143-4DB6-998D-35E05C777AD0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

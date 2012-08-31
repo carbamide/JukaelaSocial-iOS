@@ -204,21 +204,26 @@ typedef enum {
                 
                 ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
                 
-                NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
                 
-                if ([accountsArray count] > 0) {
-                    [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                }
-                else {
-                    [[self facebookSwitch] setOn:NO animated:YES];
-                    
-                    BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."];
-                    
-                    [noAccount setCancelButtonWithTitle:@"OK" block:nil];
-                    
-                    [noAccount show];
-                }
+                [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
+                    if(granted) {
+                        NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+                        
+                        if ([accountsArray count] > 0) {
+                            [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                        }
+                        else {
+                            [[self facebookSwitch] setOn:NO animated:YES];
+                            
+                            BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."];
+                            
+                            [noAccount setCancelButtonWithTitle:@"OK" block:nil];
+                            
+                            [noAccount show];
+                        }
+                    }
+                }];
             }
         }
             break;
@@ -228,21 +233,27 @@ typedef enum {
             
             ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
             
-            NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+            [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
+                if (granted) {
+                    NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+                    if ([accountsArray count] > 0) {
+                        [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:@"post_to_twitter"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+                    else {
+                        [[self twitterSwitch] setOn:NO animated:YES];
+                        
+                        BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Twitter account set up.  Please set one up in the Settings app."];
+                        
+                        [noAccount setCancelButtonWithTitle:@"OK" block:nil];
+                        
+                        [noAccount show];
+                    }
+                }
+            }];
             
-            if ([accountsArray count] > 0) {
-                [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:@"post_to_twitter"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
-            else {
-                [[self twitterSwitch] setOn:NO animated:YES];
-                
-                BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Twitter account set up.  Please set one up in the Settings app."];
-                
-                [noAccount setCancelButtonWithTitle:@"OK" block:nil];
-                
-                [noAccount show];
-            }
+            
+            
         }
             break;
         case 2:

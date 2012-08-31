@@ -38,15 +38,23 @@ typedef enum {
 
 -(void)logOut:(id)sender
 {
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"read_username_from_defaults"];
+    BlockActionSheet *logOutActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Logout"];
     
-    [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
+    [logOutActionSheet setDestructiveButtonWithTitle:@"Logout" block:^{
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"read_username_from_defaults"];
+        
+        [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
+        
+        [[self tabBarController] setSelectedIndex:0];
+        
+        [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
+        [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
+        [[[[self tabBarController] tabBar] items][3] setEnabled:NO];
+    }];
     
-    [[self tabBarController] setSelectedIndex:0];
+    [logOutActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
     
-    [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
-    [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
-    [[[[self tabBarController] tabBar] items][3] setEnabled:NO];
+    [logOutActionSheet showInView:[self view]];
 }
 
 -(id)initWithStyle:(UITableViewStyle)style
@@ -292,7 +300,7 @@ typedef enum {
 {
     BlockActionSheet *eraseAction = [[BlockActionSheet alloc] initWithTitle:nil];
     
-    [eraseAction addButtonWithTitle:@"Clear Cache" block:^{
+    [eraseAction setDestructiveButtonWithTitle:@"Clear Cache" block:^{
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         if ([paths count] > 0) {
             NSError *error = nil;

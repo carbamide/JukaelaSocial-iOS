@@ -16,6 +16,8 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 @synthesize dateLabel;
 @synthesize usernameLabel;
 @synthesize contentText;
+@synthesize disabled;
+@synthesize activityIndicator;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -82,6 +84,11 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [[self imageView] addGestureRecognizer:imageTapGesture];
         
         [imageTapGesture release];
+        
+        [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(30, 25, 30, 30)]];
+        [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+        
+        [self addSubview:activityIndicator];
 	}
 	
 	return self;
@@ -90,6 +97,18 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"enable_cell" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
+        [self setDisabled:NO];
+        [self setUserInteractionEnabled:NO];
+
+        [[self contentText] setAlpha:1.0];
+        [[self imageView] setAlpha:1.0];
+        [[self nameLabel] setAlpha:1.0];
+        [[self textLabel] setAlpha:1.0];
+        [[self dateLabel] setAlpha:1.0];
+        [[self usernameLabel] setAlpha:1.0];
+    }];
     
     [[self imageView] setBounds:CGRectMake(7, 0, 75, 75)];
     [[self imageView] setFrame:CGRectMake(7, 0, 75, 75)];
@@ -127,9 +146,14 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 {
 	if (object == [self imageView] && [keyPath isEqualToString:@"image"] && (change[NSKeyValueChangeOldKey] == nil || change[NSKeyValueChangeOldKey] == [NSNull null])) {
         [[self imageView] setNeedsLayout];
+        
         [self setNeedsLayout];
         
         [[self imageView] removeObserver:self forKeyPath:@"image"];
+        
+        if ([[self activityIndicator] isAnimating]) {
+            [[self activityIndicator] stopAnimating];
+        }
     }
 }
 
@@ -199,6 +223,8 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 -(void)disableCell
 {
     float disabledAlpha = 0.439216;
+    
+    [self setDisabled:YES];
     
     [UIView animateWithDuration:0.4 animations:^(void) {
         [[self contentText] setAlpha:disabledAlpha];

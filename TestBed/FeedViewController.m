@@ -60,7 +60,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
-
+    
     [super viewDidAppear:animated];
 }
 
@@ -68,7 +68,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"double_tap" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"send_to_user" object:nil];
-
+    
     [super viewDidDisappear:animated];
 }
 
@@ -274,7 +274,7 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             int oldNumberOfPosts = [[self theFeed] count];
-                        
+            
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
             int newNumberOfPosts = [[self theFeed] count];
@@ -321,6 +321,8 @@
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error reloading your feed.  Please logout and log back in."];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
         }
     }];
 }
@@ -381,7 +383,7 @@
     }
     
     [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
-        
+    
     if ([self theFeed][[indexPath row]][@"content"]) {
         [[cell contentText] setText:[self theFeed][[indexPath row]][@"content"]];
     }
@@ -411,7 +413,11 @@
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]]];
     
+    [[cell activityIndicator] startAnimating];
+    
     if (image) {
+        [[cell activityIndicator] stopAnimating];
+        
         [[cell imageView] setImage:image];
         [cell setNeedsDisplay];
     }
@@ -495,7 +501,7 @@
                 }];
             }];
         }
-
+        
         [cellActionSheet setCancelButtonWithTitle:@"Cancel" block:^{
             [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
             

@@ -224,6 +224,8 @@
 
 -(void)getFeed
 {
+    [[self progressHUD] setLabelText:@"Loading Feed..."];
+    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];

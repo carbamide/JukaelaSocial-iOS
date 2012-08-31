@@ -23,6 +23,7 @@
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
+@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -177,10 +178,14 @@
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self mentions][[indexPath row]][@"sender_email"]]]]];
     
-	if (image) {
-		[[cell imageView] setImage:image];
+    [[cell activityIndicator] startAnimating];
+    
+    if (image) {
+        [[cell activityIndicator] stopAnimating];
+        
+        [[cell imageView] setImage:image];
         [cell setNeedsDisplay];
-	}
+    }
     else {
 		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
@@ -242,7 +247,7 @@
             
             [tempCell disableCell];
                         
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][@"id"]]];
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][@"id"]]];
             
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
             
@@ -306,6 +311,16 @@
 
 -(void)refreshTableInformation
 {
+    if (![self activityIndicator]) {
+        [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
+    }
+    
+    [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
+    
+    if (![[self activityIndicator] isAnimating]) {
+        [[self activityIndicator] startAnimating];
+    }
+    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions.json", kSocialURL]];
@@ -329,6 +344,10 @@
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
         }
+        
+        [[self activityIndicator] stopAnimating];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
     }];
 }
 

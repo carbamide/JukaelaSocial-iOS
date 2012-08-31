@@ -17,6 +17,8 @@ extern NSString * const kJKPrepareForReuseNotification;
 @property (nonatomic, retain) UILabel *dateLabel;
 @property (strong, retain) UILabel *usernameLabel;
 @property (strong, retain) JTextView *contentText;
+@property (nonatomic, getter = isDisabled) BOOL disabled;
+@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 
 -(void)disableCell;
 

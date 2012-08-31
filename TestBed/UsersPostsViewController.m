@@ -151,10 +151,14 @@
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"email"]]]]];
     
-	if (image) {
-		[[cell imageView] setImage:image];
+    [[cell activityIndicator] startAnimating];
+    
+    if (image) {
+        [[cell activityIndicator] stopAnimating];
+        
+        [[cell imageView] setImage:image];
         [cell setNeedsDisplay];
-	}
+    }
     else {
 		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
@@ -294,11 +298,13 @@
             else {
                 [_oldRefreshControl endRefreshing];
             }
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
     }];
 }
 

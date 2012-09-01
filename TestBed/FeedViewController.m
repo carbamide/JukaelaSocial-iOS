@@ -736,6 +736,7 @@
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];
         
+        [viewController setMailComposeDelegate:self];
         [viewController setSubject:[NSString stringWithFormat:@"Jukaela Social Post from %@", [[cellInformation nameLabel] text]]];
         
         if ([[cellInformation usernameLabel] text]) {
@@ -759,6 +760,13 @@
 
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
+    if (result == MFMailComposeResultFailed) {
+        BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"There was an error sending your email"];
+        
+        [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
+        
+        [errorAlert show];
+    }
     [controller dismissModalViewControllerAnimated: YES];
 }
 

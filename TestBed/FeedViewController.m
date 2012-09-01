@@ -5,7 +5,12 @@
 //  Created by Josh Barrow on 5/3/12.
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
+#import <Accounts/Accounts.h>
 #import <objc/runtime.h>
+#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
+#import <Social/Social.h>
+#endif
+#import <Twitter/Twitter.h>
 #import "AppDelegate.h"
 #import "ClearLabelsCellView.h"
 #import "FeedViewController.h"
@@ -114,6 +119,19 @@
     [super viewDidLoad];
 }
 
+- (void)initializeActivityIndicator
+{
+    if (![self activityIndicator]) {
+        [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
+    }
+    
+    [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
+    
+    if (![[self activityIndicator] isAnimating]) {
+        [[self activityIndicator] startAnimating];
+    }
+}
+
 -(void)setupNotifications
 {
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
@@ -141,6 +159,8 @@
     [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"refresh_your_tables"
                                                                      object:nil
                                                                       queue:mainQueue usingBlock:^(NSNotification *aNotification) {
+                                                                          [self initializeActivityIndicator];
+                                                                          
                                                                           [self refreshTableInformation:nil];
                                                                       }]];
     
@@ -161,15 +181,7 @@
                                                                                }]];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"facebook_or_twitter_sending" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
-        if (![self activityIndicator]) {
-            [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
-        }
-        
-        [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
-        
-        if (![[self activityIndicator] isAnimating]) {
-            [[self activityIndicator] startAnimating];
-        }
+        [self initializeActivityIndicator];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"stop_animating" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
@@ -280,9 +292,22 @@
             int newNumberOfPosts = [[self theFeed] count];
             
             if ([self currentChangeType] == INSERT_POST) {
-                [[self tableView] beginUpdates];
-                [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                [[self tableView] endUpdates];
+                [[self activityIndicator] stopAnimating];
+                
+                @try {
+                    [[self tableView] beginUpdates];
+                    [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    [[self tableView] endUpdates];
+                }
+                @catch (NSException *exception) {
+                    if (exception) {
+                        [Helpers errorAndLogout:self withMessage:@"Some craziness has happened"];
+                    }
+                }
+                @finally {
+                    NSLog(@"Inside finally");
+                }
+                
             }
             else if ([self currentChangeType] == DELETE_POST) {
                 [[self tableView] beginUpdates];
@@ -474,6 +499,26 @@
             
         }];
         
+        [cellActionSheet addButtonWithTitle:@"Share to Twitter" block:^{
+            ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+            
+            [self shareToTwitter:[[tempCell contentText] text]];
+        }];
+        
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+            [cellActionSheet addButtonWithTitle:@"Share to Facebook" block:^{
+                ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+                
+                [self shareToFacebook:[[tempCell contentText] text]];
+            }];
+        }
+        
+        [cellActionSheet addButtonWithTitle:@"Share via Mail" block:^{
+            ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+
+            [self sharePostViaMail:tempCell];
+        }];
+        
         if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPathOfTappedRow row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
             [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -570,6 +615,151 @@
     [webViewController setBarsTintColor:[UIColor darkGrayColor]];
     
     [self presentModalViewController:webViewController animated:YES];
+}
+
+-(void)shareToTwitter:(NSString *)stringToSend
+{
+    [self initializeActivityIndicator];
+    
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    
+    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
+        if(granted) {
+            NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+            
+            if ([accountsArray count] > 0) {
+                ACAccount *twitterAccount = accountsArray[0];
+                
+                TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:@{@"status": stringToSend} requestMethod:TWRequestMethodPOST];
+                
+                [postRequest setAccount:twitterAccount];
+                
+                [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                    if (responseData) {
+                        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
+                        
+                        NSLog(@"The Twitter response was \n%@", jsonData);
+                        
+                        if (!jsonData[@"error"]) {
+                            NSLog(@"Successfully posted to Twitter");
+                            
+                            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Shared to Twitter"];
+                            
+                            [successNotice show];
+                        }
+                        else {
+                            NSLog(@"Not posted to Twitter");
+                        }
+                    }
+                    else {
+                        BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error sharing to Twitter."];
+                        
+                        [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
+                        
+                        [twitterPostingError show];
+                    }
+                    [[self activityIndicator] stopAnimating];
+                }];
+            }
+        }
+    }];
+}
+
+-(void)shareToFacebook:(NSString *)stringToSend
+{
+    [self initializeActivityIndicator];
+    
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+        
+    if (NSStringFromClass([SLRequest class])) {
+        if (accountStore == nil) {
+            accountStore = [[ACAccountStore alloc] init];
+        }
+        
+        ACAccountType *accountTypeFacebook = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+        
+        NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
+        
+        [accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
+            if(granted) {
+                NSArray *accounts = [accountStore accountsWithAccountType:accountTypeFacebook];
+                
+                ACAccount *facebookAccount = [accounts lastObject];
+                
+                NSAssert([[facebookAccount credential] oauthToken], @"The OAuth token is invalid", nil);
+                
+                NSDictionary *parameters = @{@"access_token":[[facebookAccount credential] oauthToken], @"message":stringToSend};
+                
+                NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
+                
+                SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
+                
+                [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
+                    if (responseData) {
+                        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
+                        
+                        NSLog(@"The Facebook response was \n%@", jsonData);
+                        
+                        if (!jsonData[@"error"]) {
+                            NSLog(@"Successfully posted to Facebook");
+                            
+                            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Shared to Facebook"];
+                            
+                            [successNotice show];
+                        }
+                        else {
+                            NSLog(@"Not posted to Facebook");
+                        }
+                    }
+                    else {
+                        BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error sharing to Facebook"];
+                        
+                        [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
+                        
+                        [facebookPostingError show];
+                    }
+                    [[self activityIndicator] stopAnimating];
+                }];
+            }
+            else {
+                NSLog(@"Facebook access not granted.");
+                NSLog(@"%@", [error localizedDescription]);
+            }
+        }];
+    }
+}
+
+-(void)sharePostViaMail:(ClearLabelsCellView *)cellInformation
+{
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];
+        
+        [viewController setSubject:[NSString stringWithFormat:@"Jukaela Social Post from %@", [[cellInformation nameLabel] text]]];
+        
+        if ([[cellInformation usernameLabel] text]) {
+            [viewController setMessageBody:[NSString stringWithFormat:@"%@\n\n--%@\n\nPosted on Jukaela Social", [[cellInformation contentText] text], [[cellInformation usernameLabel] text]] isHTML:NO];
+        }
+        else {
+            [viewController setMessageBody:[NSString stringWithFormat:@"%@\n\n--%@\n\nPosted on Jukaela Social", [[cellInformation contentText] text], [[cellInformation nameLabel] text]] isHTML:NO];
+
+        }
+        
+        [self presentViewController:viewController animated:YES completion:nil];
+    }
+    else {
+        BlockAlertView *notAbleToSendMailAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"There are no mail accounts set up on this device."];
+        
+        [notAbleToSendMailAlert setCancelButtonWithTitle:@"OK" block:nil];
+        
+        [notAbleToSendMailAlert show];
+    }
+}
+
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [controller dismissModalViewControllerAnimated: YES];
 }
 
 @end

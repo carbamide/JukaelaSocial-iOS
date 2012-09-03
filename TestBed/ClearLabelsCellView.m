@@ -29,6 +29,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [contentText setDataDetectorTypes:UIDataDetectorTypeLink];
         [contentText setBackgroundColor:[UIColor clearColor]];
         [contentText setClipsToBounds:YES];
+        [contentText setScrollsToTop:NO];
         
         [[self contentView] addSubview:contentText];
         
@@ -85,7 +86,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         [imageTapGesture release];
         
-        [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(30, 25, 30, 30)]];
+        activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(30, 25, 30, 30)];
         [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
         
         [self addSubview:activityIndicator];

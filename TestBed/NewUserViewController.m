@@ -88,6 +88,9 @@
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
         if (data) {
+            
+            NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:@"new_user" object:nil userInfo:@{@"email" : [[self emailTextField] text]}];
             
             [self dismissViewControllerAnimated:YES completion:nil];

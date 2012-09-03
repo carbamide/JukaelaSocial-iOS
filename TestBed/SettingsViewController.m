@@ -38,7 +38,7 @@ typedef enum {
 
 -(void)logOut:(id)sender
 {
-    BlockActionSheet *logOutActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Logout"];
+    BlockActionSheet *logOutActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
     [logOutActionSheet setDestructiveButtonWithTitle:@"Logout" block:^{
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"read_username_from_defaults"];

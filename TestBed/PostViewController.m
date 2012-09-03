@@ -24,6 +24,7 @@
 @property (strong, nonatomic) ACAccount *facebookAccount;
 
 @property (strong, nonatomic) NSData *tempImageData;
+
 @end
 
 @implementation PostViewController
@@ -135,6 +136,8 @@
         }];
         
         [confirmAlert addButtonWithTitle:@"Just to Jukaela!" block:^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
+            
             [self sendJukaelaPost];
         }];
         

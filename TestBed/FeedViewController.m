@@ -43,6 +43,7 @@
 @property (nonatomic) BOOL twitterSuccess;
 @property (nonatomic) BOOL jukaelaSuccess;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
+@property (nonatomic) BOOL justToJukaela;
 
 -(void)refreshTableInformation:(NSIndexPath *)indexPath;
 
@@ -61,6 +62,13 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    if ([[self theFeed] count] == 0) {
+        BlockAlertView *noposts = [[BlockAlertView alloc] initWithTitle:@"No Posts" message:@"There are no posts in your feed!  Oh no!  Go to the Users tab and follow someone!"];
+        
+        [noposts addButtonWithTitle:@"OK" block:nil];
+        
+        [noposts show];
+    }
     [kAppDelegate setCurrentViewController:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
@@ -189,6 +197,10 @@
             [[self activityIndicator] stopAnimating];
         }
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"just_to_jukaela" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
+        [self setJustToJukaela:YES];
+    }];
 }
 
 -(void)switchToSelectedUser:(NSNotification *)aNotification
@@ -239,7 +251,7 @@
             
             [self setTwitterSuccess:NO];
             
-            [[self activityIndicator] startAnimating];
+            [[self activityIndicator] stopAnimating];
         }
     }
     else if (([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) && ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"] == NO)) {
@@ -250,7 +262,7 @@
             
             [self setFbSuccess:NO];
             
-            [[self activityIndicator] startAnimating];
+            [[self activityIndicator] stopAnimating];
         }
     }
     else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"] && [[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
@@ -262,7 +274,7 @@
             [self setTwitterSuccess:NO];
             [self setFbSuccess:NO];
             
-            [[self activityIndicator] startAnimating];
+            [[self activityIndicator] stopAnimating];
         }
     }
     else {
@@ -292,7 +304,11 @@
             int newNumberOfPosts = [[self theFeed] count];
             
             if ([self currentChangeType] == INSERT_POST) {
-                [[self activityIndicator] stopAnimating];
+                if ([self justToJukaela]) {
+                    [[self activityIndicator] stopAnimating];
+                    
+                    [self setJustToJukaela:NO];
+                }
                 
                 @try {
                     [[self tableView] beginUpdates];
@@ -301,8 +317,10 @@
                 }
                 @catch (NSException *exception) {
                     if (exception) {
-                        [Helpers errorAndLogout:self withMessage:@"Some craziness has happened"];
+                        NSLog(@"%@", exception);
                     }
+                    
+                    [[self tableView] reloadData];
                 }
                 @finally {
                     NSLog(@"Inside finally");
@@ -346,9 +364,8 @@
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error reloading your feed.  Please logout and log back in."];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
     }];
 }
 
@@ -660,7 +677,6 @@
                         
                         [twitterPostingError show];
                     }
-                    [[self activityIndicator] stopAnimating];
                 }];
             }
         }
@@ -720,7 +736,6 @@
                         
                         [facebookPostingError show];
                     }
-                    [[self activityIndicator] stopAnimating];
                 }];
             }
             else {

@@ -70,7 +70,7 @@
         [noposts show];
     }
     [kAppDelegate setCurrentViewController:self];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
     

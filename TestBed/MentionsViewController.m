@@ -60,13 +60,6 @@
 {
     [self refreshTableInformation];
     
-    if ([[self mentions] count] == 0) {
-        BlockAlertView *mentionsError = [[BlockAlertView alloc] initWithTitle:@"No mentions!" message:@"Man, you need to make some friends!  Go to the Users tab and talk to someone!"];
-        
-        [mentionsError setCancelButtonWithTitle:@"OK" block:nil];
-        
-        [mentionsError show];
-    }
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
         
@@ -253,7 +246,7 @@
             ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
             
             [tempCell disableCell];
-                        
+            
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][@"id"]]];
             
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -337,7 +330,11 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             [self setMentions:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                        
+            
+            if ([[self mentions] count] == 0) {
+                [self goMakeFriends];
+            }
+            
             [[self tableView] reloadData];
             
             if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
@@ -353,11 +350,21 @@
         }
         
         [[self activityIndicator] stopAnimating];
-
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
     }];
+    
+    
 }
 
+-(void)goMakeFriends
+{
+    BlockAlertView *mentionsError = [[BlockAlertView alloc] initWithTitle:@"No mentions!" message:@"Man, you need to make some friends!  Go to the Users tab and talk to someone!"];
+    
+    [mentionsError setCancelButtonWithTitle:@"OK" block:nil];
+    
+    [mentionsError show];
+}
 -(void)switchToSelectedUser:(NSNotification *)aNotification
 {
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];

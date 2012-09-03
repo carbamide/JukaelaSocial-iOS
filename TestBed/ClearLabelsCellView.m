@@ -18,6 +18,9 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 @synthesize contentText;
 @synthesize disabled;
 @synthesize activityIndicator;
+@synthesize tapGesture;
+@synthesize longPressGesture;
+@synthesize imageTapGesture;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -32,18 +35,6 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [contentText setScrollsToTop:NO];
         
         [[self contentView] addSubview:contentText];
-        
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
-        [tapGesture setNumberOfTapsRequired:2];
-        
-        [contentText addGestureRecognizer:tapGesture];
-        
-        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
-        
-        [contentText addGestureRecognizer:longPressGesture];
-        
-        [longPressGesture release];
-        [tapGesture release];
         
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 5, 140, 15)];
         
@@ -79,20 +70,39 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [[self usernameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
         
         [[self imageView] setUserInteractionEnabled:YES];
-        
-        UITapGestureRecognizer *imageTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendToUser:)];
-        
-        [[self imageView] addGestureRecognizer:imageTapGesture];
-        
-        [imageTapGesture release];
-        
+                        
         activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(30, 25, 30, 30)];
         [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
         
         [self addSubview:activityIndicator];
-	}
+        
+        [self createGestureRecognizers];
+    }
 	
 	return self;
+}
+
+-(void)createGestureRecognizers
+{
+    if (![self tapGesture]) {
+        tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
+        
+        [tapGesture setNumberOfTapsRequired:2];
+        
+        [contentText addGestureRecognizer:tapGesture];
+    }
+    
+    if (![self longPressGesture]) {
+        longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
+                
+        [contentText addGestureRecognizer:longPressGesture];
+    }
+    
+    if (![self imageTapGesture]) {
+        imageTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendToUser:)];
+                
+        [[self imageView] addGestureRecognizer:imageTapGesture];
+    }
 }
 
 - (void)layoutSubviews
@@ -159,7 +169,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 }
 
 -(void)prepareForReuse
-{
+{    
 	[[NSNotificationCenter defaultCenter] postNotificationName:kJKPrepareForReuseNotification object:self];
 	
     [[self imageView] setImage:nil];
@@ -198,7 +208,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 }
 
 -(void)doubleTapAction:(UIGestureRecognizer *)gesture
-{
+{    
     if([gesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
         if(UIGestureRecognizerStateBegan == gesture.state) {
             NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];

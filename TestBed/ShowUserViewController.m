@@ -519,9 +519,7 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-            
-            NSLog(@"%@", [self following]);
-            
+                        
             [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         else {

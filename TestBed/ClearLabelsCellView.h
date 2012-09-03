@@ -19,6 +19,9 @@ extern NSString * const kJKPrepareForReuseNotification;
 @property (strong, retain) JTextView *contentText;
 @property (nonatomic, getter = isDisabled) BOOL disabled;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) UITapGestureRecognizer *tapGesture;
+@property (strong, nonatomic) UILongPressGestureRecognizer *longPressGesture;
+@property (strong, nonatomic) UITapGestureRecognizer *imageTapGesture;
 
 -(void)disableCell;
 

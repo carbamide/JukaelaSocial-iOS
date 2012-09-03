@@ -106,9 +106,7 @@
             [progressHUD show:YES];
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-            
-            NSLog(@"%@", [self usersArray]);
-            
+                        
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"id"]]];
             
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];

@@ -95,6 +95,20 @@
 
 -(void)saveProfile:(id)sender
 {
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+    
+    [activityView sizeToFit];
+    
+    [activityView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin |
+                                       UIViewAutoresizingFlexibleRightMargin |
+                                       UIViewAutoresizingFlexibleTopMargin |
+                                       UIViewAutoresizingFlexibleBottomMargin)];
+    [activityView startAnimating];
+    
+    UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+    
+    [[self navigationItem] setRightBarButtonItem:loadingView];
+    
     if (![[[self passwordTextField] text] isEqualToString:[[self passwordConfirmTextField] text]]) {
         BlockAlertView *passwordsDontMatchAlert = [[BlockAlertView alloc] initWithTitle:@"Password" message:@"The passwords must match"];
         
@@ -125,7 +139,13 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         }
         else {
-            [Helpers errorAndLogout:self withMessage:@"There has been an error saving your updated user information."];
+            [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
+
+            BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"Error editing your user account.  Please try again."];
+            
+            [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
+            
+            [errorAlert show];
         }
     }];
 }

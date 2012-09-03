@@ -61,6 +61,20 @@
 
 -(void)attemptToCreateUser:(id)sender
 {
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+    
+    [activityView sizeToFit];
+    
+    [activityView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin |
+                                       UIViewAutoresizingFlexibleRightMargin |
+                                       UIViewAutoresizingFlexibleTopMargin |
+                                       UIViewAutoresizingFlexibleBottomMargin)];
+    [activityView startAnimating];
+    
+    UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+    
+    [[self navigationItem] setRightBarButtonItem:loadingView];
+    
     if (![[[self passwordTextField] text] isEqualToString:[[self passwordConfirmTextField] text]]) {
         BlockAlertView *passwordsDontMatchAlert = [[BlockAlertView alloc] initWithTitle:@"Password" message:@"The passwords must match"];
         
@@ -88,15 +102,31 @@
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
         if (data) {
-            
-            NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"new_user" object:nil userInfo:@{@"email" : [[self emailTextField] text]}];
-            
-            [self dismissViewControllerAnimated:YES completion:nil];
+            if ([[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil] isKindOfClass:[NSDictionary class]]) {
+                NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
+
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"new_user" object:nil userInfo:@{@"email" : [[self emailTextField] text]}];
+                
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+            else {
+                BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"Error creating your new user account.  Please try again."];
+                
+                [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
+                
+                [errorAlert show];
+                
+                [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
+            }
         }
         else {
-            [Helpers errorAndLogout:self withMessage:@"There has been an error creating your user.  Try again."];
+            BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"Error creating your new user account.  Please try again."];
+            
+            [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
+            
+            [errorAlert show];
+            
+            [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
         }
     }];
 }

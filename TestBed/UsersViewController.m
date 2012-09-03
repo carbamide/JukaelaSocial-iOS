@@ -20,6 +20,7 @@
 @property (strong, nonatomic) NSMutableArray *tempArray;
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 
 @end
 
@@ -54,9 +55,26 @@
 
 -(void)viewDidLoad
 {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+        
+        [refreshControl setTintColor:[UIColor blackColor]];
+        
+        [refreshControl addTarget:self action:@selector(getUsers:) forControlEvents:UIControlEventValueChanged];
+        
+        [self setRefreshControl:refreshControl];
+    }
+    else {
+        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
+        
+        [_oldRefreshControl setTintColor:[UIColor blackColor]];
+        
+        [_oldRefreshControl addTarget:self action:@selector(getUsers:) forControlEvents:UIControlEventValueChanged];
+    }
+    
     [super viewDidLoad];
     
-    [self getUsers];
+    [self getUsers:YES];
     
     UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
     
@@ -122,16 +140,18 @@
     }
 }
 
--(void)getUsers
+-(void)getUsers:(BOOL)showActivityIndicator
 {
-    if (![self activityIndicator]) {
-        [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
-    }
-    
-    [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
-    
-    if (![[self activityIndicator] isAnimating]) {
-        [[self activityIndicator] startAnimating];
+    if (showActivityIndicator) {
+        if (![self activityIndicator]) {
+            [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
+        }
+        
+        [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
+        
+        if (![[self activityIndicator] isAnimating]) {
+            [[self activityIndicator] startAnimating];
+        }
     }
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -151,6 +171,13 @@
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
         }
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+            [[self refreshControl] endRefreshing];
+        }
+        else {
+            [_oldRefreshControl endRefreshing];
+        }
+        
         [[self activityIndicator] stopAnimating];
     }];
 }

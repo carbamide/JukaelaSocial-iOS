@@ -60,6 +60,13 @@
 {
     [self refreshTableInformation];
     
+    if ([[self mentions] count] == 0) {
+        BlockAlertView *mentionsError = [[BlockAlertView alloc] initWithTitle:@"No mentions!" message:@"Man, you need to make some friends!  Go to the Users tab and talk to someone!"];
+        
+        [mentionsError setCancelButtonWithTitle:@"OK" block:nil];
+        
+        [mentionsError show];
+    }
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
         

@@ -123,7 +123,6 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"enable_cell" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
         [self setDisabled:NO];
-        [self setUserInteractionEnabled:NO];
 
         [[self contentText] setAlpha:1.0];
         [[self imageView] setAlpha:1.0];

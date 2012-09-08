@@ -21,6 +21,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 @synthesize tapGesture;
 @synthesize longPressGesture;
 @synthesize imageTapGesture;
+@synthesize repostedNameLabel;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -63,12 +64,23 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         [self addSubview:usernameLabel];
         
+        repostedNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(86, 90, 228, 20)];
+        
+        [repostedNameLabel setTextAlignment:NSTextAlignmentRight];
+        [repostedNameLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
+        [repostedNameLabel setTextColor:[UIColor darkGrayColor]];
+        [repostedNameLabel setBackgroundColor:[UIColor clearColor]];
+        [repostedNameLabel setTag:8];
+        
+        [self addSubview:repostedNameLabel];
+        
         [[self imageView] addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionOld context:NULL];
         [[self textLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
 		[[self nameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
         [[self dateLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
         [[self usernameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
-        
+        [[self repostedNameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
+
         [[self imageView] setUserInteractionEnabled:YES];
                         
         activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(30, 25, 30, 30)];
@@ -83,7 +95,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 }
 
 -(void)createGestureRecognizers
-{
+{    
     if (![self tapGesture]) {
         tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
         
@@ -173,6 +185,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 	[[NSNotificationCenter defaultCenter] postNotificationName:kJKPrepareForReuseNotification object:self];
 	
     [[self imageView] setImage:nil];
+    [[self repostedNameLabel] setText:nil];
     
 	[super prepareForReuse];
 }

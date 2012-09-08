@@ -145,7 +145,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"MentionCell";
     
     ClearLabelsCellView *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     

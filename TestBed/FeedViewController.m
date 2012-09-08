@@ -34,11 +34,6 @@
 @property (nonatomic) ChangeType currentChangeType;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
-@property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
-@property (strong, nonatomic) NSNotificationCenter *changeTypeNotificationCenter;
-@property (strong, nonatomic) NSNotificationCenter *tweetSuccessfullNotificationCenter;
-@property (strong, nonatomic) NSNotificationCenter *facebookSuccessfullNotificationCenter;
-@property (strong, nonatomic) NSNotificationCenter *jukaelaSuccessfullNotificationCenter;
 @property (nonatomic) BOOL fbSuccess;
 @property (nonatomic) BOOL twitterSuccess;
 @property (nonatomic) BOOL jukaelaSuccess;
@@ -70,7 +65,7 @@
         [noposts show];
     }
     [kAppDelegate setCurrentViewController:self];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
     
@@ -116,6 +111,7 @@
     
     UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
     
+    
     [[self navigationItem] setRightBarButtonItem:composeButton];
     
     [[self navigationItem] setHidesBackButton:YES];
@@ -142,51 +138,42 @@
 
 -(void)setupNotifications
 {
-    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     
-    [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"set_change_type"
-                                                                     object:nil
-                                                                      queue:mainQueue usingBlock:^(NSNotification *number) {
-                                                                          int i = [[number object] intValue];
-                                                                          
-                                                                          if (i == 0) {
-                                                                              [self setCurrentChangeType:0];
-                                                                          }
-                                                                          else if (i == 1) {
-                                                                              [self setCurrentChangeType:1];
-                                                                          }
-                                                                          else if (i == 2) {
-                                                                              [self setCurrentChangeType:2];
-                                                                          }
-                                                                          else {
-                                                                              NSLog(@"Some kind of madness has happened");
-                                                                          }
-                                                                      }]];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"set_change_type" object:nil queue:mainQueue usingBlock:^(NSNotification *number) {
+        int i = [[number object] intValue];
+        
+        if (i == 0) {
+            [self setCurrentChangeType:0];
+        }
+        else if (i == 1) {
+            [self setCurrentChangeType:1];
+        }
+        else if (i == 2) {
+            [self setCurrentChangeType:2];
+        }
+        else {
+            NSLog(@"Some kind of madness has happened");
+        }
+    }];
     
-    [self setChangeTypeNotificationCenter:[defaultCenter addObserverForName:@"refresh_your_tables"
-                                                                     object:nil
-                                                                      queue:mainQueue usingBlock:^(NSNotification *aNotification) {
-                                                                          [self initializeActivityIndicator];
-                                                                          
-                                                                          [self refreshTableInformation:nil];
-                                                                      }]];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"refresh_your_tables" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
+        [self initializeActivityIndicator];
+        
+        [self refreshTableInformation:nil];
+    }];
     
-    [self setTweetSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"tweet_successful"
-                                                                           object:nil
-                                                                            queue:mainQueue usingBlock:^(NSNotification *aNotification) {
-                                                                                [self setTwitterSuccess:YES];
-                                                                                
-                                                                                [self checkForFBAndTwitterSucess];
-                                                                            }]];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"tweet_successful" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
+        [self setTwitterSuccess:YES];
+        
+        [self checkForFBAndTwitterSucess];
+    }];
     
-    [self setFacebookSuccessfullNotificationCenter:[defaultCenter addObserverForName:@"facebook_successful"
-                                                                              object:nil
-                                                                               queue:mainQueue usingBlock:^(NSNotification *aNotification) {
-                                                                                   [self setFbSuccess:YES];
-                                                                                   
-                                                                                   [self checkForFBAndTwitterSucess];
-                                                                               }]];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"facebook_successful" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
+        [self setFbSuccess:YES];
+        
+        [self checkForFBAndTwitterSucess];
+    }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"facebook_or_twitter_sending" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
         [self initializeActivityIndicator];
@@ -414,7 +401,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"FeedViewCell";
     
     ClearLabelsCellView *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -447,6 +434,22 @@
     
     if ([self theFeed][[indexPath row]][@"username"] && [self theFeed][[indexPath row]][@"username"] != [NSNull null]) {
         [[cell usernameLabel] setText:[self theFeed][[indexPath row]][@"username"]];
+    }
+        
+    if ([self theFeed][[indexPath row]][@"repost_user_id"] && [self theFeed][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
+        CGSize contentSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12]
+                                                                     constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
+                                                                         lineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGSize nameSize = [[self theFeed][[indexPath row]][@"name"] sizeWithFont:[UIFont systemFontOfSize:12]
+                                                               constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
+                                                                   lineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
+        
+        [[cell repostedNameLabel] setFrame:CGRectMake(86, height, 228, 20)];
+        
+        [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [self theFeed][[indexPath row]][@"repost_name"]]];
     }
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[self theFeed][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
@@ -512,8 +515,7 @@
         }];
         
         [cellActionSheet addButtonWithTitle:@"Repost" block:^{
-            [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
-            
+            [self repost:indexPathOfTappedRow];
         }];
         
         [cellActionSheet addButtonWithTitle:@"Share to Twitter" block:^{
@@ -532,7 +534,7 @@
         
         [cellActionSheet addButtonWithTitle:@"Share via Mail" block:^{
             ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
-
+            
             [self sharePostViaMail:tempCell];
         }];
         
@@ -574,6 +576,40 @@
     }
 }
 
+-(void)repost:(NSIndexPath *)indexPathOfCell
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/repost.json", kSocialURL, [self theFeed][[indexPathOfCell row]][@"id"]]];
+    
+    NSData *tempData = [[[self theFeed][[indexPathOfCell row]][@"content"] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    
+    NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
+    
+    NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
+    
+    NSLog(@"%@\n%@", [url absoluteString], requestString);
+    
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+    
+    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            if ([[self activityIndicator] isAnimating]) {
+                [[self activityIndicator] stopAnimating];
+            }
+        }
+        else {
+            NSLog(@"Error");
+        }
+    }];
+}
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"ShowUser"]) {
@@ -610,14 +646,6 @@
     NSString *documentsDirectory = tempArray[0];
     
     return documentsDirectory;
-}
-
--(void)dealloc
-{
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    
-    [center removeObserver:[self refreshTableNotificationCenter]];
-    [center removeObserver:[self changeTypeNotificationCenter]];
 }
 
 -(void)hudWasHidden:(MBProgressHUD *)hud
@@ -677,6 +705,7 @@
                         
                         [twitterPostingError show];
                     }
+                    [[self activityIndicator] stopAnimating];
                 }];
             }
         }
@@ -688,7 +717,7 @@
     [self initializeActivityIndicator];
     
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-        
+    
     if (NSStringFromClass([SLRequest class])) {
         if (accountStore == nil) {
             accountStore = [[ACAccountStore alloc] init];
@@ -736,6 +765,7 @@
                         
                         [facebookPostingError show];
                     }
+                    [[self activityIndicator] stopAnimating];
                 }];
             }
             else {
@@ -759,7 +789,7 @@
         }
         else {
             [viewController setMessageBody:[NSString stringWithFormat:@"%@\n\n--%@\n\nPosted on Jukaela Social", [[cellInformation contentText] text], [[cellInformation nameLabel] text]] isHTML:NO];
-
+            
         }
         
         [self presentViewController:viewController animated:YES completion:nil];

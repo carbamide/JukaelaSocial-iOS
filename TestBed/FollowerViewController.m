@@ -142,7 +142,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"FollowerViewCell";
     
     ClearLabelsCellView *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     

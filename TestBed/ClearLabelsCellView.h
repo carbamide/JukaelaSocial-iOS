@@ -11,11 +11,12 @@
 
 extern NSString * const kJKPrepareForReuseNotification;
 
-@interface ClearLabelsCellView : UITableViewCell
+@interface ClearLabelsCellView : UITableViewCell <UIGestureRecognizerDelegate>
 
 @property (nonatomic, retain) UILabel *nameLabel;
 @property (nonatomic, retain) UILabel *dateLabel;
 @property (strong, retain) UILabel *usernameLabel;
+@property (strong, retain) UILabel *repostedNameLabel;
 @property (strong, retain) JTextView *contentText;
 @property (nonatomic, getter = isDisabled) BOOL disabled;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;

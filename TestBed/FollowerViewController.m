@@ -8,7 +8,7 @@
 
 #import <objc/runtime.h>
 #import "AppDelegate.h"
-#import "ClearLabelsCellView.h"
+#import "NormalCellView.h"
 #import "FollowerViewController.h"
 #import "GradientView.h"
 #import "GravatarHelper.h"
@@ -144,10 +144,10 @@
 {
     static NSString *CellIdentifier = @"FollowerViewCell";
     
-    ClearLabelsCellView *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    NormalCellView *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell) {
-        cell = [[ClearLabelsCellView alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
         [cell setBackgroundView:[[GradientView alloc] init]];
     }

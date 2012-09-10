@@ -1,16 +1,16 @@
 //
-//  ClearLabelsCellView.m
-//  ShadowedTableView
+//  NormalCellView.m
+//  Jukaela Social
 //
-//  Created by Matt Gallagher on 2009/08/21.
-//  Copyright 2009 Matt Gallagher. All rights reserved.
+//  Created by Josh Barrow on 09/09/2012.
+//  Copyright 2012 Josh Barrow. All rights reserved.
 //
 
-#import "ClearLabelsCellView.h"
+#import "SelfCellView.h"
 
-NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_PrepareForReuse";
+NSString * const kJKPrepareForReuseNotification2 = @"CPCallbacksTableViewCell_PrepareForReuse2";
 
-@implementation ClearLabelsCellView
+@implementation SelfCellView
 
 @synthesize nameLabel;
 @synthesize dateLabel;
@@ -28,7 +28,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
-        contentText = [[JTextView alloc] initWithFrame:CGRectMake(82, 17, 235, 140)];
+        contentText = [[JTextView alloc] initWithFrame:CGRectMake(5, 17, 235, 140)];
         [contentText setEditable:NO];
         [contentText setDataDetectorTypes:UIDataDetectorTypeLink];
         [contentText setBackgroundColor:[UIColor clearColor]];
@@ -37,7 +37,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         [[self contentView] addSubview:contentText];
         
-        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 5, 140, 15)];
+        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(13, 5, 140, 15)];
         
         [nameLabel setTextAlignment:NSTextAlignmentLeft];
         [nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
@@ -64,9 +64,9 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         [self addSubview:usernameLabel];
         
-        repostedNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(86, 90, 228, 20)];
+        repostedNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, 228, 20)];
         
-        [repostedNameLabel setTextAlignment:NSTextAlignmentRight];
+        [repostedNameLabel setTextAlignment:NSTextAlignmentLeft];
         [repostedNameLabel setFont:[UIFont fontWithName:@"Helvetica" size:11]];
         [repostedNameLabel setTextColor:[UIColor darkGrayColor]];
         [repostedNameLabel setBackgroundColor:[UIColor clearColor]];
@@ -80,9 +80,9 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [[self dateLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
         [[self usernameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
         [[self repostedNameLabel] addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionOld context:NULL];
-
+        
         [[self imageView] setUserInteractionEnabled:YES];
-                        
+        
         activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(30, 25, 30, 30)];
         [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
         
@@ -95,7 +95,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 }
 
 -(void)createGestureRecognizers
-{    
+{
     if (![self tapGesture]) {
         tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
         
@@ -106,13 +106,13 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     
     if (![self longPressGesture]) {
         longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
-                
+        
         [contentText addGestureRecognizer:longPressGesture];
     }
     
     if (![self imageTapGesture]) {
         imageTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendToUser:)];
-                
+        
         [[self imageView] addGestureRecognizer:imageTapGesture];
     }
 }
@@ -123,7 +123,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"enable_cell" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
         [self setDisabled:NO];
-
+        
         [[self contentText] setAlpha:1.0];
         [[self imageView] setAlpha:1.0];
         [[self nameLabel] setAlpha:1.0];
@@ -132,8 +132,8 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         [[self usernameLabel] setAlpha:1.0];
     }];
     
-    [[self imageView] setBounds:CGRectMake(7, 0, 75, 75)];
-    [[self imageView] setFrame:CGRectMake(7, 0, 75, 75)];
+    [[self imageView] setBounds:CGRectMake(235, 0, 75, 75)];
+    [[self imageView] setFrame:CGRectMake(235, 0, 75, 75)];
     [[self imageView] setContentMode:UIViewContentModeScaleAspectFit];
     
     [[self textLabel] setFrame:CGRectMake(90, 25, 215, 140)];
@@ -141,7 +141,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self textLabel] sizeToFit];
     [[self textLabel] setHidden:YES];
     
-    [[self usernameLabel] setFrame:CGRectMake(self.frame.size.width - self.usernameLabel.frame.size.width - 5, 5, 140, 15)];
+    [[self usernameLabel] setFrame:CGRectMake(95, 5, 140, 15)];
     
     [[self detailTextLabel] setFrame:CGRectMake(90, 25, 150, 76)];
     
@@ -180,7 +180,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 }
 
 -(void)prepareForReuse
-{    
+{
 	[[NSNotificationCenter defaultCenter] postNotificationName:kJKPrepareForReuseNotification object:self];
 	
     [[self imageView] setImage:nil];
@@ -220,7 +220,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 }
 
 -(void)doubleTapAction:(UIGestureRecognizer *)gesture
-{    
+{
     if([gesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
         if(UIGestureRecognizerStateBegan == gesture.state) {
             NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];

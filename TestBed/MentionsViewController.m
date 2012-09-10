@@ -8,15 +8,15 @@
 
 #import <objc/runtime.h>
 #import "AppDelegate.h"
-#import "ClearLabelsCellView.h"
+#import "NormalCellView.h"
 #import "GradientView.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
-#import "NSDate+RailsDateParser.h"
 #import "MentionsViewController.h"
 #import "PostViewController.h"
 #import "ShowUserViewController.h"
 #import "SORelativeDateTransformer.h"
+#import "WBSuccessNoticeView.h"
 
 @interface MentionsViewController ()
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
@@ -147,10 +147,10 @@
 {
     static NSString *CellIdentifier = @"MentionCell";
     
-    ClearLabelsCellView *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    NormalCellView *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell) {
-        cell = [[ClearLabelsCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         [cell setBackgroundView:[[GradientView alloc] init]];
     }
@@ -234,16 +234,11 @@
         
     }];
     
-    [cellActionSheet addButtonWithTitle:@"Repost" block:^{
-        [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
-        
-    }];
-    
     if ([[NSString stringWithFormat:@"%@", [self mentions][[indexPathOfTappedRow row]][@"sender_user_id"]] isEqualToString:[kAppDelegate userID]]) {
         [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
             
-            ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+            NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
             
             [tempCell disableCell];
             
@@ -280,15 +275,6 @@
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
         [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self mentions][[[self tempIndexPath] row]][@"sender_username"]]];
-        
-        [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
-    }
-    else if ([[segue identifier] isEqualToString:@"ShowRepostView"]) {
-        UITableViewCell *tempCell = [[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
-        
-        PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
-        
-        [viewController setRepostString:[NSString stringWithFormat:@"%@", [[tempCell textLabel] text]]];
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }
@@ -365,6 +351,7 @@
     
     [mentionsError show];
 }
+
 -(void)switchToSelectedUser:(NSNotification *)aNotification
 {
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];

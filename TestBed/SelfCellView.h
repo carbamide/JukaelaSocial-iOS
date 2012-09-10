@@ -1,9 +1,9 @@
 //
-//  ClearLabelsCellView.h
-//  ShadowedTableView
+//  SelfCellView.h
+//  Jukaela Social
 //
-//  Created by Matt Gallagher on 2009/08/21.
-//  Copyright 2009 Matt Gallagher. All rights reserved.
+//  Created by Josh Barrow on 09/09/2012.
+//  Copyright 2012 Josh Barrow. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -11,7 +11,7 @@
 
 extern NSString * const kJKPrepareForReuseNotification;
 
-@interface ClearLabelsCellView : UITableViewCell <UIGestureRecognizerDelegate>
+@interface SelfCellView : UITableViewCell <UIGestureRecognizerDelegate>
 
 @property (nonatomic, retain) UILabel *nameLabel;
 @property (nonatomic, retain) UILabel *dateLabel;

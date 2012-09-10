@@ -8,14 +8,16 @@
 
 #import <objc/runtime.h>
 #import "AppDelegate.h"
-#import "ClearLabelsCellView.h"
+#import "NormalCellView.h"
 #import "GradientView.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
 #import "NSDate+RailsDateParser.h"
 #import "UsersPostsViewController.h"
 #import "PostViewController.h"
+#import "SelfCellView.h"
 #import "SORelativeDateTransformer.h"
+#import "WBSuccessNoticeView.h"
 
 @interface UsersPostsViewController ()
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
@@ -118,14 +120,27 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"FeedViewCell";
+    static NSString *SelfCellIdentifier = @"SelfFeedViewCell";
+    id cell = nil;
     
-    ClearLabelsCellView *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[ClearLabelsCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    if ([[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+        cell = [tableView dequeueReusableCellWithIdentifier:SelfCellIdentifier];
         
-        [cell setBackgroundView:[[GradientView alloc] init]];
+        if (!cell) {
+            cell = [[SelfCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfCellIdentifier];
+            
+            [cell setBackgroundView:[[GradientView alloc] init]];
+        }
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            
+            [cell setBackgroundView:[[GradientView alloc] init]];
+        }
     }
     
     [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
@@ -145,8 +160,28 @@
         [[cell usernameLabel] setText:[self userPostArray][[indexPath row]][@"username"]];
     }
     
-    NSDate *tempDate = [NSDate dateWithISO8601String:[self userPostArray][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
+    if ([self userPostArray][[indexPath row]][@"repost_user_id"] && [self userPostArray][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
+        CGSize contentSize = [[self userPostArray][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12]
+                                                                           constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
+                                                                               lineBreakMode:NSLineBreakByWordWrapping];
         
+        CGSize nameSize = [[self userPostArray][[indexPath row]][@"name"] sizeWithFont:[UIFont systemFontOfSize:12]
+                                                                     constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
+                                                                         lineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
+        
+        if ([[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+            [[cell repostedNameLabel] setFrame:CGRectMake(12, height, 228, 20)];
+        }
+        else {
+            [[cell repostedNameLabel] setFrame:CGRectMake(86, height, 228, 20)];
+        }
+        [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [self userPostArray][[indexPath row]][@"repost_name"]]];
+    }
+    
+    NSDate *tempDate = [NSDate dateWithISO8601String:[self userPostArray][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
+    
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"email"]]]]];
@@ -209,7 +244,7 @@
         }];
         
         [cellActionSheet addButtonWithTitle:@"Repost" block:^{
-            [self performSegueWithIdentifier:@"ShowRepostView" sender:self];
+            [self repost:indexPathOfTappedRow];
             
         }];
         
@@ -217,7 +252,7 @@
             [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
                 
-                ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+                NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
                 
                 [tempCell disableCell];
                 
@@ -247,6 +282,40 @@
         
         [cellActionSheet showInView:[self view]];
     }
+}
+
+-(void)repost:(NSIndexPath *)indexPathOfCell
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/repost.json", kSocialURL, [self userPostArray][[indexPathOfCell row]][@"id"]]];
+    
+    NSData *tempData = [[[self userPostArray][[indexPathOfCell row]][@"content"] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    
+    NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
+    
+    NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
+    
+    NSLog(@"%@\n%@", [url absoluteString], requestString);
+    
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+    
+    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            WBSuccessNoticeView *successNotice = [[WBSuccessNoticeView alloc] initWithView:[self view] title:@"Reposted"];
+            
+            [successNotice show];
+        }
+        else {
+            NSLog(@"Error");
+        }
+    }];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

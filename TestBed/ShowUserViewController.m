@@ -31,7 +31,7 @@
     [kAppDelegate setCurrentViewController:self];
     
     [[self navigationController] setToolbarHidden:NO animated:YES];
-
+    
     [super viewDidAppear:animated];
 }
 
@@ -56,7 +56,7 @@
     [[self navigationController] setToolbarHidden:NO];
     
     [self changeToActivityIndicator];
-
+    
     [self performSelector:@selector(setupArraysDispatch) withObject:nil afterDelay:0];
 }
 
@@ -69,6 +69,7 @@
         [self getimFollowing];
     });
 }
+
 -(void)setupToolbar
 {
     PrettyToolbar *toolbar = (PrettyToolbar *)self.navigationController.toolbar;
@@ -79,11 +80,18 @@
     [toolbar setBottomLineColor:[UIColor colorWithHex:0x303030]];
     [toolbar setTintColor:[toolbar gradientEndColor]];
     
-    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
-    
-    [self setToolbarItems:@[flexSpace, actionItem]];
+    if ([[kAppDelegate userID] isEqualToString:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]) {
+        [self setToolbarItems:nil];
+        
+        return;
+    }
+    else {
+        UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        
+        UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
+        
+        [self setToolbarItems:@[flexSpace, actionItem]];
+    }
 }
 
 -(void)followActionSheet:(id)sender
@@ -97,7 +105,7 @@
     NSString *followOrUnfollowString = @"Now following ";
     
     for (NSDictionary *dict in [self imFollowing]) {
-        if ([dict[@"id"] isEqualToNumber:[self userDict][@"id"]]) {            
+        if ([dict[@"id"] isEqualToNumber:[self userDict][@"id"]]) {
             followOrUnfollowString = @"Unfollowed ";
             following = YES;
         }
@@ -441,7 +449,7 @@
         [tempCell deselectAnimated:YES];
         
         FollowerViewController *viewController = [segue destinationViewController];
-
+        
         [viewController setUsersArray:[self following][@"user"]];
         
         [viewController setTitle:@"Following"];
@@ -519,7 +527,7 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                        
+            
             [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         else {

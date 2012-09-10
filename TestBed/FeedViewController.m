@@ -12,15 +12,13 @@
 #endif
 #import <Twitter/Twitter.h>
 #import "AppDelegate.h"
-#import "ClearLabelsCellView.h"
+#import "NormalCellView.h"
 #import "FeedViewController.h"
 #import "GradientView.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
-#import "NSData+reallyMapped.h"
-#import "NSDate+RailsDateParser.h"
-#import "NSString+BackslashEscape.h"
 #import "PostViewController.h"
+#import "SelfCellView.h"
 #import "ShowUserViewController.h"
 #import "SORelativeDateTransformer.h"
 #import "SVModalWebViewController.h"
@@ -39,6 +37,7 @@
 @property (nonatomic) BOOL jukaelaSuccess;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
 @property (nonatomic) BOOL justToJukaela;
+@property (strong, nonatomic) NSTimer *refreshTimer;
 
 -(void)refreshTableInformation:(NSIndexPath *)indexPath;
 
@@ -111,7 +110,6 @@
     
     UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
     
-    
     [[self navigationItem] setRightBarButtonItem:composeButton];
     
     [[self navigationItem] setHidesBackButton:YES];
@@ -119,6 +117,10 @@
     [self setCurrentChangeType:-1];
     
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
+    
+    [self setRefreshTimer:[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(refreshTableInformation:) userInfo:nil repeats:YES]];
+    
+    [[self refreshTimer] fire];
     
     [super viewDidLoad];
 }
@@ -205,7 +207,14 @@
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][@"user_id"]]];
+    NSURL *url = nil;
+    
+    if ([self theFeed][[indexPathOfTappedRow row]][@"original_poster_id"] && [self theFeed][[indexPathOfTappedRow row]][@"original_poster_id"] != [NSNull null]) {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][@"original_poster_id"]]];
+    }
+    else {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][@"user_id"]]];
+    }
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -288,6 +297,7 @@
             
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
+            NSLog(@"%@", [self theFeed][0]);
             int newNumberOfPosts = [[self theFeed] count];
             
             if ([self currentChangeType] == INSERT_POST) {
@@ -402,13 +412,26 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"FeedViewCell";
+    static NSString *SelfCellIdentifier = @"SelfFeedViewCell";
+    id cell = nil;
     
-    ClearLabelsCellView *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[ClearLabelsCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+        cell = [tableView dequeueReusableCellWithIdentifier:SelfCellIdentifier];
         
-        [cell setBackgroundView:[[GradientView alloc] init]];
+        if (!cell) {
+            cell = [[SelfCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfCellIdentifier];
+            
+            [cell setBackgroundView:[[GradientView alloc] init]];
+        }
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            
+            [cell setBackgroundView:[[GradientView alloc] init]];
+        }
     }
     
     [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
@@ -435,7 +458,7 @@
     if ([self theFeed][[indexPath row]][@"username"] && [self theFeed][[indexPath row]][@"username"] != [NSNull null]) {
         [[cell usernameLabel] setText:[self theFeed][[indexPath row]][@"username"]];
     }
-        
+    
     if ([self theFeed][[indexPath row]][@"repost_user_id"] && [self theFeed][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
         CGSize contentSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12]
                                                                      constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
@@ -447,8 +470,12 @@
         
         CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
         
-        [[cell repostedNameLabel] setFrame:CGRectMake(86, height, 228, 20)];
-        
+        if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+            [[cell repostedNameLabel] setFrame:CGRectMake(12, height, 228, 20)];
+        }
+        else {
+            [[cell repostedNameLabel] setFrame:CGRectMake(86, height, 228, 20)];
+        }
         [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [self theFeed][[indexPath row]][@"repost_name"]]];
     }
     
@@ -519,21 +546,21 @@
         }];
         
         [cellActionSheet addButtonWithTitle:@"Share to Twitter" block:^{
-            ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+            NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
             
             [self shareToTwitter:[[tempCell contentText] text]];
         }];
         
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
             [cellActionSheet addButtonWithTitle:@"Share to Facebook" block:^{
-                ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+                NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
                 
                 [self shareToFacebook:[[tempCell contentText] text]];
             }];
         }
         
         [cellActionSheet addButtonWithTitle:@"Share via Mail" block:^{
-            ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+            NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
             
             [self sharePostViaMail:tempCell];
         }];
@@ -542,7 +569,7 @@
             [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
                 
-                ClearLabelsCellView *tempCell = (ClearLabelsCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+                NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
                 
                 [tempCell disableCell];
                 
@@ -603,6 +630,10 @@
             if ([[self activityIndicator] isAnimating]) {
                 [[self activityIndicator] stopAnimating];
             }
+            
+            WBSuccessNoticeView *successNotice = [[WBSuccessNoticeView alloc] initWithView:[self view] title:@"Reposted"];
+            
+            [successNotice show];
         }
         else {
             NSLog(@"Error");
@@ -776,7 +807,7 @@
     }
 }
 
--(void)sharePostViaMail:(ClearLabelsCellView *)cellInformation
+-(void)sharePostViaMail:(NormalCellView *)cellInformation
 {
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];

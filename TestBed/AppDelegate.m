@@ -13,6 +13,8 @@
 #endif
 #import "TestFlight.h"
 #import "TMImgurUploader.h"
+#import "YISplashScreen.h"
+#import "YISplashScreenAnimation.h"
 
 @implementation UIApplication (Private)
 
@@ -38,6 +40,8 @@
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [YISplashScreen show];
+    
     CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
     CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
     NSString *UUID = [NSString stringWithFormat:@"%@", UUIDSRef];
@@ -73,6 +77,8 @@
     Method openUrl = class_getInstanceMethod([UIApplication class], @selector(openURL:));
     
     method_exchangeImplementations(openUrl, customOpenUrl);
+    
+    [YISplashScreen hide];
     
     return YES;
 }

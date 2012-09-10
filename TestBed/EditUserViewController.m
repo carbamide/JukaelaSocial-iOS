@@ -42,6 +42,8 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
+            [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
+
             [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -63,6 +65,10 @@
             }
         }
         else {
+            [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
+            
+            [[[self navigationItem] rightBarButtonItem] setEnabled:NO];
+            
             [Helpers errorAndLogout:self withMessage:@"There was an error downloading user information.  Please logout and log back in."];
         }
     }];
@@ -70,11 +76,23 @@
 
 - (void)viewDidLoad
 {
-    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
-    
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+    
+    [activityView sizeToFit];
+    
+    [activityView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin |
+                                       UIViewAutoresizingFlexibleRightMargin |
+                                       UIViewAutoresizingFlexibleTopMargin |
+                                       UIViewAutoresizingFlexibleBottomMargin)];
+    [activityView startAnimating];
+    
+    UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+    
+    [[self navigationItem] setRightBarButtonItem:loadingView];
     
     [self getUserInfo:[kAppDelegate userID]];
     

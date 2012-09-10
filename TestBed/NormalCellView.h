@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JTextView.h"
 #import "JSCoreTextView.h"
 
 extern NSString * const kJKPrepareForReuseNotification;

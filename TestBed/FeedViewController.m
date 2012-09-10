@@ -298,7 +298,6 @@
             
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
-            NSLog(@"%@", [self theFeed][0]);
             int newNumberOfPosts = [[self theFeed] count];
             
             if ([self currentChangeType] == INSERT_POST) {

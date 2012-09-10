@@ -340,9 +340,8 @@ float const yAdjustmentFactor = 1.3;
 	
 	for (AHMarkedHyperlink *link in _links)
 	{
-        [[UIApplication sharedApplication] openURL:[link URL]];
         
-		if (((index >= [link range].location) && (index <= ([link range].length + [link range].location))))
+		if (((index >= [link range].location)))
 		{
 			_touchedLink = link;
 			[self setNeedsDisplay];
@@ -404,13 +403,11 @@ float const yAdjustmentFactor = 1.3;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{	
+{
+
 	if (_touchedLink)
 	{
-		if ([self.delegate respondsToSelector:@selector(textView:linkTapped:)])
-		{
-			[self.delegate textView:self linkTapped:[[_touchedLink retain] autorelease]];
-		}
+        [[UIApplication sharedApplication] openURL:[_touchedLink URL]];
 	}
 	
 	_touchedLink = nil;

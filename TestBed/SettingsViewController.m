@@ -87,16 +87,35 @@ typedef enum {
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 5;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        return 7;
-    }
-    else {
-        return 6;
+    switch (section) {
+        case 0:
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+                return 3;
+            }
+            else {
+                return 2;
+            }
+            break;
+        case 1:
+            return 1;
+            break;
+        case 2:
+            return 1;
+            break;
+        case 3:
+            return 1;
+            break;
+        case 4:
+            return 1;
+            break;
+        default:
+            return 1;
+            break;
     }
 }
 
@@ -111,57 +130,65 @@ typedef enum {
     
     [cell prepareForTableView:tableView indexPath:indexPath];
     
-    if ([indexPath row] == 0) {
-        [[cell textLabel] setText:@"Logout"];
-    }
-    else if ([indexPath row] == 1) {
-        [[cell textLabel] setText:@"Clear Image Cache"];
-    }
-    else if ([indexPath row] == 2) {
-        [[cell textLabel] setText:@"Edit Profile..."];
-    }
-    else if ([indexPath row] == 3) {
-        [[cell textLabel] setText:@"Submit Feedback..."];
-    }
-    else if ([indexPath row] == 4) {
-        [[cell textLabel] setText:@"Post to Twitter?"];
-        
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
-        [self setTwitterSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
-        [[self twitterSwitch] setTag:TwitterType];
-        
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
-            [[self twitterSwitch] setOn:YES];
-        }
-        else {
-            [[self twitterSwitch] setOn:NO];
-        }
-        
-        [cell setAccessoryView:[self twitterSwitch]];
-        
-        [[self twitterSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    }
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        if ([indexPath row] == 5) {
-            [[cell textLabel] setText:@"Post to Facebook?"];
+    if ([indexPath section] == 0) {
+        if ([indexPath row] == 0) {
+            [[cell textLabel] setText:@"Post to Twitter?"];
+            
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             
-            [self setFacebookSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
-            [[self facebookSwitch] setTag:FacebookType];
+            [self setTwitterSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+            [[self twitterSwitch] setTag:TwitterType];
             
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
-                [[self facebookSwitch] setOn:YES];
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+                [[self twitterSwitch] setOn:YES];
             }
             else {
-                [[self facebookSwitch] setOn:NO];
+                [[self twitterSwitch] setOn:NO];
             }
             
-            [cell setAccessoryView:[self facebookSwitch]];
+            [cell setAccessoryView:[self twitterSwitch]];
             
-            [[self facebookSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+            [[self twitterSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         }
-        if ([indexPath row] == 6) {
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+            if ([indexPath row] == 1) {
+                [[cell textLabel] setText:@"Post to Facebook?"];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                
+                [self setFacebookSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+                [[self facebookSwitch] setTag:FacebookType];
+                
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+                    [[self facebookSwitch] setOn:YES];
+                }
+                else {
+                    [[self facebookSwitch] setOn:NO];
+                }
+                
+                [cell setAccessoryView:[self facebookSwitch]];
+                
+                [[self facebookSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+            }
+            if ([indexPath row] == 2) {
+                [[cell textLabel] setText:@"Confirm Posting?"];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                
+                [self setConfirmSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+                [[self confirmSwitch] setTag:ConfirmType];
+                
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"]) {
+                    [[self confirmSwitch] setOn:YES];
+                }
+                else {
+                    [[self confirmSwitch] setOn:NO];
+                }
+                
+                [cell setAccessoryView:[self confirmSwitch]];
+                
+                [[self confirmSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+            }
+        }
+        else if ([indexPath row] == 1) {
             [[cell textLabel] setText:@"Confirm Posting?"];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             
@@ -180,25 +207,26 @@ typedef enum {
             [[self confirmSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         }
     }
-    else if ([indexPath row] == 5) {
-        [[cell textLabel] setText:@"Confirm Posting?"];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
-        [self setConfirmSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
-        [[self confirmSwitch] setTag:ConfirmType];
-        
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"]) {
-            [[self confirmSwitch] setOn:YES];
+    else if ([indexPath section] == 1) {
+        if ([indexPath row] == 0) {
+            [[cell textLabel] setText:@"Edit Profile..."];
         }
-        else {
-            [[self confirmSwitch] setOn:NO];
-        }
-        
-        [cell setAccessoryView:[self confirmSwitch]];
-        
-        [[self confirmSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
     }
-    
+    else if ([indexPath section] == 2) {
+        if ([indexPath row] == 0) {
+            [[cell textLabel] setText:@"Submit Feedback..."];
+        }
+    }
+    else if ([indexPath section] == 3) {
+        if ([indexPath row] == 0) {
+            [[cell textLabel] setText:@"Clear Image Cache"];
+        }
+    }
+    else if ([indexPath section] == 4) {
+        if ([indexPath row] == 0) {
+            [[cell textLabel] setText:@"Logout"];
+        }
+    }
     return cell;
 }
 
@@ -275,21 +303,29 @@ typedef enum {
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch ([indexPath row]) {
+    switch ([indexPath section]) {
         case 0:
-            [self logOut:nil];
+            return;
             break;
         case 1:
-            [self clearImageCache];
+            [self performSegueWithIdentifier:@"EditUser" sender:self];
+            
+            [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
             break;
         case 2:
-            [self performSegueWithIdentifier:@"EditUser" sender:self];
-            break;
-        case 3:
             [TestFlight openFeedbackView];
             
             [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
+            break;
+        case 3:
+            [self clearImageCache];
             
+            [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
+            break;
+        case 4:
+            [self logOut:nil];
+            
+            [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
             break;
         default:
             break;

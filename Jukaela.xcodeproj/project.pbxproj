@@ -149,7 +149,6 @@
 		29DB78CD15B6F72D0056C68E /* PrettyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78C415B6F72D0056C68E /* PrettyToolbar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29EA394515609BCE003A21E7 /* NSString+BackslashEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */; };
 		29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29EB71BD15E811D50072B97A /* CoreText.framework */; };
-		29FC657615E97D3B00E9133E /* JTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FC657515E97D3B00E9133E /* JTextView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -387,8 +386,6 @@
 		29EA394315609BCE003A21E7 /* NSString+BackslashEscape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BackslashEscape.h"; sourceTree = "<group>"; };
 		29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BackslashEscape.m"; sourceTree = "<group>"; };
 		29EB71BD15E811D50072B97A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		29FC657415E97D3B00E9133E /* JTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JTextView.h; sourceTree = "<group>"; };
-		29FC657515E97D3B00E9133E /* JTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JTextView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -670,6 +667,87 @@
 			name = AutoHyperlinks;
 			sourceTree = "<group>";
 		};
+		29D433CA15FE276700ABCB2F /* Date Transformer */ = {
+			isa = PBXGroup;
+			children = (
+				29714E9D15C7204300109E5A /* SORelativeDateTransformer.h */,
+				29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */,
+				29714E9F15C7204300109E5A /* SORelativeDateTransformer.bundle */,
+			);
+			name = "Date Transformer";
+			sourceTree = "<group>";
+		};
+		29D433CB15FE277300ABCB2F /* Refresh Control for iOS 5 */ = {
+			isa = PBXGroup;
+			children = (
+				2986774A15B4B9B80027C7CA /* ODRefreshControl.h */,
+				2986774B15B4B9B80027C7CA /* ODRefreshControl.m */,
+			);
+			name = "Refresh Control for iOS 5";
+			sourceTree = "<group>";
+		};
+		29D433CC15FE277E00ABCB2F /* KeyChain Utility */ = {
+			isa = PBXGroup;
+			children = (
+				293A7422155F6810004D27D2 /* SFHFKeychainUtils.h */,
+				293A7423155F6810004D27D2 /* SFHFKeychainUtils.m */,
+			);
+			name = "KeyChain Utility";
+			sourceTree = "<group>";
+		};
+		29D433CD15FE279900ABCB2F /* Checkbox for Login Screen */ = {
+			isa = PBXGroup;
+			children = (
+				29AA108E15571BD600B8D3F5 /* CPCheckBox.h */,
+				29AA108F15571BD600B8D3F5 /* CPCheckBox.m */,
+			);
+			name = "Checkbox for Login Screen";
+			sourceTree = "<group>";
+		};
+		29D433CE15FE27A600ABCB2F /* ProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				29AA105F1556AEAC00B8D3F5 /* MBProgressHUD.h */,
+				29AA10601556AEAC00B8D3F5 /* MBProgressHUD.m */,
+			);
+			name = ProgressHUD;
+			sourceTree = "<group>";
+		};
+		29D433CF15FE27B400ABCB2F /* Jukaela Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				29AA10541556AD6500B8D3F5 /* Helpers.h */,
+				29AA10551556AD6500B8D3F5 /* Helpers.m */,
+			);
+			name = "Jukaela Helpers";
+			sourceTree = "<group>";
+		};
+		29D433D015FE27C100ABCB2F /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				29AA10871557161A00B8D3F5 /* NSDate+RailsDateParser.h */,
+				29AA10881557161A00B8D3F5 /* NSDate+RailsDateParser.m */,
+				29EA394315609BCE003A21E7 /* NSString+BackslashEscape.h */,
+				29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */,
+				292F052D15F1341200E6BC51 /* NSNull+DontCrash.h */,
+				292F052E15F1341200E6BC51 /* NSNull+DontCrash.m */,
+				29AA10511556AD3D00B8D3F5 /* UIView+FindAndResignFirstResponder.h */,
+				29AA10521556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m */,
+				29593D7115FD1F8400380B2D /* NSTimer+Blocks.h */,
+				29593D7215FD1F8400380B2D /* NSTimer+Blocks.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		29D433D115FE27E100ABCB2F /* Gravatar */ = {
+			isa = PBXGroup;
+			children = (
+				29D5B81315545B3A000D9374 /* GravatarHelper.h */,
+				29D5B81415545B3A000D9374 /* GravatarHelper.m */,
+			);
+			name = Gravatar;
+			sourceTree = "<group>";
+		};
 		29D5B82A15545CA4000D9374 /* Image Handling */ = {
 			isa = PBXGroup;
 			children = (
@@ -813,6 +891,7 @@
 		29D5B860155476A4000D9374 /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2975554115CF2B2400CAA9A7 /* TestFlight.h */,
 				29D433AB15FE0EF600ABCB2F /* AutoHyperlinks */,
 				29D4339E15FE0EDC00ABCB2F /* CoreTextView */,
 				29D4339215FD6A7400ABCB2F /* YIFullScreenScroll */,
@@ -820,41 +899,21 @@
 				293751E615EA63D00082864C /* SVWebViewController */,
 				295CB26915E528DA001A43DA /* TM HTTP Stuff */,
 				298A643B15E267C9009BF175 /* Alert and Action Sheet */,
-				2975554115CF2B2400CAA9A7 /* TestFlight.h */,
 				2975292015CEF69800A3E71D /* WBNoticeView */,
-				29714E9D15C7204300109E5A /* SORelativeDateTransformer.h */,
-				293A7422155F6810004D27D2 /* SFHFKeychainUtils.h */,
-				29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */,
-				29714E9F15C7204300109E5A /* SORelativeDateTransformer.bundle */,
-				2986774A15B4B9B80027C7CA /* ODRefreshControl.h */,
-				2986774B15B4B9B80027C7CA /* ODRefreshControl.m */,
-				293A7423155F6810004D27D2 /* SFHFKeychainUtils.m */,
-				29AA108E15571BD600B8D3F5 /* CPCheckBox.h */,
-				29AA108F15571BD600B8D3F5 /* CPCheckBox.m */,
+				29D433CA15FE276700ABCB2F /* Date Transformer */,
+				29D433CB15FE277300ABCB2F /* Refresh Control for iOS 5 */,
+				29D433CC15FE277E00ABCB2F /* KeyChain Utility */,
+				29D433CD15FE279900ABCB2F /* Checkbox for Login Screen */,
 				29AA10851557154D00B8D3F5 /* PrettyKit */,
-				29AA105F1556AEAC00B8D3F5 /* MBProgressHUD.h */,
-				29AA10601556AEAC00B8D3F5 /* MBProgressHUD.m */,
-				29AA10541556AD6500B8D3F5 /* Helpers.h */,
-				29AA10551556AD6500B8D3F5 /* Helpers.m */,
-				29AA10511556AD3D00B8D3F5 /* UIView+FindAndResignFirstResponder.h */,
-				29AA10521556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m */,
-				29593D7115FD1F8400380B2D /* NSTimer+Blocks.h */,
-				29593D7215FD1F8400380B2D /* NSTimer+Blocks.m */,
+				29D433CE15FE27A600ABCB2F /* ProgressHUD */,
+				29D433CF15FE27B400ABCB2F /* Jukaela Helpers */,
+				29D433D015FE27C100ABCB2F /* Categories */,
 				29AA103B1556239400B8D3F5 /* Block Action Sheet and Alert */,
 				29D5B8551554643A000D9374 /* PopupTextView */,
 				29D5B84715545FD6000D9374 /* TableView Stuff */,
 				29D5B83415545D43000D9374 /* NSData Catagories */,
 				29D5B82A15545CA4000D9374 /* Image Handling */,
-				29D5B81315545B3A000D9374 /* GravatarHelper.h */,
-				29D5B81415545B3A000D9374 /* GravatarHelper.m */,
-				29AA10871557161A00B8D3F5 /* NSDate+RailsDateParser.h */,
-				29AA10881557161A00B8D3F5 /* NSDate+RailsDateParser.m */,
-				29EA394315609BCE003A21E7 /* NSString+BackslashEscape.h */,
-				29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */,
-				29FC657415E97D3B00E9133E /* JTextView.h */,
-				29FC657515E97D3B00E9133E /* JTextView.m */,
-				292F052D15F1341200E6BC51 /* NSNull+DontCrash.h */,
-				292F052E15F1341200E6BC51 /* NSNull+DontCrash.m */,
+				29D433D115FE27E100ABCB2F /* Gravatar */,
 			);
 			name = "Custom Classes";
 			sourceTree = "<group>";
@@ -1048,7 +1107,6 @@
 				295CB27415E528F4001A43DA /* TMNetworkActivityIndicatorManager.m in Sources */,
 				295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */,
 				295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */,
-				29FC657615E97D3B00E9133E /* JTextView.m in Sources */,
 				293751ED15EA63E10082864C /* SVModalWebViewController.m in Sources */,
 				293751EE15EA63E10082864C /* SVWebViewController.m in Sources */,
 				293B952315EB0B740036A7FF /* NewUserViewController.m in Sources */,

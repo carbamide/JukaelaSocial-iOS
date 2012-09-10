@@ -110,6 +110,13 @@
 		29AA10A21557263900B8D3F5 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA109E1557263900B8D3F5 /* Settings.png */; };
 		29AA10A31557263900B8D3F5 /* Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA109F1557263900B8D3F5 /* Settings@2x.png */; };
 		29CAEB7C1558C6F900663CF3 /* ShowUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */; };
+		29D433A715FE0EE700ABCB2F /* JSCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A015FE0EE700ABCB2F /* JSCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29D433A815FE0EE700ABCB2F /* JSTwitterCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A215FE0EE700ABCB2F /* JSTwitterCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29D433A915FE0EE700ABCB2F /* JSEmailCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A415FE0EE700ABCB2F /* JSEmailCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29D433AA15FE0EE700ABCB2F /* JSWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A615FE0EE700ABCB2F /* JSWebViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29D433C715FE1F6400ABCB2F /* AHHyperlinkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C115FE1F6400ABCB2F /* AHHyperlinkScanner.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29D433C815FE1F6400ABCB2F /* AHLinkLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C315FE1F6400ABCB2F /* AHLinkLexer.l */; };
+		29D433C915FE1F6400ABCB2F /* AHMarkedHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C515FE1F6400ABCB2F /* AHMarkedHyperlink.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29D5B81515545B3A000D9374 /* GravatarHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B81415545B3A000D9374 /* GravatarHelper.m */; };
 		29D5B82015545C8D000D9374 /* JEImages.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B81F15545C8D000D9374 /* JEImages.m */; };
 		29D5B82715545C9F000D9374 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B82215545C9F000D9374 /* UIImage+Alpha.m */; };
@@ -305,6 +312,21 @@
 		29AA109F1557263900B8D3F5 /* Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Settings@2x.png"; sourceTree = "<group>"; };
 		29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowUserViewController.h; sourceTree = "<group>"; };
 		29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowUserViewController.m; sourceTree = "<group>"; };
+		29D4339F15FE0EE700ABCB2F /* JSCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSCoreTextView.h; sourceTree = "<group>"; };
+		29D433A015FE0EE700ABCB2F /* JSCoreTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSCoreTextView.m; sourceTree = "<group>"; };
+		29D433A115FE0EE700ABCB2F /* JSTwitterCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTwitterCoreTextView.h; sourceTree = "<group>"; };
+		29D433A215FE0EE700ABCB2F /* JSTwitterCoreTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTwitterCoreTextView.m; sourceTree = "<group>"; };
+		29D433A315FE0EE700ABCB2F /* JSEmailCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSEmailCoreTextView.h; sourceTree = "<group>"; };
+		29D433A415FE0EE700ABCB2F /* JSEmailCoreTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSEmailCoreTextView.m; sourceTree = "<group>"; };
+		29D433A515FE0EE700ABCB2F /* JSWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSWebViewController.h; sourceTree = "<group>"; };
+		29D433A615FE0EE700ABCB2F /* JSWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSWebViewController.m; sourceTree = "<group>"; };
+		29D433C015FE1F6400ABCB2F /* AHHyperlinkScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHHyperlinkScanner.h; sourceTree = "<group>"; };
+		29D433C115FE1F6400ABCB2F /* AHHyperlinkScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHHyperlinkScanner.m; sourceTree = "<group>"; };
+		29D433C215FE1F6400ABCB2F /* AHLinkLexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHLinkLexer.h; sourceTree = "<group>"; };
+		29D433C315FE1F6400ABCB2F /* AHLinkLexer.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; path = AHLinkLexer.l; sourceTree = "<group>"; };
+		29D433C415FE1F6400ABCB2F /* AHMarkedHyperlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHMarkedHyperlink.h; sourceTree = "<group>"; };
+		29D433C515FE1F6400ABCB2F /* AHMarkedHyperlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHMarkedHyperlink.m; sourceTree = "<group>"; };
+		29D433C615FE1F6400ABCB2F /* AutoHyperlinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoHyperlinks.h; sourceTree = "<group>"; };
 		29D5B81315545B3A000D9374 /* GravatarHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GravatarHelper.h; sourceTree = "<group>"; };
 		29D5B81415545B3A000D9374 /* GravatarHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GravatarHelper.m; sourceTree = "<group>"; };
 		29D5B81E15545C8D000D9374 /* JEImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JEImages.h; sourceTree = "<group>"; };
@@ -374,8 +396,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				293751F515EA65F10082864C /* MessageUI.framework in Frameworks */,
 				29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */,
+				293751F515EA65F10082864C /* MessageUI.framework in Frameworks */,
 				2975554315CF2DF800CAA9A7 /* libz.dylib in Frameworks */,
 				29295F6415C3373700F1968B /* Social.framework in Frameworks */,
 				2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */,
@@ -612,6 +634,42 @@
 			name = PrettyKit;
 			sourceTree = "<group>";
 		};
+		29D4339215FD6A7400ABCB2F /* YIFullScreenScroll */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = YIFullScreenScroll;
+			sourceTree = "<group>";
+		};
+		29D4339E15FE0EDC00ABCB2F /* CoreTextView */ = {
+			isa = PBXGroup;
+			children = (
+				29D4339F15FE0EE700ABCB2F /* JSCoreTextView.h */,
+				29D433A015FE0EE700ABCB2F /* JSCoreTextView.m */,
+				29D433A115FE0EE700ABCB2F /* JSTwitterCoreTextView.h */,
+				29D433A215FE0EE700ABCB2F /* JSTwitterCoreTextView.m */,
+				29D433A315FE0EE700ABCB2F /* JSEmailCoreTextView.h */,
+				29D433A415FE0EE700ABCB2F /* JSEmailCoreTextView.m */,
+				29D433A515FE0EE700ABCB2F /* JSWebViewController.h */,
+				29D433A615FE0EE700ABCB2F /* JSWebViewController.m */,
+			);
+			name = CoreTextView;
+			sourceTree = "<group>";
+		};
+		29D433AB15FE0EF600ABCB2F /* AutoHyperlinks */ = {
+			isa = PBXGroup;
+			children = (
+				29D433C015FE1F6400ABCB2F /* AHHyperlinkScanner.h */,
+				29D433C115FE1F6400ABCB2F /* AHHyperlinkScanner.m */,
+				29D433C215FE1F6400ABCB2F /* AHLinkLexer.h */,
+				29D433C315FE1F6400ABCB2F /* AHLinkLexer.l */,
+				29D433C415FE1F6400ABCB2F /* AHMarkedHyperlink.h */,
+				29D433C515FE1F6400ABCB2F /* AHMarkedHyperlink.m */,
+				29D433C615FE1F6400ABCB2F /* AutoHyperlinks.h */,
+			);
+			name = AutoHyperlinks;
+			sourceTree = "<group>";
+		};
 		29D5B82A15545CA4000D9374 /* Image Handling */ = {
 			isa = PBXGroup;
 			children = (
@@ -755,6 +813,9 @@
 		29D5B860155476A4000D9374 /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
+				29D433AB15FE0EF600ABCB2F /* AutoHyperlinks */,
+				29D4339E15FE0EDC00ABCB2F /* CoreTextView */,
+				29D4339215FD6A7400ABCB2F /* YIFullScreenScroll */,
 				29593D6D15FD150600380B2D /* YISplashScreen */,
 				293751E615EA63D00082864C /* SVWebViewController */,
 				295CB26915E528DA001A43DA /* TM HTTP Stuff */,
@@ -998,6 +1059,13 @@
 				29593D6B15FD150200380B2D /* YISplashScreenAnimation.m in Sources */,
 				29593D7315FD1F8400380B2D /* NSTimer+Blocks.m in Sources */,
 				2920235415FD5C4700DBDA6C /* SelfCellView.m in Sources */,
+				29D433A715FE0EE700ABCB2F /* JSCoreTextView.m in Sources */,
+				29D433A815FE0EE700ABCB2F /* JSTwitterCoreTextView.m in Sources */,
+				29D433A915FE0EE700ABCB2F /* JSEmailCoreTextView.m in Sources */,
+				29D433AA15FE0EE700ABCB2F /* JSWebViewController.m in Sources */,
+				29D433C715FE1F6400ABCB2F /* AHHyperlinkScanner.m in Sources */,
+				29D433C815FE1F6400ABCB2F /* AHLinkLexer.l in Sources */,
+				29D433C915FE1F6400ABCB2F /* AHMarkedHyperlink.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1079,13 +1147,13 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
-				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -1114,13 +1182,13 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
-				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				GCC_WARN_UNUSED_FUNCTION = YES;

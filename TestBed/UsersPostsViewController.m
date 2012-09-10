@@ -143,7 +143,7 @@
         }
     }
     
-    [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+    [[cell contentText] setFontName:@"Helvetica-Bold"];
     
     if ([self userPostArray][[indexPath row]][@"content"]) {
         [[cell contentText] setText:[self userPostArray][[indexPath row]][@"content"]];

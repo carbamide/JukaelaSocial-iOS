@@ -28,12 +28,12 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
-        contentText = [[JTextView alloc] initWithFrame:CGRectMake(82, 17, 235, 140)];
-        [contentText setEditable:NO];
-        [contentText setDataDetectorTypes:UIDataDetectorTypeLink];
+        contentText = [[JSCoreTextView alloc] initWithFrame:CGRectMake(82, 17, 235, 140)];
         [contentText setBackgroundColor:[UIColor clearColor]];
         [contentText setClipsToBounds:YES];
-        [contentText setScrollsToTop:NO];
+        [contentText setPaddingLeft:8];
+        [contentText setPaddingTop:5];
+        [contentText setUserInteractionEnabled:YES];
         
         [[self contentView] addSubview:contentText];
         

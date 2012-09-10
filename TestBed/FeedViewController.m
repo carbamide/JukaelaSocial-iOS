@@ -11,6 +11,7 @@
 #import <Social/Social.h>
 #endif
 #import <Twitter/Twitter.h>
+#import "AHMarkedHyperlink.h"
 #import "AppDelegate.h"
 #import "NormalCellView.h"
 #import "FeedViewController.h"
@@ -413,6 +414,7 @@
 {
     static NSString *CellIdentifier = @"FeedViewCell";
     static NSString *SelfCellIdentifier = @"SelfFeedViewCell";
+    
     id cell = nil;
     
     if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
@@ -433,8 +435,8 @@
             [cell setBackgroundView:[[GradientView alloc] init]];
         }
     }
-    
-    [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+    [[cell contentText] setFontName:@"Helvetica"];
+    [[cell contentText] setFontSize:14];
     
     if ([self theFeed][[indexPath row]][@"content"]) {
         [[cell contentText] setText:[self theFeed][[indexPath row]][@"content"]];

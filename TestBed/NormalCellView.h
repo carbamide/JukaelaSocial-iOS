@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "JTextView.h"
+#import "JSCoreTextView.h"
 
 extern NSString * const kJKPrepareForReuseNotification;
 
@@ -17,7 +18,7 @@ extern NSString * const kJKPrepareForReuseNotification;
 @property (nonatomic, retain) UILabel *dateLabel;
 @property (strong, retain) UILabel *usernameLabel;
 @property (strong, retain) UILabel *repostedNameLabel;
-@property (strong, retain) JTextView *contentText;
+@property (strong, retain) JSCoreTextView *contentText;
 @property (nonatomic, getter = isDisabled) BOOL disabled;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGesture;

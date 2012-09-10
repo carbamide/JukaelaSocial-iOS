@@ -155,7 +155,8 @@
         [cell setBackgroundView:[[GradientView alloc] init]];
     }
     
-    [[cell contentText] setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+    [[cell contentText] setFontName:@"Helvetica"];
+    [[cell contentText] setFontSize:14];
     
     if ([self mentions][[indexPath row]][@"content"]) {
         [[cell contentText] setText:[self mentions][[indexPath row]][@"content"]];

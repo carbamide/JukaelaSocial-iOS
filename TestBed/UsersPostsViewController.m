@@ -143,7 +143,8 @@
         }
     }
     
-    [[cell contentText] setFontName:@"Helvetica-Bold"];
+    [[cell contentText] setFontName:@"Helvetica"];
+    [[cell contentText] setFontSize:14];
     
     if ([self userPostArray][[indexPath row]][@"content"]) {
         [[cell contentText] setText:[self userPostArray][[indexPath row]][@"content"]];

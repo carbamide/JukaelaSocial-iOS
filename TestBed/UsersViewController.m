@@ -226,7 +226,7 @@
         [[cell detailTextLabel] setText:@"No username specified"];
     }
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]]]];
     
     [[cell activityIndicator] startAnimating];
     
@@ -257,7 +257,7 @@
                     [cell setNeedsDisplay];
 				}
 				
-                [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]];
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]];
 			});
 		});
 	}
@@ -288,26 +288,6 @@
         
         [viewController setUserPostArray:[self tempArray]];
     }
-}
-
--(void)saveImage:(UIImage *)image withFileName:(NSString *)emailAddress
-{
-    if (image != nil) {
-        NSString *path = [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithString:[NSString stringWithFormat:@"%@.png", emailAddress]]];
-        
-        NSData *data = UIImagePNGRepresentation(image);
-        
-        [data writeToFile:path atomically:YES];
-    }
-}
-
--(NSString *)documentsPath
-{
-    NSArray *documentArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *documentsDirectory = documentArray[0];
-    
-    return documentsDirectory;
 }
 
 -(void)switchToSelectedUser:(NSNotification *)aNotification

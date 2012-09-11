@@ -121,6 +121,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UITableViewCell *tempCell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    [tempCell setSelected:NO animated:YES];
+    
     switch ([indexPath row]) {
         case 0:
             [_username becomeFirstResponder];
@@ -184,7 +188,29 @@
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (!data) {
+        if (data) {
+            loginDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+            
+            if (loginDict) {
+                [[[[self tabBarController] tabBar] items][1] setEnabled:YES];
+                [[[[self tabBarController] tabBar] items][2] setEnabled:YES];
+                [[[[self tabBarController] tabBar] items][3] setEnabled:YES];
+                
+                [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[@"id"]]];
+                
+                [self getFeed];
+            }
+            else {
+                [[self progressHUD] hide:YES];
+                
+                BlockAlertView *loginFailedAlert = [[BlockAlertView alloc] initWithTitle:@"Login Failed" message:@"The login has failed. Sorry!"];
+                
+                [loginFailedAlert setCancelButtonWithTitle:@"OK" block:nil];
+                
+                [loginFailedAlert show];
+            }
+        }
+        else {
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [[self progressHUD] hide:YES];
@@ -194,28 +220,6 @@
             [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
             
             [errorAlert show];
-            
-            return;
-        }
-        loginDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
-        
-        if (loginDict) {
-            [[[[self tabBarController] tabBar] items][1] setEnabled:YES];
-            [[[[self tabBarController] tabBar] items][2] setEnabled:YES];
-            [[[[self tabBarController] tabBar] items][3] setEnabled:YES];
-
-            [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[@"id"]]];
-            
-            [self getFeed];
-        }
-        else {
-            [[self progressHUD] hide:YES];
-            
-            BlockAlertView *loginFailedAlert = [[BlockAlertView alloc] initWithTitle:@"Login Failed" message:@"The login has failed. Sorry!"];
-            
-            [loginFailedAlert setCancelButtonWithTitle:@"OK" block:nil];
-            
-            [loginFailedAlert show];
         }
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];

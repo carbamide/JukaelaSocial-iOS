@@ -20,4 +20,6 @@
 
 +(void)errorAndLogout:(UIViewController *)aViewController withMessage:(NSString *)aMessage;
 
++(NSString *)documentsPath;
+
 @end

@@ -119,4 +119,14 @@
     
     [errorAlert show];
 }
+
++(NSString *)documentsPath
+{
+    NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString *documentsDirectory = tempArray[0];
+    
+    return documentsDirectory;
+}
+
 @end

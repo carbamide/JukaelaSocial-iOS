@@ -9,6 +9,7 @@
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 #import <Twitter/Twitter.h>
+#import "AppDelegate.h"
 #import "ShareObject.h"
 #import "NormalCellView.h"
 #import "SelfCellView.h"
@@ -157,4 +158,40 @@
     }
 }
 
+
++(void)repost:(NSIndexPath *)indexPathOfCell fromArray:(NSArray *)theArray withViewController:(FeedViewController *)viewController
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/repost.json", kSocialURL, theArray[[indexPathOfCell row]][@"id"]]];
+    
+    NSData *tempData = [[theArray[[indexPathOfCell row]][@"content"] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    
+    NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
+    
+    NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
+    
+    NSLog(@"%@\n%@", [url absoluteString], requestString);
+    
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+    
+    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"stop_animating" object:nil];
+            
+            WBSuccessNoticeView *successNotice = [[WBSuccessNoticeView alloc] initWithView:[viewController view] title:@"Reposted"];
+            
+            [successNotice show];
+        }
+        else {
+            NSLog(@"Error");
+        }
+    }];
+}
 @end

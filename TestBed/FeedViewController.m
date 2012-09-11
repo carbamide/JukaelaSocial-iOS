@@ -539,7 +539,7 @@
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]]];
     
     [[cell activityIndicator] startAnimating];
     
@@ -576,11 +576,6 @@
     }
     
     return cell;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -652,7 +647,7 @@
         }];
         
         [cellActionSheet addButtonWithTitle:@"Repost" block:^{
-            [self repost:indexPathOfTappedRow];
+            [ShareObject repost:indexPathOfTappedRow fromArray:[self theFeed] withViewController:self];
         }];
         
         [cellActionSheet addButtonWithTitle:@"Share to Twitter" block:^{
@@ -713,44 +708,6 @@
     }
 }
 
--(void)repost:(NSIndexPath *)indexPathOfCell
-{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/repost.json", kSocialURL, [self theFeed][[indexPathOfCell row]][@"id"]]];
-    
-    NSData *tempData = [[[self theFeed][[indexPathOfCell row]][@"content"] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    
-    NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
-    
-    NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
-    
-    NSLog(@"%@\n%@", [url absoluteString], requestString);
-    
-    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
-    
-    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
-            
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            
-            if ([[self activityIndicator] isAnimating]) {
-                [[self activityIndicator] stopAnimating];
-            }
-            
-            WBSuccessNoticeView *successNotice = [[WBSuccessNoticeView alloc] initWithView:[self view] title:@"Reposted"];
-            
-            [successNotice show];
-        }
-        else {
-            NSLog(@"Error");
-        }
-    }];
-}
-
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"ShowUser"]) {
@@ -778,15 +735,6 @@
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }
-}
-
--(NSString *)documentsPath
-{
-    NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *documentsDirectory = tempArray[0];
-    
-    return documentsDirectory;
 }
 
 -(void)hudWasHidden:(MBProgressHUD *)hud
@@ -817,6 +765,8 @@
 
 -(void)refreshControlRefresh:(id)sender
 {
+    [[self activityIndicator] startAnimating];
+    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
@@ -866,6 +816,8 @@
         else {
             [_oldRefreshControl endRefreshing];
         }
+        
+        [[self activityIndicator] stopAnimating];
         
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         

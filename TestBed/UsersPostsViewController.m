@@ -16,6 +16,7 @@
 #import "UsersPostsViewController.h"
 #import "PostViewController.h"
 #import "SelfCellView.h"
+#import "ShareObject.h"
 #import "SORelativeDateTransformer.h"
 #import "WBSuccessNoticeView.h"
 
@@ -185,7 +186,7 @@
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"email"]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"email"]]]]];
     
     [[cell activityIndicator] startAnimating];
     
@@ -245,7 +246,7 @@
         }];
         
         [cellActionSheet addButtonWithTitle:@"Repost" block:^{
-            [self repost:indexPathOfTappedRow];
+            [ShareObject repost:indexPathOfTappedRow fromArray:[self userPostArray] withViewController:(FeedViewController *)self];
             
         }];
         
@@ -285,40 +286,6 @@
     }
 }
 
--(void)repost:(NSIndexPath *)indexPathOfCell
-{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/repost.json", kSocialURL, [self userPostArray][[indexPathOfCell row]][@"id"]]];
-    
-    NSData *tempData = [[[self userPostArray][[indexPathOfCell row]][@"content"] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    
-    NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
-    
-    NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
-    
-    NSLog(@"%@\n%@", [url absoluteString], requestString);
-    
-    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
-    
-    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
-            
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            
-            WBSuccessNoticeView *successNotice = [[WBSuccessNoticeView alloc] initWithView:[self view] title:@"Reposted"];
-            
-            [successNotice show];
-        }
-        else {
-            NSLog(@"Error");
-        }
-    }];
-}
-
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"ShowReplyView"]) {
@@ -339,14 +306,6 @@
     }
 }
 
--(NSString *)documentsPath
-{
-    NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *documentsDirectory = tempArray[0];
-    
-    return documentsDirectory;
-}
 
 -(void)refreshTableInformation
 {

@@ -15,5 +15,6 @@
 +(void)shareToTwitter:(NSString *)stringToSend withViewController:(FeedViewController *)feedViewController;
 +(void)shareToFacebook:(NSString *)stringToSend withViewController:(FeedViewController *)feedViewController;
 +(void)sharePostViaMail:(NormalCellView *)cellInformation  withViewController:(FeedViewController *)feedViewController;
++(void)repost:(NSIndexPath *)indexPathOfCell fromArray:(NSArray *)theArray withViewController:(FeedViewController *)viewController;
 
 @end

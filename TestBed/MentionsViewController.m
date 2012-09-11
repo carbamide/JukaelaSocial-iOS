@@ -179,7 +179,7 @@
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self mentions][[indexPath row]][@"sender_email"]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self mentions][[indexPath row]][@"sender_email"]]]]];
     
     [[cell activityIndicator] startAnimating];
     
@@ -287,15 +287,6 @@
         
         [viewController setUserDict:_tempDict];
     }
-}
-
--(NSString *)documentsPath
-{
-    NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *documentsDirectory = tempArray[0];
-    
-    return documentsDirectory;
 }
 
 -(void)refreshTableInformation

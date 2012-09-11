@@ -343,7 +343,7 @@
                 [[cell detailTextLabel] setText:@"No username"];
             }
             
-            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]]];
+            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]]];
             
             if (image) {
                 [[cell imageView] setImage:image];
@@ -361,7 +361,7 @@
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[cell imageView] setImage:resizedImage];
-                        [self saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]];
+                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]];
                     });
                 });
             }
@@ -464,27 +464,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
--(void)saveImage:(UIImage *)image withFileName:(NSString *)emailAddress
-{
-    if (image != nil)
-    {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = paths[0];
-        NSString* path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithString:[NSString stringWithFormat:@"%@.png", emailAddress]]];
-        NSData* data = UIImagePNGRepresentation(image);
-        [data writeToFile:path atomically:YES];
-    }
-}
-
--(NSString *)documentsPath
-{
-    NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *documentsDirectory = tempArray[0];
-    
-    return documentsDirectory;
 }
 
 -(void)getPosts

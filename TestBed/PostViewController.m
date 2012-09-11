@@ -193,14 +193,14 @@
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
-            
+        if (data) {            
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self dismissViewControllerAnimated:YES completion:^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+            }];
         }
         else {
             BlockAlertView *jukaelaSocialPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting to Jukaela Social"];

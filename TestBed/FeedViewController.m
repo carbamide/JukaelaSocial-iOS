@@ -20,6 +20,7 @@
 #import "JEImages.h"
 #import "PostViewController.h"
 #import "SelfCellView.h"
+#import "ShareObject.h"
 #import "ShowUserViewController.h"
 #import "SORelativeDateTransformer.h"
 #import "SVModalWebViewController.h"
@@ -32,7 +33,6 @@
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @property (nonatomic) ChangeType currentChangeType;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
-@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic) BOOL fbSuccess;
 @property (nonatomic) BOOL twitterSuccess;
 @property (nonatomic) BOOL jukaelaSuccess;
@@ -40,7 +40,7 @@
 @property (nonatomic) BOOL justToJukaela;
 @property (strong, nonatomic) NSTimer *refreshTimer;
 
--(void)refreshTableInformation:(NSIndexPath *)indexPath;
+-(void)refreshTableInformation:(NSIndexPath *)indexPath from:(NSInteger)from to:(NSInteger)to;
 
 @end
 
@@ -68,6 +68,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(repostSwitchToSelectedUser:) name:@"repost_send_to_user" object:nil];
     
     [super viewDidAppear:animated];
 }
@@ -76,6 +77,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"double_tap" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"send_to_user" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"repost_send_to_user" object:nil];
     
     [super viewDidDisappear:animated];
 }
@@ -87,7 +89,7 @@
         
         [refreshControl setTintColor:[UIColor blackColor]];
         
-        [refreshControl addTarget:self action:@selector(refreshTableInformation:) forControlEvents:UIControlEventValueChanged];
+        [refreshControl addTarget:self action:@selector(refreshControlRefresh:) forControlEvents:UIControlEventValueChanged];
         
         [self setRefreshControl:refreshControl];
     }
@@ -96,13 +98,13 @@
         
         [_oldRefreshControl setTintColor:[UIColor blackColor]];
         
-        [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation:) forControlEvents:UIControlEventValueChanged];
+        [_oldRefreshControl addTarget:self action:@selector(refreshControlRefresh:) forControlEvents:UIControlEventValueChanged];
     }
     
     [self setupNotifications];
     
     if (![self theFeed]) {
-        [self refreshTableInformation:nil];
+        [self refreshTableInformation:nil from:0 to:20];
     }
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
@@ -118,10 +120,6 @@
     [self setCurrentChangeType:-1];
     
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
-    
-    [self setRefreshTimer:[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(refreshTableInformation:) userInfo:nil repeats:YES]];
-    
-    [[self refreshTimer] fire];
     
     [super viewDidLoad];
 }
@@ -163,7 +161,7 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:@"refresh_your_tables" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
         [self initializeActivityIndicator];
         
-        [self refreshTableInformation:nil];
+        [self refreshTableInformation:nil from:0 to:[[self theFeed] count]];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"tweet_successful" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
@@ -238,6 +236,44 @@
     }];
 }
 
+-(void)repostSwitchToSelectedUser:(NSNotification *)aNotification
+{
+    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
+    [progressHUD setMode:MBProgressHUDModeIndeterminate];
+    [progressHUD setLabelText:@"Loading User..."];
+    [progressHUD setDelegate:self];
+    
+    [[self view] addSubview:progressHUD];
+    
+    [progressHUD show:YES];
+    
+    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][@"repost_user_id"]]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+        }
+        else {
+            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
+        }
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        [progressHUD hide:YES];
+        
+        [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+    }];
+}
+
 -(void)checkForFBAndTwitterSucess
 {
     if (([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) && ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"] == NO)) {
@@ -284,19 +320,33 @@
     [self performSegueWithIdentifier:@"ShowPostView" sender:self];
 }
 
--(void)refreshTableInformation:(NSIndexPath *)indexPath
+-(void)refreshTableInformation:(NSIndexPath *)indexPath from:(NSInteger)from to:(NSInteger)to
 {
+    if (!from) {
+        from = 0;
+    }
+    
+    if (!to) {
+        to = 20;
+    }
+    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSString *requestString = [NSString stringWithFormat:@"{\"first\" : \"%i\", \"last\" : \"%i\"}", from, to];
+    
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+    
+    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             int oldNumberOfPosts = [[self theFeed] count];
             
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            NSLog(@"%@", [self theFeed]);
             
             int newNumberOfPosts = [[self theFeed] count];
             
@@ -309,6 +359,7 @@
                 
                 @try {
                     [[self tableView] beginUpdates];
+                    [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:19 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     [[self tableView] endUpdates];
                 }
@@ -327,6 +378,8 @@
             else if ([self currentChangeType] == DELETE_POST) {
                 [[self tableView] beginUpdates];
                 [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:19 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            
                 [[self tableView] endUpdates];
             }
             else {
@@ -360,7 +413,9 @@
             }
         }
         else {
-            [Helpers errorAndLogout:self withMessage:@"There was an error reloading your feed.  Please logout and log back in."];
+            WBErrorNoticeView *notice = [[WBErrorNoticeView alloc] initWithView:[self view] title:@"Error reloading Feed"];
+            
+            [notice show];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
     }];
@@ -528,6 +583,60 @@
     
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath row] == ([[self theFeed] count] - 1)) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
+        
+        NSString *requestString = [NSString stringWithFormat:@"{\"first\" : \"%i\", \"last\" : \"%i\"}", [[self theFeed] count], [[self theFeed] count] + 20];
+        
+        NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+        
+        NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+                
+                NSInteger oldTableViewCount = [[self theFeed] count];
+                
+                NSLog(@"%i", oldTableViewCount);
+                
+                [[self theFeed] addObjectsFromArray:tempArray];
+                
+                @try {
+                    [[self tableView] beginUpdates];
+                                        
+                    for (int i = 0; i < oldTableViewCount + 20; i++) {
+                        NSInteger rowInt = oldTableViewCount + i;
+                        
+                        [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rowInt inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    }
+                    [[self tableView] endUpdates];
+                }
+                @catch (NSException *exception) {
+                    if (exception) {
+                        NSLog(@"%@", exception);
+                    }
+                    
+                    [[self tableView] reloadData];
+                }
+                @finally {
+                    NSLog(@"Inside finally");
+                }
+            }
+            else {
+                WBErrorNoticeView *notice = [[WBErrorNoticeView alloc] initWithView:[self view] title:@"Error reloading Feed"];
+                
+                [notice show];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
+        }];
+        
+    }
+}
 -(void)doubleTap:(NSNotification *)aNotification
 {
     if ([[self tabBarController] selectedIndex] == 0) {
@@ -549,21 +658,21 @@
         [cellActionSheet addButtonWithTitle:@"Share to Twitter" block:^{
             NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
             
-            [self shareToTwitter:[[tempCell contentText] text]];
+            [ShareObject shareToTwitter:[[tempCell contentText] text] withViewController:self];
         }];
         
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
             [cellActionSheet addButtonWithTitle:@"Share to Facebook" block:^{
                 NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
                 
-                [self shareToFacebook:[[tempCell contentText] text]];
+                [ShareObject shareToFacebook:[[tempCell contentText] text] withViewController:self];
             }];
         }
         
         [cellActionSheet addButtonWithTitle:@"Share via Mail" block:^{
             NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
             
-            [self sharePostViaMail:tempCell];
+            [ShareObject sharePostViaMail:tempCell withViewController:self];
         }];
         
         if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPathOfTappedRow row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
@@ -587,7 +696,7 @@
                     
                     [self setCurrentChangeType:DELETE_POST];
                     
-                    [self refreshTableInformation:indexPathOfTappedRow];
+                    [self refreshTableInformation:indexPathOfTappedRow from:0 to:[[self theFeed] count]];
                     
                     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 }];
@@ -694,147 +803,6 @@
     [self presentModalViewController:webViewController animated:YES];
 }
 
--(void)shareToTwitter:(NSString *)stringToSend
-{
-    [self initializeActivityIndicator];
-    
-    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-    
-    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    
-    [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
-        if(granted) {
-            NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-            
-            if ([accountsArray count] > 0) {
-                ACAccount *twitterAccount = accountsArray[0];
-                
-                TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:@{@"status": stringToSend} requestMethod:TWRequestMethodPOST];
-                
-                [postRequest setAccount:twitterAccount];
-                
-                [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                    if (responseData) {
-                        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
-                        
-                        NSLog(@"The Twitter response was \n%@", jsonData);
-                        
-                        if (!jsonData[@"error"]) {
-                            NSLog(@"Successfully posted to Twitter");
-                            
-                            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Shared to Twitter"];
-                            
-                            [successNotice show];
-                        }
-                        else {
-                            NSLog(@"Not posted to Twitter");
-                        }
-                    }
-                    else {
-                        BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error sharing to Twitter."];
-                        
-                        [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                        
-                        [twitterPostingError show];
-                    }
-                    [[self activityIndicator] stopAnimating];
-                }];
-            }
-        }
-    }];
-}
-
--(void)shareToFacebook:(NSString *)stringToSend
-{
-    [self initializeActivityIndicator];
-    
-    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-    
-    if (NSStringFromClass([SLRequest class])) {
-        if (accountStore == nil) {
-            accountStore = [[ACAccountStore alloc] init];
-        }
-        
-        ACAccountType *accountTypeFacebook = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-        
-        NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
-        
-        [accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
-            if(granted) {
-                NSArray *accounts = [accountStore accountsWithAccountType:accountTypeFacebook];
-                
-                ACAccount *facebookAccount = [accounts lastObject];
-                
-                NSAssert([[facebookAccount credential] oauthToken], @"The OAuth token is invalid", nil);
-                
-                NSDictionary *parameters = @{@"access_token":[[facebookAccount credential] oauthToken], @"message":stringToSend};
-                
-                NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
-                
-                SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
-                
-                [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
-                    if (responseData) {
-                        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
-                        
-                        NSLog(@"The Facebook response was \n%@", jsonData);
-                        
-                        if (!jsonData[@"error"]) {
-                            NSLog(@"Successfully posted to Facebook");
-                            
-                            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Shared to Facebook"];
-                            
-                            [successNotice show];
-                        }
-                        else {
-                            NSLog(@"Not posted to Facebook");
-                        }
-                    }
-                    else {
-                        BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error sharing to Facebook"];
-                        
-                        [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                        
-                        [facebookPostingError show];
-                    }
-                    [[self activityIndicator] stopAnimating];
-                }];
-            }
-            else {
-                NSLog(@"Facebook access not granted.");
-                NSLog(@"%@", [error localizedDescription]);
-            }
-        }];
-    }
-}
-
--(void)sharePostViaMail:(NormalCellView *)cellInformation
-{
-    if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];
-        
-        [viewController setMailComposeDelegate:self];
-        [viewController setSubject:[NSString stringWithFormat:@"Jukaela Social Post from %@", [[cellInformation nameLabel] text]]];
-        
-        if ([[cellInformation usernameLabel] text]) {
-            [viewController setMessageBody:[NSString stringWithFormat:@"%@\n\n--%@\n\nPosted on Jukaela Social", [[cellInformation contentText] text], [[cellInformation usernameLabel] text]] isHTML:NO];
-        }
-        else {
-            [viewController setMessageBody:[NSString stringWithFormat:@"%@\n\n--%@\n\nPosted on Jukaela Social", [[cellInformation contentText] text], [[cellInformation nameLabel] text]] isHTML:NO];
-            
-        }
-        
-        [self presentViewController:viewController animated:YES completion:nil];
-    }
-    else {
-        BlockAlertView *notAbleToSendMailAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"There are no mail accounts set up on this device."];
-        
-        [notAbleToSendMailAlert setCancelButtonWithTitle:@"OK" block:nil];
-        
-        [notAbleToSendMailAlert show];
-    }
-}
-
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     if (result == MFMailComposeResultFailed) {
@@ -847,4 +815,61 @@
     [controller dismissModalViewControllerAnimated: YES];
 }
 
+-(void)refreshControlRefresh:(id)sender
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
+    
+    NSString *requestString = [NSString stringWithFormat:@"{\"first\" : \"%i\", \"last\" : \"%i\"}", 0, [[self theFeed] count] - 1];
+    
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+    
+    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            int oldNumberOfPosts = [[self theFeed] count];
+            
+            [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            
+            NSLog(@"%@", [self theFeed]);
+            
+            int newNumberOfPosts = [[self theFeed] count];
+            
+            if (newNumberOfPosts > oldNumberOfPosts) {
+                NSString *tempString;
+                
+                if ((newNumberOfPosts - oldNumberOfPosts) == 1) {
+                    tempString = @"Post";
+                }
+                else {
+                    tempString = @"Posts";
+                }
+                
+                WBStickyNoticeView *notice = [WBStickyNoticeView stickyNoticeInView:[self view]
+                                                                              title:[NSString stringWithFormat:@"%d New %@", (newNumberOfPosts - oldNumberOfPosts), tempString]];
+                
+                [notice show];
+            }
+            [[self tableView] reloadData];
+        }
+        else {
+            WBErrorNoticeView *notice = [[WBErrorNoticeView alloc] initWithView:[self view] title:@"Error reloading Feed"];
+            
+            [notice show];
+        }
+        
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+            [[self refreshControl] endRefreshing];
+        }
+        else {
+            [_oldRefreshControl endRefreshing];
+        }
+        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
+    }];
+}
 @end

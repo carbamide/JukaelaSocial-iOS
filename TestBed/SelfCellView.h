@@ -23,6 +23,7 @@ extern NSString * const kJKPrepareForReuseNotification;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGesture;
 @property (strong, nonatomic) UILongPressGestureRecognizer *longPressGesture;
 @property (strong, nonatomic) UITapGestureRecognizer *imageTapGesture;
+@property (strong, nonatomic) UITapGestureRecognizer *repostTapGesture;
 
 -(void)disableCell;
 

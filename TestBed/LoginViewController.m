@@ -230,7 +230,11 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSString *requestString = [NSString stringWithFormat:@"{\"first\" : \"%i\", \"last\" : \"%i\"}", 0, 20];
+    
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+    
+    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
@@ -278,7 +282,7 @@
     if ([[segue identifier] isEqualToString:@"ShowFeed"]) {
         FeedViewController *viewController = [segue destinationViewController];
         
-        [viewController setTheFeed:[self tempFeed]];
+        [viewController setTheFeed:(NSMutableArray *)[self tempFeed]];
     }
 }
 -(void)viewDidLoad

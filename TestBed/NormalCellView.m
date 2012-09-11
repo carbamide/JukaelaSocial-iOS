@@ -22,6 +22,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 @synthesize longPressGesture;
 @synthesize imageTapGesture;
 @synthesize repostedNameLabel;
+@synthesize repostTapGesture;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -114,6 +115,12 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         imageTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendToUser:)];
                 
         [[self imageView] addGestureRecognizer:imageTapGesture];
+    }
+    
+    if (![self repostTapGesture]) {
+        repostTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(repostSendToUser:)];
+        
+        [[self repostedNameLabel] addGestureRecognizer:repostTapGesture];
     }
 }
 
@@ -240,7 +247,13 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"send_to_user" object:nil userInfo:@{@"indexPath" : indexPath}];
+}
+
+-(void)repostSendToUser:(UIGestureRecognizer *)gesture
+{
+    NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"repost_send_to_user" object:nil userInfo:@{@"indexPath" : indexPath}];
 }
 
 -(void)disableCell

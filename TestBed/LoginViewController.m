@@ -18,6 +18,7 @@
 
 @implementation LoginViewController
 
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -30,7 +31,7 @@
         
         if ([indexPath section] == 0) {
             
-            if ([indexPath row] == 0) {                
+            if ([indexPath row] == 0) {
                 [_username setFrame:CGRectMake(110, 10, 185, 30)];
                 [_username setAdjustsFontSizeToFitWidth:YES];
                 [_username setTextColor:[UIColor blackColor]];
@@ -53,12 +54,12 @@
                     [_rememberUsername setChecked];
                 }
                 
-                [_username setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];             
+                [_username setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
                 
                 
                 [cell addSubview:_username];
             }
-            else {                
+            else {
                 [_password setFrame:CGRectMake(110, 10, 185, 30)];
                 
                 [_password setAdjustsFontSizeToFitWidth:YES];
@@ -78,10 +79,10 @@
                 [_password setTextAlignment:NSTextAlignmentRight];
                 [_password setPlaceholder:@"password"];
                 
-                [_password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];             
+                [_password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
                 
                 [cell addSubview:_password];
-            }       
+            }
         }
     }
     if ([indexPath section] == 0) {
@@ -116,7 +117,7 @@
     
     [tableView setTableFooterView:footerView];
     
-    return cell;    
+    return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -187,6 +188,8 @@
     
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
+    [request setTimeoutInterval:30];
+    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             loginDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
@@ -197,6 +200,8 @@
                 [[[[self tabBarController] tabBar] items][3] setEnabled:YES];
                 
                 [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[@"id"]]];
+                
+                [[NSUserDefaults standardUserDefaults] setValue:[kAppDelegate userID] forKey:@"user_id"];
                 
                 [self getFeed];
             }
@@ -289,6 +294,7 @@
         [viewController setTheFeed:(NSMutableArray *)[self tempFeed]];
     }
 }
+
 -(void)viewDidLoad
 {
     PrettyTabBar *tabBar = (PrettyTabBar *)[[[self navigationController] tabBarController] tabBar];
@@ -303,18 +309,29 @@
     
     [[self imageView] addGestureRecognizer:recognizer];
     
-    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];  
-
+    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+    
     [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
     [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
     [[[[self tabBarController] tabBar] items][3] setEnabled:NO];
-
+    
     [[[self imageView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
     [[[self imageView] layer] setShadowOffset:CGSizeMake(0, 1)];
     [[[self imageView] layer] setShadowOpacity:0.75];
     [[[self imageView] layer] setShadowRadius:3.0];
     [[self imageView] setClipsToBounds:NO];
-    
+
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
+        [kAppDelegate setUserID:[[NSUserDefaults standardUserDefaults] valueForKey:@"user_id"]];
+
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+        
+        FeedViewController *feedViewController = [storyboard instantiateViewControllerWithIdentifier:@"FeedViewController"];
+        
+        [feedViewController setLoadedDirectly:YES];
+        
+        [[self navigationController] pushViewController:feedViewController animated:NO];
+    }
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"new_user" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
@@ -338,11 +355,11 @@
     [super viewDidAppear:animated];
     
     [kAppDelegate setCurrentViewController:self];
-
+    
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
         if ([[self rememberUsername] isChecked] == NO) {
             [[self rememberUsername] setChecked];
-        }        
+        }
         [self loginAction:nil];
     }
     else {

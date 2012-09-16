@@ -15,6 +15,7 @@
 #import "TMImgurUploader.h"
 #import "YISplashScreen.h"
 #import "YISplashScreenAnimation.h"
+#import "FeedViewController.h"
 
 @implementation UIApplication (Private)
 
@@ -52,7 +53,7 @@
     [TestFlight takeOff:kTestFlightAPIKey];
     
     [[TMImgurUploader sharedInstance] setAPIKey:kImgurAPIKey];
-
+    
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
     }
@@ -78,8 +79,26 @@
     
     method_exchangeImplementations(openUrl, customOpenUrl);
     
-    [YISplashScreen hide];
-    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"]) {
+        [YISplashScreen hide];
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    }
+    else {
+        UIWindow *tempWindow = [kAppDelegate window];
+        
+        if ([[UIApplication sharedApplication] statusBarFrame].size.height > 20) {
+            [[kAppDelegate window] setFrame:CGRectMake(tempWindow.frame.origin.x, tempWindow.frame.origin.y + 40, tempWindow.frame.size.width, tempWindow.frame.size.height - 40)];
+        }
+        else {
+            if (tempWindow.frame.size.height > 500) {
+                [[kAppDelegate window] setFrame:CGRectMake(0, 0, tempWindow.frame.size.width, 548)];
+            }
+            else {
+                [[kAppDelegate window] setFrame:CGRectMake(0, 0, tempWindow.frame.size.width, 460)];
+            }
+        }
+    }
     return YES;
 }
 

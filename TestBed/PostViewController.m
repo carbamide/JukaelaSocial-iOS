@@ -97,6 +97,8 @@
     [_theTextView setDelegate:self];
     [_theTextView setShowCloseButton:NO];
     
+    [_theTextView setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height - 20)];
+        
     [_theTextView showInView:[self view]];
 }
 
@@ -152,6 +154,10 @@
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
             [self sendFacebookPost:[[self theTextView] text]];
+        }
+        
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
         }
         
         [self sendJukaelaPost];
@@ -313,7 +319,7 @@
 }
 
 - (void)sendFacebookPost:(NSString *)stringToSend
-{
+{    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_or_twitter_sending" object:nil];
 
     if ([self tempImageData]) {
@@ -345,6 +351,8 @@
                         SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
                         
                         [request addMultipartData:[self tempImageData] withName:stringToSend type:@"multipart/form-data" filename:@"image.jpg"];
+                        
+                        [request setAccount:[self facebookAccount]];
                         
                         [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
                             if (responseData) {

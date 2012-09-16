@@ -99,6 +99,7 @@
 
 @dynamic delegate;
 @synthesize showCloseButton = _showCloseButton;
+@synthesize countLabel = _countLabel;
 
 -(id)initWithPlaceHolder:(NSString*)placeHolder maxCount:(NSUInteger)maxCount
 {
@@ -140,6 +141,7 @@
             _countLabel.backgroundColor = [UIColor clearColor];
             _countLabel.textColor = [UIColor lightGrayColor];
             _countLabel.font = [UIFont boldSystemFontOfSize:COUNT_SIZE];
+            
             [_popupView addSubview:_countLabel];
 #if !IS_ARC
             [_countLabel release];
@@ -434,7 +436,7 @@
     
     [_countLabel sizeToFit];
     _countLabel.frame = CGRectMake(_popupView.bounds.size.width-TEXTVIEW_INSETS.right-_countLabel.frame.size.width-COUNT_MARGIN,
-                                   _popupView.bounds.size.height-TEXTVIEW_INSETS.bottom-_countLabel.frame.size.height-COUNT_MARGIN, 
+                                   _popupView.bounds.size.height-TEXTVIEW_INSETS.bottom-_countLabel.frame.size.height-COUNT_MARGIN - 20,
                                    _countLabel.frame.size.width,
                                    _countLabel.frame.size.height);
 }

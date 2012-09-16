@@ -28,6 +28,7 @@ typedef enum {
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic) BOOL loadedDirectly;
 
 - (void)initializeActivityIndicator;
 

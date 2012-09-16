@@ -33,6 +33,7 @@
 
 @property (nonatomic, assign) id <YIPopupTextViewDelegate> delegate;
 @property (nonatomic, assign) BOOL showCloseButton;
+@property (nonatomic, strong) UILabel *countLabel;
 
 -(id)initWithPlaceHolder:(NSString*)placeHolder maxCount:(NSUInteger)maxCount;
 -(id)initWithText:(NSString *)text maxCount:(NSUInteger)maxCount;

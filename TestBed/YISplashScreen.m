@@ -17,12 +17,12 @@ static CALayer* __splashLayer = nil;
 
 + (void)show
 {
-    UIWindow* window = [UIApplication sharedApplication].delegate.window;
+//    UIWindow* window = [UIApplication sharedApplication].delegate.window;
     
     // temporally disable rootViewController 
     // to avoid calling any CoreData logic while showing splash image
-    __originalRootViewController = window.rootViewController;
-    window.rootViewController = nil;
+//    __originalRootViewController = window.rootViewController;
+//    window.rootViewController = nil;
     
     // splash window
     UIWindow* splashWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -56,12 +56,12 @@ static CALayer* __splashLayer = nil;
                 completion:(void (^)(void))completion
 {
     // restore rootViewController here
-    UIWindow* window = [UIApplication sharedApplication].delegate.window;
-    window.rootViewController = __originalRootViewController;
+//    UIWindow* window = [UIApplication sharedApplication].delegate.window;
+//    window.rootViewController = __originalRootViewController;
     
     // temporally activate window to add window.rootViewController.view before animation starts,
     // so that __splashWindow can be referred via __splashLayer.superlayer
-    [window makeKeyAndVisible];
+//    [window makeKeyAndVisible];
     [__splashWindow makeKeyAndVisible];
     
     //
@@ -74,7 +74,7 @@ static CALayer* __splashLayer = nil;
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
         
-        [window makeKeyAndVisible];
+//        [window makeKeyAndVisible];
         
         // clean up
         [__splashLayer removeFromSuperlayer];
@@ -88,7 +88,7 @@ static CALayer* __splashLayer = nil;
     }];
     
     if (animations) {
-        animations(__splashLayer, window.rootViewController.view.layer);
+//        animations(__splashLayer, window.rootViewController.view.layer);
     }
     else {
         // default: fade out 

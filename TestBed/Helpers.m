@@ -82,7 +82,8 @@
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-    
+    [request setTimeoutInterval:30];
+
     return request;
 }
 
@@ -94,6 +95,7 @@
     [request setHTTPBody:data];
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
+    [request setTimeoutInterval:30];
     
     return request;
 }

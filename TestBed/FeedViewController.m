@@ -27,6 +27,8 @@
 #import "WBErrorNoticeView.h"
 #import "WBSuccessNoticeView.h"
 #import "WBStickyNoticeView.h"
+#import "SFHFKeychainUtils.h"
+#import "YISplashScreen.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
@@ -39,8 +41,9 @@
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
 @property (nonatomic) BOOL justToJukaela;
 @property (strong, nonatomic) NSTimer *refreshTimer;
+@property (strong, nonatomic) MBProgressHUD *progressHUD;
 
--(void)refreshTableInformation:(NSIndexPath *)indexPath from:(NSInteger)from to:(NSInteger)to;
+-(void)refreshTableInformation:(NSIndexPath *)indexPath from:(NSInteger)from to:(NSInteger)to removeSplash:(BOOL)removeSplash;
 
 @end
 
@@ -57,13 +60,6 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    if ([[self theFeed] count] == 0) {
-        BlockAlertView *noposts = [[BlockAlertView alloc] initWithTitle:@"No Posts" message:@"There are no posts in your feed!  Oh no!  Go to the Users tab and follow someone!"];
-        
-        [noposts addButtonWithTitle:@"OK" block:nil];
-        
-        [noposts show];
-    }
     [kAppDelegate setCurrentViewController:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
@@ -103,10 +99,6 @@
     
     [self setupNotifications];
     
-    if (![self theFeed]) {
-        [self refreshTableInformation:nil from:0 to:20];
-    }
-    
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
@@ -120,6 +112,96 @@
     [self setCurrentChangeType:-1];
     
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
+    
+    if ([self loadedDirectly] && [[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
+        NSError *error = nil;
+        
+        NSString *username = [[NSUserDefaults standardUserDefaults] valueForKey:@"username"];
+        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"Jukaela Social" error:&error];
+        
+        
+        if (![self progressHUD]) {
+            [self setProgressHUD:[[MBProgressHUD alloc] initWithView:[self view]]];
+        }
+        [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];
+        [[self progressHUD] setLabelText:@"Logging in..."];
+        [[self progressHUD] setDelegate:self];
+        
+        [[self view] addSubview:[self progressHUD]];
+        
+        [[self progressHUD] show:YES];
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/sessions.json", kSocialURL]];
+        
+        NSString *requestString = [NSString stringWithFormat:@"{ \"session\": {\"email\" : \"%@\", \"password\" : \"%@\", \"apns\": \"%@\"}}", username, password, [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceToken"]];
+        
+        NSLog(@"%@", requestString);
+        
+        NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+        
+        NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                NSDictionary *loginDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+                
+                if (loginDict) {
+                    NSLog(@"%@", loginDict);
+                    
+                    [[[[self tabBarController] tabBar] items][1] setEnabled:YES];
+                    [[[[self tabBarController] tabBar] items][2] setEnabled:YES];
+                    [[[[self tabBarController] tabBar] items][3] setEnabled:YES];
+                    
+                    [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[@"id"]]];
+                    
+                    [[NSUserDefaults standardUserDefaults] setValue:[kAppDelegate userID] forKey:@"user_id"];
+                    
+                    [[self progressHUD] setLabelText:@"Loading Feed..."];
+                    
+                    [self refreshTableInformation:nil from:0 to:20 removeSplash:YES];
+                }
+                else {
+                    [[self progressHUD] hide:YES];
+                    
+                    BlockAlertView *loginFailedAlert = [[BlockAlertView alloc] initWithTitle:@"Login Failed" message:@"The login has failed. Sorry!"];
+                    
+                    [loginFailedAlert setCancelButtonWithTitle:@"OK" block:^{
+                        [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
+                    }];
+                    
+                    [loginFailedAlert show];
+                }
+            }
+            else {
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                
+                [[self progressHUD] hide:YES];
+                
+                BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"Unable to login"];
+                
+                [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
+                
+                [errorAlert show];
+            }
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        }];
+    }
+    else {
+        if (![self theFeed]) {
+            [self refreshTableInformation:nil from:0 to:20 removeSplash:NO];
+        }
+        
+        if ([[self theFeed] count] == 0) {
+            BlockAlertView *noposts = [[BlockAlertView alloc] initWithTitle:@"No Posts" message:@"There are no posts in your feed!  Oh no!  Go to the Users tab and follow someone!"];
+            
+            [noposts addButtonWithTitle:@"OK" block:nil];
+            
+            [noposts show];
+        }
+    }
     
     [super viewDidLoad];
 }
@@ -161,7 +243,7 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:@"refresh_your_tables" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
         [self initializeActivityIndicator];
         
-        [self refreshTableInformation:nil from:0 to:[[self theFeed] count]];
+        [self refreshTableInformation:nil from:0 to:[[self theFeed] count] removeSplash:NO];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"tweet_successful" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
@@ -193,14 +275,16 @@
 
 -(void)switchToSelectedUser:(NSNotification *)aNotification
 {
-    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
-    [progressHUD setMode:MBProgressHUDModeIndeterminate];
-    [progressHUD setLabelText:@"Loading User..."];
-    [progressHUD setDelegate:self];
+    if (![self progressHUD]) {
+        [self setProgressHUD:[[MBProgressHUD alloc] initWithView:[self view]]];
+    }
+    [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];
+    [[self progressHUD] setLabelText:@"Loading User..."];
+    [[self progressHUD] setDelegate:self];
     
-    [[self view] addSubview:progressHUD];
+    [[self view] addSubview:[self progressHUD]];
     
-    [progressHUD show:YES];
+    [[self progressHUD] show:YES];
     
     NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
     
@@ -230,7 +314,7 @@
         }
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
-        [progressHUD hide:YES];
+        [[self progressHUD] hide:YES];
         
         [self performSegueWithIdentifier:@"ShowUser" sender:nil];
     }];
@@ -238,14 +322,16 @@
 
 -(void)repostSwitchToSelectedUser:(NSNotification *)aNotification
 {
-    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
-    [progressHUD setMode:MBProgressHUDModeIndeterminate];
-    [progressHUD setLabelText:@"Loading User..."];
-    [progressHUD setDelegate:self];
+    if (![self progressHUD]) {
+        [self setProgressHUD:[[MBProgressHUD alloc] initWithView:[self view]]];
+    }
+    [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];
+    [[self progressHUD] setLabelText:@"Loading User..."];
+    [[self progressHUD] setDelegate:self];
     
-    [[self view] addSubview:progressHUD];
+    [[self view] addSubview:[self progressHUD]];
     
-    [progressHUD show:YES];
+    [[self progressHUD] show:YES];
     
     NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
     
@@ -268,7 +354,7 @@
         }
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
-        [progressHUD hide:YES];
+        [[self progressHUD] hide:YES];
         
         [self performSegueWithIdentifier:@"ShowUser" sender:nil];
     }];
@@ -320,7 +406,7 @@
     [self performSegueWithIdentifier:@"ShowPostView" sender:self];
 }
 
--(void)refreshTableInformation:(NSIndexPath *)indexPath from:(NSInteger)from to:(NSInteger)to
+-(void)refreshTableInformation:(NSIndexPath *)indexPath from:(NSInteger)from to:(NSInteger)to removeSplash:(BOOL)removeSplash
 {
     if (!from) {
         from = 0;
@@ -359,8 +445,8 @@
                 
                 @try {
                     [[self tableView] beginUpdates];
-                    [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:19 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:19 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     [[self tableView] endUpdates];
                 }
                 @catch (NSException *exception) {
@@ -379,7 +465,7 @@
                 [[self tableView] beginUpdates];
                 [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:19 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-            
+                
                 [[self tableView] endUpdates];
             }
             else {
@@ -393,12 +479,36 @@
                         tempString = @"Posts";
                     }
                     
-                    WBStickyNoticeView *notice = [WBStickyNoticeView stickyNoticeInView:[self view]
-                                                                                  title:[NSString stringWithFormat:@"%d New %@", (newNumberOfPosts - oldNumberOfPosts), tempString]];
-                    
-                    [notice show];
+                    if (![self loadedDirectly]) {
+                        WBStickyNoticeView *notice = [WBStickyNoticeView stickyNoticeInView:[self view]
+                                                                                      title:[NSString stringWithFormat:@"%d New %@", (newNumberOfPosts - oldNumberOfPosts), tempString]];
+                        
+                        [notice show];
+                        
+                        [self setLoadedDirectly:NO];
+                    }
                 }
+                
+                if ([[self activityIndicator] isAnimating]) {
+                    [[self activityIndicator] stopAnimating];
+                }
+                
                 [[self tableView] reloadData];
+                
+                if (removeSplash) {
+                    [YISplashScreen hide];
+                    
+                    UIWindow *tempWindow = [kAppDelegate window];
+                    
+                    if ([[UIApplication sharedApplication] statusBarFrame].size.height > 20) {
+                        [[kAppDelegate window] setFrame:CGRectMake(tempWindow.frame.origin.x, tempWindow.frame.origin.y + 40, tempWindow.frame.size.width, tempWindow.frame.size.height - 40)];
+                    }
+                    else {
+                        [[kAppDelegate window] setFrame:CGRectMake(tempWindow.frame.origin.x, tempWindow.frame.origin.y + 20, tempWindow.frame.size.width, tempWindow.frame.size.height - 20)];
+                    }
+                    
+                    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+                }
             }
             
             [self setCurrentChangeType:-1];
@@ -417,6 +527,11 @@
             
             [notice show];
         }
+        
+        if (![[self progressHUD] isHidden]) {
+            [[self progressHUD] hide:YES];
+        }
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
     }];
 }
@@ -489,6 +604,7 @@
             [cell setBackgroundView:[[GradientView alloc] init]];
         }
     }
+    
     [[cell contentText] setFontName:@"Helvetica"];
     [[cell contentText] setFontSize:14];
     
@@ -603,7 +719,7 @@
                 
                 @try {
                     [[self tableView] beginUpdates];
-                                        
+                    
                     for (int i = 0; i < oldTableViewCount + 20; i++) {
                         NSInteger rowInt = oldTableViewCount + i;
                         
@@ -629,9 +745,10 @@
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
         }];
-        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
 }
+
 -(void)doubleTap:(NSNotification *)aNotification
 {
     if ([[self tabBarController] selectedIndex] == 0) {
@@ -691,7 +808,7 @@
                     
                     [self setCurrentChangeType:DELETE_POST];
                     
-                    [self refreshTableInformation:indexPathOfTappedRow from:0 to:[[self theFeed] count]];
+                    [self refreshTableInformation:indexPathOfTappedRow from:0 to:[[self theFeed] count] removeSplash:NO];
                     
                     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 }];
@@ -765,7 +882,7 @@
 
 -(void)refreshControlRefresh:(id)sender
 {
-    [[self activityIndicator] startAnimating];
+    [self initializeActivityIndicator];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     

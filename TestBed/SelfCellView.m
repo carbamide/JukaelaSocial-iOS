@@ -85,7 +85,7 @@ NSString * const kJKPrepareForReuseNotification2 = @"CPCallbacksTableViewCell_Pr
         
         [[self imageView] setUserInteractionEnabled:YES];
         
-        activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(30, 25, 30, 30)];
+        activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(258, 25, 30, 30)];
         [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
         
         [self addSubview:activityIndicator];

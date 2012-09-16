@@ -18,6 +18,7 @@
 		29204EF01553684200D5479D /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29204EEF1553684200D5479D /* FeedViewController.m */; };
 		292434711565E330007C8E8C /* UsersPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292434701565E330007C8E8C /* UsersPostsViewController.m */; };
 		29295F6415C3373700F1968B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775215B50CB70027C7CA /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		292A0E291604AE4300060702 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 292A0E281604AE4300060702 /* Default-568h@2x.png */; };
 		292C8CC115EE923700E8B046 /* MentionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292C8CC015EE923700E8B046 /* MentionsViewController.m */; };
 		292C8CC415EE972100E8B046 /* mention.png in Resources */ = {isa = PBXBuildFile; fileRef = 292C8CC215EE972100E8B046 /* mention.png */; };
 		292C8CC515EE972100E8B046 /* mention@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 292C8CC315EE972100E8B046 /* mention@2x.png */; };
@@ -63,6 +64,7 @@
 		2986774C15B4B9B80027C7CA /* ODRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2986774B15B4B9B80027C7CA /* ODRefreshControl.m */; };
 		2986775515B50CBD0027C7CA /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775415B50CBD0027C7CA /* Twitter.framework */; };
 		2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775A15B5148B0027C7CA /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		2988B25E1605534A00D0202E /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988B25D1605534A00D0202E /* FeedbackViewController.m */; };
 		298A641D15E267B2009BF175 /* action-black-button-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 298A640F15E267B2009BF175 /* action-black-button-selected.png */; };
 		298A641E15E267B2009BF175 /* action-black-button-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 298A641015E267B2009BF175 /* action-black-button-selected@2x.png */; };
 		298A641F15E267B2009BF175 /* action-black-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 298A641115E267B2009BF175 /* action-black-button.png */; };
@@ -171,6 +173,7 @@
 		29204EEF1553684200D5479D /* FeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedViewController.m; sourceTree = "<group>"; };
 		2924346F1565E330007C8E8C /* UsersPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersPostsViewController.h; sourceTree = "<group>"; };
 		292434701565E330007C8E8C /* UsersPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersPostsViewController.m; sourceTree = "<group>"; };
+		292A0E281604AE4300060702 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		292C8CBF15EE923700E8B046 /* MentionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MentionsViewController.h; sourceTree = "<group>"; };
 		292C8CC015EE923700E8B046 /* MentionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MentionsViewController.m; sourceTree = "<group>"; };
 		292C8CC215EE972100E8B046 /* mention.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mention.png; sourceTree = "<group>"; };
@@ -250,6 +253,8 @@
 		2986775215B50CB70027C7CA /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		2986775415B50CBD0027C7CA /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		2986775A15B5148B0027C7CA /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		2988B25C1605534A00D0202E /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
+		2988B25D1605534A00D0202E /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		298A640F15E267B2009BF175 /* action-black-button-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-black-button-selected.png"; sourceTree = "<group>"; };
 		298A641015E267B2009BF175 /* action-black-button-selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-black-button-selected@2x.png"; sourceTree = "<group>"; };
 		298A641115E267B2009BF175 /* action-black-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-black-button.png"; sourceTree = "<group>"; };
@@ -429,6 +434,7 @@
 		2956874B1552C96700FE741C = {
 			isa = PBXGroup;
 			children = (
+				292A0E281604AE4300060702 /* Default-568h@2x.png */,
 				295687601552C96700FE741C /* Jukaela Social */,
 				295687591552C96700FE741C /* Frameworks */,
 				295687571552C96700FE741C /* Products */,
@@ -863,6 +869,8 @@
 			children = (
 				298F7E051569821200516858 /* EditUserViewController.h */,
 				298F7E061569821200516858 /* EditUserViewController.m */,
+				2988B25C1605534A00D0202E /* FeedbackViewController.h */,
+				2988B25D1605534A00D0202E /* FeedbackViewController.m */,
 				29204EEE1553684200D5479D /* FeedViewController.h */,
 				29204EEF1553684200D5479D /* FeedViewController.m */,
 				297FE037156846E0005FBFDA /* FollowerViewController.h */,
@@ -1035,6 +1043,7 @@
 				293751EF15EA63E10082864C /* SVWebViewController.bundle in Resources */,
 				292C8CC415EE972100E8B046 /* mention.png in Resources */,
 				292C8CC515EE972100E8B046 /* mention@2x.png in Resources */,
+				292A0E291604AE4300060702 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1130,6 +1139,7 @@
 				29D433C815FE1F6400ABCB2F /* AHLinkLexer.l in Sources */,
 				29D433C915FE1F6400ABCB2F /* AHMarkedHyperlink.m in Sources */,
 				2915698D15FFAFCA0084A29C /* ShareObject.m in Sources */,
+				2988B25E1605534A00D0202E /* FeedbackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1230,6 +1240,7 @@
 				);
 				PRODUCT_NAME = Jukaela;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "03A0E2EB-E143-4DB6-998D-35E05C777AD0";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1265,6 +1276,7 @@
 				);
 				PRODUCT_NAME = Jukaela;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "03A0E2EB-E143-4DB6-998D-35E05C777AD0";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

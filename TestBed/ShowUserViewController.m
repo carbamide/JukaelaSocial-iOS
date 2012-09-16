@@ -147,6 +147,8 @@
                 [successNotice show];
                 
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
             }];
             
         }];
@@ -199,6 +201,8 @@
                     UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
                     
                     [self setToolbarItems:@[flexSpace, actionItem]];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
                 }
                 else {
                     BlockAlertView *jukaelaSocialPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error following or unfollowing"];

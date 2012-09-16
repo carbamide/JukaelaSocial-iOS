@@ -243,6 +243,14 @@
                 
                 TWRequest *postRequest = nil;
                 
+                if (![[twitterAccount credential] oauthToken]) {
+                    [_accountStore renewCredentialsForAccount:twitterAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
+                        if (error) {
+                            NSLog(@"error:%@", [error localizedDescription]);
+                        }
+                    }];
+                }
+                
                 if ([self tempImageData]) {
                     postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"] parameters:nil requestMethod:TWRequestMethodPOST];
                     
@@ -342,7 +350,15 @@
                     
                     [self setFacebookAccount:[accounts lastObject]];
                     
-                    NSAssert([[[self facebookAccount] credential] oauthToken], @"The OAuth token is invalid", nil);
+                    if (![[[self facebookAccount] credential] oauthToken]) {
+                        [_accountStore renewCredentialsForAccount:[self facebookAccount] completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
+                            if (error) {
+                                NSLog(@"error:%@", [error localizedDescription]);
+                            }
+                        }];
+                    }
+                    
+                    NSLog(@"Token: %@", [[[self facebookAccount] credential] oauthToken]);
                     
                     if ([self tempImageData]) {
                         NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};

@@ -137,8 +137,6 @@
         
         NSString *requestString = [NSString stringWithFormat:@"{ \"session\": {\"email\" : \"%@\", \"password\" : \"%@\", \"apns\": \"%@\"}}", username, password, [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceToken"]];
         
-        NSLog(@"%@", requestString);
-        
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
         NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
@@ -148,8 +146,6 @@
                 NSDictionary *loginDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
                 
                 if (loginDict) {
-                    NSLog(@"%@", loginDict);
-                    
                     [[[[self tabBarController] tabBar] items][1] setEnabled:YES];
                     [[[[self tabBarController] tabBar] items][2] setEnabled:YES];
                     [[[[self tabBarController] tabBar] items][3] setEnabled:YES];
@@ -432,8 +428,6 @@
             
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
-            NSLog(@"%@", [self theFeed]);
-            
             int newNumberOfPosts = [[self theFeed] count];
             
             if ([self currentChangeType] == INSERT_POST) {
@@ -713,8 +707,6 @@
                 
                 NSInteger oldTableViewCount = [[self theFeed] count];
                 
-                NSLog(@"%i", oldTableViewCount);
-                
                 [[self theFeed] addObjectsFromArray:tempArray];
                 
                 @try {
@@ -899,8 +891,6 @@
             int oldNumberOfPosts = [[self theFeed] count];
             
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-            
-            NSLog(@"%@", [self theFeed]);
             
             int newNumberOfPosts = [[self theFeed] count];
             

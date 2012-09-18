@@ -19,6 +19,9 @@
 #import "ShareObject.h"
 #import "SORelativeDateTransformer.h"
 #import "WBSuccessNoticeView.h"
+#import "SelfWithImageCellView.h"
+#import "NormalWithImageCellView.h"
+#import "UIImageView+Curled.h"
 
 @interface UsersPostsViewController ()
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
@@ -98,13 +101,32 @@
     NSString *contentText = [self userPostArray][[indexPath row]][@"content"];
     NSString *nameText = [self userPostArray][[indexPath row]][@"name"];
     
-    CGSize constraint = CGSizeMake(215 - (7.5 * 2), 20000);
+    CGSize constraint;
+    
+    if ([self userPostArray][[indexPath row]][@"image_url"] && [self userPostArray][[indexPath row]][@"image_url"] != [NSNull null]) {
+        if ([self userPostArray][[indexPath row]][@"repost_user_id"] && [self userPostArray][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
+            constraint = CGSizeMake(165 - (7.5 * 2), 20000);
+        }
+        else {
+            constraint = CGSizeMake(185 - (7.5 * 2), 20000);
+        }
+    }
+    else {
+        constraint = CGSizeMake(215 - (7.5 * 2), 20000);
+    }
     
     CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     CGSize nameSize = [nameText sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
-    CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
+    CGFloat height;
+    
+    if ([self userPostArray][[indexPath row]][@"repost_user_id"] && [self userPostArray][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
+        height = jMAX(contentSize.height + nameSize.height + 10, 85);
+    }
+    else {
+        height = jMAX(contentSize.height + nameSize.height + 10, 85);
+    }
     
     return height + (10 * 2);
 }
@@ -123,25 +145,76 @@
 {
     static NSString *CellIdentifier = @"FeedViewCell";
     static NSString *SelfCellIdentifier = @"SelfFeedViewCell";
-    id cell = nil;
+    static NSString *SelfWithImageCellIdentifier = @"SelfWithImageCellIdentifier";
+    static NSString *CellWithImageCellIdentifier = @"CellWithImageCellIdentifier";
     
-    if ([[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
-        cell = [tableView dequeueReusableCellWithIdentifier:SelfCellIdentifier];
+    id cell = nil;
         
-        if (!cell) {
-            cell = [[SelfCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfCellIdentifier];
+    if ([[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+        if ([self userPostArray][[indexPath row]][@"image_url"] && [self userPostArray][[indexPath row]][@"image_url"] != [NSNull null]) {
+            cell = [tableView dequeueReusableCellWithIdentifier:SelfWithImageCellIdentifier];
             
-            [cell setBackgroundView:[[GradientView alloc] init]];
+            if (cell) {
+                [[cell externalImage] setImage:nil];
+            }
+            else if (!cell) {
+                cell = [[SelfWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfWithImageCellIdentifier];
+                
+                [cell setBackgroundView:[[GradientView alloc] init]];
+            }
+        }
+        else {
+            cell = [tableView dequeueReusableCellWithIdentifier:SelfCellIdentifier];
+            
+            if (!cell) {
+                cell = [[SelfCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfCellIdentifier];
+                
+                [cell setBackgroundView:[[GradientView alloc] init]];
+            }
         }
     }
     else {
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
-        if (!cell) {
-            cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        if ([self userPostArray][[indexPath row]][@"image_url"] && [self userPostArray][[indexPath row]][@"image_url"] != [NSNull null]) {
+            cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
             
-            [cell setBackgroundView:[[GradientView alloc] init]];
+            if (cell) {
+                [[cell externalImage] setImage:nil];
+            }
+            else if (!cell) {
+                cell = [[NormalWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellWithImageCellIdentifier];
+                
+                [cell setBackgroundView:[[GradientView alloc] init]];
+            }
         }
+        else {
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            if (!cell) {
+                cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+                
+                [cell setBackgroundView:[[GradientView alloc] init]];
+            }
+        }
+    }
+    
+    if ([self userPostArray][[indexPath row]][@"image_url"] && [self userPostArray][[indexPath row]][@"image_url"] != [NSNull null]) {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        
+        objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
+        
+        dispatch_async(queue, ^{
+            [[cell externalActivityIndicator] startAnimating];
+            
+            NSMutableString *tempString = [NSMutableString stringWithString:[self userPostArray][[indexPath row]][@"image_url"]];
+            
+            [tempString insertString:@"s" atIndex:24];
+            
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[cell externalImage] setImage:image borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+            });
+        });
     }
     
     [[cell contentText] setFontName:@"Helvetica"];
@@ -197,30 +270,30 @@
         [cell setNeedsDisplay];
     }
     else {
-		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
-		objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
-		
-		dispatch_async(queue, ^{
+        objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
+        
+        dispatch_async(queue, ^{
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userPostArray][[indexPath row]][@"email"]]]];
-			
+            
 #if (TARGET_IPHONE_SIMULATOR)
             image = [JEImages normalize:image];
 #endif
             UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-			
-			dispatch_async(dispatch_get_main_queue(), ^{
-				NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
-				
-				if ([indexPath isEqual:cellIndexPath]) {
-					[[cell imageView] setImage:resizedImage];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
+                
+                if ([indexPath isEqual:cellIndexPath]) {
+                    [[cell imageView] setImage:resizedImage];
                     [cell setNeedsDisplay];
-				}
-				
+                }
+                
                 [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"email"]]];
-			});
-		});
-	}
+            });
+        });
+    }
     
     return cell;
 }

@@ -25,6 +25,8 @@
 
 @property (strong, nonatomic) NSData *tempImageData;
 
+@property (strong, nonatomic) NSString *currentString;
+
 @end
 
 @implementation PostViewController
@@ -39,6 +41,8 @@
 -(void)photoSheet:(id)sender
 {
     BlockActionSheet *photoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Photo Source"];
+    
+    [self setCurrentString:[[self theTextView] text]];
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         [photoActionSheet addButtonWithTitle:@"Take Photo" block:^{
@@ -69,14 +73,19 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    if (_replyString) {
-        _theTextView = [[YIPopupTextView alloc] initWithText:[self replyString] maxCount:140];
-    }
-    else if (_repostString) {
-        _theTextView = [[YIPopupTextView alloc] initWithText:[self repostString] maxCount:140];
+    if (![self theTextView]) {
+        if (_replyString) {
+            _theTextView = [[YIPopupTextView alloc] initWithText:[self replyString] maxCount:140];
+        }
+        else if (_repostString) {
+            _theTextView = [[YIPopupTextView alloc] initWithText:[self repostString] maxCount:140];
+        }
+        else {
+            _theTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Make a post, you guys!" maxCount:140];
+        }
     }
     else {
-        _theTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Make a post, you guys!" maxCount:140];
+        _theTextView = [[YIPopupTextView alloc] initWithText:[self currentString] maxCount:140];
     }
     
     if ([[_theTextView text] length] > 0) {

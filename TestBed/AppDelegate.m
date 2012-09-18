@@ -23,8 +23,8 @@
 {
     SEL selector = @selector(handleURL:);
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    if (appDelegate.currentViewController) {
-        [appDelegate.currentViewController performSelectorOnMainThread:selector withObject:url waitUntilDone:NO];
+    if ([appDelegate currentViewController]) {
+        [[appDelegate currentViewController] performSelectorOnMainThread:selector withObject:url waitUntilDone:NO];
         return YES;
     }
     return NO;
@@ -35,8 +35,6 @@
 @implementation AppDelegate
 
 @synthesize window = _window;
-@synthesize imageCache;
-@synthesize nameCache;
 @synthesize userID;
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -71,9 +69,6 @@
                                                                            UIRemoteNotificationTypeBadge |
                                                                            UIRemoteNotificationTypeSound)];
     
-    [self setImageCache:[[NSCache alloc] init]];
-    [self setNameCache:[[NSCache alloc] init]];
-    
     Method customOpenUrl = class_getInstanceMethod([UIApplication class], @selector(customOpenURL:));
     Method openUrl = class_getInstanceMethod([UIApplication class], @selector(openURL:));
     
@@ -99,6 +94,9 @@
             }
         }
     }
+    
+    [self setExternalImageCache:[[NSCache alloc] init]];
+    
     return YES;
 }
 

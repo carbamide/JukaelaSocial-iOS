@@ -643,14 +643,17 @@
     
     id cell = nil;
     
-    NSLog(@"%@", [self theFeed][0]);
-    
     if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
         if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
             cell = [tableView dequeueReusableCellWithIdentifier:SelfWithImageCellIdentifier];
             
             if (cell) {
-                [[cell externalImage] setImage:nil];
+                if ([[kAppDelegate externalImageCache] objectForKey:indexPath]) {
+                    [[cell externalImage] setImage:[[kAppDelegate externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                }
+                else {
+                    [[cell externalImage] setImage:nil];
+                }
             }
             else if (!cell) {
                 cell = [[SelfWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfWithImageCellIdentifier];
@@ -673,7 +676,12 @@
             cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
             
             if (cell) {
-                [[cell externalImage] setImage:nil];
+                if ([[kAppDelegate externalImageCache] objectForKey:indexPath]) {
+                    [[cell externalImage] setImage:[[kAppDelegate externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                }
+                else {
+                    [[cell externalImage] setImage:nil];
+                }
             }
             else if (!cell) {
                 cell = [[NormalWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellWithImageCellIdentifier];
@@ -693,23 +701,27 @@
     }
     
     if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        
-        objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
-        
-        dispatch_async(queue, ^{
-            [[cell externalActivityIndicator] startAnimating];
+        if (![[cell externalImage] image]) {
+            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
             
-            NSMutableString *tempString = [NSMutableString stringWithString:[self theFeed][[indexPath row]][@"image_url"]];
+            objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
             
-            [tempString insertString:@"s" atIndex:24];
-            
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[cell externalImage] setImage:image borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+            dispatch_async(queue, ^{
+                [[cell externalActivityIndicator] startAnimating];
+                
+                NSMutableString *tempString = [NSMutableString stringWithString:[self theFeed][[indexPath row]][@"image_url"]];
+                
+                [tempString insertString:@"s" atIndex:24];
+                
+                UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
+                
+                [[kAppDelegate externalImageCache] setObject:image forKey:indexPath];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[cell externalImage] setImage:image borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                });
             });
-        });
+        }
     }
     
     [[cell contentText] setFontName:@"Helvetica"];

@@ -597,7 +597,12 @@
     CGSize constraint;
     
     if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
-        constraint = CGSizeMake(185 - (7.5 * 2), 20000);
+        if ([self theFeed][[indexPath row]][@"repost_user_id"] && [self theFeed][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
+            constraint = CGSizeMake(165 - (7.5 * 2), 20000);
+        }
+        else {
+            constraint = CGSizeMake(185 - (7.5 * 2), 20000);
+        }
     }
     else {
         constraint = CGSizeMake(215 - (7.5 * 2), 20000);
@@ -607,7 +612,14 @@
     
     CGSize nameSize = [nameText sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
-    CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
+    CGFloat height;
+    
+    if ([self theFeed][[indexPath row]][@"repost_user_id"] && [self theFeed][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
+        height = jMAX(contentSize.height + nameSize.height + 10, 85);
+    }
+    else {
+        height = jMAX(contentSize.height + nameSize.height + 10, 85);
+    }
     
     return height + (10 * 2);
 }
@@ -635,7 +647,10 @@
         if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
             cell = [tableView dequeueReusableCellWithIdentifier:SelfWithImageCellIdentifier];
             
-            if (!cell) {
+            if (cell) {
+                [[cell externalImage] setImage:nil];
+            }
+            else if (!cell) {
                 cell = [[SelfWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfWithImageCellIdentifier];
                 
                 [cell setBackgroundView:[[GradientView alloc] init]];
@@ -655,7 +670,10 @@
         if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
             cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
             
-            if (!cell) {
+            if (cell) {
+                [[cell externalImage] setImage:nil];
+            }
+            else if (!cell) {
                 cell = [[NormalWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellWithImageCellIdentifier];
                 
                 [cell setBackgroundView:[[GradientView alloc] init]];
@@ -719,21 +737,39 @@
     }
     
     if ([self theFeed][[indexPath row]][@"repost_user_id"] && [self theFeed][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
-        CGSize contentSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12]
-                                                                     constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
-                                                                         lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize contentSize;
         
+        if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
+            contentSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12]
+                                                                  constrainedToSize:CGSizeMake(185 - (7.5 * 2), 20000)
+                                                                      lineBreakMode:NSLineBreakByWordWrapping];
+        }
+        else {
+            contentSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12]
+                                                                  constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
+                                                                      lineBreakMode:NSLineBreakByWordWrapping];
+        }
         CGSize nameSize = [[self theFeed][[indexPath row]][@"name"] sizeWithFont:[UIFont systemFontOfSize:12]
                                                                constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                    lineBreakMode:NSLineBreakByWordWrapping];
         
         CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
         
-        if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
-            [[cell repostedNameLabel] setFrame:CGRectMake(12, height, 228, 20)];
+        if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
+            if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+                [[cell repostedNameLabel] setFrame:CGRectMake(12, height + 11, 228, 20)];
+            }
+            else {
+                [[cell repostedNameLabel] setFrame:CGRectMake(86, height + 11, 228, 20)];
+            }
         }
         else {
-            [[cell repostedNameLabel] setFrame:CGRectMake(86, height, 228, 20)];
+            if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+                [[cell repostedNameLabel] setFrame:CGRectMake(12, height, 228, 20)];
+            }
+            else {
+                [[cell repostedNameLabel] setFrame:CGRectMake(86, height, 228, 20)];
+            }
         }
         [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [self theFeed][[indexPath row]][@"repost_name"]]];
     }

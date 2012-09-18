@@ -14,7 +14,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self setExternalImage:[[UIImageView alloc] initWithFrame:CGRectMake(7, 25, 50, 50)]];
+        [self setExternalImage:[[UIImageView alloc] initWithFrame:CGRectMake(12, 25, 50, 50)]];
                 
         [self addSubview:[self externalImage]];
         
@@ -24,7 +24,7 @@
         
         [self addSubview:_externalActivityIndicator];
         
-        [[self contentText] setFrame:CGRectMake(55, 17, 190, 140)];
+        [[self contentText] setFrame:CGRectMake(60, 17, 185, 140)];
     }
     return self;
 }
@@ -32,7 +32,7 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    
+        
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
     
     [[self externalImage] setUserInteractionEnabled:YES];

@@ -125,15 +125,34 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *contentText = [self mentions][[indexPath row]][@"content"];
-    NSString *nameText = [self mentions][[indexPath row]][@"sender_name"];
+    NSString *nameText = [self mentions][[indexPath row]][@"name"];
     
-    CGSize constraint = CGSizeMake(215 - (7.5 * 2), 20000);
+    CGSize constraint;
+    
+    if ([self mentions][[indexPath row]][@"image_url"] && [self mentions][[indexPath row]][@"image_url"] != [NSNull null]) {
+        if ([self mentions][[indexPath row]][@"repost_user_id"] && [self mentions][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
+            constraint = CGSizeMake(165 - (7.5 * 2), 20000);
+        }
+        else {
+            constraint = CGSizeMake(185 - (7.5 * 2), 20000);
+        }
+    }
+    else {
+        constraint = CGSizeMake(215 - (7.5 * 2), 20000);
+    }
     
     CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     CGSize nameSize = [nameText sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
-    CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
+    CGFloat height;
+    
+    if ([self mentions][[indexPath row]][@"repost_user_id"] && [self mentions][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
+        height = jMAX(contentSize.height + nameSize.height + 10, 85);
+    }
+    else {
+        height = jMAX(contentSize.height + nameSize.height + 10, 75);
+    }
     
     return height + (10 * 2);
 }

@@ -125,7 +125,7 @@
         height = jMAX(contentSize.height + nameSize.height + 10, 85);
     }
     else {
-        height = jMAX(contentSize.height + nameSize.height + 10, 85);
+        height = jMAX(contentSize.height + nameSize.height + 10, 75);
     }
     
     return height + (10 * 2);

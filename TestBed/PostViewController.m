@@ -68,7 +68,7 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated
-{    
+{
     if (_replyString) {
         _theTextView = [[YIPopupTextView alloc] initWithText:[self replyString] maxCount:140];
     }
@@ -181,8 +181,15 @@
     NSData *tempData = [[[[self theTextView] text] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     
     NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
-        
-    NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@, \"image_url\":\"%@\"}", stringToSendAsContent, [kAppDelegate userID], [self urlString]];
+    
+    NSString *requestString = nil;
+    
+    if ([self urlString]) {
+        requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@, \"image_url\": \"%@\"}", stringToSendAsContent, [kAppDelegate userID], [self urlString]];
+    }
+    else {
+         requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
+    }
     
     NSLog(@"%@", requestString);
     

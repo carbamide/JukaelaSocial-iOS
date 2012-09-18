@@ -643,6 +643,8 @@
     
     id cell = nil;
     
+    NSLog(@"%@", [self theFeed][0]);
+    
     if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
         if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
             cell = [tableView dequeueReusableCellWithIdentifier:SelfWithImageCellIdentifier];

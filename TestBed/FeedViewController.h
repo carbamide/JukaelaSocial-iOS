@@ -11,9 +11,10 @@
 #import <UIKit/UIKit.h>
 #import "JSCoreTextView.h"
 #import "MBProgressHUD.h"
+#import "MWPhotoBrowser.h"
 #import "YIPopupTextView.h"
 
-@interface FeedViewController : UITableViewController <YIPopupTextViewDelegate, MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, JSCoreTextViewDelegate>
+@interface FeedViewController : UITableViewController <YIPopupTextViewDelegate, MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, JSCoreTextViewDelegate, MWPhotoBrowserDelegate>
 
 typedef enum {
     INSERT_POST = 0,

@@ -68,22 +68,12 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated
-{
-    NSString *tempString = [_theTextView text];
-    
+{    
     if (_replyString) {
         _theTextView = [[YIPopupTextView alloc] initWithText:[self replyString] maxCount:140];
     }
     else if (_repostString) {
         _theTextView = [[YIPopupTextView alloc] initWithText:[self repostString] maxCount:140];
-    }
-    else if (_urlString) {
-        if ([tempString length] > 0) {
-            _theTextView = [[YIPopupTextView alloc] initWithText:[[tempString stringByAppendingString:@" "] stringByAppendingString:[self urlString]] maxCount:140];
-        }
-        else {
-            _theTextView = [[YIPopupTextView alloc] initWithText:[self urlString] maxCount:140];
-        }
     }
     else {
         _theTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Make a post, you guys!" maxCount:140];
@@ -191,8 +181,10 @@
     NSData *tempData = [[[[self theTextView] text] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     
     NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
+        
+    NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@, \"image_url\":\"%@\"}", stringToSendAsContent, [kAppDelegate userID], [self urlString]];
     
-    NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
+    NSLog(@"%@", requestString);
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
@@ -242,14 +234,6 @@
                 ACAccount *twitterAccount = accountsArray[0];
                 
                 TWRequest *postRequest = nil;
-                
-                if (![[twitterAccount credential] oauthToken]) {
-                    [_accountStore renewCredentialsForAccount:twitterAccount completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
-                        if (error) {
-                            NSLog(@"error:%@", [error localizedDescription]);
-                        }
-                    }];
-                }
                 
                 if ([self tempImageData]) {
                     postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"] parameters:nil requestMethod:TWRequestMethodPOST];
@@ -472,7 +456,9 @@
             [errorAlert show];
         }
         else {
-            [self setUrlString:result[@"upload"][@"links"][@"imgur_page"]];
+            NSLog(@"%@", result);
+            
+            [self setUrlString:result[@"upload"][@"links"][@"original"]];
             
             [picker dismissViewControllerAnimated:YES completion:nil];
         }

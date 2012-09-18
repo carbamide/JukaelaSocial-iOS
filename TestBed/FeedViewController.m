@@ -29,6 +29,9 @@
 #import "WBStickyNoticeView.h"
 #import "SFHFKeychainUtils.h"
 #import "YISplashScreen.h"
+#import "SelfWithImageCellView.h"
+#import "UIImageView+Curled.h"
+#import "NormalWithImageCellView.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
@@ -42,6 +45,7 @@
 @property (nonatomic) BOOL justToJukaela;
 @property (strong, nonatomic) NSTimer *refreshTimer;
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
+@property (strong, nonatomic) NSArray *photos;
 
 -(void)refreshTableInformation:(NSIndexPath *)indexPath from:(NSInteger)from to:(NSInteger)to removeSplash:(BOOL)removeSplash;
 
@@ -267,6 +271,44 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:@"just_to_jukaela" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
         [self setJustToJukaela:YES];
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"show_image" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
+        [self showImage:aNotification];
+    }];
+}
+
+-(void)showImage:(NSNotification *)aNotification
+{
+    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+    
+    NSURL *urlOfImage = [NSURL URLWithString:[self theFeed][[indexPathOfTappedRow row]][@"image_url"]];
+    
+    MWPhoto *tempPhoto = [MWPhoto photoWithURL:urlOfImage];
+    
+    [tempPhoto setCaption:[self theFeed][[indexPathOfTappedRow row]][@"content"]];
+    
+    [self setPhotos:@[tempPhoto]];
+    
+    MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+    
+    [browser setDisplayActionButton:YES];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:browser];
+    
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
+{
+    return [[self photos] count];
+}
+
+- (MWPhoto *)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
+{
+    if (index < [[self photos] count]) {
+        return [[self photos] objectAtIndex:index];
+    }
+    return nil;
 }
 
 -(void)switchToSelectedUser:(NSNotification *)aNotification
@@ -552,7 +594,14 @@
     NSString *contentText = [self theFeed][[indexPath row]][@"content"];
     NSString *nameText = [self theFeed][[indexPath row]][@"name"];
     
-    CGSize constraint = CGSizeMake(215 - (7.5 * 2), 20000);
+    CGSize constraint;
+    
+    if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
+        constraint = CGSizeMake(185 - (7.5 * 2), 20000);
+    }
+    else {
+        constraint = CGSizeMake(215 - (7.5 * 2), 20000);
+    }
     
     CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
@@ -577,26 +626,70 @@
 {
     static NSString *CellIdentifier = @"FeedViewCell";
     static NSString *SelfCellIdentifier = @"SelfFeedViewCell";
+    static NSString *SelfWithImageCellIdentifier = @"SelfWithImageCellIdentifier";
+    static NSString *CellWithImageCellIdentifier = @"CellWithImageCellIdentifier";
     
     id cell = nil;
     
     if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
-        cell = [tableView dequeueReusableCellWithIdentifier:SelfCellIdentifier];
-        
-        if (!cell) {
-            cell = [[SelfCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfCellIdentifier];
+        if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
+            cell = [tableView dequeueReusableCellWithIdentifier:SelfWithImageCellIdentifier];
             
-            [cell setBackgroundView:[[GradientView alloc] init]];
+            if (!cell) {
+                cell = [[SelfWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfWithImageCellIdentifier];
+                
+                [cell setBackgroundView:[[GradientView alloc] init]];
+            }
+        }
+        else {
+            cell = [tableView dequeueReusableCellWithIdentifier:SelfCellIdentifier];
+            
+            if (!cell) {
+                cell = [[SelfCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfCellIdentifier];
+                
+                [cell setBackgroundView:[[GradientView alloc] init]];
+            }
         }
     }
     else {
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
-        if (!cell) {
-            cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
+            cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
             
-            [cell setBackgroundView:[[GradientView alloc] init]];
+            if (!cell) {
+                cell = [[NormalWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellWithImageCellIdentifier];
+                
+                [cell setBackgroundView:[[GradientView alloc] init]];
+            }
         }
+        else {
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            if (!cell) {
+                cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+                
+                [cell setBackgroundView:[[GradientView alloc] init]];
+            }
+        }
+    }
+    
+    if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        
+        objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
+        
+        dispatch_async(queue, ^{
+            [[cell externalActivityIndicator] startAnimating];
+            
+            NSMutableString *tempString = [NSMutableString stringWithString:[self theFeed][[indexPath row]][@"image_url"]];
+            
+            [tempString insertString:@"s" atIndex:24];
+            
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[cell externalImage] setImage:image borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+            });
+        });
     }
     
     [[cell contentText] setFontName:@"Helvetica"];

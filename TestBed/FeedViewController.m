@@ -840,6 +840,8 @@
         
         NSString *requestString = [NSString stringWithFormat:@"{\"first\" : \"%i\", \"last\" : \"%i\"}", [[self theFeed] count], [[self theFeed] count] + 20];
         
+        NSLog(@"The request string is - %@\n", requestString);
+        
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
         NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
@@ -851,13 +853,15 @@
                 NSInteger oldTableViewCount = [[self theFeed] count];
                 
                 [[self theFeed] addObjectsFromArray:tempArray];
-                
+                                
                 @try {
                     [[self tableView] beginUpdates];
-                    
-                    for (int i = 0; i < oldTableViewCount + 20; i++) {
+                                        
+                    int tempArrayCount = [tempArray count];
+
+                    for (int i = 0; i < tempArrayCount; i++) {
                         NSInteger rowInt = oldTableViewCount + i;
-                        
+                                                
                         [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rowInt inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     }
                     [[self tableView] endUpdates];

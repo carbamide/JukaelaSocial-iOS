@@ -846,6 +846,8 @@
         
         NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
         
+        [self initializeActivityIndicator];
+        
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
                 NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
@@ -874,6 +876,8 @@
                     [[self tableView] reloadData];
                 }
                 @finally {
+                    [[self activityIndicator] stopAnimating];
+                    
                     NSLog(@"Inside finally");
                 }
             }

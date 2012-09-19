@@ -16,6 +16,7 @@
 		291EB58315649366005FB66D /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291EB58215649366005FB66D /* PostViewController.m */; };
 		2920235415FD5C4700DBDA6C /* SelfCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2920235315FD5C4700DBDA6C /* SelfCellView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29204EF01553684200D5479D /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29204EEF1553684200D5479D /* FeedViewController.m */; };
+		292431BC160A1ADA005DB723 /* LargeSplash.png in Resources */ = {isa = PBXBuildFile; fileRef = 292431BB160A1ADA005DB723 /* LargeSplash.png */; };
 		292434711565E330007C8E8C /* UsersPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292434701565E330007C8E8C /* UsersPostsViewController.m */; };
 		29295F6415C3373700F1968B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775215B50CB70027C7CA /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		292A0E291604AE4300060702 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 292A0E281604AE4300060702 /* Default-568h@2x.png */; };
@@ -192,6 +193,7 @@
 		2920235315FD5C4700DBDA6C /* SelfCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfCellView.m; sourceTree = "<group>"; };
 		29204EEE1553684200D5479D /* FeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedViewController.h; sourceTree = "<group>"; };
 		29204EEF1553684200D5479D /* FeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedViewController.m; sourceTree = "<group>"; };
+		292431BB160A1ADA005DB723 /* LargeSplash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LargeSplash.png; sourceTree = "<group>"; };
 		2924346F1565E330007C8E8C /* UsersPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersPostsViewController.h; sourceTree = "<group>"; };
 		292434701565E330007C8E8C /* UsersPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersPostsViewController.m; sourceTree = "<group>"; };
 		292A0E281604AE4300060702 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -500,7 +502,6 @@
 		2956874B1552C96700FE741C = {
 			isa = PBXGroup;
 			children = (
-				292A0E281604AE4300060702 /* Default-568h@2x.png */,
 				295687601552C96700FE741C /* Jukaela Social */,
 				295687591552C96700FE741C /* Frameworks */,
 				295687571552C96700FE741C /* Products */,
@@ -891,6 +892,8 @@
 		29D5B85C15547678000D9374 /* Artwork */ = {
 			isa = PBXGroup;
 			children = (
+				292A0E281604AE4300060702 /* Default-568h@2x.png */,
+				292431BB160A1ADA005DB723 /* LargeSplash.png */,
 				292C8CC215EE972100E8B046 /* mention.png */,
 				292C8CC315EE972100E8B046 /* mention@2x.png */,
 				298A640E15E267A4009BF175 /* ActionSheet */,
@@ -1172,6 +1175,7 @@
 				292A0E291604AE4300060702 /* Default-568h@2x.png in Resources */,
 				29E5176F1608AC1200CA422F /* LICENSE in Resources */,
 				29E517701608AC1200CA422F /* README.md in Resources */,
+				292431BC160A1ADA005DB723 /* LargeSplash.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

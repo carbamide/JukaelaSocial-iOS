@@ -40,35 +40,48 @@
 
 -(void)photoSheet:(id)sender
 {
-    BlockActionSheet *photoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Photo Source"];
-    
-    [self setCurrentString:[[self theTextView] text]];
-    
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [photoActionSheet addButtonWithTitle:@"Take Photo" block:^{
+    if ([self urlString]) {
+        BlockActionSheet *removePhoto = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
+        
+        [removePhoto setDestructiveButtonWithTitle:@"Remove Photo" block:^{
+            [self setUrlString:nil];
+        }];
+
+        [removePhoto setCancelButtonWithTitle:@"Cancel" block:nil];
+        
+        [removePhoto showInView:[self view]];
+    }
+    else {
+        BlockActionSheet *photoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Photo Source"];
+        
+        [self setCurrentString:[[self theTextView] text]];
+        
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            [photoActionSheet addButtonWithTitle:@"Take Photo" block:^{
+                UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+                
+                [imagePicker setDelegate:self];
+                [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+                [imagePicker setAllowsEditing:NO];
+                
+                [self presentViewController:imagePicker animated:YES completion:nil];
+            }];
+        }
+        
+        [photoActionSheet addButtonWithTitle:@"Choose Existing" block:^{
             UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
             
             [imagePicker setDelegate:self];
-            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
             [imagePicker setAllowsEditing:NO];
             
             [self presentViewController:imagePicker animated:YES completion:nil];
         }];
+        
+        [photoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+        
+        [photoActionSheet showInView:[self view]];
     }
-    
-    [photoActionSheet addButtonWithTitle:@"Choose Existing" block:^{
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        
-        [imagePicker setDelegate:self];
-        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-        [imagePicker setAllowsEditing:NO];
-        
-        [self presentViewController:imagePicker animated:YES completion:nil];
-    }];
-    
-    [photoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-    
-    [photoActionSheet showInView:[self view]];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -97,7 +110,7 @@
     [_theTextView setShowCloseButton:NO];
     
     [_theTextView setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height - 20)];
-        
+    
     [_theTextView showInView:[self view]];
 }
 
@@ -184,20 +197,49 @@
     UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
     
     [[self navigationItem] setRightBarButtonItem:loadingView];
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts.json", kSocialURL]];
         
     NSData *tempData = [[[[self theTextView] text] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     
     NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
     
+    if ([self tempImageData]) {
+        [[TMImgurUploader sharedInstance] uploadImage:[UIImage imageWithData:[self tempImageData]] finishedBlock:^(NSDictionary *result, NSError *error){
+            NSLog(@"%@", result[@"upload"][@"links"][@"imgur_page"]);
+            
+            if (error) {
+                NSLog(@"%@", [error description]);
+                
+                BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription]];
+                
+                [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
+                
+                [errorAlert show];
+            }
+            else {
+                NSLog(@"%@", result);
+                
+                [self setUrlString:result[@"upload"][@"links"][@"original"]];
+                
+                [self jukaelaNetworkAction:stringToSendAsContent];
+            }
+        }];
+    }
+    else {
+        [self jukaelaNetworkAction:stringToSendAsContent];
+    }
+}
+
+-(void)jukaelaNetworkAction:(NSString *)stringToSendAsContent
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts.json", kSocialURL]];
+
     NSString *requestString = nil;
     
     if ([self urlString]) {
         requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@, \"image_url\": \"%@\"}", stringToSendAsContent, [kAppDelegate userID], [self urlString]];
     }
     else {
-         requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
+        requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
     }
     
     NSLog(@"%@", requestString);
@@ -207,7 +249,7 @@
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {            
+        if (data) {
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [self dismissViewControllerAnimated:YES completion:^{
@@ -228,6 +270,13 @@
             [self setupNavbarForPosting];
         }
     }];
+    
+    UIBarButtonItem *tempButton = [[self navigationItem] rightBarButtonItems][1];
+    
+    [tempButton setTintColor:[UIColor darkGrayColor]];
+    
+    [self setUrlString:nil];
+    [self setTempImageData:nil];
 }
 
 - (void)sendTweet:(NSString *)stringToSend
@@ -316,7 +365,7 @@
                     }];
                 }
                 
-
+                
             }
         }
         else {
@@ -327,9 +376,9 @@
 }
 
 - (void)sendFacebookPost:(NSString *)stringToSend
-{    
+{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_or_twitter_sending" object:nil];
-
+    
     if ([self tempImageData]) {
         stringToSend = [stringToSend stringByReplacingOccurrencesOfString:[self urlString] withString:@""];
     }
@@ -459,26 +508,11 @@
     
     [self setTempImageData:UIImageJPEGRepresentation(originalImage, 10)];
     
-    [[TMImgurUploader sharedInstance] uploadImage:originalImage finishedBlock:^(NSDictionary *result, NSError *error){
-        NSLog(@"%@", result[@"upload"][@"links"][@"imgur_page"]);
-        
-        if (error) {
-            NSLog(@"%@", [error description]);
-            
-            BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription]];
-            
-            [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
-            
-            [errorAlert show];
-        }
-        else {
-            NSLog(@"%@", result);
-            
-            [self setUrlString:result[@"upload"][@"links"][@"original"]];
-            
-            [picker dismissViewControllerAnimated:YES completion:nil];
-        }
-    }];
+    UIBarButtonItem *tempButton = [[self navigationItem] rightBarButtonItems][1];
+    
+    [tempButton setTintColor:[UIColor blueColor]];
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)image:(UIImage *)image finishedSavingWithError:(NSError *)error contextInfo:(void *)contextInfo

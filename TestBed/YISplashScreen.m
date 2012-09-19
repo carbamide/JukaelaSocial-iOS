@@ -32,7 +32,14 @@ static CALayer* __splashLayer = nil;
     // splash layer (portrait)
     // TODO: show/hide landscape splash image
     CALayer* splashLayer = [CALayer layer];
-    splashLayer.contents = (id)[UIImage imageNamed:@"Default.png"].CGImage;
+    
+    if (splashWindow.frame.size.height > 500) {
+        splashLayer.contents = (id)[UIImage imageNamed:@"LargeSplash"].CGImage;
+    }
+    else {
+        splashLayer.contents = (id)[UIImage imageNamed:@"Default.png"].CGImage;
+    }
+    
     splashLayer.frame = [UIScreen mainScreen].applicationFrame;
     [splashWindow.layer addSublayer:splashLayer];
     

@@ -12,7 +12,6 @@
 
 @class YIPopupTextView;
 
-
 @protocol YIPopupTextViewDelegate <UITextViewDelegate>
 @optional
 -(void)popupTextView:(YIPopupTextView*)textView willDismissWithText:(NSString*)text;

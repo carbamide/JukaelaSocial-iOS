@@ -100,7 +100,7 @@
     else {
         _theTextView = [[YIPopupTextView alloc] initWithText:[self currentString] maxCount:140];
     }
-    
+        
     if ([[_theTextView text] length] > 0) {
         [_theTextView setEditable:YES];
         
@@ -112,6 +112,8 @@
     [_theTextView setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height - 20)];
     
     [_theTextView showInView:[self view]];
+    
+    [[[self navigationItem] rightBarButtonItems][0] setEnabled:NO];
 }
 
 -(void)setupNavbarForPosting
@@ -528,4 +530,15 @@
     
     [self presentModalViewController:webViewController animated:YES];
 }
+
+-(void)textViewDidChange:(UITextView *)textView
+{
+    if ([[textView text] length] > 0) {
+        [[[self navigationItem] rightBarButtonItems][0] setEnabled:YES];
+    }
+    else {
+        [[[self navigationItem] rightBarButtonItems][0] setEnabled:NO];
+    }
+}
+
 @end

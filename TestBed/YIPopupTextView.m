@@ -426,6 +426,7 @@
 -(void)updateCount
 {
     NSUInteger textCount = [self.text length];
+    
     _countLabel.text = [NSString stringWithFormat:@"%d", _maxCount-textCount];
     
     if (textCount > _maxCount) {

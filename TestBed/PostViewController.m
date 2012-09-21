@@ -206,11 +206,7 @@
     
     if ([self tempImageData]) {
         [[TMImgurUploader sharedInstance] uploadImage:[UIImage imageWithData:[self tempImageData]] finishedBlock:^(NSDictionary *result, NSError *error){
-            NSLog(@"%@", result[@"upload"][@"links"][@"imgur_page"]);
-            
             if (error) {
-                NSLog(@"%@", [error description]);
-                
                 BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription]];
                 
                 [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
@@ -218,8 +214,6 @@
                 [errorAlert show];
             }
             else {
-                NSLog(@"%@", result);
-                
                 [self setUrlString:result[@"upload"][@"links"][@"original"]];
                 
                 [self jukaelaNetworkAction:stringToSendAsContent];
@@ -243,8 +237,6 @@
     else {
         requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
     }
-    
-    NSLog(@"%@", requestString);
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
@@ -315,8 +307,6 @@
                         if (responseData) {
                             NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
                             
-                            NSLog(@"The Twitter response was \n%@", jsonData);
-                            
                             if (!jsonData[@"error"]) {
                                 NSLog(@"Successfully posted to Twitter");
                                 
@@ -344,8 +334,6 @@
                     [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                         if (responseData) {
                             NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
-                            
-                            NSLog(@"The Twitter response was \n%@", jsonData);
                             
                             if (!jsonData[@"error"]) {
                                 NSLog(@"Successfully posted to Twitter");
@@ -409,8 +397,6 @@
                         }];
                     }
                     
-                    NSLog(@"Token: %@", [[[self facebookAccount] credential] oauthToken]);
-                    
                     if ([self tempImageData]) {
                         NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
                         NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/photos"];
@@ -424,8 +410,6 @@
                         [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
                             if (responseData) {
                                 NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
-                                
-                                NSLog(@"The Facebook response was \n%@", jsonData);
                                 
                                 if (!jsonData[@"error"]) {
                                     NSLog(@"Successfully posted to Facebook");
@@ -455,8 +439,6 @@
                         [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
                             if (responseData) {
                                 NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
-                                
-                                NSLog(@"The Facebook response was \n%@", jsonData);
                                 
                                 if (!jsonData[@"error"]) {
                                     NSLog(@"Successfully posted to Facebook");

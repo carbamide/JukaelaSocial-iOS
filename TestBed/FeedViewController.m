@@ -840,8 +840,6 @@
         
         NSString *requestString = [NSString stringWithFormat:@"{\"first\" : \"%i\", \"last\" : \"%i\"}", [[self theFeed] count], [[self theFeed] count] + 20];
         
-        NSLog(@"The request string is - %@\n", requestString);
-        
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
         NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];

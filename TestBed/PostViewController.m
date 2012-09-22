@@ -176,8 +176,6 @@
         
         [self sendJukaelaPost];
     }
-    
-    
 }
 
 -(void)sendJukaelaPost

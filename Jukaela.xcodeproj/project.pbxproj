@@ -93,6 +93,8 @@
 		298A644615E267D7009BF175 /* BlockBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 298A644115E267D7009BF175 /* BlockBackground.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		298A644715E267D7009BF175 /* BlockTextPromptAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 298A644315E267D7009BF175 /* BlockTextPromptAlertView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		298F7E071569821200516858 /* EditUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298F7E061569821200516858 /* EditUserViewController.m */; };
+		299BB4F9160E79D300898A7C /* loggedIn.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 299BB4F8160E79D300898A7C /* loggedIn.aiff */; };
+		299BB4FC160E7A4700898A7C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 299BB4FB160E7A4700898A7C /* AudioToolbox.framework */; };
 		29AA10381556238F00B8D3F5 /* RIButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10331556238F00B8D3F5 /* RIButtonItem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29AA10391556238F00B8D3F5 /* UIActionSheet+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10351556238F00B8D3F5 /* UIActionSheet+Blocks.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29AA103A1556238F00B8D3F5 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10371556238F00B8D3F5 /* UIAlertView+Blocks.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -311,6 +313,8 @@
 		298A644815E26802009BF175 /* BlockUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockUI.h; sourceTree = "<group>"; };
 		298F7E051569821200516858 /* EditUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUserViewController.h; sourceTree = "<group>"; };
 		298F7E061569821200516858 /* EditUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUserViewController.m; sourceTree = "<group>"; };
+		299BB4F8160E79D300898A7C /* loggedIn.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = loggedIn.aiff; sourceTree = "<group>"; };
+		299BB4FB160E7A4700898A7C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		29AA10321556238F00B8D3F5 /* RIButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIButtonItem.h; sourceTree = "<group>"; };
 		29AA10331556238F00B8D3F5 /* RIButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIButtonItem.m; sourceTree = "<group>"; };
 		29AA10341556238F00B8D3F5 /* UIActionSheet+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Blocks.h"; sourceTree = "<group>"; };
@@ -468,6 +472,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				299BB4FC160E7A4700898A7C /* AudioToolbox.framework in Frameworks */,
 				29E517791608AC7200CA422F /* ImageIO.framework in Frameworks */,
 				29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */,
 				293751F515EA65F10082864C /* MessageUI.framework in Frameworks */,
@@ -519,6 +524,7 @@
 		295687591552C96700FE741C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				299BB4FB160E7A4700898A7C /* AudioToolbox.framework */,
 				29E517781608AC7100CA422F /* ImageIO.framework */,
 				293751F415EA65F10082864C /* MessageUI.framework */,
 				29EB71BD15E811D50072B97A /* CoreText.framework */,
@@ -915,6 +921,7 @@
 				29D5B85815547665000D9374 /* 57.png */,
 				29AA104F1556AA0900B8D3F5 /* JukaelaLogo.png */,
 				29D5B865155476D2000D9374 /* underPageBackground.png */,
+				299BB4F8160E79D300898A7C /* loggedIn.aiff */,
 			);
 			name = Artwork;
 			path = ..;
@@ -1176,6 +1183,7 @@
 				29E5176F1608AC1200CA422F /* LICENSE in Resources */,
 				29E517701608AC1200CA422F /* README.md in Resources */,
 				292431BC160A1ADA005DB723 /* LargeSplash.png in Resources */,
+				299BB4F9160E79D300898A7C /* loggedIn.aiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

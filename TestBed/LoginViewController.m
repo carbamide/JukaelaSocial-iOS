@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
+#import <AudioToolbox/AudioToolbox.h>
 #import "AppDelegate.h"
 #import "FeedViewController.h"
 #import "LoginViewController.h"
@@ -195,6 +196,14 @@
             loginDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
             
             if (loginDict) {
+                NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"loggedIn" ofType:@"aiff"];
+                
+                SystemSoundID soundID;
+                
+                AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath: soundPath], &soundID);
+                
+                AudioServicesPlaySystemSound (soundID);
+                
                 [[[[self tabBarController] tabBar] items][1] setEnabled:YES];
                 [[[[self tabBarController] tabBar] items][2] setEnabled:YES];
                 [[[[self tabBarController] tabBar] items][3] setEnabled:YES];

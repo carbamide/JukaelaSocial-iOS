@@ -140,45 +140,29 @@
         BlockAlertView *confirmAlert = [[BlockAlertView alloc] initWithTitle:@"Confirm" message:@"Confirm sending to other services?"];
         
         [confirmAlert addButtonWithTitle:@"Do it!" block:^{
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
-                [self sendTweet:[[self theTextView] text]];
-            }
-            
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
-                [self sendFacebookPost:[[self theTextView] text]];
-            }
-            
-            [self sendJukaelaPost];
+            [self sendJukaelaPost:YES];
         }];
         
         [confirmAlert addButtonWithTitle:@"Just to Jukaela!" block:^{
             [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
             
-            [self sendJukaelaPost];
+            [self sendJukaelaPost:NO];
         }];
         
         [confirmAlert setCancelButtonWithTitle:@"Cancel" block:nil];
         
         [confirmAlert show];
     }
-    else {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
-            [self sendTweet:[[self theTextView] text]];
-        }
-        
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
-            [self sendFacebookPost:[[self theTextView] text]];
-        }
-        
+    else {        
         if (![[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
         }
         
-        [self sendJukaelaPost];
+        [self sendJukaelaPost:YES];
     }
 }
 
--(void)sendJukaelaPost
+-(void)sendJukaelaPost:(BOOL)continuePosting
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"set_change_type" object:@0];
     
@@ -215,6 +199,16 @@
                 [self setUrlString:result[@"upload"][@"links"][@"original"]];
                 
                 [self jukaelaNetworkAction:stringToSendAsContent];
+                
+                if (continuePosting) {
+                    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+                        [self sendTweet:[[self theTextView] text]];
+                    }
+                    
+                    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+                        [self sendFacebookPost:[[self theTextView] text]];
+                    }
+                }
             }
         }];
     }
@@ -262,13 +256,6 @@
             [self setupNavbarForPosting];
         }
     }];
-    
-    UIBarButtonItem *tempButton = [[self navigationItem] rightBarButtonItems][1];
-    
-    [tempButton setTintColor:[UIColor darkGrayColor]];
-    
-    [self setUrlString:nil];
-    [self setTempImageData:nil];
 }
 
 - (void)sendTweet:(NSString *)stringToSend

@@ -46,7 +46,7 @@
         [removePhoto setDestructiveButtonWithTitle:@"Remove Photo" block:^{
             [self setUrlString:nil];
         }];
-
+        
         [removePhoto setCancelButtonWithTitle:@"Cancel" block:nil];
         
         [removePhoto showInView:[self view]];
@@ -100,7 +100,7 @@
     else {
         _theTextView = [[YIPopupTextView alloc] initWithText:[self currentString] maxCount:140];
     }
-        
+    
     if ([[_theTextView text] length] > 0) {
         [_theTextView setEditable:YES];
         
@@ -153,7 +153,7 @@
         
         [confirmAlert show];
     }
-    else {        
+    else {
         if (![[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
         }
@@ -181,7 +181,7 @@
     UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
     
     [[self navigationItem] setRightBarButtonItem:loadingView];
-        
+    
     NSData *tempData = [[[[self theTextView] text] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     
     NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
@@ -214,13 +214,23 @@
     }
     else {
         [self jukaelaNetworkAction:stringToSendAsContent];
+        
+        if (continuePosting) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+                [self sendTweet:[[self theTextView] text]];
+            }
+            
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+                [self sendFacebookPost:[[self theTextView] text]];
+            }
+        }
     }
 }
 
 -(void)jukaelaNetworkAction:(NSString *)stringToSendAsContent
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts.json", kSocialURL]];
-
+    
     NSString *requestString = nil;
     
     if ([self urlString]) {

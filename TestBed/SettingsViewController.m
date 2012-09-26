@@ -369,6 +369,9 @@ typedef enum {
                 }
             }
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+        
         [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
     }];
     

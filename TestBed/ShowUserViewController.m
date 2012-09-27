@@ -150,7 +150,6 @@
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
             }];
-            
         }];
     }
     else {
@@ -234,6 +233,7 @@
         [self getimFollowing];
     });
 }
+
 -(void)changeToActivityIndicator
 {
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];

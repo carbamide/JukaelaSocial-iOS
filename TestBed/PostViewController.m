@@ -113,7 +113,12 @@
     
     [_theTextView showInView:[self view]];
     
-    [[[self navigationItem] rightBarButtonItems][0] setEnabled:NO];
+    if ([[_theTextView text] length] > 0) {
+        [[[self navigationItem] rightBarButtonItems][0] setEnabled:YES];
+    }
+    else {
+        [[[self navigationItem] rightBarButtonItems][0] setEnabled:NO];
+    }
 }
 
 -(void)setupNavbarForPosting
@@ -191,7 +196,11 @@
             if (error) {
                 BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription]];
                 
-                [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
+                [errorAlert setCancelButtonWithTitle:@"OK" block:^{
+                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    
+                    [self setupNavbarForPosting];
+                }];
                 
                 [errorAlert show];
             }

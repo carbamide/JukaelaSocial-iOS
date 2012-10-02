@@ -1,9 +1,9 @@
 //
 //	Copyright 2011 James Addyman (JamSoft). All rights reserved.
-//	
+//
 //	Redistribution and use in source and binary forms, with or without modification, are
 //	permitted provided that the following conditions are met:
-//	
+//
 //		1. Redistributions of source code must retain the above copyright notice, this list of
 //			conditions and the following disclaimer.
 //
@@ -50,8 +50,8 @@
 	NSMutableArray *tempLinks = [_links mutableCopy];
 	
 	NSArray *expressions = [[[NSArray alloc] initWithObjects:@"(@[a-zA-Z0-9_]+)", // screen names
-															 @"(#[a-zA-Z0-9_-]+)", // hash tags
-															 nil] autorelease];
+                             @"(#[a-zA-Z0-9_-]+)", // hash tags
+                             nil] autorelease];
 	//get #hashtags and @usernames
 	for (NSString *expression in expressions)
 	{

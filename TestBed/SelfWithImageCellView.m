@@ -38,9 +38,7 @@
     [[self externalImage] setUserInteractionEnabled:YES];
     
     [[self externalImage] addGestureRecognizer:tapGesture];
-    
-    NSLog(@"%@", NSStringFromCGRect(self.contentText.frame));
-    
+        
     if (![[self externalImage] image]) {
         [[self externalImage] addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionOld context:NULL];
     }

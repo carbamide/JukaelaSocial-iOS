@@ -282,17 +282,37 @@
     
     [[cell activityIndicator] startAnimating];
     
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+
+    objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
+
     if (image) {
         [[cell activityIndicator] stopAnimating];
         
         [[cell imageView] setImage:image];
         [cell setNeedsDisplay];
+        
+        dispatch_async(queue, ^{
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self mentions][[indexPath row]][@"sender_email"]]]];
+			
+#if (TARGET_IPHONE_SIMULATOR)
+            image = [JEImages normalize:image];
+#endif
+            UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
+				
+				if ([indexPath isEqual:cellIndexPath]) {
+					[[cell imageView] setImage:resizedImage];
+                    [cell setNeedsDisplay];
+				}
+				
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self mentions][[indexPath row]][@"sender_email"]]];
+			});
+		});
     }
     else {
-		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        
-		objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
-		
 		dispatch_async(queue, ^{
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self mentions][[indexPath row]][@"sender_email"]]]];
 			

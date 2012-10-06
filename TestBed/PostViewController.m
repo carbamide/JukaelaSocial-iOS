@@ -141,7 +141,7 @@
 
 -(void)sendPost:(id)sender
 {
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"] == YES && ![kAppDelegate onlyToTwitter] && ![kAppDelegate onlyToFacebook] && ![kAppDelegate onlyToJukaela]) {
         BlockAlertView *confirmAlert = [[BlockAlertView alloc] initWithTitle:@"Confirm" message:@"Confirm sending to other services?"];
         
         [confirmAlert addButtonWithTitle:@"Do it!" block:^{
@@ -159,6 +159,26 @@
         [confirmAlert show];
     }
     else {
+        if ([kAppDelegate onlyToJukaela]) {            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
+
+            [self sendJukaelaPost:NO];
+            
+            return;
+        }
+        
+        if ([kAppDelegate onlyToFacebook]) {
+            [self sendFacebookPost:[[self theTextView] text]];
+            
+            return;
+        }
+        
+        if ([kAppDelegate onlyToTwitter]) {
+            [self sendTweet:[[self theTextView] text]];
+            
+            return;
+        }
+        
         if (![[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
         }
@@ -261,6 +281,10 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+                
+                [kAppDelegate setOnlyToJukaela:NO];
+                [kAppDelegate setOnlyToFacebook:NO];
+                [kAppDelegate setOnlyToTwitter:NO];
             }];
         }
         else {
@@ -367,6 +391,18 @@
             NSLog(@"%@", [error localizedDescription]);
         }
     }];
+    
+    if ([kAppDelegate onlyToTwitter]) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+            
+            [kAppDelegate setOnlyToJukaela:NO];
+            [kAppDelegate setOnlyToFacebook:NO];
+            [kAppDelegate setOnlyToTwitter:NO];
+        }];
+    }
 }
 
 - (void)sendFacebookPost:(NSString *)stringToSend
@@ -375,6 +411,14 @@
     
     if ([self tempImageData]) {
         stringToSend = [stringToSend stringByReplacingOccurrencesOfString:[self urlString] withString:@""];
+    }
+    
+    NSArray *urlArray = [Helpers arrayOfURLsFromString:stringToSend error:nil];
+    
+    BOOL urls = NO;
+    
+    if ([urlArray count] > 0) {
+        urls = YES;
     }
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
@@ -436,7 +480,14 @@
                     }
                     else {
                         NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
+                        
                         NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
+
+                        if (urls) {
+                            feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/links"];
+                            
+                            parameters = @{@"access_token" : [[[self facebookAccount] credential] oauthToken], @"message" : stringToSend, @"link" : urlArray[0]};
+                        }
                         
                         SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
                         
@@ -470,6 +521,18 @@
                 }
             }];
         }
+    }
+    
+    if ([kAppDelegate onlyToFacebook]) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+            
+            [kAppDelegate setOnlyToJukaela:NO];
+            [kAppDelegate setOnlyToFacebook:NO];
+            [kAppDelegate setOnlyToTwitter:NO];
+        }];
     }
 }
 

@@ -15,4 +15,8 @@
 @property (nonatomic, assign) id currentViewController;
 @property (strong, nonatomic) NSCache *externalImageCache;
 
+@property (nonatomic) BOOL onlyToFacebook;
+@property (nonatomic) BOOL onlyToTwitter;
+@property (nonatomic) BOOL onlyToJukaela;
+
 @end

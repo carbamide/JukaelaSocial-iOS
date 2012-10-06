@@ -32,4 +32,13 @@
     return date;
 }
 
++(int)daysBetween:(NSDate *)dt1 and:(NSDate *)dt2
+{
+    NSUInteger unitFlags = NSDayCalendarUnit;
+    
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:unitFlags fromDate:dt1 toDate:dt2 options:0];
+    
+    return [components day]+1;
+}
+
 @end

@@ -1397,6 +1397,7 @@
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Bitly\"",
 				);
 				PRODUCT_NAME = Jukaela;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FEE0C520-F104-438F-A9F7-16FFD8C67918";
@@ -1433,6 +1434,7 @@
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/Bitly\"",
 				);
 				PRODUCT_NAME = Jukaela;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FEE0C520-F104-438F-A9F7-16FFD8C67918";

@@ -12,4 +12,6 @@
 
 + (NSDate *)dateWithISO8601String:(NSString *)dateString withFormatter:(NSDateFormatter *)formatter;
 + (NSDate *)dateFromString:(NSString *)dateString withFormat:(NSString *)dateFormat withFormatter:(NSDateFormatter *)formatter;
++(int)daysBetween:(NSDate *)dt1 and:(NSDate *)dt2;
+
 @end

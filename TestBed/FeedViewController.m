@@ -113,6 +113,12 @@
     
     [[self navigationItem] setHidesBackButton:YES];
     
+    UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    
+    [gesture setDelegate:self];
+    
+    [[[[self navigationItem] rightBarButtonItem] valueForKey:@"view"] addGestureRecognizer:gesture];
+
     [self setCurrentChangeType:-1];
     
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
@@ -124,7 +130,6 @@
         
         NSString *username = [[NSUserDefaults standardUserDefaults] valueForKey:@"username"];
         NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"Jukaela Social" error:&error];
-        
         
         if (![self progressHUD]) {
             [self setProgressHUD:[[MBProgressHUD alloc] initWithView:[self view]]];
@@ -204,6 +209,37 @@
     }
     
     [super viewDidLoad];
+}
+
+-(void)longPress:(UILongPressGestureRecognizer *)aGesture
+{
+    if ([aGesture state] == UIGestureRecognizerStateBegan) {
+        BlockActionSheet *longPressActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Share..."];
+        
+        [longPressActionSheet addButtonWithTitle:@"Facebook Only" block:^{
+            [kAppDelegate setOnlyToFacebook:YES];
+            
+            [self composePost:nil];
+        }];
+        
+        [longPressActionSheet addButtonWithTitle:@"Twitter Only"  block:^{
+            [kAppDelegate setOnlyToTwitter:YES];
+            
+            [self composePost:nil];
+        }];
+        
+        [longPressActionSheet addButtonWithTitle:@"Jukaela Only" block:^{
+            [kAppDelegate setOnlyToJukaela:YES];
+            
+            [self composePost:nil];
+        }];
+        
+        [longPressActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+        
+        [longPressActionSheet showInView:[self view]];
+    }
+    
+
 }
 
 - (void)initializeActivityIndicator
@@ -402,7 +438,7 @@
 {
     if (([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) && ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"] == NO)) {
         if ([self twitterSuccess]) {
-            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Tweet Tweeted"];
+            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Posting Complete!"];
             
             [successNotice show];
             
@@ -413,7 +449,7 @@
     }
     else if (([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) && ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"] == NO)) {
         if ([self fbSuccess]) {
-            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Facebook Post Posted"];
+            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Posting Complete!"];
             
             [successNotice show];
             
@@ -424,7 +460,7 @@
     }
     else if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"] && [[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
         if ([self twitterSuccess] && [self fbSuccess]) {
-            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Twitter and FB - Good to Go!"];
+            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Posting Complete!"];
             
             [successNotice show];
             
@@ -797,34 +833,38 @@
     [[cell activityIndicator] startAnimating];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-
+    
     objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
-
+    
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]] error:nil];
+    
     if (image) {
         [[cell activityIndicator] stopAnimating];
         
         [[cell imageView] setImage:image];
         [cell setNeedsDisplay];
         
-        dispatch_async(queue, ^{
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self theFeed][[indexPath row]][@"email"]]]];
-            
+        if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
+            dispatch_async(queue, ^{
+                UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self theFeed][[indexPath row]][@"email"]]]];
+                
 #if (TARGET_IPHONE_SIMULATOR)
-            image = [JEImages normalize:image];
+                image = [JEImages normalize:image];
 #endif
-            UIImage *resizedImage = [image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
+                UIImage *resizedImage = [image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
                 
-                if ([indexPath isEqual:cellIndexPath]) {
-                    [[cell imageView] setImage:resizedImage];
-                    [cell setNeedsDisplay];
-                }
-                
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
+                    
+                    if ([indexPath isEqual:cellIndexPath]) {
+                        [[cell imageView] setImage:resizedImage];
+                        [cell setNeedsDisplay];
+                    }
+                    
+                    [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]];
+                });
             });
-        });
+        }
     }
     else {
         dispatch_async(queue, ^{
@@ -873,15 +913,15 @@
                 NSInteger oldTableViewCount = [[self theFeed] count];
                 
                 [[self theFeed] addObjectsFromArray:tempArray];
-                                
+                
                 @try {
                     [[self tableView] beginUpdates];
-                                        
+                    
                     int tempArrayCount = [tempArray count];
-
+                    
                     for (int i = 0; i < tempArrayCount; i++) {
                         NSInteger rowInt = oldTableViewCount + i;
-                                                
+                        
                         [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rowInt inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     }
                     [[self tableView] endUpdates];
@@ -1100,4 +1140,5 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
     }];
 }
+
 @end

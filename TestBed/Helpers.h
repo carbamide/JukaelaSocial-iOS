@@ -22,4 +22,6 @@
 
 +(NSString *)documentsPath;
 
++(NSArray *)arrayOfURLsFromString:(NSString *)httpLine error:(NSError *)error;
+
 @end

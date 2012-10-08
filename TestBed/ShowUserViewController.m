@@ -17,6 +17,10 @@
 #import "WBSuccessNoticeView.h"
 #import "WBStickyNoticeView.h"
 
+@interface ShowUserViewController ()
+@property (strong, nonatomic) NSNumber *postCount;
+@end
+
 @implementation ShowUserViewController
 
 - (void)didReceiveMemoryWarning
@@ -65,7 +69,7 @@
     dispatch_async(dispatch_get_main_queue(), ^(void) {
         [self getFollowers];
         [self getFollowing];
-        [self getPosts];
+        [self getNumberOfPosts];
         [self getimFollowing];
     });
 }
@@ -423,7 +427,10 @@
             [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self followers] count]] atIndex:1];
             [segmentedCell setDetailText:@"Followers" atIndex:1];
             
-            [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self posts] count]] atIndex:2];
+            if ([[self postCount] intValue] > 0) {
+                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self postCount]] atIndex:2];
+            }
+            
             [segmentedCell setDetailText:@"Posts" atIndex:2];
             
             [segmentedCell setActionBlock:^(NSIndexPath *indexPath, int selectedIndex) {
@@ -440,7 +447,7 @@
                 else if (selectedIndex == 2) {
                     [tempSegContCell deselectAnimated:YES];
                     
-                    [self performSegueWithIdentifier:@"ShowUserPosts" sender:nil];
+                    [self getPosts];
                 }
             }];
         }
@@ -507,12 +514,34 @@
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
-            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self performSegueWithIdentifier:@"ShowUserPosts" sender:nil];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's posts.  Please logout and log back in."];
         }
         
+    }];
+}
+
+-(void)getNumberOfPosts
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/number_of_posts", kSocialURL, [self userDict][@"id"]]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [self setPostCount:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"count"]];
+            
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else {
+            NSLog(@"Error retrieving posts count");
+        }
     }];
 }
 

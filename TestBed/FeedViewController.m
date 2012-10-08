@@ -118,7 +118,7 @@
     [gesture setDelegate:self];
     
     [[[[self navigationItem] rightBarButtonItem] valueForKey:@"view"] addGestureRecognizer:gesture];
-
+    
     [self setCurrentChangeType:-1];
     
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
@@ -501,12 +501,20 @@
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {
-            int oldNumberOfPosts = [[self theFeed] count];
-            
+        if (data) {            
+            NSArray *oldArray = [self theFeed];
+
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                        
+            NSMutableSet *firstSet = [NSMutableSet setWithArray:[self theFeed]];
+            NSMutableSet *secondSet = [NSMutableSet setWithArray:[self theFeed]];
             
-            int newNumberOfPosts = [[self theFeed] count];
+            [firstSet unionSet:[NSSet setWithArray:oldArray]];
+            [secondSet intersectSet:[NSSet setWithArray:oldArray]];
+            
+            [firstSet minusSet:secondSet];
+            
+            NSInteger difference = [firstSet count];
             
             if ([self currentChangeType] == INSERT_POST) {
                 if ([self justToJukaela]) {
@@ -517,8 +525,25 @@
                 
                 @try {
                     [[self tableView] beginUpdates];
-                    [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                    [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:19 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    NSLog(@"%i", difference);
+                    
+                    if (difference > 2) {
+                        difference /= 2;
+                    }
+                    else if (difference == 2) {
+                        difference = 1;
+                    }
+                    
+                    for (int i = 0; i < difference; i++) {
+                        [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                        
+                        NSInteger higherNumber = 19 - i;
+                        
+                        [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:higherNumber inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    }
+                    
+                    
                     [[self tableView] endUpdates];
                 }
                 @catch (NSException *exception) {
@@ -541,25 +566,25 @@
                 [[self tableView] endUpdates];
             }
             else {
-                if (newNumberOfPosts > oldNumberOfPosts) {
-                    NSString *tempString;
-                    
-                    if ((newNumberOfPosts - oldNumberOfPosts) == 1) {
-                        tempString = @"Post";
-                    }
-                    else {
-                        tempString = @"Posts";
-                    }
-                    
-                    if (![self loadedDirectly]) {
-                        WBStickyNoticeView *notice = [WBStickyNoticeView stickyNoticeInView:[self view]
-                                                                                      title:[NSString stringWithFormat:@"%d New %@", (newNumberOfPosts - oldNumberOfPosts), tempString]];
-                        
-                        [notice show];
-                        
-                        [self setLoadedDirectly:NO];
-                    }
-                }
+//                if (newNumberOfPosts > oldNumberOfPosts) {
+//                    NSString *tempString;
+//                    
+//                    if ((newNumberOfPosts - oldNumberOfPosts) == 1) {
+//                        tempString = @"Post";
+//                    }
+//                    else {
+//                        tempString = @"Posts";
+//                    }
+//                    
+//                    if (![self loadedDirectly]) {
+//                        WBStickyNoticeView *notice = [WBStickyNoticeView stickyNoticeInView:[self view]
+//                                                                                      title:[NSString stringWithFormat:@"%d New %@", (newNumberOfPosts - oldNumberOfPosts), tempString]];
+//                        
+//                        [notice show];
+//                        
+//                        [self setLoadedDirectly:NO];
+//                    }
+//                }
                 
                 if ([[self activityIndicator] isAnimating]) {
                     [[self activityIndicator] stopAnimating];
@@ -751,7 +776,9 @@
                 
                 UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
                 
-                [[kAppDelegate externalImageCache] setObject:image forKey:indexPath];
+                if (image) {
+                    [[kAppDelegate externalImageCache] setObject:image forKey:indexPath];
+                }
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[cell externalImage] setImage:image borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];

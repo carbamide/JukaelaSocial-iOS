@@ -18,7 +18,7 @@
                 
         [self addSubview:[self externalImage]];
         
-        _externalActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(15, 35, 30, 30)];
+        _externalActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(20, 35, 30, 30)];
         
         [[self externalActivityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
         

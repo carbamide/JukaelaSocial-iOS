@@ -11,6 +11,7 @@
 #import "MWZoomingScrollView.h"
 #import "MBProgressHUD.h"
 #import "SDImageCache.h"
+#import "BlockActionSheet.h"
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
@@ -43,11 +44,11 @@
 	UIToolbar *_toolbar;
 	NSTimer *_controlVisibilityTimer;
 	UIBarButtonItem *_previousButton, *_nextButton, *_actionButton;
-    UIActionSheet *_actionsSheet;
+    BlockActionSheet *_actionsSheet;
     MBProgressHUD *_progressHUD;
     
     // Appearance
-    UIImage *_navigationBarBackgroundImageDefault, 
+    UIImage *_navigationBarBackgroundImageDefault,
     *_navigationBarBackgroundImageLandscapePhone;
     UIColor *_previousNavBarTintColor;
     UIBarStyle _previousNavBarStyle;
@@ -67,7 +68,7 @@
 @property (nonatomic, retain) UIColor *previousNavBarTintColor;
 @property (nonatomic, retain) UIBarButtonItem *previousViewControllerBackButton;
 @property (nonatomic, retain) UIImage *navigationBarBackgroundImageDefault, *navigationBarBackgroundImageLandscapePhone;
-@property (nonatomic, retain) UIActionSheet *actionsSheet;
+@property (nonatomic, retain) BlockActionSheet *actionsSheet;
 @property (nonatomic, retain) MBProgressHUD *progressHUD;
 
 // Private Methods
@@ -742,7 +743,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     NSUInteger i;
     if (index > 0) {
         // Release anything < index - 1
-        for (i = 0; i < index-1; i++) { 
+        for (i = 0; i < index-1; i++) {
             id photo = [_photos objectAtIndex:i];
             if (photo != [NSNull null]) {
                 [photo unloadUnderlyingImage];
@@ -860,7 +861,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     
 	// Title
 	if ([self numberOfPhotos] > 1) {
-		self.title = [NSString stringWithFormat:@"%i %@ %i", _currentPageIndex+1, NSLocalizedString(@"of", @"Used in the context: 'Showing 1 of 3 items'"), [self numberOfPhotos]];		
+		self.title = [NSString stringWithFormat:@"%i %@ %i", _currentPageIndex+1, NSLocalizedString(@"of", @"Used in the context: 'Showing 1 of 3 items'"), [self numberOfPhotos]];
 	} else {
 		self.title = nil;
 	}
@@ -990,54 +991,52 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 }
 
 - (void)actionButtonPressed:(id)sender {
-    if (_actionsSheet) {
-        // Dismiss
-        [_actionsSheet dismissWithClickedButtonIndex:_actionsSheet.cancelButtonIndex animated:YES];
-    } else {
-        id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
-        if ([self numberOfPhotos] > 0 && [photo underlyingImage]) {
+    id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
+    if ([self numberOfPhotos] > 0 && [photo underlyingImage]) {
+        
+        // Keep controls hidden
+        [self setControlsHidden:NO animated:YES permanent:YES];
+        
+        // Sheet
+        if ([MFMailComposeViewController canSendMail]) {
+            self.actionsSheet = [[BlockActionSheet alloc] initWithTitle:nil];
+                        
+            [self.actionsSheet addButtonWithTitle:@"Save" block:^{
+                [self savePhoto];
+                [self hideControlsAfterDelay]; 
+            }];
             
-            // Keep controls hidden
-            [self setControlsHidden:NO animated:YES permanent:YES];
+            [self.actionsSheet addButtonWithTitle:@"Copy" block:^{
+                [self copyPhoto];
+                [self hideControlsAfterDelay]; 
+            }];
             
-            // Sheet
-            if ([MFMailComposeViewController canSendMail]) {
-                self.actionsSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedString(@"Save", nil), NSLocalizedString(@"Copy", nil), NSLocalizedString(@"Email", nil), nil] autorelease];
-            } else {
-                self.actionsSheet = [[[UIActionSheet alloc] initWithTitle:nil delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedString(@"Save", nil), NSLocalizedString(@"Copy", nil), nil] autorelease];
-            }
-            _actionsSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                [_actionsSheet showFromBarButtonItem:sender animated:YES];
-            } else {
-                [_actionsSheet showInView:self.view];
-            }
+            [self.actionsSheet addButtonWithTitle:@"Email" block:^{
+                [self emailPhoto];
+                [self hideControlsAfterDelay]; 
+            }];
             
-        }
-    }
-}
+            [self.actionsSheet setCancelButtonWithTitle:NSLocalizedString(@"Cancel", nil) block:nil];
 
-#pragma mark - Action Sheet Delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (actionSheet == _actionsSheet) {           
-        // Actions 
-        self.actionsSheet = nil;
-        if (buttonIndex != actionSheet.cancelButtonIndex) {
-            if (buttonIndex == actionSheet.firstOtherButtonIndex) {
-                [self savePhoto]; return;
-            } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
-                [self copyPhoto]; return;	
-            } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 2) {
-                [self emailPhoto]; return;
-            }
+        } else {
+            self.actionsSheet = [[BlockActionSheet alloc] initWithTitle:nil];
+                        
+            [self.actionsSheet addButtonWithTitle:@"Save" block:^{
+                [self savePhoto];
+                [self hideControlsAfterDelay]; 
+            }];
+            
+            [self.actionsSheet addButtonWithTitle:@"Copy" block:^{
+                [self copyPhoto];
+                [self hideControlsAfterDelay]; 
+            }];
+            
+            [self.actionsSheet setCancelButtonWithTitle:NSLocalizedString(@"Cancel", nil) block:nil];
         }
+        
+        [_actionsSheet showInView:self.view];
+        
     }
-    [self hideControlsAfterDelay]; // Continue as normal...
 }
 
 #pragma mark - MBProgressHUD
@@ -1092,7 +1091,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 
 - (void)actuallySavePhoto:(id<MWPhoto>)photo {
     if ([photo underlyingImage]) {
-        UIImageWriteToSavedPhotosAlbum([photo underlyingImage], self, 
+        UIImageWriteToSavedPhotosAlbum([photo underlyingImage], self,
                                        @selector(image:didFinishSavingWithError:contextInfo:), nil);
     }
 }

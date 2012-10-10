@@ -526,8 +526,6 @@
                 @try {
                     [[self tableView] beginUpdates];
                     
-                    NSLog(@"%i", difference);
-                    
                     if (difference > 2) {
                         difference /= 2;
                     }
@@ -535,23 +533,33 @@
                         difference = 1;
                     }
                     
+                    NSLog(@"%i", difference);
+
                     for (int i = 0; i < difference; i++) {
                         [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                        
-                        NSInteger higherNumber = 19 - i;
-                        
-                        [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:higherNumber inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                                                
+                        [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:to - i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     }
-                    
                     
                     [[self tableView] endUpdates];
                 }
                 @catch (NSException *exception) {
                     if (exception) {
                         NSLog(@"%@", exception);
+                        NSLog(@"Crazy things just happened with the integrity of this table, yo");
                     }
                     
-                    [[self tableView] reloadData];
+                    WBErrorNoticeView *tableError = [[WBErrorNoticeView alloc] initWithView:[self view] title:@"Table Integrity Issue!"];
+                    
+                    [tableError setMessage:[NSString stringWithFormat:@"Table has been restored. Error %i", difference]];
+                    
+                    [tableError show];
+                    
+                    [self setCurrentChangeType:-1];
+
+                    [self setTheFeed:nil];
+                    
+                    [self refreshTableInformation:nil from:0 to:20 removeSplash:NO];
                 }
                 @finally {
                     NSLog(@"Inside finally");
@@ -566,26 +574,6 @@
                 [[self tableView] endUpdates];
             }
             else {
-//                if (newNumberOfPosts > oldNumberOfPosts) {
-//                    NSString *tempString;
-//                    
-//                    if ((newNumberOfPosts - oldNumberOfPosts) == 1) {
-//                        tempString = @"Post";
-//                    }
-//                    else {
-//                        tempString = @"Posts";
-//                    }
-//                    
-//                    if (![self loadedDirectly]) {
-//                        WBStickyNoticeView *notice = [WBStickyNoticeView stickyNoticeInView:[self view]
-//                                                                                      title:[NSString stringWithFormat:@"%d New %@", (newNumberOfPosts - oldNumberOfPosts), tempString]];
-//                        
-//                        [notice show];
-//                        
-//                        [self setLoadedDirectly:NO];
-//                    }
-//                }
-                
                 if ([[self activityIndicator] isAnimating]) {
                     [[self activityIndicator] stopAnimating];
                 }

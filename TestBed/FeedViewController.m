@@ -538,7 +538,7 @@
                     for (int i = 0; i < difference; i++) {
                         [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                                                 
-                        [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:to - i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                        [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:(to - 1) - i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     }
                     
                     [[self tableView] endUpdates];
@@ -549,9 +549,9 @@
                         NSLog(@"Crazy things just happened with the integrity of this table, yo");
                     }
                     
-                    WBErrorNoticeView *tableError = [[WBErrorNoticeView alloc] initWithView:[self view] title:@"Table Integrity Issue!"];
+                    BlockAlertView *tableError = [[BlockAlertView alloc] initWithTitle:@"Table Integrity Issue!" message:[NSString stringWithFormat:@"Table has been restored.  Error %i", difference]];
                     
-                    [tableError setMessage:[NSString stringWithFormat:@"Table has been restored. Error %i", difference]];
+                    [tableError setCancelButtonWithTitle:@"OK" block:nil];
                     
                     [tableError show];
                     

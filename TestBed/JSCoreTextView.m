@@ -37,6 +37,7 @@
 #import <CoreText/CoreText.h>
 #import <QuartzCore/QuartzCore.h>
 #import "AHHyperlinkScanner.h"
+#import "SelfCellView.h"
 
 float const yAdjustmentFactor = 1.3;
 
@@ -309,15 +310,15 @@ float const yAdjustmentFactor = 1.3;
 	UITouch *touch = [touches anyObject];
 	CGPoint location = [touch locationInView:self];
 	_linkLocation = location;
-	
+    
 	location.y += (self.fontSize / yAdjustmentFactor);
 	location.x -= self.paddingLeft;
-	
+    
 	CFArrayRef lines = CTFrameGetLines(_frame);
-	
+    
 	CGPoint origins[CFArrayGetCount(lines)];
 	CTFrameGetLineOrigins(_frame, CFRangeMake(0, 0), origins);
-	
+    
 	CTLineRef line = NULL;
 	CGPoint lineOrigin = CGPointZero;
 	for (int i= 0; i < CFArrayGetCount(lines); i++)
@@ -325,23 +326,26 @@ float const yAdjustmentFactor = 1.3;
 		CGPoint origin = origins[i];
 		CGPathRef path = CTFrameGetPath(_frame);
 		CGRect rect = CGPathGetBoundingBox(path);
-		
-		CGFloat y = rect.origin.y + rect.size.height - origin.y;
+        
+		//CGFloat y = rect.origin.y + rect.size.height - origin.y;
+        CGFloat y = self.frame.origin.y + rect.size.height - origin.y;
 
+        NSLog(@"location.y - %f\ny - %f\n", location.y, y);
+        NSLog(@"location.x - %f\norigin.x - %f\n", location.x, origin.x);
 		if ((location.y >= y) && (location.x >= origin.x))
 		{
 			line = CFArrayGetValueAtIndex(lines, i);
 			lineOrigin = origin;
 		}
 	}
-	
+    
 	location.x -= lineOrigin.x;
 	CFIndex index = CTLineGetStringIndexForPosition(line, location);
-	
+    
 	for (AHMarkedHyperlink *link in _links)
 	{
-        
-		if (((index >= [link range].location)))
+        NSLog(@"The index is %ld\nThe link is %i", index, [link range].location);
+		if (((index >= [link range].location) && (index <= ([link range].length + [link range].location))))
 		{
 			_touchedLink = link;
 			[self setNeedsDisplay];
@@ -409,7 +413,12 @@ float const yAdjustmentFactor = 1.3;
 	{
         [[UIApplication sharedApplication] openURL:[_touchedLink URL]];
 	}
-	
+	else {
+        NSLog(@"Not a link!");
+        
+        [(SelfCellView *)[[self superview] superview] doubleTapAction:nil];
+    }
+    
 	_touchedLink = nil;
 	[self setNeedsDisplay];
 }

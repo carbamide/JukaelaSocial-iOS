@@ -26,5 +26,6 @@ extern NSString * const kJKPrepareForReuseNotification;
 @property (strong, nonatomic) UITapGestureRecognizer *repostTapGesture;
 
 -(void)disableCell;
+-(void)doubleTapAction:(UIGestureRecognizer *)gesture;
 
 @end

@@ -98,11 +98,11 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 -(void)createGestureRecognizers
 {    
     if (![self tapGesture]) {
-        tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
-        
-        [tapGesture setNumberOfTapsRequired:2];
-        
-        [contentText addGestureRecognizer:tapGesture];
+//        tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
+//        
+//        [tapGesture setNumberOfTapsRequired:2];
+//        
+//        [contentText addGestureRecognizer:tapGesture];
     }
     
     if (![self longPressGesture]) {

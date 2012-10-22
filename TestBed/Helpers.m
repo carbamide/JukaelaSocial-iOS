@@ -149,4 +149,27 @@
     // return non-mutable version of the array
     return [NSArray arrayWithArray:arrayOfURLs];
 }
+
++(NSArray *)splitString:(NSString*)str maxCharacters:(NSInteger)maxLength
+{
+    NSMutableArray *tempArray = [NSMutableArray arrayWithCapacity:1];
+    NSArray *wordArray = [str componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSInteger numberOfWords = [wordArray count];
+    NSInteger index = 0;
+    NSInteger lengthOfNextWord = 0;
+    
+	while (index < numberOfWords) {
+		NSMutableString *line = [NSMutableString stringWithCapacity:1];
+		while ((([line length] + lengthOfNextWord + 1) <= maxLength) && (index < numberOfWords)) {
+	        lengthOfNextWord = [[wordArray objectAtIndex:index] length];
+	        [line appendString:[wordArray objectAtIndex:index]];
+	        index++;
+            if (index < numberOfWords) {
+                [line appendString:@" "];
+            }
+	    }
+		[tempArray addObject:line];
+	}
+    return tempArray;
+}
 @end

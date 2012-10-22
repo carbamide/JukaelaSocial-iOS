@@ -168,9 +168,9 @@
         [confirmAlert show];
     }
     else {
-        if ([kAppDelegate onlyToJukaela]) {            
+        if ([kAppDelegate onlyToJukaela]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
-
+            
             [self sendJukaelaPost:NO];
             
             return;
@@ -183,8 +183,16 @@
         }
         
         if ([kAppDelegate onlyToTwitter]) {
-            [self sendTweet:[[self theTextView] text]];
-            
+            if ([[[self theTextView] text] length] > 140) {
+                NSArray *tempArray = [Helpers splitString:[[self theTextView] text] maxCharacters:140];
+                
+                for (NSString *tempString in [tempArray reverseObjectEnumerator]) {
+                    [self sendTweet:tempString];
+                }
+            }
+            else {
+                [self sendTweet:[[self theTextView] text]];
+            }
             return;
         }
         
@@ -240,7 +248,16 @@
                 
                 if (continuePosting) {
                     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
-                        [self sendTweet:[[self theTextView] text]];
+                        if ([[[self theTextView] text] length] > 140) {
+                            NSArray *tempArray = [Helpers splitString:[[self theTextView] text] maxCharacters:140];
+                            
+                            for (NSString *tempString in [tempArray reverseObjectEnumerator]) {
+                                [self sendTweet:tempString];
+                            }
+                        }
+                        else {
+                            [self sendTweet:[[self theTextView] text]];
+                        }
                     }
                     
                     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
@@ -255,7 +272,16 @@
         
         if (continuePosting) {
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
-                [self sendTweet:[[self theTextView] text]];
+                if ([[[self theTextView] text] length] > 140) {
+                    NSArray *tempArray = [Helpers splitString:[[self theTextView] text] maxCharacters:140];
+                    
+                    for (NSString *tempString in [tempArray reverseObjectEnumerator]) {
+                        [self sendTweet:tempString];
+                    }
+                }
+                else {
+                    [self sendTweet:[[self theTextView] text]];
+                }
             }
             
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
@@ -491,7 +517,7 @@
                         NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
                         
                         NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
-
+                        
                         if (urls) {
                             feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/links"];
                             

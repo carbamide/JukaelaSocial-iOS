@@ -187,9 +187,9 @@
                 [[self progressHUD] hide:YES];
                 
                 [YISplashScreen hide];
-
+                
                 [[self navigationController] popToRootViewControllerAnimated:YES];
-                                
+                
                 [(LoginViewController *)[[self navigationController] topViewController] setDoNotLogin:YES];
             }
             
@@ -241,7 +241,7 @@
         [longPressActionSheet showInView:[self view]];
     }
     
-
+    
 }
 
 - (void)initializeActivityIndicator
@@ -511,11 +511,11 @@
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {            
+        if (data) {
             NSArray *oldArray = [self theFeed];
-
+            
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                        
+            
             NSMutableSet *firstSet = [NSMutableSet setWithArray:[self theFeed]];
             NSMutableSet *secondSet = [NSMutableSet setWithArray:[self theFeed]];
             
@@ -544,10 +544,10 @@
                     }
                     
                     NSLog(@"%i", difference);
-
+                    
                     for (int i = 0; i < difference; i++) {
                         [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                                                
+                        
                         [[self tableView] deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:(to - 1) - i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                     }
                     
@@ -566,7 +566,7 @@
                     [tableError show];
                     
                     [self setCurrentChangeType:-1];
-
+                    
                     [self setTheFeed:nil];
                     
                     [self refreshTableInformation:nil from:0 to:20 removeSplash:NO];
@@ -996,7 +996,16 @@
         [cellActionSheet addButtonWithTitle:@"Share to Twitter" block:^{
             NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
             
-            [ShareObject shareToTwitter:[[tempCell contentText] text] withViewController:self];
+            if ([[[tempCell contentText] text] length] > 140) {
+                NSArray *tempArray = [Helpers splitString:[[tempCell contentText] text] maxCharacters:140];
+                
+                for (NSString *tempString in [tempArray reverseObjectEnumerator]) {
+                    [ShareObject shareToTwitter:tempString withViewController:self];
+                }
+            }
+            else {
+                [ShareObject shareToTwitter:[[tempCell contentText] text] withViewController:self];
+            }
         }];
         
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {

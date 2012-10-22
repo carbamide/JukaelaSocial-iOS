@@ -17,4 +17,6 @@
 
 @property (strong, nonatomic) YIPopupTextView *theTextView;
 
+@property (strong, nonatomic) UIImage *imageFromExternalSource;
+
 @end

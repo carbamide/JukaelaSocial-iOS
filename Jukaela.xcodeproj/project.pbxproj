@@ -44,7 +44,7 @@
 		29593D6B15FD150200380B2D /* YISplashScreenAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 29593D6815FD150200380B2D /* YISplashScreenAnimation.m */; };
 		29593D7315FD1F8400380B2D /* NSTimer+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 29593D7215FD1F8400380B2D /* NSTimer+Blocks.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		295CB26D15E528EA001A43DA /* TMImgurUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB26C15E528EA001A43DA /* TMImgurUploader.m */; };
-		295CB27415E528F4001A43DA /* TMNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB26F15E528F4001A43DA /* TMNetworkActivityIndicatorManager.m */; };
+		295CB27415E528F4001A43DA /* NetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB26F15E528F4001A43DA /* NetworkActivityIndicatorManager.m */; };
 		295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB27115E528F4001A43DA /* TMHTTPClient.m */; };
 		295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB27315E528F4001A43DA /* TMHTTPRequest.m */; };
 		29714EA015C7204300109E5A /* SORelativeDateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -239,8 +239,8 @@
 		29593D7215FD1F8400380B2D /* NSTimer+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Blocks.m"; sourceTree = "<group>"; };
 		295CB26B15E528EA001A43DA /* TMImgurUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMImgurUploader.h; sourceTree = "<group>"; };
 		295CB26C15E528EA001A43DA /* TMImgurUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMImgurUploader.m; sourceTree = "<group>"; };
-		295CB26E15E528F4001A43DA /* TMNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
-		295CB26F15E528F4001A43DA /* TMNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
+		295CB26E15E528F4001A43DA /* NetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		295CB26F15E528F4001A43DA /* NetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
 		295CB27015E528F4001A43DA /* TMHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMHTTPClient.h; sourceTree = "<group>"; };
 		295CB27115E528F4001A43DA /* TMHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMHTTPClient.m; sourceTree = "<group>"; };
 		295CB27215E528F4001A43DA /* TMHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMHTTPRequest.h; sourceTree = "<group>"; };
@@ -583,8 +583,8 @@
 		295CB26915E528DA001A43DA /* TM HTTP Stuff */ = {
 			isa = PBXGroup;
 			children = (
-				295CB26E15E528F4001A43DA /* TMNetworkActivityIndicatorManager.h */,
-				295CB26F15E528F4001A43DA /* TMNetworkActivityIndicatorManager.m */,
+				295CB26E15E528F4001A43DA /* NetworkActivityIndicatorManager.h */,
+				295CB26F15E528F4001A43DA /* NetworkActivityIndicatorManager.m */,
 				295CB27015E528F4001A43DA /* TMHTTPClient.h */,
 				295CB27115E528F4001A43DA /* TMHTTPClient.m */,
 				295CB27215E528F4001A43DA /* TMHTTPRequest.h */,
@@ -1258,7 +1258,7 @@
 				298A644615E267D7009BF175 /* BlockBackground.m in Sources */,
 				298A644715E267D7009BF175 /* BlockTextPromptAlertView.m in Sources */,
 				295CB26D15E528EA001A43DA /* TMImgurUploader.m in Sources */,
-				295CB27415E528F4001A43DA /* TMNetworkActivityIndicatorManager.m in Sources */,
+				295CB27415E528F4001A43DA /* NetworkActivityIndicatorManager.m in Sources */,
 				295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */,
 				295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */,
 				293751ED15EA63E10082864C /* SVModalWebViewController.m in Sources */,

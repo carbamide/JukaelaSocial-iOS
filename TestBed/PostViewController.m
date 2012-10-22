@@ -36,15 +36,24 @@
     [super viewDidLoad];
     
     [self setupNavbarForPosting];
+    
+    if ([self imageFromExternalSource]) {
+        [self setTempImageData:UIImageJPEGRepresentation([self imageFromExternalSource], 1.0)];
+        
+        UIBarButtonItem *tempButton = [[self navigationItem] rightBarButtonItems][1];
+        
+        [tempButton setTintColor:[UIColor blueColor]];
+    }
 }
 
 -(void)photoSheet:(id)sender
 {
-    if ([self urlString]) {
+    if ([self tempImageData]) {
         BlockActionSheet *removePhoto = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
         
         [removePhoto setDestructiveButtonWithTitle:@"Remove Photo" block:^{
             [self setUrlString:nil];
+            [self setTempImageData:nil];
         }];
         
         [removePhoto setCancelButtonWithTitle:@"Cancel" block:nil];
@@ -88,17 +97,17 @@
 {
     if (![self theTextView]) {
         if (_replyString) {
-            _theTextView = [[YIPopupTextView alloc] initWithText:[self replyString] maxCount:140];
+            _theTextView = [[YIPopupTextView alloc] initWithText:[self replyString] maxCount:256];
         }
         else if (_repostString) {
-            _theTextView = [[YIPopupTextView alloc] initWithText:[self repostString] maxCount:140];
+            _theTextView = [[YIPopupTextView alloc] initWithText:[self repostString] maxCount:256];
         }
         else {
-            _theTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Make a post, you guys!" maxCount:140];
+            _theTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Make a post, you guys!" maxCount:256];
         }
     }
     else {
-        _theTextView = [[YIPopupTextView alloc] initWithText:[self currentString] maxCount:140];
+        _theTextView = [[YIPopupTextView alloc] initWithText:[self currentString] maxCount:256];
     }
     
     if ([[_theTextView text] length] > 0) {

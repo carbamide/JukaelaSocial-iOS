@@ -22,6 +22,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) CPCheckBox *rememberUsername;
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
+@property (nonatomic) BOOL doNotLogin;
 
 -(IBAction)loginAction:(id)sender;
 

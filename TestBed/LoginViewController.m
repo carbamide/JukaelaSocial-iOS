@@ -369,7 +369,11 @@
         if ([[self rememberUsername] isChecked] == NO) {
             [[self rememberUsername] setChecked];
         }
-        [self loginAction:nil];
+        if (![self doNotLogin]) {
+            [self loginAction:nil];
+            
+            [self setDoNotLogin:NO];
+        }
     }
     else {
         if ([[self rememberUsername] isChecked] == YES) {

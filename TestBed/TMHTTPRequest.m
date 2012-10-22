@@ -7,7 +7,7 @@
 //
 
 #import "TMHTTPRequest.h"
-#import "TMNetworkActivityIndicatorManager.h"
+#import "NetworkActivityIndicatorManager.h"
 
 NSString * const TMNetworkingErrorDomain = @"com.tonymillion.tmhttprequest.error";
 
@@ -90,7 +90,7 @@ static NSString * AFStringFromIndexSet(NSIndexSet *indexSet) {
 
 -(BOOL)start
 {
-	[[TMNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
+	[[NetworkActivityIndicatorManager sharedManager] incrementActivityCount];
 
 	backgroundTask_ = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
         [[UIApplication sharedApplication] endBackgroundTask:backgroundTask_];
@@ -101,7 +101,7 @@ static NSString * AFStringFromIndexSet(NSIndexSet *indexSet) {
                                        queue:self.requestOperationQueue
                            completionHandler:^(NSURLResponse *response, NSData *remoteData, NSError *error) {
 
-							   [[TMNetworkActivityIndicatorManager sharedManager] decrementActivityCount];
+							   [[NetworkActivityIndicatorManager sharedManager] decrementActivityCount];
 
                                _responseData    = remoteData;
                                _response        = (NSHTTPURLResponse*)response;

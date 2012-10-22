@@ -32,6 +32,7 @@
 #import "SelfWithImageCellView.h"
 #import "UIImageView+Curled.h"
 #import "NormalWithImageCellView.h"
+#import "LoginViewController.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
@@ -46,6 +47,7 @@
 @property (strong, nonatomic) NSTimer *refreshTimer;
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
 @property (strong, nonatomic) NSArray *photos;
+@property (strong, nonatomic) UIImage *tempImage;
 
 -(void)refreshTableInformation:(NSIndexPath *)indexPath from:(NSInteger)from to:(NSInteger)to removeSplash:(BOOL)removeSplash;
 
@@ -184,11 +186,11 @@
                 
                 [[self progressHUD] hide:YES];
                 
-                BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"Unable to login"];
-                
-                [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
-                
-                [errorAlert show];
+                [YISplashScreen hide];
+
+                [[self navigationController] popToRootViewControllerAnimated:YES];
+                                
+                [(LoginViewController *)[[self navigationController] topViewController] setDoNotLogin:YES];
             }
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -310,6 +312,14 @@
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"show_image" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
         [self showImage:aNotification];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"post_image" object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
+        UIImage *temp = [aNotification userInfo][@"image"];
+        
+        [self setTempImage:temp];
+        
+        [self performSegueWithIdentifier:@"ShowPostView" sender:self];
     }];
 }
 
@@ -1050,6 +1060,13 @@
         [viewController setUserDict:_tempDict];
     }
     else if ([[segue identifier] isEqualToString:@"ShowPostView"]) {
+        if ([self tempImage]) {
+            UINavigationController *navigationController = [segue destinationViewController];
+            PostViewController *viewController = (PostViewController *)[navigationController topViewController];
+            
+            [viewController setImageFromExternalSource:[self tempImage]];
+        }
+        
         [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
     }
     else if ([[segue identifier] isEqualToString:@"ShowReplyView"]) {

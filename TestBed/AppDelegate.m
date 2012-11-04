@@ -106,6 +106,8 @@
     if (tempImage) {
         [YISplashScreen hide];
         
+        [[UIApplication sharedApplication] setStatusBarHidden:NO];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"post_image" object:nil userInfo:@{@"image" : tempImage}];
     }
     

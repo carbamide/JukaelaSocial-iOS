@@ -361,20 +361,22 @@
                 [[cell imageView] setImage:image];
                 [cell setNeedsDisplay];
                 
-                if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
-                    dispatch_async(queue, ^{
-                        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][@"email"]]]];
-                        
+                if (attributes) {
+                    if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
+                        dispatch_async(queue, ^{
+                            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][@"email"]]]];
+                            
 #if (TARGET_IPHONE_SIMULATOR)
-                        image = [JEImages normalize:image];
+                            image = [JEImages normalize:image];
 #endif
-                        UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-                        
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [[cell imageView] setImage:resizedImage];
-                            [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]];
+                            UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+                            
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [[cell imageView] setImage:resizedImage];
+                                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]];
+                            });
                         });
-                    });
+                    }
                 }
             }
             else {

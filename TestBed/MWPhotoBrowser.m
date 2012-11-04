@@ -911,7 +911,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
         if ([UIApplication instancesRespondToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
             [[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:animated?UIStatusBarAnimationFade:UIStatusBarAnimationNone];
         } else {
-            [[UIApplication sharedApplication] setStatusBarHidden:hidden animated:animated];
+            [[UIApplication sharedApplication] setStatusBarHidden:hidden withAnimation:UIStatusBarAnimationSlide];
         }
         
         // Get status bar height if visible
@@ -999,7 +999,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
         
         // Sheet
         if ([MFMailComposeViewController canSendMail]) {
-            self.actionsSheet = [[BlockActionSheet alloc] initWithTitle:nil];
+            self.actionsSheet = [[[BlockActionSheet alloc] initWithTitle:nil] autorelease];
                         
             [self.actionsSheet addButtonWithTitle:@"Save" block:^{
                 [self savePhoto];
@@ -1019,7 +1019,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
             [self.actionsSheet setCancelButtonWithTitle:NSLocalizedString(@"Cancel", nil) block:nil];
 
         } else {
-            self.actionsSheet = [[BlockActionSheet alloc] initWithTitle:nil];
+            self.actionsSheet = [[[BlockActionSheet alloc] initWithTitle:nil] autorelease];
                         
             [self.actionsSheet addButtonWithTitle:@"Save" block:^{
                 [self savePhoto];
@@ -1034,9 +1034,10 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
             [self.actionsSheet setCancelButtonWithTitle:NSLocalizedString(@"Cancel", nil) block:nil];
         }
         
-        [_actionsSheet showInView:self.view];
-        
+        [self.actionsSheet showInView:self.view];
+     
     }
+
 }
 
 #pragma mark - MBProgressHUD

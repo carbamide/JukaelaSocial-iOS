@@ -6,6 +6,59 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>${PRODUCT_NAME}</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>CFBundleTypeName</key>
+			<string>IMAGE</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.image</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>CFBundleTypeName</key>
+			<string>JPEG</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.jpeg</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>CFBundleTypeName</key>
+			<string>PNG</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.png</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>CFBundleTypeName</key>
+			<string>TIFF</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.tiff</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
+			<key>CFBundleTypeName</key>
+			<string>*</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.archive</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIcons</key>
@@ -30,66 +83,13 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.7</string>
+	<string>1.8</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>11</string>
+	<string>12</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>IMAGE</string>
-			<key>CFBundleTypeIconFiles</key>
-			<array/>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.image</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>JPEG</string>
-			<key>CFBundleTypeIconFiles</key>
-			<array/>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.jpeg</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>PNG</string>
-			<key>CFBundleTypeIconFiles</key>
-			<array/>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.png</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>TIFF</string>
-			<key>CFBundleTypeIconFiles</key>
-			<array/>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.tiff</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>*</string>
-			<key>CFBundleTypeIconFiles</key>
-			<array/>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.archive</string>
-			</array>
-		</dict>
-	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard</string>
 	<key>UIRequiredDeviceCapabilities</key>

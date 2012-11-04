@@ -144,6 +144,12 @@
 		29D5B866155476D2000D9374 /* underPageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B865155476D2000D9374 /* underPageBackground.png */; };
 		29D5B868155478C5000D9374 /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B867155478C5000D9374 /* 114.png */; };
 		29D677D51555BF0B00C7D065 /* NormalCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B83A15545FC6000D9374 /* NormalCellView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29DAEA331644C5EE00D6B341 /* REComposeViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29DAEA281644C5EE00D6B341 /* REComposeViewController.bundle */; };
+		29DAEA341644C5EE00D6B341 /* DEComposeRuledView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DAEA2A1644C5EE00D6B341 /* DEComposeRuledView.m */; };
+		29DAEA351644C5EE00D6B341 /* DEComposeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DAEA2C1644C5EE00D6B341 /* DEComposeTextView.m */; };
+		29DAEA361644C5EE00D6B341 /* REComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DAEA2E1644C5EE00D6B341 /* REComposeViewController.m */; };
+		29DAEA371644C5EE00D6B341 /* REComposeBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DAEA301644C5EE00D6B341 /* REComposeBackgroundView.m */; };
+		29DAEA381644C5EE00D6B341 /* REComposeSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DAEA321644C5EE00D6B341 /* REComposeSheetView.m */; };
 		29DB78C515B6F72D0056C68E /* PrettyCustomViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78B315B6F72D0056C68E /* PrettyCustomViewTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29DB78C615B6F72D0056C68E /* PrettyGridTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78B515B6F72D0056C68E /* PrettyGridTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29DB78C715B6F72D0056C68E /* PrettySegmentedControlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78B715B6F72D0056C68E /* PrettySegmentedControlTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -399,6 +405,17 @@
 		29D5B85A15547671000D9374 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
 		29D5B865155476D2000D9374 /* underPageBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = underPageBackground.png; sourceTree = "<group>"; };
 		29D5B867155478C5000D9374 /* 114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 114.png; sourceTree = "<group>"; };
+		29DAEA281644C5EE00D6B341 /* REComposeViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = REComposeViewController.bundle; sourceTree = "<group>"; };
+		29DAEA291644C5EE00D6B341 /* DEComposeRuledView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEComposeRuledView.h; sourceTree = "<group>"; };
+		29DAEA2A1644C5EE00D6B341 /* DEComposeRuledView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DEComposeRuledView.m; sourceTree = "<group>"; };
+		29DAEA2B1644C5EE00D6B341 /* DEComposeTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DEComposeTextView.h; sourceTree = "<group>"; };
+		29DAEA2C1644C5EE00D6B341 /* DEComposeTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DEComposeTextView.m; sourceTree = "<group>"; };
+		29DAEA2D1644C5EE00D6B341 /* REComposeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REComposeViewController.h; sourceTree = "<group>"; };
+		29DAEA2E1644C5EE00D6B341 /* REComposeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REComposeViewController.m; sourceTree = "<group>"; };
+		29DAEA2F1644C5EE00D6B341 /* REComposeBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REComposeBackgroundView.h; sourceTree = "<group>"; };
+		29DAEA301644C5EE00D6B341 /* REComposeBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REComposeBackgroundView.m; sourceTree = "<group>"; };
+		29DAEA311644C5EE00D6B341 /* REComposeSheetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REComposeSheetView.h; sourceTree = "<group>"; };
+		29DAEA321644C5EE00D6B341 /* REComposeSheetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REComposeSheetView.m; sourceTree = "<group>"; };
 		29DB78B215B6F72D0056C68E /* PrettyCustomViewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyCustomViewTableViewCell.h; sourceTree = "<group>"; };
 		29DB78B315B6F72D0056C68E /* PrettyCustomViewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyCustomViewTableViewCell.m; sourceTree = "<group>"; };
 		29DB78B415B6F72D0056C68E /* PrettyGridTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyGridTableViewCell.h; sourceTree = "<group>"; };
@@ -978,6 +995,7 @@
 				292434701565E330007C8E8C /* UsersPostsViewController.m */,
 				290045D415576D5D004F113A /* UsersViewController.h */,
 				290045D515576D5D004F113A /* UsersViewController.m */,
+				29DAEA3A1644C5F600D6B341 /* Compose Sheet */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -1012,6 +1030,24 @@
 				29D433D115FE27E100ABCB2F /* Gravatar */,
 			);
 			name = "Custom Classes";
+			sourceTree = "<group>";
+		};
+		29DAEA3A1644C5F600D6B341 /* Compose Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				29DAEA281644C5EE00D6B341 /* REComposeViewController.bundle */,
+				29DAEA291644C5EE00D6B341 /* DEComposeRuledView.h */,
+				29DAEA2A1644C5EE00D6B341 /* DEComposeRuledView.m */,
+				29DAEA2B1644C5EE00D6B341 /* DEComposeTextView.h */,
+				29DAEA2C1644C5EE00D6B341 /* DEComposeTextView.m */,
+				29DAEA2F1644C5EE00D6B341 /* REComposeBackgroundView.h */,
+				29DAEA2D1644C5EE00D6B341 /* REComposeViewController.h */,
+				29DAEA2E1644C5EE00D6B341 /* REComposeViewController.m */,
+				29DAEA301644C5EE00D6B341 /* REComposeBackgroundView.m */,
+				29DAEA311644C5EE00D6B341 /* REComposeSheetView.h */,
+				29DAEA321644C5EE00D6B341 /* REComposeSheetView.m */,
+			);
+			name = "Compose Sheet";
 			sourceTree = "<group>";
 		};
 		29DB78B115B6F72D0056C68E /* Cells */ = {
@@ -1108,7 +1144,7 @@
 		2956874D1552C96700FE741C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Jukaela Enterprises";
 			};
 			buildConfigurationList = 295687501552C96700FE741C /* Build configuration list for PBXProject "Jukaela" */;
@@ -1184,6 +1220,7 @@
 				29E517701608AC1200CA422F /* README.md in Resources */,
 				292431BC160A1ADA005DB723 /* LargeSplash.png in Resources */,
 				299BB4F9160E79D300898A7C /* loggedIn.aiff in Resources */,
+				29DAEA331644C5EE00D6B341 /* REComposeViewController.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1298,6 +1335,11 @@
 				29E517761608AC1200CA422F /* UIButton+WebCache.m in Sources */,
 				29E517771608AC1200CA422F /* UIImageView+WebCache.m in Sources */,
 				29E5177C1608B2BE00CA422F /* NormalWithImageCellView.m in Sources */,
+				29DAEA341644C5EE00D6B341 /* DEComposeRuledView.m in Sources */,
+				29DAEA351644C5EE00D6B341 /* DEComposeTextView.m in Sources */,
+				29DAEA361644C5EE00D6B341 /* REComposeViewController.m in Sources */,
+				29DAEA371644C5EE00D6B341 /* REComposeBackgroundView.m in Sources */,
+				29DAEA381644C5EE00D6B341 /* REComposeSheetView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1329,6 +1371,9 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1355,6 +1400,9 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1401,7 +1449,7 @@
 				);
 				PRODUCT_NAME = Jukaela;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FEE0C520-F104-438F-A9F7-16FFD8C67918";
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1438,7 +1486,7 @@
 				);
 				PRODUCT_NAME = Jukaela;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FEE0C520-F104-438F-A9F7-16FFD8C67918";
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

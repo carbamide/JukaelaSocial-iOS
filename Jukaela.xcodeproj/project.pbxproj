@@ -10,6 +10,8 @@
 		290045D615576D5D004F113A /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 290045D515576D5D004F113A /* UsersViewController.m */; };
 		290045DA15576D9C004F113A /* Users.png in Resources */ = {isa = PBXBuildFile; fileRef = 290045D815576D9C004F113A /* Users.png */; };
 		290045DB15576D9C004F113A /* Users@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 290045D915576D9C004F113A /* Users@2x.png */; };
+		2906BDED1647134D008ACB0F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2906BDEC1647134D008ACB0F /* CoreLocation.framework */; };
+		2906BDEF16471351008ACB0F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2906BDEE16471351008ACB0F /* MapKit.framework */; };
 		29084D5B15D2B2BC00CB7FFF /* JukaelaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */; };
 		29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */; };
 		2915698D15FFAFCA0084A29C /* ShareObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2915698C15FFAFCA0084A29C /* ShareObject.m */; };
@@ -189,6 +191,8 @@
 		290045D515576D5D004F113A /* UsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersViewController.m; sourceTree = "<group>"; };
 		290045D815576D9C004F113A /* Users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Users.png; sourceTree = "<group>"; };
 		290045D915576D9C004F113A /* Users@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Users@2x.png"; sourceTree = "<group>"; };
+		2906BDEC1647134D008ACB0F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		2906BDEE16471351008ACB0F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		29084D5915D2B2BC00CB7FFF /* JukaelaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaViewController.h; sourceTree = "<group>"; };
 		29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaViewController.m; sourceTree = "<group>"; };
 		29084D5D15D2B36D00CB7FFF /* JukaelaTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaTableViewController.h; sourceTree = "<group>"; };
@@ -489,6 +493,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2906BDEF16471351008ACB0F /* MapKit.framework in Frameworks */,
+				2906BDED1647134D008ACB0F /* CoreLocation.framework in Frameworks */,
 				299BB4FC160E7A4700898A7C /* AudioToolbox.framework in Frameworks */,
 				29E517791608AC7200CA422F /* ImageIO.framework in Frameworks */,
 				29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */,
@@ -524,6 +530,8 @@
 		2956874B1552C96700FE741C = {
 			isa = PBXGroup;
 			children = (
+				2906BDEE16471351008ACB0F /* MapKit.framework */,
+				2906BDEC1647134D008ACB0F /* CoreLocation.framework */,
 				295687601552C96700FE741C /* Jukaela Social */,
 				295687591552C96700FE741C /* Frameworks */,
 				295687571552C96700FE741C /* Products */,

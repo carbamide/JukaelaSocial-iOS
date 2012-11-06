@@ -365,6 +365,8 @@
     
     [kAppDelegate setCurrentViewController:self];
     
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
         if ([[self rememberUsername] isChecked] == NO) {
             [[self rememberUsername] setChecked];

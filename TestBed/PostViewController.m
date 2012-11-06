@@ -27,6 +27,8 @@
 
 @property (strong, nonatomic) NSString *currentString;
 
+@property (nonatomic) BOOL isPosting;
+
 @end
 
 @implementation PostViewController
@@ -145,11 +147,15 @@
 
 -(void)cancelPost:(id)sender
 {
+    [self setIsPosting:NO];
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)sendPost:(id)sender
 {
+    [self setIsPosting:YES];
+    
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"] == YES && ![kAppDelegate onlyToTwitter] && ![kAppDelegate onlyToFacebook] && ![kAppDelegate onlyToJukaela]) {
         BlockAlertView *confirmAlert = [[BlockAlertView alloc] initWithTitle:@"Confirm" message:@"Confirm sending to other services?"];
         
@@ -231,6 +237,8 @@
     if ([self tempImageData]) {
         [[TMImgurUploader sharedInstance] uploadImage:[UIImage imageWithData:[self tempImageData]] finishedBlock:^(NSDictionary *result, NSError *error){
             if (error) {
+                [self setIsPosting:NO];
+                
                 BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription]];
                 
                 [errorAlert setCancelButtonWithTitle:@"OK" block:^{
@@ -323,6 +331,8 @@
             }];
         }
         else {
+            [self setIsPosting:NO];
+
             BlockAlertView *jukaelaSocialPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting to Jukaela Social"];
             
             [jukaelaSocialPostingError setCancelButtonWithTitle:@"OK" block:nil];
@@ -380,6 +390,8 @@
                             }
                         }
                         else {
+                            [self setIsPosting:NO];
+
                             BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Twitter."];
                             
                             [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
@@ -408,6 +420,8 @@
                             }
                         }
                         else {
+                            [self setIsPosting:NO];
+
                             BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Twitter."];
                             
                             [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
@@ -504,6 +518,8 @@
                                 }
                             }
                             else {
+                                [self setIsPosting:NO];
+
                                 BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Facebook."];
                                 
                                 [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
@@ -540,6 +556,8 @@
                                 }
                             }
                             else {
+                                [self setIsPosting:NO];
+
                                 BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Facebook."];
                                 
                                 [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
@@ -613,6 +631,17 @@
     [webViewController setBarsTintColor:[UIColor darkGrayColor]];
     
     [self presentModalViewController:webViewController animated:YES];
+}
+
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([self isPosting]) {
+        return NO;
+    }
+    else {
+        return YES;
+    }
 }
 
 -(void)textViewDidChange:(UITextView *)textView

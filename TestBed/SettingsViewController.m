@@ -15,13 +15,13 @@
 #import "TestFlight.h"
 #import "SFHFKeychainUtils.h"
 
-@interface SettingsViewController ()
-
-typedef enum {
+NS_ENUM(NSInteger, SocialTypes) {
     FacebookType,
     TwitterType,
     ConfirmType
-} SocialTypes;
+};
+
+@interface SettingsViewController ()
 
 @property (strong, nonatomic) UISwitch *facebookSwitch;
 @property (strong, nonatomic) UISwitch *twitterSwitch;
@@ -250,7 +250,7 @@ typedef enum {
                 
                 NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
                                 
-                NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
+                NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions", @"read_friendlists"]};
                 
                 [accountStore requestAccessToAccountsWithType:accountType options:options completion:^(BOOL granted, NSError *error) {
                     if(granted) {

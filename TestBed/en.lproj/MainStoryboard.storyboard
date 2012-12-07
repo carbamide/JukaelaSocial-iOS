@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3079" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="dso-3y-mmV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="dso-3y-mmV">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2077"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller - Feed-->
@@ -391,16 +391,65 @@
             </objects>
             <point key="canvasLocation" x="1599" y="-563"/>
         </scene>
-        <!--Post View Controller - Post-->
+        <!--Post View Controller - New Post-->
         <scene sceneID="rQA-d6-VrI">
             <objects>
                 <viewController id="XAZ-Aw-1GU" customClass="PostViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2qy-6O-a6q">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="Ci6-KR-5tW">
+                                <rect key="frame" x="10" y="10" width="301" height="182"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="256" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sl7-QP-MtA">
+                                        <rect key="frame" x="239" y="144" width="42" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="WKH-FE-JFc">
+                                        <rect key="frame" x="13" y="134" width="41" height="41"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal" image="camera.png">
+                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="takePhoto:" destination="XAZ-Aw-1GU" eventType="touchUpInside" id="AGv-rR-RtH"/>
+                                        </connections>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="qmr-C9-MNP">
+                                        <rect key="frame" x="11" y="11" width="60" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="UEV-D3-8r2">
+                                        <rect key="frame" x="88" y="11" width="198" height="136"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Post" id="xlS-AF-0Jq"/>
+                    <navigationItem key="navigationItem" title="New Post" id="xlS-AF-0Jq"/>
+                    <connections>
+                        <outlet property="backgroundView" destination="Ci6-KR-5tW" id="mMj-xO-Bec"/>
+                        <outlet property="countDownLabel" destination="sl7-QP-MtA" id="59b-Tr-oVw"/>
+                        <outlet property="photoButton" destination="WKH-FE-JFc" id="d2r-xH-4gG"/>
+                        <outlet property="theTextView" destination="UEV-D3-8r2" id="Ccc-lX-G1Y"/>
+                        <outlet property="userProfileImage" destination="qmr-C9-MNP" id="HYw-TL-eAY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vmC-iZ-t25" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -474,8 +523,89 @@
         <image name="JukaelaLogo.png" width="500" height="330"/>
         <image name="Settings.png" width="30" height="30"/>
         <image name="Users.png" width="30" height="30"/>
+        <image name="camera.png" width="30" height="30"/>
         <image name="mention.png" width="30" height="30"/>
     </resources>
+    <classes>
+        <class className="EditUserViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditUserViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel:"/>
+            </relationships>
+        </class>
+        <class className="FeedViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FeedViewController.h"/>
+        </class>
+        <class className="FeedbackViewController" superclassName="JukaelaViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FeedbackViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel:"/>
+                <relationship kind="action" name="submitFeedBack:"/>
+                <relationship kind="outlet" name="feedbackTextView" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="FollowerViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FollowerViewController.h"/>
+        </class>
+        <class className="JukaelaTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/JukaelaTableViewController.h"/>
+        </class>
+        <class className="JukaelaViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/JukaelaViewController.h"/>
+        </class>
+        <class className="LoginViewController" superclassName="JukaelaViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="loginAction:"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="loginButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="loginTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="password" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="username" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="MentionsViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MentionsViewController.h"/>
+        </class>
+        <class className="NewUserViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NewUserViewController.h"/>
+        </class>
+        <class className="PostViewController" superclassName="JukaelaViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PostViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="takePhoto:"/>
+                <relationship kind="outlet" name="backgroundView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="countDownLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="photoButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="theTextView" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="userProfileImage" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+        <class className="PrettyNavigationBar" superclassName="UINavigationBar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyNavigationBar.h"/>
+        </class>
+        <class className="PrettyTabBar" superclassName="UITabBar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyTabBar.h"/>
+        </class>
+        <class className="PrettyToolbar" superclassName="UIToolbar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyToolbar.h"/>
+        </class>
+        <class className="SettingsViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
+        </class>
+        <class className="ShadowedTableView" superclassName="UITableView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShadowedTableView.h"/>
+        </class>
+        <class className="ShowUserViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowUserViewController.h"/>
+        </class>
+        <class className="UsersPostsViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UsersPostsViewController.h"/>
+        </class>
+        <class className="UsersViewController" superclassName="JukaelaTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UsersViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -37,7 +37,7 @@
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
 @property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
-@property (nonatomic) ChangeType currentChangeType;
+@property (nonatomic) enum ChangeType currentChangeType;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @property (nonatomic) BOOL fbSuccess;
 @property (nonatomic) BOOL twitterSuccess;
@@ -102,7 +102,7 @@
         
         [_oldRefreshControl addTarget:self action:@selector(refreshControlRefresh:) forControlEvents:UIControlEventValueChanged];
     }
-    
+        
     [self setupNotifications];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
@@ -163,6 +163,8 @@
                     
                     [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[@"id"]]];
                     
+                    [kAppDelegate setUserEmail:[NSString stringWithFormat:@"%@", loginDict[@"email"]]];
+                    
                     [[NSUserDefaults standardUserDefaults] setValue:[kAppDelegate userID] forKey:@"user_id"];
                     
                     [[self progressHUD] setLabelText:@"Loading Feed..."];
@@ -209,7 +211,7 @@
             [noposts show];
         }
     }
-    
+
     [super viewDidLoad];
 }
 

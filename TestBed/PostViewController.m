@@ -28,6 +28,7 @@
 @property (strong, nonatomic) NSString *currentString;
 
 @property (nonatomic) BOOL isPosting;
+@property (nonatomic) BOOL imageAdded;
 
 @end
 
@@ -39,6 +40,25 @@
     
     [self setupNavbarForPosting];
     
+    [[self theTextView] becomeFirstResponder];
+    [[self theTextView] setDelegate:self];
+    
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [kAppDelegate userEmail]]]]];
+    
+    [[self userProfileImage] setImage:image];
+    
+    [[[self userProfileImage] layer] setShadowColor:[[UIColor darkGrayColor] CGColor]];
+    [[[self userProfileImage] layer] setShadowRadius:8];
+    [[[self userProfileImage] layer] setShadowOpacity:0.8];
+    [[[self userProfileImage] layer] setShadowOffset:CGSizeMake(0, 2)];
+    
+    [[[self backgroundView] layer] setCornerRadius:8];
+    
+    [[[self backgroundView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
+    [[[self backgroundView] layer] setShadowRadius:8];
+    [[[self backgroundView] layer] setShadowOpacity:1.0];
+    [[[self backgroundView] layer] setShadowOffset:CGSizeMake(0, 5)];
+    
     if ([self imageFromExternalSource]) {
         [self setTempImageData:UIImageJPEGRepresentation([self imageFromExternalSource], 1.0)];
         
@@ -46,84 +66,78 @@
         
         [tempButton setTintColor:[UIColor blueColor]];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:UITextViewTextDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self updateCount];
+    }];
 }
 
--(void)photoSheet:(id)sender
+-(IBAction)takePhoto:(id)sender
 {
-    if ([self tempImageData]) {
-        BlockActionSheet *removePhoto = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
+    if ([self imageAdded]) {
+        BlockActionSheet *removePhotoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
         
-        [removePhoto setDestructiveButtonWithTitle:@"Remove Photo" block:^{
-            [self setUrlString:nil];
+        [removePhotoActionSheet setDestructiveButtonWithTitle:@"Remove Photo" block:^{
             [self setTempImageData:nil];
+            
+            [[self photoButton] setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
+            
+            [self setImageAdded:NO];
         }];
         
-        [removePhoto setCancelButtonWithTitle:@"Cancel" block:nil];
+        [removePhotoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
         
-        [removePhoto showInView:[self view]];
+        [removePhotoActionSheet showInView:[self view]];
     }
     else {
-        BlockActionSheet *photoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Photo Source"];
-        
-        [self setCurrentString:[[self theTextView] text]];
-        
-        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            [photoActionSheet addButtonWithTitle:@"Take Photo" block:^{
+        if ([self tempImageData]) {
+            BlockActionSheet *removePhoto = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
+            
+            [removePhoto setDestructiveButtonWithTitle:@"Remove Photo" block:^{
+                [self setUrlString:nil];
+                [self setTempImageData:nil];
+            }];
+            
+            [removePhoto setCancelButtonWithTitle:@"Cancel" block:nil];
+            
+            [removePhoto showInView:[self view]];
+        }
+        else {
+            BlockActionSheet *photoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Photo Source"];
+            
+            [self setCurrentString:[[self theTextView] text]];
+            
+            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+                [photoActionSheet addButtonWithTitle:@"Take Photo" block:^{
+                    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+                    
+                    [imagePicker setDelegate:self];
+                    [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+                    [imagePicker setAllowsEditing:NO];
+                    
+                    [self presentViewController:imagePicker animated:YES completion:nil];
+                }];
+            }
+            
+            [photoActionSheet addButtonWithTitle:@"Choose Existing" block:^{
                 UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
                 
                 [imagePicker setDelegate:self];
-                [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+                [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
                 [imagePicker setAllowsEditing:NO];
                 
                 [self presentViewController:imagePicker animated:YES completion:nil];
             }];
+            
+            [photoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+            
+            [photoActionSheet showInView:[self view]];
         }
-        
-        [photoActionSheet addButtonWithTitle:@"Choose Existing" block:^{
-            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-            
-            [imagePicker setDelegate:self];
-            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-            [imagePicker setAllowsEditing:NO];
-            
-            [self presentViewController:imagePicker animated:YES completion:nil];
-        }];
-        
-        [photoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-        
-        [photoActionSheet showInView:[self view]];
     }
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    if (![self theTextView]) {
-        if (_replyString) {
-            _theTextView = [[YIPopupTextView alloc] initWithText:[self replyString] maxCount:256];
-        }
-        else if (_repostString) {
-            _theTextView = [[YIPopupTextView alloc] initWithText:[self repostString] maxCount:256];
-        }
-        else {
-            _theTextView = [[YIPopupTextView alloc] initWithPlaceHolder:@"Make a post, you guys!" maxCount:256];
-        }
-    }
-    else {
-        _theTextView = [[YIPopupTextView alloc] initWithText:[self currentString] maxCount:256];
-    }
-    
-    if ([[_theTextView text] length] > 0) {
-        [_theTextView setEditable:YES];
-        
-        [_theTextView setText:[[_theTextView text] stringByAppendingString:@" "]];
-    }
-    [_theTextView setDelegate:self];
-    [_theTextView setShowCloseButton:NO];
-    
-    [_theTextView setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height - 20)];
-    
-    [_theTextView showInView:[self view]];
-    
     if ([[_theTextView text] length] > 0) {
         [[[self navigationItem] rightBarButtonItems][0] setEnabled:YES];
     }
@@ -134,11 +148,9 @@
 
 -(void)setupNavbarForPosting
 {
-    UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendPost:)];
+    UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Post" style:UIBarButtonItemStyleBordered target:self action:@selector(sendPost:)];
     
-    UIBarButtonItem *photoButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(photoSheet:)];
-    
-    [[self navigationItem] setRightBarButtonItems:@[sendButton, photoButton]];
+    [[self navigationItem] setRightBarButtonItem:sendButton];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelPost:)];
     
@@ -148,7 +160,7 @@
 -(void)cancelPost:(id)sender
 {
     [self setIsPosting:NO];
-
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -332,7 +344,7 @@
         }
         else {
             [self setIsPosting:NO];
-
+            
             BlockAlertView *jukaelaSocialPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting to Jukaela Social"];
             
             [jukaelaSocialPostingError setCancelButtonWithTitle:@"OK" block:nil];
@@ -391,7 +403,7 @@
                         }
                         else {
                             [self setIsPosting:NO];
-
+                            
                             BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Twitter."];
                             
                             [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
@@ -421,7 +433,7 @@
                         }
                         else {
                             [self setIsPosting:NO];
-
+                            
                             BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Twitter."];
                             
                             [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
@@ -456,6 +468,14 @@
 
 - (void)sendFacebookPost:(NSString *)stringToSend
 {
+    NSLinguisticTaggerOptions options = NSLinguisticTaggerOmitWhitespace | NSLinguisticTaggerOmitPunctuation | NSLinguisticTaggerJoinNames;
+    NSLinguisticTagger *tagger = [[NSLinguisticTagger alloc] initWithTagSchemes: [NSLinguisticTagger availableTagSchemesForLanguage:@"en"] options:options];
+    tagger.string = [[self theTextView] text];
+    [tagger enumerateTagsInRange:NSMakeRange(0, [[[self theTextView] text] length]) scheme:NSLinguisticTagSchemeNameTypeOrLexicalClass options:options usingBlock:^(NSString *tag, NSRange tokenRange, NSRange sentenceRange, BOOL *stop) {
+        NSString *token = [[[self theTextView] text] substringWithRange:tokenRange];
+        NSLog(@"%@: %@", token, tag);
+    }];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_or_twitter_sending" object:nil];
     
     if ([self tempImageData]) {
@@ -478,7 +498,7 @@
             
             ACAccountType *accountTypeFacebook = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
             
-            NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions"]};
+            NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions", @"read_friendlists"]};
             
             [_accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
                 if(granted) {
@@ -519,7 +539,7 @@
                             }
                             else {
                                 [self setIsPosting:NO];
-
+                                
                                 BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Facebook."];
                                 
                                 [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
@@ -557,7 +577,7 @@
                             }
                             else {
                                 [self setIsPosting:NO];
-
+                                
                                 BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Facebook."];
                                 
                                 [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
@@ -596,6 +616,11 @@
 
 - (void)viewDidUnload
 {
+    [self setUserProfileImage:nil];
+    [self setTheTextView:nil];
+    [self setCountDownLabel:nil];
+    [self setPhotoButton:nil];
+    [self setBackgroundView:nil];
     [super viewDidUnload];
 }
 
@@ -612,9 +637,9 @@
     
     [self setTempImageData:UIImageJPEGRepresentation(originalImage, 10)];
     
-    UIBarButtonItem *tempButton = [[self navigationItem] rightBarButtonItems][1];
+    [[self photoButton] setImage:[originalImage thumbnailImage:41 transparentBorder:1 cornerRadius:4 interpolationQuality:kCGInterpolationMedium] forState:UIControlStateNormal];
     
-    [tempButton setTintColor:[UIColor blueColor]];
+    [self setImageAdded:YES];
     
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
@@ -641,6 +666,23 @@
     }
     else {
         return YES;
+    }
+}
+
+-(void)updateCount
+{
+    NSUInteger maxCount = 256;
+    
+    NSUInteger textCount = [self.theTextView.text length];
+    
+    _countDownLabel.text = [NSString stringWithFormat:@"%d", maxCount-textCount];
+    
+    NSLog(@"%d", maxCount - textCount);
+    
+    if (textCount > maxCount) {
+        _countDownLabel.textColor = [UIColor redColor];
+    } else {
+        _countDownLabel.textColor = [UIColor darkGrayColor];
     }
 }
 

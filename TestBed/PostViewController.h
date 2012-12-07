@@ -9,14 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "YIPopupTextView.h"
 
-@interface PostViewController : JukaelaViewController <YIPopupTextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface PostViewController : JukaelaViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) NSString *replyString;
 @property (strong, nonatomic) NSString *repostString;
 @property (strong, nonatomic) NSString *urlString;
 
-@property (strong, nonatomic) YIPopupTextView *theTextView;
-
 @property (strong, nonatomic) UIImage *imageFromExternalSource;
+
+@property (strong, nonatomic) IBOutlet UIImageView *userProfileImage;
+@property (strong, nonatomic) IBOutlet UITextView *theTextView;
+@property (strong, nonatomic) IBOutlet UILabel *countDownLabel;
+@property (strong, nonatomic) IBOutlet UIButton *photoButton;
+@property (strong, nonatomic) IBOutlet UIView *backgroundView;
+
+-(IBAction)takePhoto:(id)sender;
 
 @end

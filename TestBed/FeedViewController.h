@@ -14,13 +14,13 @@
 #import "MWPhotoBrowser.h"
 #import "YIPopupTextView.h"
 
-@interface FeedViewController : UITableViewController <YIPopupTextViewDelegate, MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, JSCoreTextViewDelegate, MWPhotoBrowserDelegate, UIGestureRecognizerDelegate>
-
-typedef enum {
-    INSERT_POST = 0,
+NS_ENUM(NSInteger, ChangeType) {
+    INSERT_POST,
     DELETE_POST,
     OTHER_CHANGE_TYPE
-} ChangeType;
+};
+
+@interface FeedViewController : UITableViewController <YIPopupTextViewDelegate, MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, JSCoreTextViewDelegate, MWPhotoBrowserDelegate, UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *theFeed;
 @property (strong, nonatomic) UITextView *textView;

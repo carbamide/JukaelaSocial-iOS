@@ -8,9 +8,12 @@
 
 #import <objc/runtime.h>
 #import "AppDelegate.h"
-#ifdef _USE_OS_6_OR_LATER
+#import <Accounts/Accounts.h>
+
+//#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
 #import <Social/Social.h>
-#endif
+#import <Accounts/Accounts.h>
+//#endif
 #import "TestFlight.h"
 #import "TMImgurUploader.h"
 #import "YISplashScreen.h"
@@ -182,6 +185,43 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"post_image" object:nil userInfo:@{@"image" : tempImage}];
     
     return YES;
+}
+
+-(void)friendList:(id)sender
+{
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    
+    ACAccountType *accountTypeFacebook = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    
+    NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions", @"read_friendlists"]};
+    
+    [accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
+        if(granted) {
+            NSArray *accounts = [accountStore accountsWithAccountType:accountTypeFacebook];
+            
+            ACAccount *facebookAccount = [accounts lastObject];
+            
+            NSAssert([[facebookAccount credential] oauthToken], @"The OAuth token is invalid", nil);
+            
+            NSDictionary *parameters = @{@"access_token":[[facebookAccount credential] oauthToken]};
+            
+            NSLog(@"%@", parameters);
+            
+            NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/friends"];
+            
+            SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodGET URL:feedURL parameters:parameters];
+            
+            [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
+                NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
+                
+                [self setFacebookFriends:jsonData[@"data"]];
+                
+                NSLog(@"%@", [self facebookFriends]);
+            }];
+            
+        }
+    }];
+    
 }
 
 @end

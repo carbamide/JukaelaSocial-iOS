@@ -95,6 +95,8 @@
 		298A644615E267D7009BF175 /* BlockBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 298A644115E267D7009BF175 /* BlockBackground.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		298A644715E267D7009BF175 /* BlockTextPromptAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 298A644315E267D7009BF175 /* BlockTextPromptAlertView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		298F7E071569821200516858 /* EditUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298F7E061569821200516858 /* EditUserViewController.m */; };
+		299AF47A16719A41000F1C45 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 299AF47816719A41000F1C45 /* camera.png */; };
+		299AF47B16719A41000F1C45 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 299AF47916719A41000F1C45 /* camera@2x.png */; };
 		299BB4F9160E79D300898A7C /* loggedIn.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 299BB4F8160E79D300898A7C /* loggedIn.aiff */; };
 		299BB4FC160E7A4700898A7C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 299BB4FB160E7A4700898A7C /* AudioToolbox.framework */; };
 		29AA10381556238F00B8D3F5 /* RIButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10331556238F00B8D3F5 /* RIButtonItem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -323,6 +325,8 @@
 		298A644815E26802009BF175 /* BlockUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockUI.h; sourceTree = "<group>"; };
 		298F7E051569821200516858 /* EditUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUserViewController.h; sourceTree = "<group>"; };
 		298F7E061569821200516858 /* EditUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUserViewController.m; sourceTree = "<group>"; };
+		299AF47816719A41000F1C45 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		299AF47916719A41000F1C45 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@2x.png"; sourceTree = "<group>"; };
 		299BB4F8160E79D300898A7C /* loggedIn.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = loggedIn.aiff; sourceTree = "<group>"; };
 		299BB4FB160E7A4700898A7C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		29AA10321556238F00B8D3F5 /* RIButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIButtonItem.h; sourceTree = "<group>"; };
@@ -925,6 +929,8 @@
 			children = (
 				292A0E281604AE4300060702 /* Default-568h@2x.png */,
 				292431BB160A1ADA005DB723 /* LargeSplash.png */,
+				299AF47816719A41000F1C45 /* camera.png */,
+				299AF47916719A41000F1C45 /* camera@2x.png */,
 				292C8CC215EE972100E8B046 /* mention.png */,
 				292C8CC315EE972100E8B046 /* mention@2x.png */,
 				298A640E15E267A4009BF175 /* ActionSheet */,
@@ -1229,6 +1235,8 @@
 				292431BC160A1ADA005DB723 /* LargeSplash.png in Resources */,
 				299BB4F9160E79D300898A7C /* loggedIn.aiff in Resources */,
 				29DAEA331644C5EE00D6B341 /* REComposeViewController.bundle in Resources */,
+				299AF47A16719A41000F1C45 /* camera.png in Resources */,
+				299AF47B16719A41000F1C45 /* camera@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

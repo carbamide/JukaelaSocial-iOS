@@ -102,4 +102,8 @@
 	[self _updateShouldDrawPlaceholder];	
 }
 
+-(void)dictationRecordingDidEnd
+{
+    NSLog(@"dictation did end");
+}
 @end

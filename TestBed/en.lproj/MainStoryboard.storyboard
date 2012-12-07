@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="dso-3y-mmV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3081" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="dso-3y-mmV">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2080"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller - Feed-->
@@ -442,11 +442,24 @@
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="New Post" id="xlS-AF-0Jq"/>
+                    <navigationItem key="navigationItem" title="New Post" id="xlS-AF-0Jq">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="AUK-Vf-6qM">
+                            <connections>
+                                <action selector="cancelPost:" destination="XAZ-Aw-1GU" id="sDS-Bx-zZK"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Post" id="e7O-ZZ-eaF">
+                            <connections>
+                                <action selector="sendPost:" destination="XAZ-Aw-1GU" id="1Ur-9d-kwu"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="backgroundView" destination="Ci6-KR-5tW" id="mMj-xO-Bec"/>
+                        <outlet property="cancelButton" destination="AUK-Vf-6qM" id="zvp-et-xIM"/>
                         <outlet property="countDownLabel" destination="sl7-QP-MtA" id="59b-Tr-oVw"/>
                         <outlet property="photoButton" destination="WKH-FE-JFc" id="d2r-xH-4gG"/>
+                        <outlet property="postButton" destination="e7O-ZZ-eaF" id="Fnz-AX-las"/>
                         <outlet property="theTextView" destination="UEV-D3-8r2" id="Ccc-lX-G1Y"/>
                         <outlet property="userProfileImage" destination="qmr-C9-MNP" id="HYw-TL-eAY"/>
                     </connections>
@@ -526,86 +539,6 @@
         <image name="camera.png" width="30" height="30"/>
         <image name="mention.png" width="30" height="30"/>
     </resources>
-    <classes>
-        <class className="EditUserViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditUserViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel:"/>
-            </relationships>
-        </class>
-        <class className="FeedViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FeedViewController.h"/>
-        </class>
-        <class className="FeedbackViewController" superclassName="JukaelaViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FeedbackViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="cancel:"/>
-                <relationship kind="action" name="submitFeedBack:"/>
-                <relationship kind="outlet" name="feedbackTextView" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="FollowerViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FollowerViewController.h"/>
-        </class>
-        <class className="JukaelaTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JukaelaTableViewController.h"/>
-        </class>
-        <class className="JukaelaViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/JukaelaViewController.h"/>
-        </class>
-        <class className="LoginViewController" superclassName="JukaelaViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="loginAction:"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="loginButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="loginTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="password" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="username" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="MentionsViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MentionsViewController.h"/>
-        </class>
-        <class className="NewUserViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NewUserViewController.h"/>
-        </class>
-        <class className="PostViewController" superclassName="JukaelaViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PostViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="takePhoto:"/>
-                <relationship kind="outlet" name="backgroundView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="countDownLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="photoButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="theTextView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="userProfileImage" candidateClass="UIImageView"/>
-            </relationships>
-        </class>
-        <class className="PrettyNavigationBar" superclassName="UINavigationBar">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyNavigationBar.h"/>
-        </class>
-        <class className="PrettyTabBar" superclassName="UITabBar">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyTabBar.h"/>
-        </class>
-        <class className="PrettyToolbar" superclassName="UIToolbar">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PrettyToolbar.h"/>
-        </class>
-        <class className="SettingsViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
-        </class>
-        <class className="ShadowedTableView" superclassName="UITableView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShadowedTableView.h"/>
-        </class>
-        <class className="ShowUserViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ShowUserViewController.h"/>
-        </class>
-        <class className="UsersPostsViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UsersPostsViewController.h"/>
-        </class>
-        <class className="UsersViewController" superclassName="JukaelaTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UsersViewController.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -119,10 +119,12 @@
 
 -(void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-	NSString *deviceTokenString = [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<"withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    [[NSUserDefaults standardUserDefaults] setValue:deviceTokenString forKey:@"deviceToken"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:@"deviceToken"]) {
+        NSString *deviceTokenString = [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<"withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
+        
+        [[NSUserDefaults standardUserDefaults] setValue:deviceTokenString forKey:@"deviceToken"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 -(void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err

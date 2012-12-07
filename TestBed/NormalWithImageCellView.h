@@ -12,6 +12,5 @@
 @interface NormalWithImageCellView : NormalCellView
 
 @property (strong, nonatomic) UIImageView *externalImage;
-@property (strong, nonatomic) UIActivityIndicatorView *externalActivityIndicator;
 
 @end

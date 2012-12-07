@@ -12,7 +12,7 @@
 #import "AppDelegate.h"
 #import "ShareObject.h"
 #import "NormalCellView.h"
-#import "SelfCellView.h"
+#import "NormalCellView.h"
 #import "WBSuccessNoticeView.h"
 
 @implementation ShareObject

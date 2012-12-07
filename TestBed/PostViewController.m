@@ -37,35 +37,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self setupNavbarForPosting];
-    
+        
     [[self theTextView] becomeFirstResponder];
     [[self theTextView] setDelegate:self];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [kAppDelegate userEmail]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [kAppDelegate userID]]]]];
+    
+    CGRect backgroundRect = self.backgroundView.frame;
+    CGRect userImageRect = self.userProfileImage.frame;
     
     [[self userProfileImage] setImage:image];
+    
+    [[self userProfileImage] setClipsToBounds:NO];
     
     [[[self userProfileImage] layer] setShadowColor:[[UIColor darkGrayColor] CGColor]];
     [[[self userProfileImage] layer] setShadowRadius:8];
     [[[self userProfileImage] layer] setShadowOpacity:0.8];
-    [[[self userProfileImage] layer] setShadowOffset:CGSizeMake(0, 2)];
-    
+    [[[self userProfileImage] layer] setShadowOffset:CGSizeMake(-12, -10)];
+    [[[self userProfileImage] layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:userImageRect byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)] CGPath]];
+
     [[[self backgroundView] layer] setCornerRadius:8];
-    
+
     [[[self backgroundView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
     [[[self backgroundView] layer] setShadowRadius:8];
     [[[self backgroundView] layer] setShadowOpacity:1.0];
-    [[[self backgroundView] layer] setShadowOffset:CGSizeMake(0, 5)];
-    
-    if ([self imageFromExternalSource]) {
-        [self setTempImageData:UIImageJPEGRepresentation([self imageFromExternalSource], 1.0)];
-        
-        UIBarButtonItem *tempButton = [[self navigationItem] rightBarButtonItems][1];
-        
-        [tempButton setTintColor:[UIColor blueColor]];
-    }
+    [[[self backgroundView] layer] setShadowOffset:CGSizeMake(-8, -15)];
+    [[[self backgroundView] layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:backgroundRect byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)] CGPath]];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:UITextViewTextDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
         [self updateCount];
@@ -136,16 +133,6 @@
     }
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    if ([[_theTextView text] length] > 0) {
-        [[[self navigationItem] rightBarButtonItems][0] setEnabled:YES];
-    }
-    else {
-        [[[self navigationItem] rightBarButtonItems][0] setEnabled:NO];
-    }
-}
-
 -(void)setupNavbarForPosting
 {
     UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Post" style:UIBarButtonItemStyleBordered target:self action:@selector(sendPost:)];
@@ -157,14 +144,14 @@
     [[self navigationItem] setLeftBarButtonItem:cancelButton];
 }
 
--(void)cancelPost:(id)sender
+-(IBAction)cancelPost:(id)sender
 {
     [self setIsPosting:NO];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)sendPost:(id)sender
+-(IBAction)sendPost:(id)sender
 {
     [self setIsPosting:YES];
     
@@ -468,14 +455,6 @@
 
 - (void)sendFacebookPost:(NSString *)stringToSend
 {
-    NSLinguisticTaggerOptions options = NSLinguisticTaggerOmitWhitespace | NSLinguisticTaggerOmitPunctuation | NSLinguisticTaggerJoinNames;
-    NSLinguisticTagger *tagger = [[NSLinguisticTagger alloc] initWithTagSchemes: [NSLinguisticTagger availableTagSchemesForLanguage:@"en"] options:options];
-    tagger.string = [[self theTextView] text];
-    [tagger enumerateTagsInRange:NSMakeRange(0, [[[self theTextView] text] length]) scheme:NSLinguisticTagSchemeNameTypeOrLexicalClass options:options usingBlock:^(NSString *tag, NSRange tokenRange, NSRange sentenceRange, BOOL *stop) {
-        NSString *token = [[[self theTextView] text] substringWithRange:tokenRange];
-        NSLog(@"%@: %@", token, tag);
-    }];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_or_twitter_sending" object:nil];
     
     if ([self tempImageData]) {
@@ -621,6 +600,8 @@
     [self setCountDownLabel:nil];
     [self setPhotoButton:nil];
     [self setBackgroundView:nil];
+    [self setPostButton:nil];
+    [self setCancelButton:nil];
     [super viewDidUnload];
 }
 
@@ -677,8 +658,6 @@
     
     _countDownLabel.text = [NSString stringWithFormat:@"%d", maxCount-textCount];
     
-    NSLog(@"%d", maxCount - textCount);
-    
     if (textCount > maxCount) {
         _countDownLabel.textColor = [UIColor redColor];
     } else {
@@ -689,10 +668,10 @@
 -(void)textViewDidChange:(UITextView *)textView
 {
     if ([[textView text] length] > 0) {
-        [[[self navigationItem] rightBarButtonItems][0] setEnabled:YES];
+        [[[self navigationItem] rightBarButtonItem] setEnabled:YES];
     }
     else {
-        [[[self navigationItem] rightBarButtonItems][0] setEnabled:NO];
+        [[[self navigationItem] rightBarButtonItem] setEnabled:NO];
     }
 }
 

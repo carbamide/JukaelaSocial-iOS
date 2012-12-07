@@ -115,8 +115,8 @@
 
 		if (isRelativePastDate) {
 			// Fetch the string format template for relative past dates from the localization file and crunch out a formatted string.
-			NSString *pastDatePhraseTemplate = SORelativeDateLocalizedString(@"formatTemplateForRelativePastDatePhrase", nil);
-			transformedValue = [NSString stringWithFormat:pastDatePhraseTemplate, relativeDifference, localizedDateComponentName];
+			//NSString *pastDatePhraseTemplate = SORelativeDateLocalizedString(@"formatTemplateForRelativePastDatePhrase", nil);
+			transformedValue = [NSString stringWithFormat:@"%d %@", relativeDifference, localizedDateComponentName];
 		} else {
 			// Fetch the string format template for relative future dates from the localization file and crunch out a formatted string.
 			NSString *futureDatePhraseTemplate = SORelativeDateLocalizedString(@"formatTemplateForRelativeFutureDatePhrase", nil);

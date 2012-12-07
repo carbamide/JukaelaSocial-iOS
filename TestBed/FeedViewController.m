@@ -15,11 +15,10 @@
 #import "AppDelegate.h"
 #import "NormalCellView.h"
 #import "FeedViewController.h"
-#import "GradientView.h"
+#import "CellBackground.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
 #import "PostViewController.h"
-#import "SelfCellView.h"
 #import "ShareObject.h"
 #import "ShowUserViewController.h"
 #import "SORelativeDateTransformer.h"
@@ -29,7 +28,6 @@
 #import "WBStickyNoticeView.h"
 #import "SFHFKeychainUtils.h"
 #import "YISplashScreen.h"
-#import "SelfWithImageCellView.h"
 #import "UIImageView+Curled.h"
 #import "NormalWithImageCellView.h"
 #import "LoginViewController.h"
@@ -48,6 +46,7 @@
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) UIImage *tempImage;
+@property (strong, nonatomic) NSString *documentsFolder;
 
 -(void)refreshTableInformation:(NSIndexPath *)indexPath from:(NSInteger)from to:(NSInteger)to removeSplash:(BOOL)removeSplash;
 
@@ -86,6 +85,8 @@
 
 -(void)viewDidLoad
 {
+    [self setDocumentsFolder:[Helpers documentsPath]];
+    
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
         UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
         
@@ -102,7 +103,7 @@
         
         [_oldRefreshControl addTarget:self action:@selector(refreshControlRefresh:) forControlEvents:UIControlEventValueChanged];
     }
-        
+    
     [self setupNotifications];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
@@ -211,7 +212,7 @@
             [noposts show];
         }
     }
-
+    
     [super viewDidLoad];
 }
 
@@ -545,8 +546,6 @@
                         difference = 1;
                     }
                     
-                    NSLog(@"%i", difference);
-                    
                     for (int i = 0; i < difference; i++) {
                         [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                         
@@ -653,36 +652,21 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *contentText = [self theFeed][[indexPath row]][@"content"];
-    NSString *nameText = [self theFeed][[indexPath row]][@"name"];
     
-    CGSize constraint;
+    CGSize constraint = CGSizeMake(275, 20000);
     
-    if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
-        if ([self theFeed][[indexPath row]][@"repost_user_id"] && [self theFeed][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
-            constraint = CGSizeMake(165 - (7.5 * 2), 20000);
-        }
-        else {
-            constraint = CGSizeMake(185 - (7.5 * 2), 20000);
-        }
-    }
-    else {
-        constraint = CGSizeMake(215 - (7.5 * 2), 20000);
-    }
-    
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-    
-    CGSize nameSize = [nameText sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     CGFloat height;
     
     if ([self theFeed][[indexPath row]][@"repost_user_id"] && [self theFeed][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
-        height = jMAX(contentSize.height + nameSize.height + 10, 85);
+        height = jMAX(contentSize.height + 50 + 10, 90);
     }
     else {
-        height = jMAX(contentSize.height + nameSize.height + 10, 75);
+        height = jMAX(contentSize.height + 50 + 10, 75);
     }
     
-    return height + (10 * 2);
+    return height;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -698,66 +682,34 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"FeedViewCell";
-    static NSString *SelfCellIdentifier = @"SelfFeedViewCell";
-    static NSString *SelfWithImageCellIdentifier = @"SelfWithImageCellIdentifier";
     static NSString *CellWithImageCellIdentifier = @"CellWithImageCellIdentifier";
     
     id cell = nil;
     
-    if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
-        if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
-            cell = [tableView dequeueReusableCellWithIdentifier:SelfWithImageCellIdentifier];
-            
-            if (cell) {
-                if ([[kAppDelegate externalImageCache] objectForKey:indexPath]) {
-                    [[cell externalImage] setImage:[[kAppDelegate externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
-                }
-                else {
-                    [[cell externalImage] setImage:nil];
-                }
+    if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
+        cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
+        
+        if (cell) {
+            if ([[kAppDelegate externalImageCache] objectForKey:indexPath]) {
+                [[cell externalImage] setImage:[[kAppDelegate externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
             }
-            else if (!cell) {
-                cell = [[SelfWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfWithImageCellIdentifier];
-                
-                [cell setBackgroundView:[[GradientView alloc] init]];
+            else {
+                [[cell externalImage] setImage:nil];
             }
         }
-        else {
-            cell = [tableView dequeueReusableCellWithIdentifier:SelfCellIdentifier];
+        else if (!cell) {
+            cell = [[NormalWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellWithImageCellIdentifier];
             
-            if (!cell) {
-                cell = [[SelfCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SelfCellIdentifier];
-                
-                [cell setBackgroundView:[[GradientView alloc] init]];
-            }
+            [cell setBackgroundView:[[CellBackground alloc] init]];
         }
     }
     else {
-        if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
-            cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (!cell) {
+            cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             
-            if (cell) {
-                if ([[kAppDelegate externalImageCache] objectForKey:indexPath]) {
-                    [[cell externalImage] setImage:[[kAppDelegate externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
-                }
-                else {
-                    [[cell externalImage] setImage:nil];
-                }
-            }
-            else if (!cell) {
-                cell = [[NormalWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellWithImageCellIdentifier];
-                
-                [cell setBackgroundView:[[GradientView alloc] init]];
-            }
-        }
-        else {
-            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            
-            if (!cell) {
-                cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-                
-                [cell setBackgroundView:[[GradientView alloc] init]];
-            }
+            [cell setBackgroundView:[[CellBackground alloc] init]];
         }
     }
     
@@ -768,8 +720,6 @@
             objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
             
             dispatch_async(queue, ^{
-                [[cell externalActivityIndicator] startAnimating];
-                
                 NSMutableString *tempString = [NSMutableString stringWithString:[self theFeed][[indexPath row]][@"image_url"]];
                 
                 [tempString insertString:@"s" atIndex:24];
@@ -830,24 +780,10 @@
                                                                constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                    lineBreakMode:NSLineBreakByWordWrapping];
         
-        CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
+        CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 85);
         
-        if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
-            if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
-                [[cell repostedNameLabel] setFrame:CGRectMake(12, height + 11, 228, 20)];
-            }
-            else {
-                [[cell repostedNameLabel] setFrame:CGRectMake(86, height + 11, 228, 20)];
-            }
-        }
-        else {
-            if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
-                [[cell repostedNameLabel] setFrame:CGRectMake(12, height, 228, 20)];
-            }
-            else {
-                [[cell repostedNameLabel] setFrame:CGRectMake(86, height, 228, 20)];
-            }
-        }
+        [[cell repostedNameLabel] setFrame:CGRectMake(52, height + 5, 228, 20)];
+        
         [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [self theFeed][[indexPath row]][@"repost_name"]]];
     }
     
@@ -855,19 +791,15 @@
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]]];
-    
-    [[cell activityIndicator] startAnimating];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsFolder] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]]]]];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
     objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
     
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]]] error:nil];
-    
-    if (image) {
-        [[cell activityIndicator] stopAnimating];
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[self documentsFolder] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]]]] error:nil];
         
+    if (image) {        
         [[cell imageView] setImage:image];
         [cell setNeedsDisplay];
         
@@ -889,7 +821,7 @@
                             [cell setNeedsDisplay];
                         }
                         
-                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]];
+                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]]];
                     });
                 });
             }
@@ -912,7 +844,7 @@
                     [cell setNeedsDisplay];
                 }
                 
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"email"]]];
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]]];
             });
         });
     }

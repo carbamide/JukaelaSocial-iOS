@@ -9,7 +9,7 @@
 #import <objc/runtime.h>
 #import "AppDelegate.h"
 #import "NormalCellView.h"
-#import "GradientView.h"
+#import "CellBackground.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
 #import "ShowUserViewController.h"
@@ -211,7 +211,7 @@
     if (!cell) {
         cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
-        [cell setBackgroundView:[[GradientView alloc] init]];
+        [cell setBackgroundView:[[CellBackground alloc] init]];
     }
     
     [[cell contentText] setFontName:@"Helvetica-Bold"];
@@ -228,17 +228,13 @@
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]]]];
     
-    [[cell activityIndicator] startAnimating];
-    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
     objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
     
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]]]] error:nil];
     
-    if (image) {
-        [[cell activityIndicator] stopAnimating];
-        
+    if (image) {        
         [[cell imageView] setImage:image];
         [cell setNeedsDisplay];
         

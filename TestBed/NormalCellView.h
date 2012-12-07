@@ -19,12 +19,12 @@ extern NSString * const kJKPrepareForReuseNotification;
 @property (strong, retain) UILabel *repostedNameLabel;
 @property (strong, retain) JSCoreTextView *contentText;
 @property (nonatomic, getter = isDisabled) BOOL disabled;
-@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGesture;
 @property (strong, nonatomic) UILongPressGestureRecognizer *longPressGesture;
 @property (strong, nonatomic) UITapGestureRecognizer *imageTapGesture;
 @property (strong, nonatomic) UITapGestureRecognizer *repostTapGesture;
 
 -(void)disableCell;
+-(void)doubleTapAction:(UIGestureRecognizer *)gesture;
 
 @end

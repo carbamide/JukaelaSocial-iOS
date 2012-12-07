@@ -6,7 +6,7 @@
  */
 
 /* <relative time difference (1-n) > <data component name (e.g. year, month)> ago*/
-"formatTemplateForRelativePastDatePhrase" = "%d %@ ago";
+"formatTemplateForRelativePastDatePhrase" = "%d %@";
 
 /* in <relative time difference (1-n) > <data component name (e.g. year, month)>*/
 "formatTemplateForRelativeFutureDatePhrase" = "in %d %@";

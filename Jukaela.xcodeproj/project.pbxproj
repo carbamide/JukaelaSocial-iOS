@@ -16,7 +16,7 @@
 		29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */; };
 		2915698D15FFAFCA0084A29C /* ShareObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2915698C15FFAFCA0084A29C /* ShareObject.m */; };
 		291EB58315649366005FB66D /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291EB58215649366005FB66D /* PostViewController.m */; };
-		2920235415FD5C4700DBDA6C /* SelfCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2920235315FD5C4700DBDA6C /* SelfCellView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2920235415FD5C4700DBDA6C /* NormalCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2920235315FD5C4700DBDA6C /* NormalCellView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29204EF01553684200D5479D /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29204EEF1553684200D5479D /* FeedViewController.m */; };
 		292431BC160A1ADA005DB723 /* LargeSplash.png in Resources */ = {isa = PBXBuildFile; fileRef = 292431BB160A1ADA005DB723 /* LargeSplash.png */; };
 		292434711565E330007C8E8C /* UsersPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292434701565E330007C8E8C /* UsersPostsViewController.m */; };
@@ -97,6 +97,7 @@
 		298F7E071569821200516858 /* EditUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298F7E061569821200516858 /* EditUserViewController.m */; };
 		299AF47A16719A41000F1C45 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 299AF47816719A41000F1C45 /* camera.png */; };
 		299AF47B16719A41000F1C45 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 299AF47916719A41000F1C45 /* camera@2x.png */; };
+		299AF48216725D45000F1C45 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 299AF48116725D45000F1C45 /* separator.png */; };
 		299BB4F9160E79D300898A7C /* loggedIn.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 299BB4F8160E79D300898A7C /* loggedIn.aiff */; };
 		299BB4FC160E7A4700898A7C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 299BB4FB160E7A4700898A7C /* AudioToolbox.framework */; };
 		29AA10381556238F00B8D3F5 /* RIButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10331556238F00B8D3F5 /* RIButtonItem.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -136,7 +137,7 @@
 		29D5B83215545D3E000D9374 /* NSObject+deallocBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B82E15545D3D000D9374 /* NSObject+deallocBlock.m */; };
 		29D5B83315545D3E000D9374 /* NSObject+setValuesForKeysWithJSONDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B83015545D3E000D9374 /* NSObject+setValuesForKeysWithJSONDictionary.m */; };
 		29D5B83B15545FC6000D9374 /* ShadowedTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B83615545FC6000D9374 /* ShadowedTableView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29D5B83C15545FC6000D9374 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B83815545FC6000D9374 /* GradientView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29D5B83C15545FC6000D9374 /* CellBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B83815545FC6000D9374 /* CellBackground.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29D5B84415545FCD000D9374 /* DAKeyboardControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B83F15545FCD000D9374 /* DAKeyboardControlView.m */; };
 		29D5B84515545FCD000D9374 /* DAKeyboardControlTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B84115545FCD000D9374 /* DAKeyboardControlTableView.m */; };
 		29D5B84615545FCD000D9374 /* DAKeyboardControlScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B84315545FCD000D9374 /* DAKeyboardControlScrollView.m */; };
@@ -147,7 +148,6 @@
 		29D5B85B15547671000D9374 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B85A15547671000D9374 /* iTunesArtwork.png */; };
 		29D5B866155476D2000D9374 /* underPageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B865155476D2000D9374 /* underPageBackground.png */; };
 		29D5B868155478C5000D9374 /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B867155478C5000D9374 /* 114.png */; };
-		29D677D51555BF0B00C7D065 /* NormalCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B83A15545FC6000D9374 /* NormalCellView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29DAEA331644C5EE00D6B341 /* REComposeViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29DAEA281644C5EE00D6B341 /* REComposeViewController.bundle */; };
 		29DAEA341644C5EE00D6B341 /* DEComposeRuledView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DAEA2A1644C5EE00D6B341 /* DEComposeRuledView.m */; };
 		29DAEA351644C5EE00D6B341 /* DEComposeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DAEA2C1644C5EE00D6B341 /* DEComposeTextView.m */; };
@@ -166,7 +166,6 @@
 		29E517131608A2A000CA422F /* CurledViewBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E5170E1608A2A000CA422F /* CurledViewBase.m */; };
 		29E517141608A2A000CA422F /* UIButton+Curled.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E517101608A2A000CA422F /* UIButton+Curled.m */; };
 		29E517151608A2A000CA422F /* UIImageView+Curled.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E517121608A2A000CA422F /* UIImageView+Curled.m */; };
-		29E517181608A38700CA422F /* SelfWithImageCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E517171608A38700CA422F /* SelfWithImageCellView.m */; };
 		29E517551608ABF900CA422F /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E517491608ABF900CA422F /* MWCaptionView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29E517561608ABF900CA422F /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E5174B1608ABF900CA422F /* MWPhoto.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29E517571608ABF900CA422F /* MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E5174D1608ABF900CA422F /* MWPhotoBrowser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -203,8 +202,8 @@
 		2915698C15FFAFCA0084A29C /* ShareObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareObject.m; sourceTree = "<group>"; };
 		291EB58115649366005FB66D /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
 		291EB58215649366005FB66D /* PostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostViewController.m; sourceTree = "<group>"; };
-		2920235215FD5C4700DBDA6C /* SelfCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfCellView.h; sourceTree = "<group>"; };
-		2920235315FD5C4700DBDA6C /* SelfCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfCellView.m; sourceTree = "<group>"; };
+		2920235215FD5C4700DBDA6C /* NormalCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalCellView.h; sourceTree = "<group>"; };
+		2920235315FD5C4700DBDA6C /* NormalCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NormalCellView.m; sourceTree = "<group>"; };
 		29204EEE1553684200D5479D /* FeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedViewController.h; sourceTree = "<group>"; };
 		29204EEF1553684200D5479D /* FeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedViewController.m; sourceTree = "<group>"; };
 		292431BB160A1ADA005DB723 /* LargeSplash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LargeSplash.png; sourceTree = "<group>"; };
@@ -327,6 +326,7 @@
 		298F7E061569821200516858 /* EditUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUserViewController.m; sourceTree = "<group>"; };
 		299AF47816719A41000F1C45 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		299AF47916719A41000F1C45 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@2x.png"; sourceTree = "<group>"; };
+		299AF48116725D45000F1C45 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = separator.png; path = TestBed/separator.png; sourceTree = "<group>"; };
 		299BB4F8160E79D300898A7C /* loggedIn.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = loggedIn.aiff; sourceTree = "<group>"; };
 		299BB4FB160E7A4700898A7C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		29AA10321556238F00B8D3F5 /* RIButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIButtonItem.h; sourceTree = "<group>"; };
@@ -393,10 +393,8 @@
 		29D5B83015545D3E000D9374 /* NSObject+setValuesForKeysWithJSONDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+setValuesForKeysWithJSONDictionary.m"; sourceTree = "<group>"; };
 		29D5B83515545FC6000D9374 /* ShadowedTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowedTableView.h; sourceTree = "<group>"; };
 		29D5B83615545FC6000D9374 /* ShadowedTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShadowedTableView.m; sourceTree = "<group>"; };
-		29D5B83715545FC6000D9374 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
-		29D5B83815545FC6000D9374 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
-		29D5B83915545FC6000D9374 /* NormalCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalCellView.h; sourceTree = "<group>"; };
-		29D5B83A15545FC6000D9374 /* NormalCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NormalCellView.m; sourceTree = "<group>"; };
+		29D5B83715545FC6000D9374 /* CellBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellBackground.h; sourceTree = "<group>"; };
+		29D5B83815545FC6000D9374 /* CellBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellBackground.m; sourceTree = "<group>"; };
 		29D5B83E15545FCD000D9374 /* DAKeyboardControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControlView.h; sourceTree = "<group>"; };
 		29D5B83F15545FCD000D9374 /* DAKeyboardControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControlView.m; sourceTree = "<group>"; };
 		29D5B84015545FCD000D9374 /* DAKeyboardControlTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAKeyboardControlTableView.h; sourceTree = "<group>"; };
@@ -449,8 +447,6 @@
 		29E517101608A2A000CA422F /* UIButton+Curled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Curled.m"; sourceTree = "<group>"; };
 		29E517111608A2A000CA422F /* UIImageView+Curled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Curled.h"; sourceTree = "<group>"; };
 		29E517121608A2A000CA422F /* UIImageView+Curled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Curled.m"; sourceTree = "<group>"; };
-		29E517161608A38700CA422F /* SelfWithImageCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfWithImageCellView.h; sourceTree = "<group>"; };
-		29E517171608A38700CA422F /* SelfWithImageCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfWithImageCellView.m; sourceTree = "<group>"; };
 		29E517481608ABF900CA422F /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
 		29E517491608ABF900CA422F /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
 		29E5174A1608ABF900CA422F /* MWPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhoto.h; sourceTree = "<group>"; };
@@ -893,14 +889,10 @@
 			children = (
 				29D5B83515545FC6000D9374 /* ShadowedTableView.h */,
 				29D5B83615545FC6000D9374 /* ShadowedTableView.m */,
-				29D5B83715545FC6000D9374 /* GradientView.h */,
-				29D5B83815545FC6000D9374 /* GradientView.m */,
-				29D5B83915545FC6000D9374 /* NormalCellView.h */,
-				29D5B83A15545FC6000D9374 /* NormalCellView.m */,
-				2920235215FD5C4700DBDA6C /* SelfCellView.h */,
-				2920235315FD5C4700DBDA6C /* SelfCellView.m */,
-				29E517161608A38700CA422F /* SelfWithImageCellView.h */,
-				29E517171608A38700CA422F /* SelfWithImageCellView.m */,
+				29D5B83715545FC6000D9374 /* CellBackground.h */,
+				29D5B83815545FC6000D9374 /* CellBackground.m */,
+				2920235215FD5C4700DBDA6C /* NormalCellView.h */,
+				2920235315FD5C4700DBDA6C /* NormalCellView.m */,
 				29E5177A1608B2BE00CA422F /* NormalWithImageCellView.h */,
 				29E5177B1608B2BE00CA422F /* NormalWithImageCellView.m */,
 				29D5B83E15545FCD000D9374 /* DAKeyboardControlView.h */,
@@ -927,6 +919,7 @@
 		29D5B85C15547678000D9374 /* Artwork */ = {
 			isa = PBXGroup;
 			children = (
+				299AF48116725D45000F1C45 /* separator.png */,
 				292A0E281604AE4300060702 /* Default-568h@2x.png */,
 				292431BB160A1ADA005DB723 /* LargeSplash.png */,
 				299AF47816719A41000F1C45 /* camera.png */,
@@ -1237,6 +1230,7 @@
 				29DAEA331644C5EE00D6B341 /* REComposeViewController.bundle in Resources */,
 				299AF47A16719A41000F1C45 /* camera.png in Resources */,
 				299AF47B16719A41000F1C45 /* camera@2x.png in Resources */,
+				299AF48216725D45000F1C45 /* separator.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1247,7 +1241,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29D677D51555BF0B00C7D065 /* NormalCellView.m in Sources */,
 				295687671552C96700FE741C /* main.m in Sources */,
 				2956876B1552C96700FE741C /* AppDelegate.m in Sources */,
 				295687711552C96700FE741C /* LoginViewController.m in Sources */,
@@ -1261,7 +1254,7 @@
 				29D5B83215545D3E000D9374 /* NSObject+deallocBlock.m in Sources */,
 				29D5B83315545D3E000D9374 /* NSObject+setValuesForKeysWithJSONDictionary.m in Sources */,
 				29D5B83B15545FC6000D9374 /* ShadowedTableView.m in Sources */,
-				29D5B83C15545FC6000D9374 /* GradientView.m in Sources */,
+				29D5B83C15545FC6000D9374 /* CellBackground.m in Sources */,
 				29D5B84415545FCD000D9374 /* DAKeyboardControlView.m in Sources */,
 				29D5B84515545FCD000D9374 /* DAKeyboardControlTableView.m in Sources */,
 				29D5B84615545FCD000D9374 /* DAKeyboardControlScrollView.m in Sources */,
@@ -1323,7 +1316,7 @@
 				29593D6A15FD150200380B2D /* YISplashScreen+Migration.m in Sources */,
 				29593D6B15FD150200380B2D /* YISplashScreenAnimation.m in Sources */,
 				29593D7315FD1F8400380B2D /* NSTimer+Blocks.m in Sources */,
-				2920235415FD5C4700DBDA6C /* SelfCellView.m in Sources */,
+				2920235415FD5C4700DBDA6C /* NormalCellView.m in Sources */,
 				29D433A715FE0EE700ABCB2F /* JSCoreTextView.m in Sources */,
 				29D433A815FE0EE700ABCB2F /* JSTwitterCoreTextView.m in Sources */,
 				29D433A915FE0EE700ABCB2F /* JSEmailCoreTextView.m in Sources */,
@@ -1336,7 +1329,6 @@
 				29E517131608A2A000CA422F /* CurledViewBase.m in Sources */,
 				29E517141608A2A000CA422F /* UIButton+Curled.m in Sources */,
 				29E517151608A2A000CA422F /* UIImageView+Curled.m in Sources */,
-				29E517181608A38700CA422F /* SelfWithImageCellView.m in Sources */,
 				29E517551608ABF900CA422F /* MWCaptionView.m in Sources */,
 				29E517561608ABF900CA422F /* MWPhoto.m in Sources */,
 				29E517571608ABF900CA422F /* MWPhotoBrowser.m in Sources */,

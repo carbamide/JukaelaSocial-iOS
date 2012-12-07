@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
+#import "Constants.h"
+#import "AppDelegate.h"
 #import "NormalWithImageCellView.h"
 
 @implementation NormalWithImageCellView
@@ -14,17 +16,13 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self setExternalImage:[[UIImageView alloc] initWithFrame:CGRectMake(255, 25, 50, 50)]];
+        UIWindow *tempWindow = [kAppDelegate window];
+        
+        [self setExternalImage:[[UIImageView alloc] initWithFrame:CGRectMake(tempWindow.frame.size.width - 46, 5, 37, 37)]];
+        
+        [[self dateLabel] setFrame:CGRectMake(128, 5, 140, 15)];
         
         [self addSubview:[self externalImage]];
-        
-        _externalActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(260, 35, 30, 30)];
-        
-        [[self externalActivityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-        
-        [self addSubview:_externalActivityIndicator];
-        
-        [[self contentText] setFrame:CGRectMake(82, 17, 180, 140)];
     }
     return self;
 }
@@ -41,10 +39,6 @@
     
     if (![[self externalImage] image]) {
         [[self externalImage] addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionOld context:NULL];
-    }
-    
-    if ([[self externalImage] image]) {
-        [[self externalActivityIndicator] stopAnimating];
     }
 }
 
@@ -68,10 +62,6 @@
         [self setNeedsLayout];
         
         [[self externalImage] removeObserver:self forKeyPath:@"image"];
-        
-        if ([[self externalActivityIndicator] isAnimating]) {
-            [[self externalActivityIndicator] stopAnimating];
-        }
     }
     
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];

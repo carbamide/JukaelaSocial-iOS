@@ -64,14 +64,16 @@
 +(void)saveImage:(UIImage *)image withFileName:(NSString *)emailAddress
 {
     if (image != nil) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        
-        NSString *documentsDirectory = paths[0];
-        NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithString:[NSString stringWithFormat:@"%@.png", emailAddress]]];
-        
-        NSData *data = UIImagePNGRepresentation(image);
-        
-        [data writeToFile:path atomically:YES];
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            
+            NSString *documentsDirectory = paths[0];
+            NSString *path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithString:[NSString stringWithFormat:@"%@.png", emailAddress]]];
+            
+            NSData *data = UIImagePNGRepresentation(image);
+            
+            [data writeToFile:path atomically:YES];
+        });
     }
 }
 
@@ -83,7 +85,7 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
     [request setTimeoutInterval:30];
-
+    
     return request;
 }
 
@@ -124,11 +126,7 @@
 
 +(NSString *)documentsPath
 {
-    NSArray *tempArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *documentsDirectory = tempArray[0];
-    
-    return documentsDirectory;
+    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
 
 +(NSArray *)arrayOfURLsFromString:(NSString *)httpLine error:(NSError *)error

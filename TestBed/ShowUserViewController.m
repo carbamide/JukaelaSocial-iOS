@@ -390,6 +390,9 @@
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[cell imageView] setImage:resizedImage];
+                        
+                        [cell setNeedsDisplay];
+                        
                         [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]];
                     });
                 });

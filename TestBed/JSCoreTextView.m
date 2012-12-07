@@ -37,7 +37,7 @@
 #import <CoreText/CoreText.h>
 #import <QuartzCore/QuartzCore.h>
 #import "AHHyperlinkScanner.h"
-#import "SelfCellView.h"
+#import "NormalCellView.h"
 
 float const yAdjustmentFactor = 1.3;
 
@@ -327,11 +327,8 @@ float const yAdjustmentFactor = 1.3;
 		CGPathRef path = CTFrameGetPath(_frame);
 		CGRect rect = CGPathGetBoundingBox(path);
         
-		//CGFloat y = rect.origin.y + rect.size.height - origin.y;
         CGFloat y = self.frame.origin.y + rect.size.height - origin.y;
 
-        NSLog(@"location.y - %f\ny - %f\n", location.y, y);
-        NSLog(@"location.x - %f\norigin.x - %f\n", location.x, origin.x);
 		if ((location.y >= y) && (location.x >= origin.x))
 		{
 			line = CFArrayGetValueAtIndex(lines, i);
@@ -344,7 +341,6 @@ float const yAdjustmentFactor = 1.3;
     
 	for (AHMarkedHyperlink *link in _links)
 	{
-        NSLog(@"The index is %ld\nThe link is %i", index, [link range].location);
 		if (((index >= [link range].location) && (index <= ([link range].length + [link range].location))))
 		{
 			_touchedLink = link;
@@ -413,10 +409,8 @@ float const yAdjustmentFactor = 1.3;
 	{
         [[UIApplication sharedApplication] openURL:[_touchedLink URL]];
 	}
-	else {
-        NSLog(@"Not a link!");
-        
-        [(SelfCellView *)[[self superview] superview] doubleTapAction:nil];
+	else {        
+        [(NormalCellView *)[[self superview] superview] doubleTapAction:nil];
     }
     
 	_touchedLink = nil;

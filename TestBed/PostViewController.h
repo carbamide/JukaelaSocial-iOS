@@ -22,7 +22,11 @@
 @property (strong, nonatomic) IBOutlet UILabel *countDownLabel;
 @property (strong, nonatomic) IBOutlet UIButton *photoButton;
 @property (strong, nonatomic) IBOutlet UIView *backgroundView;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *postButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 
 -(IBAction)takePhoto:(id)sender;
+-(IBAction)sendPost:(id)sender;
+-(IBAction)cancelPost:(id)sender;
 
 @end

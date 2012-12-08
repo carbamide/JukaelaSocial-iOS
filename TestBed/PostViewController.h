@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YIPopupTextView.h"
 
 @interface PostViewController : JukaelaViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate>
 
@@ -28,5 +27,7 @@
 -(IBAction)takePhoto:(id)sender;
 -(IBAction)sendPost:(id)sender;
 -(IBAction)cancelPost:(id)sender;
+
+-(void)finishImagePicking:(UIImage *)image withImagePickerController:(UIImagePickerController *)picker;
 
 @end

@@ -136,6 +136,8 @@ NS_ENUM(NSInteger, SocialTypes) {
         cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
+    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:18]];
+
     [cell prepareForTableView:tableView indexPath:indexPath];
     
     if ([indexPath section] == 0) {

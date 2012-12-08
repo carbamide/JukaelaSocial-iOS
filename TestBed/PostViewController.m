@@ -18,6 +18,7 @@
 #import "TMImgurUploader.h"
 #import "UIAlertView+Blocks.h"
 #import "UIImage+Resize.h"
+#import "ImageConfirmationViewController.h"
 
 @interface PostViewController ()
 @property (strong, nonatomic) ACAccountStore *accountStore;
@@ -588,11 +589,6 @@
     }
 }
 
--(void)popupTextView:(YIPopupTextView*)textView willDismissWithText:(NSString*)text
-{
-    return;
-}
-
 - (void)viewDidUnload
 {
     [self setUserProfileImage:nil];
@@ -612,13 +608,29 @@
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *originalImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    if ([picker sourceType] == UIImagePickerControllerSourceTypePhotoLibrary) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:[NSBundle mainBundle]];
+        
+        ImageConfirmationViewController *icvc = [storyboard instantiateViewControllerWithIdentifier:@"ImageConfirmationViewController"];
+        
+        [icvc setPickerController:picker];
+        [icvc setTheImage:[info objectForKey:UIImagePickerControllerOriginalImage]];
+        [icvc setDelegate:self];
+        
+        [picker pushViewController:icvc animated:YES];
+    }
+    else {
+        [self finishImagePicking:[info objectForKey:UIImagePickerControllerOriginalImage] withImagePickerController:picker];
+    }
+}
+
+-(void)finishImagePicking:(UIImage *)image withImagePickerController:(UIImagePickerController *)picker
+{
+    image = [image scaleAndRotateImage:image withMaxSize:640];
     
-    originalImage = [originalImage scaleAndRotateImage:originalImage withMaxSize:640];
+    [self setTempImageData:UIImageJPEGRepresentation(image, 10)];
     
-    [self setTempImageData:UIImageJPEGRepresentation(originalImage, 10)];
-    
-    [[self photoButton] setImage:[originalImage thumbnailImage:41 transparentBorder:1 cornerRadius:4 interpolationQuality:kCGInterpolationMedium] forState:UIControlStateNormal];
+    [[self photoButton] setImage:[image thumbnailImage:41 transparentBorder:1 cornerRadius:4 interpolationQuality:kCGInterpolationMedium] forState:UIControlStateNormal];
     
     [self setImageAdded:YES];
     

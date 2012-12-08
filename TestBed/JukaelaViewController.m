@@ -23,6 +23,10 @@
     [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
     [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
     [navBar setTintColor:[navBar gradientEndColor]];
+    
+    [navBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIFont fontWithName:@"Helvetica-Light" size:22], UITextAttributeFont,
+                                    nil]];
 }
 
 - (void)viewDidLoad

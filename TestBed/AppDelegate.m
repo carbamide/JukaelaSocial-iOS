@@ -44,10 +44,25 @@
 {
     [YISplashScreen show];
     
-    NSLog(@"%@", launchOptions);
+    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                          [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                                          nil] forState:UIControlStateNormal];
+    
+    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                          [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                                          nil] forState:UIControlStateDisabled];
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                       [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                                       nil] forState:UIControlStateNormal];
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                       [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                                       nil] forState:UIControlStateSelected];
+
     
     NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
-
+    
     UIImage *tempImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     
     CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);

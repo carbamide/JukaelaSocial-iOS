@@ -101,7 +101,7 @@
     
     CGSize constraint = CGSizeMake(275, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     CGFloat height;
     
@@ -179,7 +179,7 @@
         }
     }
     
-    [[cell contentText] setFontName:@"Helvetica"];
+    [[cell contentText] setFontName:@"Helvetica-Light"];
     [[cell contentText] setFontSize:14];
     
     if ([self userPostArray][[indexPath row]][@"content"]) {
@@ -198,11 +198,11 @@
     }
     
     if ([self userPostArray][[indexPath row]][@"repost_user_id"] && [self userPostArray][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
-        CGSize contentSize = [[self userPostArray][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12]
+        CGSize contentSize = [[self userPostArray][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:17]
                                                                            constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                                lineBreakMode:NSLineBreakByWordWrapping];
         
-        CGSize nameSize = [[self userPostArray][[indexPath row]][@"name"] sizeWithFont:[UIFont systemFontOfSize:12]
+        CGSize nameSize = [[self userPostArray][[indexPath row]][@"name"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:14]
                                                                      constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                          lineBreakMode:NSLineBreakByWordWrapping];
         

@@ -192,7 +192,7 @@
         [cell setBackgroundView:[[CellBackground alloc] init]];
     }
     
-    [[cell contentText] setFontName:@"Helvetica-Bold"];
+    [[cell contentText] setFontName:@"Helvetica-Light"];
     
     [[cell contentText] setText:[self usersArray][[indexPath row]][@"name"]];
     

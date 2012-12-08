@@ -30,6 +30,8 @@
         
         [cell setTableViewBackgroundColor:[tableView backgroundColor]];
         
+        [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:18]];
+        
         if ([indexPath section] == 0) {
             
             if ([indexPath row] == 0) {
@@ -49,6 +51,7 @@
                 [_username setBackgroundColor:[UIColor clearColor]];
                 [_username setTextAlignment:NSTextAlignmentRight];
                 [_username setPlaceholder:@"email"];
+                [_username setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
                 
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
                     [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
@@ -79,7 +82,8 @@
                 [_password setBackgroundColor:[UIColor clearColor]];
                 [_password setTextAlignment:NSTextAlignmentRight];
                 [_password setPlaceholder:@"password"];
-                
+                [_password setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+
                 [_password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
                 
                 [cell addSubview:_password];
@@ -99,11 +103,13 @@
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
     
-    _rememberUsername = [[CPCheckBox alloc] initWithFrame:CGRectMake(68, 0, 210, 25)];
+    _rememberUsername = [[CPCheckBox alloc] initWithFrame:CGRectMake(88, 0, 210, 25)];
     [_rememberUsername setTitle:@"Automatically Login" forState:UIControlStateNormal];
     
     [_rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [_rememberUsername setTitleShadowColor:kPerfectGrey forState:UIControlStateNormal];
+    
+    [[_rememberUsername titleLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
     
     
     [footerView addSubview:_rememberUsername];
@@ -306,11 +312,11 @@
 
 -(void)viewDidLoad
 {
-    PrettyTabBar *tabBar = (PrettyTabBar *)[[[self navigationController] tabBarController] tabBar];
-    
-    [tabBar setGradientStartColor:[UIColor colorWithHex:0x3e3e3e]];
-    [tabBar setGradientEndColor:[UIColor colorWithHex:0x1c1c1c]];
-    [tabBar setSeparatorLineColor:[UIColor darkGrayColor]];
+//    PrettyTabBar *tabBar = (PrettyTabBar *)[[[self navigationController] tabBarController] tabBar];
+//    
+//    [tabBar setGradientStartColor:[UIColor colorWithHex:0x3e3e3e]];
+//    [tabBar setGradientEndColor:[UIColor colorWithHex:0x1c1c1c]];
+//    [tabBar setSeparatorLineColor:[UIColor darkGrayColor]];
     
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMyLove:)];
     

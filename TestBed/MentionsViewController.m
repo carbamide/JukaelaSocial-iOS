@@ -125,20 +125,16 @@
 {
     NSString *contentText = [self mentions][[indexPath row]][@"content"];
     
-    CGSize constraint = CGSizeMake(275, 20000);
+    CGSize constraint = CGSizeMake(315, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-    
-    CGFloat height;
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     if ([self mentions][[indexPath row]][@"repost_user_id"] && [self mentions][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
-        height = jMAX(contentSize.height + 50 + 10, 90);
+        return contentSize.height + 50 + 10 + 20;
     }
     else {
-        height = jMAX(contentSize.height + 50 + 10, 75);
+        return contentSize.height + 50 + 10;
     }
-    
-    return height;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -204,8 +200,8 @@
         }
     }
     
-    [[cell contentText] setFontName:@"Helvetica"];
-    [[cell contentText] setFontSize:14];
+    [[cell contentText] setFontName:@"Helvetica-Light"];
+    [[cell contentText] setFontSize:17];
     
     if ([self mentions][[indexPath row]][@"content"]) {
         [[cell contentText] setText:[self mentions][[indexPath row]][@"content"]];

@@ -364,6 +364,7 @@ typedef enum {
 - (void)initializeVars
 {
     // default values
+    
     self.position = PrettyTableViewCellPositionMiddle;
     self.dropsShadow = YES;
     self.borderColor = default_border_color;

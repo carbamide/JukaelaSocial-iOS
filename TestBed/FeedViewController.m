@@ -632,11 +632,6 @@
     }];
 }
 
--(void)popupTextView:(YIPopupTextView*)textView willDismissWithText:(NSString*)text
-{
-    [self setStringToPost:text];
-}
-
 -(void)viewDidUnload
 {
     [super viewDidUnload];
@@ -653,20 +648,16 @@
 {
     NSString *contentText = [self theFeed][[indexPath row]][@"content"];
     
-    CGSize constraint = CGSizeMake(275, 20000);
+    CGSize constraint = CGSizeMake(315, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-    
-    CGFloat height;
-    
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        
     if ([self theFeed][[indexPath row]][@"repost_user_id"] && [self theFeed][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
-        height = jMAX(contentSize.height + 50 + 10, 90);
+        return contentSize.height + 50 + 10 + 20;
     }
     else {
-        height = jMAX(contentSize.height + 50 + 10, 75);
+        return contentSize.height + 50 + 10;
     }
-    
-    return height;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -737,9 +728,9 @@
         }
     }
     
-    [[cell contentText] setFontName:@"Helvetica"];
-    [[cell contentText] setFontSize:14];
-    
+    [[cell contentText] setFontName:@"Helvetica-Light"];
+    [[cell contentText] setFontSize:17];
+
     if ([self theFeed][[indexPath row]][@"content"]) {
         [[cell contentText] setText:[self theFeed][[indexPath row]][@"content"]];
     }
@@ -767,22 +758,22 @@
         CGSize contentSize;
         
         if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
-            contentSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12]
+            contentSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:17]
                                                                   constrainedToSize:CGSizeMake(185 - (7.5 * 2), 20000)
                                                                       lineBreakMode:NSLineBreakByWordWrapping];
         }
         else {
-            contentSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Bold" size:12]
+            contentSize = [[self theFeed][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:17]
                                                                   constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                       lineBreakMode:NSLineBreakByWordWrapping];
         }
-        CGSize nameSize = [[self theFeed][[indexPath row]][@"name"] sizeWithFont:[UIFont systemFontOfSize:12]
+        CGSize nameSize = [[self theFeed][[indexPath row]][@"name"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:14]
                                                                constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                    lineBreakMode:NSLineBreakByWordWrapping];
         
         CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 85);
         
-        [[cell repostedNameLabel] setFrame:CGRectMake(52, height + 5, 228, 20)];
+        [[cell repostedNameLabel] setFrame:CGRectMake(7, height - 5, 228, 20)];
         
         [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [self theFeed][[indexPath row]][@"repost_name"]]];
     }

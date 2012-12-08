@@ -298,15 +298,21 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     // Navigation buttons
     if ([self.navigationController.viewControllers objectAtIndex:0] == self) {
         // We're first on stack so show done button
-        UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed:)] autorelease];
+        UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonPressed:)] autorelease];
+        
+        [doneButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                            [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                            nil] forState:UIControlStateNormal];
+        
+        [doneButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                            [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                            nil] forState:UIControlStateDisabled];
         // Set appearance
         if ([UIBarButtonItem respondsToSelector:@selector(appearance)]) {
             [doneButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
             [doneButton setBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
             [doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
             [doneButton setBackgroundImage:nil forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-            [doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateNormal];
-            [doneButton setTitleTextAttributes:[NSDictionary dictionary] forState:UIControlStateHighlighted];
         }
         self.navigationItem.rightBarButtonItem = doneButton;
     } else {

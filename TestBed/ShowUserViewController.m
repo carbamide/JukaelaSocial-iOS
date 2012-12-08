@@ -317,7 +317,7 @@
         return 100;
     }
     else if ([indexPath section] == 1) {
-        return 100;
+        return 120;
     }
     else {
         return 55;
@@ -343,6 +343,9 @@
             [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
             [[cell textLabel] setText:[self userDict][@"name"]];
             [[cell detailTextLabel] setTextAlignment:NSTextAlignmentRight];
+            
+            [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:18]];
+            [[cell detailTextLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
             
             if ([self userDict][@"username"] && [self userDict][@"username"] != [NSNull null]) {
                 [[cell detailTextLabel] setText:[self userDict][@"username"]];
@@ -403,6 +406,8 @@
             [cell prepareForTableView:tableView indexPath:indexPath];
             
             [[cell detailTextLabel] setNumberOfLines:5];
+            
+            [[cell detailTextLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
             
             if ([self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ) {
                 [[cell detailTextLabel] setText:[self userDict][@"profile"]];

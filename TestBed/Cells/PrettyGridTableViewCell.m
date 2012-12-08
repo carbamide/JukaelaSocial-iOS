@@ -110,7 +110,7 @@
         }
     }
     
-    return font;
+    return [UIFont fontWithName:@"Helvetica-Light" size:16];
 }
 
 - (CGSize) drawText:(NSString *)text basedOnLabel:(UILabel *)label inRect:(CGRect)rect showAsSelected:(BOOL)selected 

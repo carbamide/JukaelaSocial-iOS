@@ -8,7 +8,7 @@
 
 #import <objc/runtime.h>
 #import "AppDelegate.h"
-#import "NormalCellView.h"
+#import "UsersCell.h"
 #import "CellBackground.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
@@ -206,19 +206,19 @@
 {
     static NSString *CellIdentifier = @"UserViewControllerCell";
     
-    NormalCellView *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UsersCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell) {
-        cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[UsersCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
         [cell setBackgroundView:[[CellBackground alloc] init]];
     }
-    
-    [[cell contentText] setFontName:@"Helvetica-Bold"];
+        
+    [[cell contentText] setFontName:@"Helvetica-Light"];
     [[cell contentText] setFontSize:18];
     
     [[cell contentText] setText:[self usersArray][[indexPath row]][@"name"]];
-    
+        
     if ([self usersArray][[indexPath row]][@"username"] && [self usersArray][[indexPath row]][@"username"] != [NSNull null]) {
         [[cell detailTextLabel] setText:[self usersArray][[indexPath row]][@"username"]];
     }
@@ -226,63 +226,23 @@
         [[cell detailTextLabel] setText:@"No username specified"];
     }
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]]]];
-    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
-    objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
+    NSLog(@"%@", [self usersArray][[indexPath row]]);
     
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]]]] error:nil];
-    
-    if (image) {        
-        [[cell imageView] setImage:image];
-        [cell setNeedsDisplay];
+    dispatch_async(queue, ^{
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]]]]];
         
-        if (attributes) {
-            if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
-                dispatch_async(queue, ^{
-                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]]]]];
-                    
 #if (TARGET_IPHONE_SIMULATOR)
-                    image = [JEImages normalize:image];
+        image = [JEImages normalize:image];
 #endif
-                    UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
-                        
-                        if ([indexPath isEqual:cellIndexPath]) {
-                            [[cell imageView] setImage:resizedImage];
-                            [cell setNeedsDisplay];
-                        }
-                        
-                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]];
-                    });
-                });
-            }
-        }
-    }
-    else {
-        dispatch_async(queue, ^{
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]]]]];
-            
-#if (TARGET_IPHONE_SIMULATOR)
-            image = [JEImages normalize:image];
-#endif
-            UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
-                
-                if ([indexPath isEqual:cellIndexPath]) {
-                    [[cell imageView] setImage:resizedImage];
-                    [cell setNeedsDisplay];
-                }
-                
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]];
-            });
+        UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[cell imageView] setImage:resizedImage];
+            [cell setNeedsDisplay];
         });
-    }
+    });
     
     return cell;
 }

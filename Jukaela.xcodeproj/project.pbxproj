@@ -120,6 +120,8 @@
 		29AA10A11557263900B8D3F5 /* Feed.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA109D1557263900B8D3F5 /* Feed.png */; };
 		29AA10A21557263900B8D3F5 /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA109E1557263900B8D3F5 /* Settings.png */; };
 		29AA10A31557263900B8D3F5 /* Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA109F1557263900B8D3F5 /* Settings@2x.png */; };
+		29C251591672BFED00F27ABC /* ImageConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */; };
+		29C2515C1672D45B00F27ABC /* UsersCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C2515B1672D45B00F27ABC /* UsersCell.m */; };
 		29CAEB7C1558C6F900663CF3 /* ShowUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */; };
 		29D433A715FE0EE700ABCB2F /* JSCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A015FE0EE700ABCB2F /* JSCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29D433A815FE0EE700ABCB2F /* JSTwitterCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A215FE0EE700ABCB2F /* JSTwitterCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -142,8 +144,6 @@
 		29D5B84515545FCD000D9374 /* DAKeyboardControlTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B84115545FCD000D9374 /* DAKeyboardControlTableView.m */; };
 		29D5B84615545FCD000D9374 /* DAKeyboardControlScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B84315545FCD000D9374 /* DAKeyboardControlScrollView.m */; };
 		29D5B84915546055000D9374 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D5B84815546055000D9374 /* QuartzCore.framework */; };
-		29D5B85315546432000D9374 /* SSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B85015546432000D9374 /* SSTextView.m */; };
-		29D5B85415546432000D9374 /* YIPopupTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B85215546432000D9374 /* YIPopupTextView.m */; };
 		29D5B85915547665000D9374 /* 57.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B85815547665000D9374 /* 57.png */; };
 		29D5B85B15547671000D9374 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B85A15547671000D9374 /* iTunesArtwork.png */; };
 		29D5B866155476D2000D9374 /* underPageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B865155476D2000D9374 /* underPageBackground.png */; };
@@ -358,6 +358,10 @@
 		29AA109D1557263900B8D3F5 /* Feed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Feed.png; sourceTree = "<group>"; };
 		29AA109E1557263900B8D3F5 /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
 		29AA109F1557263900B8D3F5 /* Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Settings@2x.png"; sourceTree = "<group>"; };
+		29C251571672BFED00F27ABC /* ImageConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageConfirmationViewController.h; sourceTree = "<group>"; };
+		29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageConfirmationViewController.m; sourceTree = "<group>"; };
+		29C2515A1672D45B00F27ABC /* UsersCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersCell.h; sourceTree = "<group>"; };
+		29C2515B1672D45B00F27ABC /* UsersCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersCell.m; sourceTree = "<group>"; };
 		29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowUserViewController.h; sourceTree = "<group>"; };
 		29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowUserViewController.m; sourceTree = "<group>"; };
 		29D4339F15FE0EE700ABCB2F /* JSCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSCoreTextView.h; sourceTree = "<group>"; };
@@ -403,10 +407,6 @@
 		29D5B84315545FCD000D9374 /* DAKeyboardControlScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAKeyboardControlScrollView.m; sourceTree = "<group>"; };
 		29D5B84815546055000D9374 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		29D5B84A1554612A000D9374 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		29D5B84F15546432000D9374 /* SSTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSTextView.h; sourceTree = "<group>"; };
-		29D5B85015546432000D9374 /* SSTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSTextView.m; sourceTree = "<group>"; };
-		29D5B85115546432000D9374 /* YIPopupTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YIPopupTextView.h; sourceTree = "<group>"; };
-		29D5B85215546432000D9374 /* YIPopupTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YIPopupTextView.m; sourceTree = "<group>"; };
 		29D5B85815547665000D9374 /* 57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 57.png; sourceTree = "<group>"; };
 		29D5B85A15547671000D9374 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
 		29D5B865155476D2000D9374 /* underPageBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = underPageBackground.png; sourceTree = "<group>"; };
@@ -890,6 +890,8 @@
 				29D5B83515545FC6000D9374 /* ShadowedTableView.h */,
 				29D5B83615545FC6000D9374 /* ShadowedTableView.m */,
 				29D5B83715545FC6000D9374 /* CellBackground.h */,
+				29C2515A1672D45B00F27ABC /* UsersCell.h */,
+				29C2515B1672D45B00F27ABC /* UsersCell.m */,
 				29D5B83815545FC6000D9374 /* CellBackground.m */,
 				2920235215FD5C4700DBDA6C /* NormalCellView.h */,
 				2920235315FD5C4700DBDA6C /* NormalCellView.m */,
@@ -903,17 +905,6 @@
 				29D5B84315545FCD000D9374 /* DAKeyboardControlScrollView.m */,
 			);
 			name = "TableView Stuff";
-			sourceTree = "<group>";
-		};
-		29D5B8551554643A000D9374 /* PopupTextView */ = {
-			isa = PBXGroup;
-			children = (
-				29D5B84F15546432000D9374 /* SSTextView.h */,
-				29D5B85015546432000D9374 /* SSTextView.m */,
-				29D5B85115546432000D9374 /* YIPopupTextView.h */,
-				29D5B85215546432000D9374 /* YIPopupTextView.m */,
-			);
-			name = PopupTextView;
 			sourceTree = "<group>";
 		};
 		29D5B85C15547678000D9374 /* Artwork */ = {
@@ -1002,6 +993,8 @@
 				292434701565E330007C8E8C /* UsersPostsViewController.m */,
 				290045D415576D5D004F113A /* UsersViewController.h */,
 				290045D515576D5D004F113A /* UsersViewController.m */,
+				29C251571672BFED00F27ABC /* ImageConfirmationViewController.h */,
+				29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */,
 				29DAEA3A1644C5F600D6B341 /* Compose Sheet */,
 			);
 			name = "View Controllers";
@@ -1030,7 +1023,6 @@
 				29D433CF15FE27B400ABCB2F /* Jukaela Helpers */,
 				29D433D015FE27C100ABCB2F /* Categories */,
 				29AA103B1556239400B8D3F5 /* Block Action Sheet and Alert */,
-				29D5B8551554643A000D9374 /* PopupTextView */,
 				29D5B84715545FD6000D9374 /* TableView Stuff */,
 				29D5B83415545D43000D9374 /* NSData Catagories */,
 				29D5B82A15545CA4000D9374 /* Image Handling */,
@@ -1258,8 +1250,6 @@
 				29D5B84415545FCD000D9374 /* DAKeyboardControlView.m in Sources */,
 				29D5B84515545FCD000D9374 /* DAKeyboardControlTableView.m in Sources */,
 				29D5B84615545FCD000D9374 /* DAKeyboardControlScrollView.m in Sources */,
-				29D5B85315546432000D9374 /* SSTextView.m in Sources */,
-				29D5B85415546432000D9374 /* YIPopupTextView.m in Sources */,
 				29AA10381556238F00B8D3F5 /* RIButtonItem.m in Sources */,
 				29AA10391556238F00B8D3F5 /* UIActionSheet+Blocks.m in Sources */,
 				29AA103A1556238F00B8D3F5 /* UIAlertView+Blocks.m in Sources */,
@@ -1348,6 +1338,8 @@
 				29DAEA361644C5EE00D6B341 /* REComposeViewController.m in Sources */,
 				29DAEA371644C5EE00D6B341 /* REComposeBackgroundView.m in Sources */,
 				29DAEA381644C5EE00D6B341 /* REComposeSheetView.m in Sources */,
+				29C251591672BFED00F27ABC /* ImageConfirmationViewController.m in Sources */,
+				29C2515C1672D45B00F27ABC /* UsersCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -354,11 +354,11 @@
                 [[cell detailTextLabel] setText:@"No username"];
             }
             
-            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]]];
+            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]]];
             
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
             
-            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]] error:nil];
+            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]] error:nil];
             
             if (image) {
                 [[cell imageView] setImage:image];
@@ -367,16 +367,16 @@
                 if (attributes) {
                     if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
                         dispatch_async(queue, ^{
-                            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][@"email"]]]];
+                            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][@"email"] withSize:65]]];
                             
 #if (TARGET_IPHONE_SIMULATOR)
                             image = [JEImages normalize:image];
 #endif
-                            UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+                            UIImage *resizedImage = [image thumbnailImage:65 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
                             
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 [[cell imageView] setImage:resizedImage];
-                                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]];
+                                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self userDict][@"id"]]];
                             });
                         });
                     }
@@ -384,19 +384,19 @@
             }
             else {
                 dispatch_async(queue, ^{
-                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][@"email"]]]];
+                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][@"email"] withSize:65]]];
                     
 #if (TARGET_IPHONE_SIMULATOR)
                     image = [JEImages normalize:image];
 #endif
-                    UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+                    UIImage *resizedImage = [image thumbnailImage:65 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[cell imageView] setImage:resizedImage];
                         
                         [cell setNeedsDisplay];
                         
-                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]];
+                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self userDict][@"id"]]];
                     });
                 });
             }

@@ -51,6 +51,12 @@
     [self setPasswordTextField:[[UITextField alloc] init]];
     [self setPasswordConfirmTextField:[[UITextField alloc] init]];
     
+    [[self nameTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+    [[self usernameTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+    [[self emailTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+    [[self passwordTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+    [[self passwordConfirmTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+    
     [super viewDidLoad];
 }
 
@@ -161,12 +167,13 @@
     }
     
     [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
+    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
     
     if ([indexPath row] == 0) {
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [[self nameTextField] setFrame:CGRectMake(110, 10, 185, 30)];
+        [[self nameTextField] setFrame:CGRectMake(110, 14, 185, 30)];
         [[self nameTextField] setAutocapitalizationType:UITextAutocapitalizationTypeWords];
         
         [cell addSubview:[self nameTextField]];
@@ -175,7 +182,7 @@
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [[self usernameTextField] setFrame:CGRectMake(110, 10, 185, 30)];
+        [[self usernameTextField] setFrame:CGRectMake(110, 11, 185, 30)];
         [[self usernameTextField] setAutocapitalizationType:UITextAutocorrectionTypeNo];
         
         [cell addSubview:[self usernameTextField]];

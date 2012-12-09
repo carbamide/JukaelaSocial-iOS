@@ -27,6 +27,8 @@
 {
     [[[self feedbackTextView] layer] setCornerRadius:8];
     
+    [[self feedbackTextView] setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+    
     [[self feedbackTextView] becomeFirstResponder];
     
     [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];

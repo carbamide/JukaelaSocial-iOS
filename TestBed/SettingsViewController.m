@@ -45,7 +45,7 @@ NS_ENUM(NSInteger, SocialTypes) {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"read_username_from_defaults"];
         
         [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] andServiceName:@"Jukaela Social" error:nil];
-
+        
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"username"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_id"];
         
@@ -137,7 +137,7 @@ NS_ENUM(NSInteger, SocialTypes) {
     }
     
     [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:18]];
-
+    
     [cell prepareForTableView:tableView indexPath:indexPath];
     
     if ([indexPath section] == 0) {
@@ -245,25 +245,60 @@ NS_ENUM(NSInteger, SocialTypes) {
     switch ([sender tag]) {
         case 0:
         {
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+            if ([sender isOn]) {
+                if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+                    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+                    
+                    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+                    
+                    NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+                    
+                    NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions", @"read_friendlists"]};
+                    
+                    [accountStore requestAccessToAccountsWithType:accountType options:options completion:^(BOOL granted, NSError *error) {
+                        if(granted) {
+                            if ([accountsArray count] > 0) {
+                                [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
+                                [[NSUserDefaults standardUserDefaults] synchronize];
+                            }
+                            else {
+                                [[self facebookSwitch] setOn:NO animated:YES];
+                                
+                                BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."];
+                                
+                                [noAccount setCancelButtonWithTitle:@"OK" block:nil];
+                                
+                                [noAccount show];
+                            }
+                        }
+                    }];
+                }
+                
+            }
+            else {
+                [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+            break;
+        case 1:
+        {
+            if ([sender isOn]) {
                 ACAccountStore *accountStore = [[ACAccountStore alloc] init];
                 
-                ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+                ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
                 
-                NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-                                
-                NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions", @"read_friendlists"]};
-                
-                [accountStore requestAccessToAccountsWithType:accountType options:options completion:^(BOOL granted, NSError *error) {
-                    if(granted) {
+                [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
+                    if (granted) {
+                        NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
                         if ([accountsArray count] > 0) {
-                            [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
+                            [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:@"post_to_twitter"];
                             [[NSUserDefaults standardUserDefaults] synchronize];
                         }
                         else {
-                            [[self facebookSwitch] setOn:NO animated:YES];
+                            [[self twitterSwitch] setOn:NO animated:YES];
                             
-                            BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."];
+                            BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Twitter account set up.  Please set one up in the Settings app."];
                             
                             [noAccount setCancelButtonWithTitle:@"OK" block:nil];
                             
@@ -271,33 +306,12 @@ NS_ENUM(NSInteger, SocialTypes) {
                         }
                     }
                 }];
+                
             }
-        }
-            break;
-        case 1:
-        {
-            ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-            
-            ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-            
-            [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
-                if (granted) {
-                    NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-                    if ([accountsArray count] > 0) {
-                        [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:@"post_to_twitter"];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                    }
-                    else {
-                        [[self twitterSwitch] setOn:NO animated:YES];
-                        
-                        BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Twitter account set up.  Please set one up in the Settings app."];
-                        
-                        [noAccount setCancelButtonWithTitle:@"OK" block:nil];
-                        
-                        [noAccount show];
-                    }
-                }
-            }];
+            else {
+                [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:@"post_to_twitter"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
         }
             break;
         case 2:
@@ -309,7 +323,22 @@ NS_ENUM(NSInteger, SocialTypes) {
         default:
             break;
     }
-    
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
+        if (![[self twitterSwitch] isOn] && ![[self facebookSwitch] isOn]) {
+            [[self confirmSwitch] setOn:NO animated:YES];
+            
+            [[NSUserDefaults standardUserDefaults] setBool:[[self confirmSwitch] isOn] forKey:@"confirm_post"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+    else {
+        if (![[self twitterSwitch] isOn]) {
+            [[self confirmSwitch] setOn:NO animated:YES];
+            
+            [[NSUserDefaults standardUserDefaults] setBool:[[self confirmSwitch] isOn] forKey:@"confirm_post"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
 }
 
 #pragma mark - Table view delegate

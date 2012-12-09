@@ -11,7 +11,7 @@
 
 @implementation GravatarHelper
 
-+(NSURL *)getGravatarURL:(NSString *)emailAddress
++(NSURL *)getGravatarURL:(NSString *)emailAddress withSize:(int)size
 {    
     if (!emailAddress) {
         return nil;
@@ -33,7 +33,7 @@
                           result[12], result[13], result[14], result[15]
                           ];
     
-	NSString *gravatarEndPoint = [NSString stringWithFormat:@"http://www.gravatar.com/avatar/%@?s=75&d=mm", md5email];
+	NSString *gravatarEndPoint = [NSString stringWithFormat:@"http://www.gravatar.com/avatar/%@?s=%i&d=mm", md5email, size];
     
 	return [NSURL URLWithString:gravatarEndPoint];
 }

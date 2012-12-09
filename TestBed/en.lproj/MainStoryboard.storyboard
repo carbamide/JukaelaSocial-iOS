@@ -34,7 +34,8 @@
                         <segue destination="i81-bH-OLq" kind="relationship" relationship="viewControllers" id="lby-fh-tU8"/>
                         <segue destination="DKi-a0-jxj" kind="relationship" relationship="viewControllers" id="8Lh-Mm-BR5"/>
                         <segue destination="3ax-J6-0PH" kind="relationship" relationship="viewControllers" id="BYR-rz-K8R"/>
-                        <segue destination="txF-kK-p6a" kind="relationship" relationship="viewControllers" id="O7T-y9-7er"/>
+                        <segue destination="Dbb-hc-uiT" kind="relationship" relationship="viewControllers" id="A6R-1z-hPJ"/>
+                        <segue destination="txF-kK-p6a" kind="relationship" relationship="viewControllers" id="P1n-eo-94Q"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ro6-nM-llJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -158,6 +159,37 @@
             </objects>
             <point key="canvasLocation" x="939" y="1323"/>
         </scene>
+        <!--Direct Messages View Controller-->
+        <scene sceneID="ypz-zD-TDg">
+            <objects>
+                <tableViewController id="OyH-ke-cnp" customClass="DirectMessagesViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Z4n-Ey-4xD" customClass="ShadowedTableView">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="WJK-ir-GYk"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bf7-Rf-Hlx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="962" y="1978"/>
+        </scene>
+        <!--Navigation Controller - Messages-->
+        <scene sceneID="3eX-q4-fEZ">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="Dbb-hc-uiT" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" tag="4" title="Messages" image="messages.png" id="duR-h6-i2j"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cVM-qD-QQD" customClass="PrettyNavigationBar">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="OyH-ke-cnp" kind="relationship" relationship="rootViewController" id="8Mc-Tl-iNU"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q1p-52-dwv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="434" y="1978"/>
+        </scene>
         <!--Navigation Controller - Mentions-->
         <scene sceneID="TqI-QN-u4n">
             <objects>
@@ -229,7 +261,7 @@
             </objects>
             <point key="canvasLocation" x="1688" y="1383"/>
         </scene>
-        <!--Feedback View Controller - Feedback-->
+        <!--Feedback View Controller-->
         <scene sceneID="tAo-kl-xei">
             <objects>
                 <viewController id="fRD-rN-3a8" customClass="FeedbackViewController" sceneMemberID="viewController">
@@ -247,7 +279,7 @@
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Feedback" id="uJf-Fj-rSu">
+                    <navigationItem key="navigationItem" id="uJf-Fj-rSu">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="arZ-vG-XOu">
                             <connections>
                                 <action selector="cancel:" destination="fRD-rN-3a8" id="3w5-Ch-S3H"/>
@@ -339,7 +371,7 @@
         <scene sceneID="oU3-By-16H">
             <objects>
                 <navigationController definesPresentationContext="YES" id="txF-kK-p6a" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" image="Settings.png" id="tXi-be-lyA"/>
+                    <tabBarItem key="tabBarItem" tag="5" title="Settings" image="Settings.png" id="tXi-be-lyA"/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="V2u-T6-0U9" customClass="PrettyNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -404,14 +436,14 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="256" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sl7-QP-MtA">
-                                        <rect key="frame" x="244" y="144" width="42" height="21"/>
+                                        <rect key="frame" x="239" y="144" width="42" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="WKH-FE-JFc">
-                                        <rect key="frame" x="13" y="134" width="41" height="41"/>
+                                        <rect key="frame" x="21" y="134" width="41" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" image="camera.png">
@@ -430,9 +462,9 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="UEV-D3-8r2">
-                                        <rect key="frame" x="88" y="11" width="198" height="136"/>
+                                        <rect key="frame" x="79" y="11" width="207" height="136"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
@@ -561,6 +593,7 @@
         <image name="Users.png" width="30" height="30"/>
         <image name="camera.png" width="30" height="30"/>
         <image name="mention.png" width="30" height="30"/>
+        <image name="messages.png" width="30" height="30"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

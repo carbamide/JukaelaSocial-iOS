@@ -114,22 +114,6 @@ NSString * const kJKPrepareForReuseNotification2 = @"CPCallbacksTableViewCell_Pr
         if (![[self imageView] image]) {
             [[self imageView] removeObserver:self forKeyPath:@"image"];
         }
-        
-        if (![[self nameLabel] text]) {
-            [[self nameLabel] removeObserver:self forKeyPath:@"text"];
-        }
-        
-        if (![[self textLabel] text]) {
-            [[self textLabel] removeObserver:self forKeyPath:@"text"];
-        }
-        
-        if (![[self dateLabel] text]) {
-            [[self dateLabel] removeObserver:self forKeyPath:@"text"];
-        }
-        
-        if (![[self usernameLabel] text]) {
-            [[self usernameLabel] removeObserver:self forKeyPath:@"text"];
-        }
     }
     @catch (id anException) {
         NSLog(@"Trying to remove an observer when none was attached.");

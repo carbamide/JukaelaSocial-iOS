@@ -95,6 +95,9 @@
 		298A644615E267D7009BF175 /* BlockBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 298A644115E267D7009BF175 /* BlockBackground.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		298A644715E267D7009BF175 /* BlockTextPromptAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 298A644315E267D7009BF175 /* BlockTextPromptAlertView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		298F7E071569821200516858 /* EditUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298F7E061569821200516858 /* EditUserViewController.m */; };
+		29942FC516752ED3001D3539 /* messages.png in Resources */ = {isa = PBXBuildFile; fileRef = 29942FC316752ED3001D3539 /* messages.png */; };
+		29942FC616752ED3001D3539 /* messages@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29942FC416752ED3001D3539 /* messages@2x.png */; };
+		29942FC916752F54001D3539 /* DirectMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29942FC816752F54001D3539 /* DirectMessagesViewController.m */; };
 		299AF47A16719A41000F1C45 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 299AF47816719A41000F1C45 /* camera.png */; };
 		299AF47B16719A41000F1C45 /* camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 299AF47916719A41000F1C45 /* camera@2x.png */; };
 		299AF48216725D45000F1C45 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 299AF48116725D45000F1C45 /* separator.png */; };
@@ -324,6 +327,10 @@
 		298A644815E26802009BF175 /* BlockUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockUI.h; sourceTree = "<group>"; };
 		298F7E051569821200516858 /* EditUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUserViewController.h; sourceTree = "<group>"; };
 		298F7E061569821200516858 /* EditUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUserViewController.m; sourceTree = "<group>"; };
+		29942FC316752ED3001D3539 /* messages.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = messages.png; path = TestBed/messages.png; sourceTree = "<group>"; };
+		29942FC416752ED3001D3539 /* messages@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "messages@2x.png"; path = "TestBed/messages@2x.png"; sourceTree = "<group>"; };
+		29942FC716752F54001D3539 /* DirectMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectMessagesViewController.h; sourceTree = "<group>"; };
+		29942FC816752F54001D3539 /* DirectMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectMessagesViewController.m; sourceTree = "<group>"; };
 		299AF47816719A41000F1C45 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		299AF47916719A41000F1C45 /* camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera@2x.png"; sourceTree = "<group>"; };
 		299AF48116725D45000F1C45 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = separator.png; path = TestBed/separator.png; sourceTree = "<group>"; };
@@ -911,6 +918,8 @@
 			isa = PBXGroup;
 			children = (
 				299AF48116725D45000F1C45 /* separator.png */,
+				29942FC316752ED3001D3539 /* messages.png */,
+				29942FC416752ED3001D3539 /* messages@2x.png */,
 				292A0E281604AE4300060702 /* Default-568h@2x.png */,
 				292431BB160A1ADA005DB723 /* LargeSplash.png */,
 				299AF47816719A41000F1C45 /* camera.png */,
@@ -963,6 +972,8 @@
 		29D5B85F1554769D000D9374 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				29942FC716752F54001D3539 /* DirectMessagesViewController.h */,
+				29942FC816752F54001D3539 /* DirectMessagesViewController.m */,
 				298F7E051569821200516858 /* EditUserViewController.h */,
 				298F7E061569821200516858 /* EditUserViewController.m */,
 				2988B25C1605534A00D0202E /* FeedbackViewController.h */,
@@ -1223,6 +1234,8 @@
 				299AF47A16719A41000F1C45 /* camera.png in Resources */,
 				299AF47B16719A41000F1C45 /* camera@2x.png in Resources */,
 				299AF48216725D45000F1C45 /* separator.png in Resources */,
+				29942FC516752ED3001D3539 /* messages.png in Resources */,
+				29942FC616752ED3001D3539 /* messages@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1340,6 +1353,7 @@
 				29DAEA381644C5EE00D6B341 /* REComposeSheetView.m in Sources */,
 				29C251591672BFED00F27ABC /* ImageConfirmationViewController.m in Sources */,
 				29C2515C1672D45B00F27ABC /* UsersCell.m in Sources */,
+				29942FC916752F54001D3539 /* DirectMessagesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

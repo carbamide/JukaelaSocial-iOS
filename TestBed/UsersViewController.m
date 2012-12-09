@@ -227,16 +227,14 @@
     }
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    
-    NSLog(@"%@", [self usersArray][[indexPath row]]);
-    
+        
     dispatch_async(queue, ^{
-        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]]]]];
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@-large", [self usersArray][[indexPath row]][@"email"]] withSize:65]]];
         
 #if (TARGET_IPHONE_SIMULATOR)
         image = [JEImages normalize:image];
 #endif
-        UIImage *resizedImage = [image thumbnailImage:55 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+        UIImage *resizedImage = [image thumbnailImage:65 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [[cell imageView] setImage:resizedImage];

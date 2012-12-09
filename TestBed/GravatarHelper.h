@@ -10,6 +10,6 @@
 
 @interface GravatarHelper : NSObject
 
-+(NSURL *)getGravatarURL:(NSString *)emailAddress;
++(NSURL *)getGravatarURL:(NSString *)emailAddress withSize:(int)size;
 
 @end

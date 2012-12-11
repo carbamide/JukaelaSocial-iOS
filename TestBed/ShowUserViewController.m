@@ -49,7 +49,7 @@
     
     [[self navigationItem] setTitle:@"Show User"];
     
-    [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+    [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
     [self setFollowers:nil];
     [self setFollowing:nil];
@@ -416,6 +416,8 @@
                 [[cell detailTextLabel] setText:@"No user profile"];
             }
             
+            [[cell detailTextLabel] setTextColor:[UIColor blackColor]];
+            
             return cell;
         }
         case 2: {
@@ -439,6 +441,9 @@
             
             if ([[self postCount] intValue] > 0) {
                 [segmentedCell setText:[NSString stringWithFormat:@"%@", [self postCount]] atIndex:2];
+            }
+            else {
+                [segmentedCell setText:@"0" atIndex:2];
             }
             
             [segmentedCell setDetailText:@"Posts" atIndex:2];

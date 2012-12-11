@@ -41,7 +41,7 @@
 {
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
     
-    [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+    [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         

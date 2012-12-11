@@ -108,7 +108,7 @@
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     
-    [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+    [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
     UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
     
@@ -648,7 +648,7 @@
 {
     NSString *contentText = [self theFeed][[indexPath row]][@"content"];
     
-    CGSize constraint = CGSizeMake(315, 20000);
+    CGSize constraint = CGSizeMake(300, 20000);
     
     CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
         

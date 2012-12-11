@@ -35,7 +35,7 @@
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     
-    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+    [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
 	[self getMessages];
 }

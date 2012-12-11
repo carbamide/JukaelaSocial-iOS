@@ -85,7 +85,7 @@
     
     [[self navigationItem] setRightBarButtonItem:composeButton];
     
-    [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+    [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
     

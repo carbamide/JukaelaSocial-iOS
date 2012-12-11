@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="dso-3y-mmV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3081" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="dso-3y-mmV">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2080"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller - Feed-->
@@ -65,40 +65,47 @@
                     <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="Me0-X5-BFC">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UTY-CA-4WO">
-                            <size key="itemSize" width="75" height="75"/>
+                            <size key="itemSize" width="85" height="97"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="UsersCell" id="5uO-XE-QBY" customClass="UsersCollectionViewCell">
-                                <rect key="frame" x="0.0" y="0.0" width="85" height="85"/>
+                                <rect key="frame" x="0.0" y="0.0" width="85" height="97"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="85" height="85"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="85" height="97"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="VUt-jd-4Fc">
                                             <rect key="frame" x="12" y="0.0" width="60" height="60"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" id="VCO-iY-Nxp">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" id="VCO-iY-Nxp">
                                             <rect key="frame" x="0.0" y="64" width="85" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="12"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
-                                            <color key="shadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <size key="shadowOffset" width="1" height="1"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" id="rWL-cX-CEs">
+                                            <rect key="frame" x="0.0" y="76" width="85" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="10"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <size key="customSize" width="85" height="85"/>
+                                <size key="customSize" width="85" height="97"/>
                                 <connections>
                                     <outlet property="imageView" destination="VUt-jd-4Fc" id="btg-MT-nVn"/>
                                     <outlet property="textLabel" destination="VCO-iY-Nxp" id="FzX-wl-2nu"/>
+                                    <outlet property="usernameLabel" destination="rWL-cX-CEs" id="GeU-1v-0ri"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -343,7 +350,7 @@
             <objects>
                 <tableViewController id="neM-n2-Hce" customClass="UsersPostsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="PEU-sE-awm" customClass="ShadowedTableView">
-                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -387,7 +394,7 @@
             <objects>
                 <tableViewController id="XZz-3J-zhK" customClass="ShowUserViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="HDr-HG-Tzr">
-                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         <connections>
@@ -397,14 +404,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="fFS-FC-5vs"/>
                     <connections>
-                        <segue destination="OxX-B3-gA9" kind="push" identifier="ShowFollowers" id="Nhe-14-LGi"/>
-                        <segue destination="OxX-B3-gA9" kind="push" identifier="ShowFollowing" id="SlM-PC-dsU"/>
                         <segue destination="neM-n2-Hce" kind="push" identifier="ShowUserPosts" id="ob3-sC-XBR"/>
+                        <segue destination="4NB-ly-9om" kind="push" identifier="ShowFollowers" id="2nh-a6-y7E"/>
+                        <segue destination="4NB-ly-9om" kind="push" identifier="ShowFollowing" id="MPs-Bn-T3e"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XCg-Ny-inp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2902" y="-89"/>
+            <point key="canvasLocation" x="2986" y="-84"/>
         </scene>
         <!--Navigation Controller - Settings-->
         <scene sceneID="oU3-By-16H">
@@ -539,28 +546,6 @@
             </objects>
             <point key="canvasLocation" x="2116" y="-558"/>
         </scene>
-        <!--Follower View Controller-->
-        <scene sceneID="S8X-6Y-VSO">
-            <objects>
-                <tableViewController id="OxX-B3-gA9" customClass="FollowerViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="T9x-C6-hGr" customClass="ShadowedTableView">
-                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="OxX-B3-gA9" id="Gvl-ZT-yyS"/>
-                            <outlet property="delegate" destination="OxX-B3-gA9" id="U1N-X7-FPq"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="lUN-I8-JtS"/>
-                    <connections>
-                        <segue destination="XZz-3J-zhK" kind="push" identifier="ShowUser" id="ADL-In-ktg"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nHg-K7-1gD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3324" y="-89"/>
-        </scene>
         <!--Image Confirmation View Controller-->
         <scene sceneID="WoM-zk-IOE">
             <objects>
@@ -624,6 +609,71 @@
             </objects>
             <point key="canvasLocation" x="1345" y="-1226"/>
         </scene>
+        <!--Follower View Controller - Users-->
+        <scene sceneID="jGD-qh-MfO">
+            <objects>
+                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="4NB-ly-9om" customClass="FollowerViewController" sceneMemberID="viewController">
+                    <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="19d-6I-I9f">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Lbm-Jf-Kqn">
+                            <size key="itemSize" width="85" height="97"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="UsersCell" id="wio-Kg-7t7" customClass="UsersCollectionViewCell">
+                                <rect key="frame" x="0.0" y="0.0" width="85" height="97"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="85" height="97"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="mha-rj-Vb7">
+                                            <rect key="frame" x="12" y="0.0" width="60" height="60"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" adjustsLetterSpacingToFitWidth="YES" id="9TB-e4-Nzh">
+                                            <rect key="frame" x="0.0" y="64" width="85" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="12"/>
+                                            <nil key="highlightedColor"/>
+                                            <size key="shadowOffset" width="1" height="1"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" id="btJ-P6-6wS">
+                                            <rect key="frame" x="0.0" y="76" width="85" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="10"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <size key="customSize" width="85" height="97"/>
+                                <connections>
+                                    <outlet property="imageView" destination="mha-rj-Vb7" id="04e-3w-Dmy"/>
+                                    <outlet property="textLabel" destination="9TB-e4-Nzh" id="qL0-ct-RCP"/>
+                                    <outlet property="usernameLabel" destination="btJ-P6-6wS" id="50i-FU-fZZ"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="4NB-ly-9om" id="onG-MD-axR"/>
+                            <outlet property="delegate" destination="4NB-ly-9om" id="nXH-wZ-NwB"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" title="Users" id="apf-Az-7dz"/>
+                    <connections>
+                        <segue destination="XZz-3J-zhK" kind="push" identifier="ShowUser" id="U5e-bJ-QPF"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hOk-PG-qAx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3600" y="-84"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Feed.png" width="30" height="30"/>
@@ -640,9 +690,9 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="pVl-wR-5FD"/>
         <segue reference="kDe-0T-1hT"/>
-        <segue reference="CJw-IH-p8F"/>
-        <segue reference="Nhe-14-LGi"/>
+        <segue reference="pVl-wR-5FD"/>
+        <segue reference="U5e-bJ-QPF"/>
+        <segue reference="MPs-Bn-T3e"/>
     </inferredMetricsTieBreakers>
 </document>

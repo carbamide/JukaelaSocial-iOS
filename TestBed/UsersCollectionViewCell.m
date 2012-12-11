@@ -19,13 +19,14 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+-(void)prepareForReuse
 {
-    // Drawing code
+    [[self usernameLabel] setText:nil];
+    [[self textLabel] setText:nil];
+    
+    [[self imageView] setImage:nil];
+    
+    [super prepareForReuse];
 }
-*/
 
 @end

@@ -36,7 +36,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [kAppDelegate setCurrentViewController:self];
-
+    
     [super viewDidAppear:animated];
 }
 
@@ -46,14 +46,14 @@
 }
 
 -(void)viewDidLoad
-{    
+{
     [super viewDidLoad];
     
     [self getUsers:YES];
     
     [[self collectionView] setBackgroundColor:[UIColor clearColor]];
     
-    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
+    [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
 }
 
 -(void)getUsers:(BOOL)showActivityIndicator
@@ -118,7 +118,7 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section
-{    
+{
     return [[self usersArray] count];
 }
 
@@ -131,35 +131,39 @@
 {
     UsersCollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"UsersCell" forIndexPath:indexPath];
     
-    [[cell textLabel] setBackgroundColor:[UIColor colorWithWhite:0.5 alpha:0.8]];
-    
-    [[[cell textLabel] layer] setCornerRadius:8];
-    
     [[cell textLabel] setText:[self usersArray][[indexPath row]][@"name"]];
     
-    [[cell imageView] setClipsToBounds:NO];
+    if ([self usersArray][[indexPath row]][@"username"] && [self usersArray][[indexPath row]][@"username"] != [NSNull null]) {
+        [[cell usernameLabel] setText:[self usersArray][[indexPath row]][@"username"]];
+    }
     
-    [[[cell imageView] layer] setShadowColor:[[UIColor darkGrayColor] CGColor]];
-    [[[cell imageView] layer] setShadowRadius:4];
-    [[[cell imageView] layer] setShadowOpacity:0.8];
-    [[[cell imageView] layer] setShadowOffset:CGSizeMake(-11, 5)];
-    [[[cell imageView] layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:cell.imageView.frame byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)] CGPath]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]]]];
     
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    
-    dispatch_async(queue, ^{
-        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]] withSize:65]]];
-        
-#if (TARGET_IPHONE_SIMULATOR)
-        image = [JEImages normalize:image];
-#endif
-        UIImage *resizedImage = [image thumbnailImage:65 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-        
+    if (image) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[cell imageView] setImage:resizedImage];
+            [[cell imageView] setImage:image];
             [cell setNeedsDisplay];
         });
-    });
+    }
+    else {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        
+        dispatch_async(queue, ^{
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]] withSize:65]]];
+            
+#if (TARGET_IPHONE_SIMULATOR)
+            image = [JEImages normalize:image];
+#endif
+            UIImage *resizedImage = [image thumbnailImage:65 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[cell imageView] setImage:resizedImage];
+                [cell setNeedsDisplay];
+                
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self usersArray][[indexPath row]][@"id"]]];
+            });
+        });
+    }
     
     return cell;
 }
@@ -174,7 +178,7 @@
     [[self view] addSubview:progressHUD];
     
     [progressHUD show:YES];
-        
+    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPath row]][@"id"]]];
@@ -207,7 +211,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(85, 85);
+    return CGSizeMake(85, 97);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section

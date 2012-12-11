@@ -8,27 +8,25 @@
 
 #import <objc/runtime.h>
 #import "AppDelegate.h"
-#import "UsersCell.h"
 #import "CellBackground.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
 #import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
 #import "UsersViewController.h"
+#import "UsersCollectionViewCell.h"
 
 @interface UsersViewController ()
 @property (strong, nonatomic) NSMutableArray *tempArray;
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
-@property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
-
 @end
 
 @implementation UsersViewController
 
--(id)initWithStyle:(UITableViewStyle)style
+-(id)initWithCollectionViewLayout:(UICollectionViewLayout *)layout
 {
-    self = [super initWithStyle:style];
+    self = [super initWithCollectionViewLayout:layout];
     if (self) {
         
     }
@@ -38,104 +36,24 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [kAppDelegate setCurrentViewController:self];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
-    
+
     [super viewDidAppear:animated];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"double_tap" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"send_to_user" object:nil];
-    
     [super viewDidDisappear:animated];
 }
 
 -(void)viewDidLoad
-{
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-        
-        [refreshControl setTintColor:[UIColor blackColor]];
-        
-        [refreshControl addTarget:self action:@selector(getUsers:) forControlEvents:UIControlEventValueChanged];
-        
-        [self setRefreshControl:refreshControl];
-    }
-    else {
-        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
-        
-        [_oldRefreshControl setTintColor:[UIColor blackColor]];
-        
-        [_oldRefreshControl addTarget:self action:@selector(getUsers:) forControlEvents:UIControlEventValueChanged];
-    }
-    
+{    
     [super viewDidLoad];
     
     [self getUsers:YES];
     
-    UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
+    [[self collectionView] setBackgroundColor:[UIColor clearColor]];
     
-    [[self navigationItem] setRightBarButtonItem:composeButton];
-    
-    [[self tableView] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
-}
-
--(void)composePost:(UIBarButtonItem *)sender
-{
-    [self performSegueWithIdentifier:@"ShowPostView" sender:self];
-}
-
--(void)doubleTap:(NSNotification *)aNotification
-{
-    if ([[self tabBarController] selectedIndex] == 1) {
-        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
-        
-        BlockActionSheet *userActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
-        
-        [userActionSheet addButtonWithTitle:@"Show User" block:^{
-            MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
-            [progressHUD setMode:MBProgressHUDModeIndeterminate];
-            [progressHUD setLabelText:@"Loading User..."];
-            [progressHUD setDelegate:self];
-            
-            [[self view] addSubview:progressHUD];
-            
-            [progressHUD show:YES];
-            
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-            
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"id"]]];
-            
-            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-            
-            [request setHTTPMethod:@"GET"];
-            [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-            [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-            
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                if (data) {
-                    [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                    
-                    [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
-                    
-                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                    
-                    [self performSegueWithIdentifier:@"ShowUser" sender:nil];
-                }
-                else {
-                    [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
-                }
-                [progressHUD hide:YES];
-            }];
-        }];
-        
-        [userActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-        
-        [userActionSheet showInView:[self view]];
-    }
+    [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"underPageBackground.png"]]];
 }
 
 -(void)getUsers:(BOOL)showActivityIndicator
@@ -164,16 +82,10 @@
             
             [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
-            [[self tableView] reloadData];
+            [[self collectionView] reloadData];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
-        }
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-            [[self refreshControl] endRefreshing];
-        }
-        else {
-            [_oldRefreshControl endRefreshing];
         }
         
         [[self activityIndicator] stopAnimating];
@@ -188,71 +100,6 @@
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-#pragma mark - Table view data source
-
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [[self usersArray] count];
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"UserViewControllerCell";
-    
-    UsersCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[UsersCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        
-        [cell setBackgroundView:[[CellBackground alloc] init]];
-    }
-        
-    [[cell contentText] setFontName:@"Helvetica-Light"];
-    [[cell contentText] setFontSize:18];
-    
-    [[cell contentText] setText:[self usersArray][[indexPath row]][@"name"]];
-        
-    if ([self usersArray][[indexPath row]][@"username"] && [self usersArray][[indexPath row]][@"username"] != [NSNull null]) {
-        [[cell detailTextLabel] setText:[self usersArray][[indexPath row]][@"username"]];
-    }
-    else {
-        [[cell detailTextLabel] setText:@"No username specified"];
-    }
-    
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        
-    dispatch_async(queue, ^{
-        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@-large", [self usersArray][[indexPath row]][@"email"]] withSize:65]]];
-        
-#if (TARGET_IPHONE_SIMULATOR)
-        image = [JEImages normalize:image];
-#endif
-        UIImage *resizedImage = [image thumbnailImage:65 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[cell imageView] setImage:resizedImage];
-            [cell setNeedsDisplay];
-        });
-    });
-    
-    return cell;
-}
-#pragma mark - Table view delegate
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 80;
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -270,7 +117,54 @@
     }
 }
 
--(void)switchToSelectedUser:(NSNotification *)aNotification
+- (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section
+{    
+    return [[self usersArray] count];
+}
+
+- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView
+{
+    return 1;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UsersCollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"UsersCell" forIndexPath:indexPath];
+    
+    [[cell textLabel] setBackgroundColor:[UIColor colorWithWhite:0.5 alpha:0.8]];
+    
+    [[[cell textLabel] layer] setCornerRadius:8];
+    
+    [[cell textLabel] setText:[self usersArray][[indexPath row]][@"name"]];
+    
+    [[cell imageView] setClipsToBounds:NO];
+    
+    [[[cell imageView] layer] setShadowColor:[[UIColor darkGrayColor] CGColor]];
+    [[[cell imageView] layer] setShadowRadius:4];
+    [[[cell imageView] layer] setShadowOpacity:0.8];
+    [[[cell imageView] layer] setShadowOffset:CGSizeMake(-11, 5)];
+    [[[cell imageView] layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:cell.imageView.frame byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)] CGPath]];
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    
+    dispatch_async(queue, ^{
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]] withSize:65]]];
+        
+#if (TARGET_IPHONE_SIMULATOR)
+        image = [JEImages normalize:image];
+#endif
+        UIImage *resizedImage = [image thumbnailImage:65 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[cell imageView] setImage:resizedImage];
+            [cell setNeedsDisplay];
+        });
+    });
+    
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
     [progressHUD setMode:MBProgressHUDModeIndeterminate];
@@ -280,12 +174,10 @@
     [[self view] addSubview:progressHUD];
     
     [progressHUD show:YES];
-    
-    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
-    
+        
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPath row]][@"id"]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -308,46 +200,24 @@
     }];
 }
 
--(void)repostSwitchToSelectedUser:(NSNotification *)aNotification
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
-    [progressHUD setMode:MBProgressHUDModeIndeterminate];
-    [progressHUD setLabelText:@"Loading User..."];
-    [progressHUD setDelegate:self];
-    
-    [[self view] addSubview:progressHUD];
-    
-    [progressHUD show:YES];
-    
-    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"repost_user_id"]]];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {
-            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-        }
-        else {
-            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
-        }
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-        [progressHUD hide:YES];
-        
-        [self performSegueWithIdentifier:@"ShowUser" sender:nil];
-    }];
+    NSLog(@"Deselected item");
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(85, 85);
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(5, 5, 5, 5);
 }
 
 -(void)hudWasHidden:(MBProgressHUD *)hud
 {
     [hud removeFromSuperview];
 }
+
 @end

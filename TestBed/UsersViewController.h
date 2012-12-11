@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 
-@interface UsersViewController : JukaelaTableViewController <MBProgressHUDDelegate>
+@interface UsersViewController : JukaelaCollectionViewController <MBProgressHUDDelegate>
 
 @property (strong, nonatomic) NSArray *usersArray;
 

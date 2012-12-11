@@ -11,6 +11,7 @@
 #import "Helpers.h"
 #import "JukaelaViewController.h"
 #import "JukaelaTableViewController.h"
+#import "JukaelaCollectionViewController.h"
 #import "NSNull+DontCrash.h"
 #import "NSDate+RailsDateParser.h"
 #import "NSString+BackslashEscape.h"

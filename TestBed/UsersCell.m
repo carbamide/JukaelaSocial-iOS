@@ -141,7 +141,6 @@ NSString * const kJKPrepareForReuseNotification2 = @"CPCallbacksTableViewCell_Pr
     NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"send_to_user" object:nil userInfo:@{@"indexPath" : indexPath}];
-    
 }
 
 -(void)repostSendToUser:(UIGestureRecognizer *)gesture

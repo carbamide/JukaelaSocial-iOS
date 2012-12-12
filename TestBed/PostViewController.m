@@ -19,6 +19,8 @@
 #import "UIAlertView+Blocks.h"
 #import "UIImage+Resize.h"
 #import "ImageConfirmationViewController.h"
+#import "AppDelegate.h"
+#import "GravatarHelper.h"
 
 @interface PostViewController ()
 @property (strong, nonatomic) ACAccountStore *accountStore;
@@ -38,16 +40,41 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
+    UIWindow *tempWindow = [kAppDelegate window];
+    
+    if (tempWindow.frame.size.height > 500) {
+        [[self photoButton] setFrame:CGRectMake(_photoButton.frame.origin.x, _photoButton.frame.origin.y + 100, _photoButton.frame.size.width, _photoButton.frame.size.height)];
+        [[self countDownLabel] setFrame:CGRectMake(_countDownLabel.frame.origin.x, _countDownLabel.frame.origin.y + 100, _countDownLabel.frame.size.width, _countDownLabel.frame.size.height)];
+        [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height + 100)];
+    }
+    
     [[self theTextView] becomeFirstResponder];
     [[self theTextView] setDelegate:self];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [kAppDelegate userID]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [kAppDelegate userID]]]]];
+    
+    if (image) {
+        [[self userProfileImage] setImage:image];
+    }
+    else {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        
+        dispatch_async(queue, ^{                          
+            UIImage *tempImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[kAppDelegate userEmail] withSize:65]]];
+            
+            UIImage *resizedImage = [tempImage thumbnailImage:65 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[self userProfileImage] setImage:resizedImage];
+                
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [kAppDelegate userID]]];
+            });
+        });
+    }
     
     CGRect backgroundRect = self.backgroundView.frame;
     CGRect userImageRect = self.userProfileImage.frame;
-    
-    [[self userProfileImage] setImage:image];
     
     [[self userProfileImage] setClipsToBounds:NO];
     
@@ -56,9 +83,9 @@
     [[[self userProfileImage] layer] setShadowOpacity:0.8];
     [[[self userProfileImage] layer] setShadowOffset:CGSizeMake(-12, -10)];
     [[[self userProfileImage] layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:userImageRect byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)] CGPath]];
-
+    
     [[[self backgroundView] layer] setCornerRadius:8];
-
+    
     [[[self backgroundView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
     [[[self backgroundView] layer] setShadowRadius:8];
     [[[self backgroundView] layer] setShadowOpacity:1.0];
@@ -668,11 +695,12 @@
     
     NSUInteger textCount = [self.theTextView.text length];
     
-    _countDownLabel.text = [NSString stringWithFormat:@"%d", maxCount-textCount];
+    [_countDownLabel setText:[NSString stringWithFormat:@"%d", maxCount-textCount]];
     
     if (textCount > maxCount) {
         _countDownLabel.textColor = [UIColor redColor];
-    } else {
+    }
+    else {
         _countDownLabel.textColor = [UIColor darkGrayColor];
     }
 }

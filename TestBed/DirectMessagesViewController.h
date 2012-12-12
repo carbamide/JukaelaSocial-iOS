@@ -10,4 +10,6 @@
 
 @interface DirectMessagesViewController : JukaelaTableViewController <UITableViewDataSource, UITableViewDelegate>
 
+-(void)getMessages;
+
 @end

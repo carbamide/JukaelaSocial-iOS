@@ -13,6 +13,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSString *userEmail;
+@property (strong, nonatomic) NSString *userUsername;
 
 @property (nonatomic, assign) id currentViewController;
 @property (strong, nonatomic) NSCache *externalImageCache;

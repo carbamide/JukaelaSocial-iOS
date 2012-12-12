@@ -213,8 +213,11 @@
                 [[[[self tabBarController] tabBar] items][1] setEnabled:YES];
                 [[[[self tabBarController] tabBar] items][2] setEnabled:YES];
                 [[[[self tabBarController] tabBar] items][3] setEnabled:YES];
-                
+                [[[[self tabBarController] tabBar] items][4] setEnabled:YES];
+
                 [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[@"id"]]];
+                [kAppDelegate setUserEmail:[NSString stringWithFormat:@"%@", loginDict[@"email"]]];
+                [kAppDelegate setUserUsername:[NSString stringWithFormat:@"%@", loginDict[@"username"]]];
                 
                 [[NSUserDefaults standardUserDefaults] setValue:[kAppDelegate userID] forKey:@"user_id"];
                 
@@ -323,7 +326,8 @@
     [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
     [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
     [[[[self tabBarController] tabBar] items][3] setEnabled:NO];
-    
+    [[[[self tabBarController] tabBar] items][4] setEnabled:NO];
+
     [[[self imageView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
     [[[self imageView] layer] setShadowOffset:CGSizeMake(0, 1)];
     [[[self imageView] layer] setShadowOpacity:0.75];

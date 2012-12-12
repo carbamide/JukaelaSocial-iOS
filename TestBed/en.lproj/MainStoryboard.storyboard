@@ -215,6 +215,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
                     <navigationItem key="navigationItem" id="WJK-ir-GYk"/>
+                    <connections>
+                        <segue destination="taW-UA-al0" kind="modal" identifier="Compose" id="rwG-WP-FS7"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bf7-Rf-Hlx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -674,6 +677,103 @@
             </objects>
             <point key="canvasLocation" x="3600" y="-84"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="5cF-1r-8qf">
+            <objects>
+                <navigationController storyboardIdentifier="AbsoluteBullCrap" definesPresentationContext="YES" id="taW-UA-al0" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="eHt-Ny-ltJ" customClass="PrettyNavigationBar">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Mj2-ie-1Gn" kind="relationship" relationship="rootViewController" id="2Bt-fe-Jet"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mlg-CP-1x3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1437" y="1978"/>
+        </scene>
+        <!--Direct Message Composer View Controller-->
+        <scene sceneID="B0V-IG-oij">
+            <objects>
+                <viewController id="Mj2-ie-1Gn" customClass="DirectMessageComposerViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IxU-qf-xyf">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="1vZ-6r-lsR">
+                                <rect key="frame" x="10" y="10" width="302" height="182"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="256" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Gh9-rv-4OX">
+                                        <rect key="frame" x="244" y="147" width="42" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="Idr-Es-rty">
+                                        <rect key="frame" x="11" y="11" width="60" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Jc3-dZ-unZ">
+                                        <rect key="frame" x="79" y="49" width="207" height="99"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="Mj2-ie-1Gn" id="IKY-if-Vsy"/>
+                                        </connections>
+                                    </textView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="vu3-LJ-s9X">
+                                        <rect key="frame" x="120" y="11" width="166" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="Mj2-ie-1Gn" id="E8Y-dO-bmG"/>
+                                        </connections>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="To:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hZe-q0-zGD">
+                                        <rect key="frame" x="79" y="15" width="42" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="IpN-Tv-jSq">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="foM-3V-A19">
+                            <connections>
+                                <action selector="cancel:" destination="Mj2-ie-1Gn" id="gsd-Ba-XJy"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Post" id="A7i-ZV-der">
+                            <connections>
+                                <action selector="post:" destination="Mj2-ie-1Gn" id="Q2x-BP-prC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="backgroundView" destination="1vZ-6r-lsR" id="T8u-Wj-sbE"/>
+                        <outlet property="cancelButton" destination="foM-3V-A19" id="Odo-cY-KJN"/>
+                        <outlet property="countDownLabel" destination="Gh9-rv-4OX" id="n4t-Lv-gea"/>
+                        <outlet property="imageView" destination="Idr-Es-rty" id="Ago-nV-NrX"/>
+                        <outlet property="postButton" destination="A7i-ZV-der" id="fHO-l8-Y8f"/>
+                        <outlet property="textField" destination="vu3-LJ-s9X" id="t19-Xm-pfI"/>
+                        <outlet property="textView" destination="Jc3-dZ-unZ" id="o3e-as-fzB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nu8-kh-Eqn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1954" y="1983"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Feed.png" width="30" height="30"/>
@@ -691,7 +791,7 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="kDe-0T-1hT"/>
-        <segue reference="pVl-wR-5FD"/>
+        <segue reference="ilt-Mo-CmO"/>
         <segue reference="U5e-bJ-QPF"/>
         <segue reference="MPs-Bn-T3e"/>
     </inferredMetricsTieBreakers>

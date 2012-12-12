@@ -115,6 +115,9 @@
         
         [[[[aViewController tabBarController] tabBar] items][1] setEnabled:NO];
         [[[[aViewController tabBarController] tabBar] items][2] setEnabled:NO];
+        [[[[aViewController tabBarController] tabBar] items][3] setEnabled:NO];
+        [[[[aViewController tabBarController] tabBar] items][4] setEnabled:NO];
+
     }];
     
     [errorAlert addButtonWithTitle:@"Cancel" block:^{

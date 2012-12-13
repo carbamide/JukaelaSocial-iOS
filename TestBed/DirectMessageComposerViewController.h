@@ -8,7 +8,7 @@
 
 #import "JukaelaViewController.h"
 
-@interface DirectMessageComposerViewController : JukaelaViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface DirectMessageComposerViewController : JukaelaViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) IBOutlet UITextField *textField;

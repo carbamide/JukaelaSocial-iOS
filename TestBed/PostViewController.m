@@ -21,17 +21,20 @@
 #import "ImageConfirmationViewController.h"
 #import "AppDelegate.h"
 #import "GravatarHelper.h"
+#import "CellBackground.h"
 
 @interface PostViewController ()
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *facebookAccount;
-
 @property (strong, nonatomic) NSData *tempImageData;
-
 @property (strong, nonatomic) NSString *currentString;
-
 @property (nonatomic) BOOL isPosting;
 @property (nonatomic) BOOL imageAdded;
+@property (strong, nonatomic) UITableView *usernameTableView;
+@property (strong, nonatomic) NSMutableArray *usernameArray;
+@property (strong, nonatomic) NSMutableArray *autocompleteUsernames;
+
+@property (strong, nonatomic) NSString *currentWord;
 
 @end
 
@@ -40,6 +43,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self getUsers];
+    
+    [self setAutocompleteUsernames:[[NSMutableArray alloc] init]];
+
+    _usernameTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    
+    [_usernameTableView setDelegate:self];
+    [_usernameTableView setDataSource:self];
+    [_usernameTableView setScrollEnabled:YES];
+    [_usernameTableView setHidden:YES];
+    
+    [[_usernameTableView layer] setCornerRadius:8];
+    [[_usernameTableView layer] setBorderColor:[[UIColor grayColor] CGColor]];
+    [[_usernameTableView layer] setBorderWidth:1];
+    
+    [[self view] addSubview:_usernameTableView];
     
     UIWindow *tempWindow = [kAppDelegate window];
     
@@ -60,11 +80,11 @@
     else {
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
-        dispatch_async(queue, ^{                          
+        dispatch_async(queue, ^{
             UIImage *tempImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[kAppDelegate userEmail] withSize:65]]];
             
             UIImage *resizedImage = [tempImage thumbnailImage:65 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[self userProfileImage] setImage:resizedImage];
                 
@@ -95,6 +115,10 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:UITextViewTextDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
         [self updateCount];
     }];
+    
+    if (_replyString) {
+        [_theTextView setText:[_replyString stringByAppendingString:@" "]];
+    }
 }
 
 -(IBAction)takePhoto:(id)sender
@@ -681,12 +705,24 @@
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if ([self isPosting]) {
-        return NO;
-    }
-    else {
-        return YES;
-    }
+    CGPoint cursorPosition = [textView caretRectForPosition:textView.selectedTextRange.start].origin;
+
+    [_usernameTableView setFrame:CGRectMake(cursorPosition.x, cursorPosition.y + 41, 166, 130)];
+    
+    [[self usernameTableView] setHidden:NO];
+    
+    NSString *substring = [NSString stringWithString:[textView text]];
+    substring = [substring stringByReplacingCharactersInRange:range withString:text];
+    
+    substring = [substring stringByReplacingOccurrencesOfString:@"@" withString:@""];
+    
+    NSArray *tempArray = [substring componentsSeparatedByString:@" "];
+    
+    [self setCurrentWord:[tempArray lastObject]];
+        
+    [self searchAutocompleteEntriesWithSubstring:[tempArray lastObject]];
+    
+    return YES;
 }
 
 -(void)updateCount
@@ -698,10 +734,10 @@
     [_countDownLabel setText:[NSString stringWithFormat:@"%d", maxCount-textCount]];
     
     if (textCount > maxCount) {
-        _countDownLabel.textColor = [UIColor redColor];
+        [_countDownLabel setTextColor:[UIColor redColor]];
     }
     else {
-        _countDownLabel.textColor = [UIColor darkGrayColor];
+        [_countDownLabel setTextColor:[UIColor darkGrayColor]];
     }
 }
 
@@ -713,6 +749,114 @@
     else {
         [[[self navigationItem] rightBarButtonItem] setEnabled:NO];
     }
+}
+
+#pragma mark UITableViewDataSource methods
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger) section
+{
+    if ([[self autocompleteUsernames] count] == 0) {
+        [tableView setHidden:YES];
+    }
+    
+    return [[self autocompleteUsernames] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = nil;
+    
+    static NSString *AutoCompleteRowIdentifier = @"AutoCompleteRowIdentifier";
+    
+    cell = [tableView dequeueReusableCellWithIdentifier:AutoCompleteRowIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:AutoCompleteRowIdentifier];
+        
+        [cell setBackgroundView:[[CellBackground alloc] init]];
+        
+        
+    }
+    
+    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+    
+    [[cell textLabel] setText:[[self autocompleteUsernames] objectAtIndex:[indexPath row]]];
+    
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [cell setBackgroundColor:[UIColor clearColor]];
+}
+
+#pragma mark UITableViewDelegate methods
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+
+    [_theTextView setText:[[_theTextView text] stringByReplacingOccurrencesOfString:[self currentWord] withString:[[selectedCell textLabel] text]]];
+    
+    [tableView setHidden:YES];
+}
+
+-(void)getUsers
+{
+    if (![self usernameArray]) {
+        [self setUsernameArray:[[NSMutableArray alloc] init]];
+    }
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users.json", kSocialURL]];
+    
+    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            NSArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+                        
+            for (id userDict in tempArray) {
+                if (userDict[@"username"] && userDict[@"username"] != [NSNull null]) {
+                    [[self usernameArray] addObject:userDict[@"username"]];
+                }
+            }
+        }
+        else {
+            NSLog(@"Error retrieving users");
+        }
+    }];
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    
+    if (![_usernameTableView isHidden]) {
+        id view = [touch view];
+        
+        if (![view isEqual:_usernameTableView]) {
+            [_usernameTableView setHidden:YES];
+        }
+    }
+}
+
+- (void)searchAutocompleteEntriesWithSubstring:(NSString *)substring
+{
+    [_autocompleteUsernames removeAllObjects];
+    
+    substring = [substring stringByReplacingOccurrencesOfString:@"@" withString:@""];
+
+    for (NSString *curString in [self usernameArray]) {
+        NSRange substringRange = [curString rangeOfString:substring];
+        if (substringRange.location == 0) {
+            [_autocompleteUsernames addObject:curString];
+        }
+    }
+        
+    [[self usernameTableView] reloadData];
 }
 
 @end

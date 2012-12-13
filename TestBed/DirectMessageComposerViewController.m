@@ -9,11 +9,11 @@
 #import "DirectMessageComposerViewController.h"
 #import "AppDelegate.h"
 #import "GravatarHelper.h"
+#import "CellBackground.h"
 
 @interface DirectMessageComposerViewController ()
 @property (strong, nonatomic) NSMutableArray *usernameArray;
 @property (strong, nonatomic) NSMutableArray *autocompleteUsernames;
-
 @end
 
 @implementation DirectMessageComposerViewController
@@ -31,12 +31,16 @@
 {
     [super viewDidLoad];
     
-    _usernameTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 71, 320, 130) style:UITableViewStylePlain];
+    _usernameTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.textField.frame.origin.x + 10, 50, self.textField.frame.size.width, 130) style:UITableViewStylePlain];
     
     [_usernameTableView setDelegate:self];
     [_usernameTableView setDataSource:self];
     [_usernameTableView setScrollEnabled:YES];
     [_usernameTableView setHidden:YES];
+    
+    [[_usernameTableView layer] setCornerRadius:8];
+    [[_usernameTableView layer] setBorderColor:[[UIColor grayColor] CGColor]];
+    [[_usernameTableView layer] setBorderWidth:1];
     
     [[self view] addSubview:_usernameTableView];
     
@@ -153,10 +157,10 @@
     [_countDownLabel setText:[NSString stringWithFormat:@"%d", maxCount-textCount]];
     
     if (textCount > maxCount) {
-        _countDownLabel.textColor = [UIColor redColor];
+        [_countDownLabel setTextColor:[UIColor redColor]];
     }
     else {
-        _countDownLabel.textColor = [UIColor darkGrayColor];
+        [_countDownLabel setTextColor:[UIColor darkGrayColor]];
     }
     
     [[self postButton] setEnabled:![[_countDownLabel text] isEqualToString:@"256"]];
@@ -166,12 +170,13 @@
 {
     [_autocompleteUsernames removeAllObjects];
     
-    for(NSString *curString in [self usernameArray]) {
+    for (NSString *curString in [self usernameArray]) {
         NSRange substringRange = [curString rangeOfString:substring];
         if (substringRange.location == 0) {
             [_autocompleteUsernames addObject:curString];
         }
     }
+    
     [[self usernameTableView] reloadData];
 }
 
@@ -193,6 +198,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger) section
 {
+    if ([[self autocompleteUsernames] count] == 0) {
+        [tableView setHidden:YES];
+    }
+    
     return [[self autocompleteUsernames] count];
 }
 
@@ -205,11 +214,22 @@
     cell = [tableView dequeueReusableCellWithIdentifier:AutoCompleteRowIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:AutoCompleteRowIdentifier];
+        
+        [cell setBackgroundView:[[CellBackground alloc] init]];
+        
+        
     }
+    
+    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
     
     [[cell textLabel] setText:[[self autocompleteUsernames] objectAtIndex:[indexPath row]]];
     
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [cell setBackgroundColor:[UIColor clearColor]];
 }
 
 #pragma mark UITableViewDelegate methods
@@ -252,4 +272,25 @@
         }
     }];
 }
+
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    [_usernameTableView setHidden:YES];
+    
+    return YES;
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    
+    if (![_usernameTableView isHidden]) {
+        id view = [touch view];
+        
+        if (![view isEqual:_usernameTableView]) {
+            [_usernameTableView setHidden:YES];
+        }
+    }
+}
+
 @end

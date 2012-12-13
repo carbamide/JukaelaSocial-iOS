@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PostViewController : JukaelaViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate>
+@interface PostViewController : JukaelaViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSString *replyString;
 @property (strong, nonatomic) NSString *repostString;

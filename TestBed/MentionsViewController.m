@@ -21,7 +21,6 @@
 #import "UIImageView+Curled.h"
 
 @interface MentionsViewController ()
-@property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
@@ -62,24 +61,17 @@
 
 - (void)viewDidLoad
 {
+    [self setRestorationClass:[self class]];
+    
     [self refreshTableInformation];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-        
-        [refreshControl setTintColor:[UIColor blackColor]];
-        
-        [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-        
-        [self setRefreshControl:refreshControl];
-    }
-    else {
-        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
-        
-        [_oldRefreshControl setTintColor:[UIColor blackColor]];
-        
-        [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-    }
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    
+    [refreshControl setTintColor:[UIColor blackColor]];
+    
+    [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+    
+    [self setRefreshControl:refreshControl];
     
     UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
     
@@ -382,12 +374,8 @@
             
             [[self tableView] reloadData];
             
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-                [[self refreshControl] endRefreshing];
-            }
-            else {
-                [_oldRefreshControl endRefreshing];
-            }
+            [[self refreshControl] endRefreshing];
+            
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }
         else {

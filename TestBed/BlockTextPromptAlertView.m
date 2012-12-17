@@ -28,7 +28,7 @@
 }
 
 + (BlockTextPromptAlertView *)promptWithTitle:(NSString *)title message:(NSString *)message defaultText:(NSString*)defaultText block:(TextFieldReturnCallBack)block {
-    return [[[BlockTextPromptAlertView alloc] initWithTitle:title message:message defaultText:defaultText block:block] autorelease];
+    return [[BlockTextPromptAlertView alloc] initWithTitle:title message:message defaultText:defaultText block:block];
 }
 
 + (BlockTextPromptAlertView *)promptWithTitle:(NSString *)title message:(NSString *)message textField:(out UITextField**)textField {
@@ -37,7 +37,7 @@
 
 
 + (BlockTextPromptAlertView *)promptWithTitle:(NSString *)title message:(NSString *)message textField:(out UITextField**)textField block:(TextFieldReturnCallBack) block{
-    BlockTextPromptAlertView *prompt = [[[BlockTextPromptAlertView alloc] initWithTitle:title message:message defaultText:nil block:block] autorelease];
+    BlockTextPromptAlertView *prompt = [[BlockTextPromptAlertView alloc] initWithTitle:title message:message defaultText:nil block:block];
     
     *textField = prompt.textField;
     
@@ -49,7 +49,7 @@
     self = [super initWithTitle:title message:message];
     
     if (self) {
-        UITextField *theTextField = [[[UITextField alloc] initWithFrame:CGRectMake(kTextBoxHorizontalMargin, _height, _view.bounds.size.width - kTextBoxHorizontalMargin * 2, kTextBoxHeight)] autorelease]; 
+        UITextField *theTextField = [[UITextField alloc] initWithFrame:CGRectMake(kTextBoxHorizontalMargin, _height, _view.bounds.size.width - kTextBoxHorizontalMargin * 2, kTextBoxHeight)]; 
         
         [theTextField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
         [theTextField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
@@ -153,7 +153,6 @@
 - (void)dealloc
 {
     self.callBack = nil;
-    [super dealloc];
 }
 
 @end

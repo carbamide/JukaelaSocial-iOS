@@ -16,7 +16,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSURL *url = [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"SORelativeDateTransformer.bundle" isDirectory:YES];
-        bundle = [[NSBundle bundleWithURL:url] retain];
+        bundle = [NSBundle bundleWithURL:url];
     });
     return bundle;
 }
@@ -27,18 +27,11 @@
 {
 	self = [super init];
 	if (self) {
-		__calendar = [[NSCalendar currentCalendar] retain];
+		__calendar = [NSCalendar currentCalendar];
 		__unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
 		__dateComponentSelectorNames =  [[NSArray alloc] initWithObjects:@"year", @"month", @"week", @"day", @"hour", @"minute", @"second", nil];	
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	[__calendar release];
-	[__dateComponentSelectorNames release];
-	[super dealloc];
 }
 
 #pragma mark -

@@ -23,7 +23,6 @@
 #import "UIImageView+Curled.h"
 
 @interface UsersPostsViewController ()
-@property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
@@ -43,22 +42,13 @@
 
 - (void)viewDidLoad
 {
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-        
-        [refreshControl setTintColor:[UIColor blackColor]];
-        
-        [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-        
-        [self setRefreshControl:refreshControl];
-    }
-    else {
-        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
-        
-        [_oldRefreshControl setTintColor:[UIColor blackColor]];
-        
-        [_oldRefreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-    }
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    
+    [refreshControl setTintColor:[UIColor blackColor]];
+    
+    [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
+    
+    [self setRefreshControl:refreshControl];
     
     [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
@@ -323,12 +313,7 @@
             
             [[self tableView] reloadData];
             
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-                [[self refreshControl] endRefreshing];
-            }
-            else {
-                [_oldRefreshControl endRefreshing];
-            }
+            [[self refreshControl] endRefreshing];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
         }

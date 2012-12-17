@@ -17,7 +17,6 @@
 @interface DirectMessagesViewController ()
 @property (strong, nonatomic) NSArray *messagesArray;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
-@property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 
 @end
@@ -37,29 +36,20 @@
 {
     [super viewDidLoad];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-        
-        [refreshControl setTintColor:[UIColor blackColor]];
-        
-        [refreshControl addTarget:self action:@selector(getMessages) forControlEvents:UIControlEventValueChanged];
-        
-        [self setRefreshControl:refreshControl];
-    }
-    else {
-        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
-        
-        [_oldRefreshControl setTintColor:[UIColor blackColor]];
-        
-        [_oldRefreshControl addTarget:self action:@selector(getMessages) forControlEvents:UIControlEventValueChanged];
-    }
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    
+    [refreshControl setTintColor:[UIColor blackColor]];
+    
+    [refreshControl addTarget:self action:@selector(getMessages) forControlEvents:UIControlEventValueChanged];
+    
+    [self setRefreshControl:refreshControl];
     
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(showComposer:)]];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
-
+    
     [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
 	[self getMessages];
@@ -85,7 +75,7 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             [self setMessagesArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-                        
+            
             [[self tableView] reloadData];
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -94,12 +84,7 @@
             [Helpers errorAndLogout:self withMessage:@"There was an error loading your direct messages..  Please logout and log back in."];
         }
         
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-            [[self refreshControl] endRefreshing];
-        }
-        else {
-            [_oldRefreshControl endRefreshing];
-        }
+        [[self refreshControl] endRefreshing];
     }];
 }
 

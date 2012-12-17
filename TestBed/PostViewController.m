@@ -16,7 +16,6 @@
 #import "NSString+BackslashEscape.h"
 #import "SVModalWebViewController.h"
 #import "TMImgurUploader.h"
-#import "UIAlertView+Blocks.h"
 #import "UIImage+Resize.h"
 #import "ImageConfirmationViewController.h"
 #import "AppDelegate.h"
@@ -38,6 +37,8 @@
 
 @end
 
+#define COLOR_RGB(r,g,b,a)      [UIColor colorWithRed:((r)/255.0) green:((g)/255.0) blue:((b)/255.0) alpha:(a)]
+
 @implementation PostViewController
 
 - (void)viewDidLoad
@@ -47,6 +48,7 @@
     [self getUsers];
     
     [self setAutocompleteUsernames:[[NSMutableArray alloc] init]];
+
 
     _usernameTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     
@@ -69,6 +71,19 @@
         [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height + 100)];
     }
     
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+        [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn)];
+    }
+    else {
+        [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn)];
+    }
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+        [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn)];
+    }
+    else {
+        [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn)];
+    }
     [[self theTextView] becomeFirstResponder];
     [[self theTextView] setDelegate:self];
     
@@ -118,6 +133,50 @@
     
     if (_replyString) {
         [_theTextView setText:[_replyString stringByAppendingString:@" "]];
+    }
+}
+
+-(void)toggleTwitter:(id)sender
+{
+    UIButton *tempButton = sender;
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"post_to_twitter"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [tempButton removeFromSuperview];
+        
+        [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn)];
+    }
+    else {
+        [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn)];
+
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"post_to_twitter"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [tempButton removeFromSuperview];
+    }
+}
+
+-(void)toggleFacebook:(id)sender
+{
+    UIButton *tempButton = sender;
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"post_to_facebook"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [tempButton removeFromSuperview];
+        
+        [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn)];
+    }
+    else {
+        [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn)];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"post_to_facebook"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [tempButton removeFromSuperview];
     }
 }
 

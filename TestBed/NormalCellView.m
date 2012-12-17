@@ -205,8 +205,6 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     @catch (id anException) {
         NSLog(@"Trying to remove an observer when none was attached.");
     }
-    
-    [super dealloc];
 }
 
 -(void)doubleTapAction:(UIGestureRecognizer *)gesture

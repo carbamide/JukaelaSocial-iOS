@@ -107,7 +107,7 @@
     [_rememberUsername setTitle:@"Automatically Login" forState:UIControlStateNormal];
     
     [_rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-    [_rememberUsername setTitleShadowColor:kPerfectGrey forState:UIControlStateNormal];
+    [_rememberUsername setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     [[_rememberUsername titleLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
     

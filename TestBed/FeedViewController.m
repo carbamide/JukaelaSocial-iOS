@@ -34,7 +34,6 @@
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
-@property (strong, nonatomic) ODRefreshControl *oldRefreshControl;
 @property (nonatomic) enum ChangeType currentChangeType;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @property (nonatomic) BOOL fbSuccess;
@@ -86,23 +85,14 @@
 -(void)viewDidLoad
 {
     [self setDocumentsFolder:[Helpers documentsPath]];
+        
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-        
-        [refreshControl setTintColor:[UIColor blackColor]];
-        
-        [refreshControl addTarget:self action:@selector(refreshControlRefresh:) forControlEvents:UIControlEventValueChanged];
-        
-        [self setRefreshControl:refreshControl];
-    }
-    else {
-        _oldRefreshControl = [[ODRefreshControl alloc] initInScrollView:[self tableView]];
-        
-        [_oldRefreshControl setTintColor:[UIColor blackColor]];
-        
-        [_oldRefreshControl addTarget:self action:@selector(refreshControlRefresh:) forControlEvents:UIControlEventValueChanged];
-    }
+    [refreshControl setTintColor:[UIColor blackColor]];
+    
+    [refreshControl addTarget:self action:@selector(refreshControlRefresh:) forControlEvents:UIControlEventValueChanged];
+    
+    [self setRefreshControl:refreshControl];
     
     [self setupNotifications];
     
@@ -162,11 +152,11 @@
                     [[[[self tabBarController] tabBar] items][2] setEnabled:YES];
                     [[[[self tabBarController] tabBar] items][3] setEnabled:YES];
                     [[[[self tabBarController] tabBar] items][4] setEnabled:YES];
-
+                    
                     [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[@"id"]]];
                     [kAppDelegate setUserEmail:[NSString stringWithFormat:@"%@", loginDict[@"email"]]];
                     [kAppDelegate setUserUsername:[NSString stringWithFormat:@"%@", loginDict[@"username"]]];
-
+                    
                     [[NSUserDefaults standardUserDefaults] setValue:[kAppDelegate userID] forKey:@"user_id"];
                     
                     [[self progressHUD] setLabelText:@"Loading Feed..."];
@@ -203,14 +193,6 @@
     else {
         if (![self theFeed]) {
             [self refreshTableInformation:nil from:0 to:20 removeSplash:NO];
-        }
-        
-        if ([[self theFeed] count] == 0) {
-            BlockAlertView *noposts = [[BlockAlertView alloc] initWithTitle:@"No Posts" message:@"There are no posts in your feed!  Oh no!  Go to the Users tab and follow someone!"];
-            
-            [noposts addButtonWithTitle:@"OK" block:nil];
-            
-            [noposts show];
         }
     }
     
@@ -612,12 +594,7 @@
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-                [[self refreshControl] endRefreshing];
-            }
-            else {
-                [_oldRefreshControl endRefreshing];
-            }
+            [[self refreshControl] endRefreshing];
         }
         else {
             WBErrorNoticeView *notice = [[WBErrorNoticeView alloc] initWithView:[self view] title:@"Error reloading Feed"];
@@ -652,7 +629,7 @@
     CGSize constraint = CGSizeMake(300, 20000);
     
     CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-        
+    
     if ([self theFeed][[indexPath row]][@"repost_user_id"] && [self theFeed][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
         return contentSize.height + 50 + 10 + 20;
     }
@@ -731,7 +708,7 @@
     
     [[cell contentText] setFontName:@"Helvetica-Light"];
     [[cell contentText] setFontSize:17];
-
+    
     if ([self theFeed][[indexPath row]][@"content"]) {
         [[cell contentText] setText:[self theFeed][[indexPath row]][@"content"]];
     }
@@ -757,7 +734,7 @@
     
     if ([self theFeed][[indexPath row]][@"repost_user_id"] && [self theFeed][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
         [[cell repostedNameLabel] setUserInteractionEnabled:YES];
-
+        
         CGSize contentSize;
         
         if ([self theFeed][[indexPath row]][@"image_url"] && [self theFeed][[indexPath row]][@"image_url"] != [NSNull null]) {
@@ -795,8 +772,8 @@
     objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
     
     NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[self documentsFolder] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][@"user_id"]]]] error:nil];
-        
-    if (image) {        
+    
+    if (image) {
         [[cell imageView] setImage:image];
         [cell setNeedsDisplay];
         
@@ -1057,6 +1034,8 @@
 
 -(void)refreshControlRefresh:(id)sender
 {
+    NSLog(@"%@ %@ %@", [kAppDelegate userID], [kAppDelegate userUsername], [kAppDelegate userEmail]);
+    
     [self initializeActivityIndicator];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -1069,10 +1048,10 @@
     
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {        
         if (data) {
             int oldNumberOfPosts = [[self theFeed] count];
-            
+                        
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
             int newNumberOfPosts = [[self theFeed] count];
@@ -1100,12 +1079,7 @@
             [notice show];
         }
         
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-            [[self refreshControl] endRefreshing];
-        }
-        else {
-            [_oldRefreshControl endRefreshing];
-        }
+        [[self refreshControl] endRefreshing];
         
         [[self activityIndicator] stopAnimating];
         

@@ -34,6 +34,20 @@ NS_ENUM(NSInteger, SocialTypes) {
 {
     [kAppDelegate setCurrentViewController:self];
     
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+        [[self twitterSwitch] setOn:YES];
+    }
+    else {
+        [[self twitterSwitch] setOn:NO];
+    }
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+        [[self facebookSwitch] setOn:YES];
+    }
+    else {
+        [[self facebookSwitch] setOn:NO];
+    }
+    
     [super viewDidAppear:animated];
 }
 

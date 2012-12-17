@@ -28,9 +28,7 @@
         [anImageView setAlpha:0.7];
         
         [self addSubview:anImageView];
-        
-        [anImageView release];
-        
+                
         [self setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     }
     

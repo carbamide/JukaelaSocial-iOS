@@ -7,7 +7,7 @@
         <!--Navigation Controller - Feed-->
         <scene sceneID="5gV-9J-rrk">
             <objects>
-                <navigationController definesPresentationContext="YES" id="i81-bH-OLq" sceneMemberID="viewController">
+                <navigationController restorationIdentifier="mainNavCont" definesPresentationContext="YES" id="i81-bH-OLq" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Feed" image="Feed.png" id="yiy-JM-6dG"/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="axQ-hL-JVN" customClass="PrettyNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
@@ -23,7 +23,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="Sbi-Lv-5Fo">
             <objects>
-                <tabBarController storyboardIdentifier="TabController" wantsFullScreenLayout="YES" definesPresentationContext="YES" id="dso-3y-mmV" sceneMemberID="viewController">
+                <tabBarController restorationIdentifier="TabController" storyboardIdentifier="TabController" wantsFullScreenLayout="YES" definesPresentationContext="YES" id="dso-3y-mmV" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="hKn-52-a6g">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
@@ -45,7 +45,7 @@
         <!--Navigation Controller - Users-->
         <scene sceneID="O6d-ES-czq">
             <objects>
-                <navigationController definesPresentationContext="YES" id="3ax-J6-0PH" sceneMemberID="viewController">
+                <navigationController restorationIdentifier="" definesPresentationContext="YES" id="3ax-J6-0PH" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Users" image="Users.png" id="EKx-kl-00K"/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="1Ge-vu-545" customClass="PrettyNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
@@ -61,7 +61,7 @@
         <!--Users View Controller - Users-->
         <scene sceneID="Xrl-zU-8BB">
             <objects>
-                <collectionViewController autoresizesArchivedViewToFullSize="NO" id="zuO-Ob-Abj" customClass="UsersViewController" sceneMemberID="viewController">
+                <collectionViewController restorationIdentifier="" autoresizesArchivedViewToFullSize="NO" id="zuO-Ob-Abj" customClass="UsersViewController" sceneMemberID="viewController">
                     <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="Me0-X5-BFC">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -126,7 +126,7 @@
         <!--Login View Controller - Login-->
         <scene sceneID="5">
             <objects>
-                <viewController id="2" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController restorationIdentifier="loginViewCont" id="2" customClass="LoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -168,7 +168,7 @@
         <!--Settings View Controller - Settings-->
         <scene sceneID="klu-EU-c06">
             <objects>
-                <tableViewController id="Njp-R6-Agb" customClass="SettingsViewController" sceneMemberID="viewController">
+                <tableViewController restorationIdentifier="" id="Njp-R6-Agb" customClass="SettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="LE0-jr-upj">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -187,8 +187,8 @@
         <!--Mentions View Controller - Mentions-->
         <scene sceneID="apJ-6f-eKg">
             <objects>
-                <tableViewController id="rJh-ZE-bJ6" customClass="MentionsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="uBN-UR-TOj" customClass="ShadowedTableView">
+                <tableViewController restorationIdentifier="" id="rJh-ZE-bJ6" customClass="MentionsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" restorationIdentifier="" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="uBN-UR-TOj" customClass="ShadowedTableView">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -208,7 +208,7 @@
         <!--Direct Messages View Controller-->
         <scene sceneID="ypz-zD-TDg">
             <objects>
-                <tableViewController id="OyH-ke-cnp" customClass="DirectMessagesViewController" sceneMemberID="viewController">
+                <tableViewController restorationIdentifier="" id="OyH-ke-cnp" customClass="DirectMessagesViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Z4n-Ey-4xD" customClass="ShadowedTableView">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -226,7 +226,7 @@
         <!--Navigation Controller - Messages-->
         <scene sceneID="3eX-q4-fEZ">
             <objects>
-                <navigationController definesPresentationContext="YES" id="Dbb-hc-uiT" sceneMemberID="viewController">
+                <navigationController restorationIdentifier="" definesPresentationContext="YES" id="Dbb-hc-uiT" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="4" title="Messages" image="messages.png" id="duR-h6-i2j"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="cVM-qD-QQD" customClass="PrettyNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
@@ -242,7 +242,7 @@
         <!--Navigation Controller - Mentions-->
         <scene sceneID="TqI-QN-u4n">
             <objects>
-                <navigationController definesPresentationContext="YES" id="DKi-a0-jxj" sceneMemberID="viewController">
+                <navigationController restorationIdentifier="" definesPresentationContext="YES" id="DKi-a0-jxj" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Mentions" image="mention.png" id="Ips-VP-Rjg"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="igr-Xs-YIW" customClass="PrettyNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
@@ -419,7 +419,7 @@
         <!--Navigation Controller - Settings-->
         <scene sceneID="oU3-By-16H">
             <objects>
-                <navigationController definesPresentationContext="YES" id="txF-kK-p6a" sceneMemberID="viewController">
+                <navigationController restorationIdentifier="SettingsNavCont" definesPresentationContext="YES" id="txF-kK-p6a" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="5" title="Settings" image="Settings.png" id="tXi-be-lyA"/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="V2u-T6-0U9" customClass="PrettyNavigationBar">
                         <autoresizingMask key="autoresizingMask"/>
@@ -435,8 +435,8 @@
         <!--Feed View Controller - Feed-->
         <scene sceneID="sqA-dJ-K4S">
             <objects>
-                <tableViewController storyboardIdentifier="FeedViewController" id="vsZ-IR-rVz" customClass="FeedViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="100" sectionHeaderHeight="22" sectionFooterHeight="22" id="vom-Wl-hIO" customClass="ShadowedTableView">
+                <tableViewController restorationIdentifier="FeedViewController" storyboardIdentifier="FeedViewController" id="vsZ-IR-rVz" customClass="FeedViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" restorationIdentifier="FeedTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="100" sectionHeaderHeight="22" sectionFooterHeight="22" id="vom-Wl-hIO" customClass="ShadowedTableView">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -511,7 +511,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="UEV-D3-8r2">
-                                        <rect key="frame" x="79" y="11" width="207" height="136"/>
+                                        <rect key="frame" x="79" y="11" width="207" height="125"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="17"/>
@@ -790,7 +790,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="kDe-0T-1hT"/>
+        <segue reference="hlx-W1-dR2"/>
         <segue reference="ilt-Mo-CmO"/>
         <segue reference="U5e-bJ-QPF"/>
         <segue reference="MPs-Bn-T3e"/>

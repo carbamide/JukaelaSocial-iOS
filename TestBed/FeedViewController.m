@@ -46,6 +46,7 @@
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) UIImage *tempImage;
 @property (strong, nonatomic) NSString *documentsFolder;
+@property (strong, nonatomic) YIFullScreenScroll *fullScreenDelegate;
 
 -(void)refreshTableInformation:(NSIndexPath *)indexPath from:(NSInteger)from to:(NSInteger)to removeSplash:(BOOL)removeSplash;
 
@@ -66,6 +67,8 @@
 {
     [kAppDelegate setCurrentViewController:self];
     
+    [_fullScreenDelegate layoutTabBarController];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(repostSwitchToSelectedUser:) name:@"repost_send_to_user" object:nil];
@@ -84,16 +87,18 @@
 
 -(void)viewDidLoad
 {
-    [self setDocumentsFolder:[Helpers documentsPath]];
-        
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    JRefreshControl *refreshControl = [[JRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];
     
     [refreshControl addTarget:self action:@selector(refreshControlRefresh:) forControlEvents:UIControlEventValueChanged];
     
     [self setRefreshControl:refreshControl];
-    
+        
+    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
+        
+    [self setDocumentsFolder:[Helpers documentsPath]];
+
     [self setupNotifications];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
@@ -195,7 +200,7 @@
             [self refreshTableInformation:nil from:0 to:20 removeSplash:NO];
         }
     }
-    
+            
     [super viewDidLoad];
 }
 
@@ -576,17 +581,6 @@
                 
                 if (removeSplash) {
                     [YISplashScreen hide];
-                    
-                    UIWindow *tempWindow = [kAppDelegate window];
-                    
-                    if ([[UIApplication sharedApplication] statusBarFrame].size.height > 20) {
-                        [[kAppDelegate window] setFrame:CGRectMake(tempWindow.frame.origin.x, tempWindow.frame.origin.y + 40, tempWindow.frame.size.width, tempWindow.frame.size.height - 40)];
-                    }
-                    else {
-                        [[kAppDelegate window] setFrame:CGRectMake(tempWindow.frame.origin.x, tempWindow.frame.origin.y + 20, tempWindow.frame.size.width, tempWindow.frame.size.height - 20)];
-                    }
-                    
-                    [[UIApplication sharedApplication] setStatusBarHidden:NO];
                 }
             }
             
@@ -887,6 +881,8 @@
 
 -(void)doubleTap:(NSNotification *)aNotification
 {
+    [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+    
     if ([[self tabBarController] selectedIndex] == 0) {
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
         
@@ -1033,9 +1029,7 @@
 }
 
 -(void)refreshControlRefresh:(id)sender
-{
-    NSLog(@"%@ %@ %@", [kAppDelegate userID], [kAppDelegate userUsername], [kAppDelegate userEmail]);
-    
+{    
     [self initializeActivityIndicator];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -1048,10 +1042,10 @@
     
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {        
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             int oldNumberOfPosts = [[self theFeed] count];
-                        
+            
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
             int newNumberOfPosts = [[self theFeed] count];
@@ -1089,4 +1083,28 @@
     }];
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [_fullScreenDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    return [_fullScreenDelegate scrollViewShouldScrollToTop:scrollView];;
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewDidScrollToTop:scrollView];
+}
 @end

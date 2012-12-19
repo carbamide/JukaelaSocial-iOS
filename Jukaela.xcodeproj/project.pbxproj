@@ -10,6 +10,10 @@
 		290045D615576D5D004F113A /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 290045D515576D5D004F113A /* UsersViewController.m */; };
 		290045DA15576D9C004F113A /* Users.png in Resources */ = {isa = PBXBuildFile; fileRef = 290045D815576D9C004F113A /* Users.png */; };
 		290045DB15576D9C004F113A /* Users@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 290045D915576D9C004F113A /* Users@2x.png */; };
+		2905FDA4167FD05E00EA0F14 /* BlockActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 2905FD9D167FD05E00EA0F14 /* BlockActionSheet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2905FDA5167FD05E00EA0F14 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2905FD9F167FD05E00EA0F14 /* BlockAlertView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2905FDA6167FD05E00EA0F14 /* BlockBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 2905FDA1167FD05E00EA0F14 /* BlockBackground.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		2905FDA7167FD05E00EA0F14 /* BlockTextPromptAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2905FDA3167FD05E00EA0F14 /* BlockTextPromptAlertView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29084D5B15D2B2BC00CB7FFF /* JukaelaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */; };
 		29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */; };
 		2915698D15FFAFCA0084A29C /* ShareObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2915698C15FFAFCA0084A29C /* ShareObject.m */; };
@@ -88,10 +92,6 @@
 		298A643815E267BA009BF175 /* alert-red-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 298A643015E267BA009BF175 /* alert-red-button@2x.png */; };
 		298A643915E267BA009BF175 /* alert-window.png in Resources */ = {isa = PBXBuildFile; fileRef = 298A643115E267BA009BF175 /* alert-window.png */; };
 		298A643A15E267BA009BF175 /* alert-window@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 298A643215E267BA009BF175 /* alert-window@2x.png */; };
-		298A644415E267D7009BF175 /* BlockActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 298A643D15E267D7009BF175 /* BlockActionSheet.m */; };
-		298A644515E267D7009BF175 /* BlockAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 298A643F15E267D7009BF175 /* BlockAlertView.m */; };
-		298A644615E267D7009BF175 /* BlockBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 298A644115E267D7009BF175 /* BlockBackground.m */; };
-		298A644715E267D7009BF175 /* BlockTextPromptAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 298A644315E267D7009BF175 /* BlockTextPromptAlertView.m */; };
 		298F7E071569821200516858 /* EditUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298F7E061569821200516858 /* EditUserViewController.m */; };
 		29942FC516752ED3001D3539 /* messages.png in Resources */ = {isa = PBXBuildFile; fileRef = 29942FC316752ED3001D3539 /* messages.png */; };
 		29942FC616752ED3001D3539 /* messages@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29942FC416752ED3001D3539 /* messages@2x.png */; };
@@ -102,6 +102,7 @@
 		299AF48216725D45000F1C45 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 299AF48116725D45000F1C45 /* separator.png */; };
 		299BB4F9160E79D300898A7C /* loggedIn.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 299BB4F8160E79D300898A7C /* loggedIn.aiff */; };
 		299BB4FC160E7A4700898A7C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 299BB4FB160E7A4700898A7C /* AudioToolbox.framework */; };
+		29A6ED27168172D000DADDBB /* JRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6ED26168172D000DADDBB /* JRefreshControl.m */; };
 		29AA10501556AA0900B8D3F5 /* JukaelaLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA104F1556AA0900B8D3F5 /* JukaelaLogo.png */; };
 		29AA10531556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10521556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m */; };
 		29AA10561556AD6500B8D3F5 /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10551556AD6500B8D3F5 /* Helpers.m */; };
@@ -121,6 +122,8 @@
 		29AA10A31557263900B8D3F5 /* Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AA109F1557263900B8D3F5 /* Settings@2x.png */; };
 		29C251591672BFED00F27ABC /* ImageConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */; };
 		29CAEB7C1558C6F900663CF3 /* ShowUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */; };
+		29CDF41B168014D800DA88B6 /* YIFullScreenScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CDF418168014D800DA88B6 /* YIFullScreenScroll.m */; };
+		29CDF41C168014D800DA88B6 /* UIView+YIFullScreenScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CDF41A168014D800DA88B6 /* UIView+YIFullScreenScroll.m */; };
 		29D433A715FE0EE700ABCB2F /* JSCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A015FE0EE700ABCB2F /* JSCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29D433A815FE0EE700ABCB2F /* JSTwitterCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A215FE0EE700ABCB2F /* JSTwitterCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29D433A915FE0EE700ABCB2F /* JSEmailCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A415FE0EE700ABCB2F /* JSEmailCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -179,6 +182,14 @@
 		290045D515576D5D004F113A /* UsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersViewController.m; sourceTree = "<group>"; };
 		290045D815576D9C004F113A /* Users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Users.png; sourceTree = "<group>"; };
 		290045D915576D9C004F113A /* Users@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Users@2x.png"; sourceTree = "<group>"; };
+		2905FD9C167FD05E00EA0F14 /* BlockActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockActionSheet.h; sourceTree = "<group>"; };
+		2905FD9D167FD05E00EA0F14 /* BlockActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockActionSheet.m; sourceTree = "<group>"; };
+		2905FD9E167FD05E00EA0F14 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
+		2905FD9F167FD05E00EA0F14 /* BlockAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockAlertView.m; sourceTree = "<group>"; };
+		2905FDA0167FD05E00EA0F14 /* BlockBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockBackground.h; sourceTree = "<group>"; };
+		2905FDA1167FD05E00EA0F14 /* BlockBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockBackground.m; sourceTree = "<group>"; };
+		2905FDA2167FD05E00EA0F14 /* BlockTextPromptAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockTextPromptAlertView.h; sourceTree = "<group>"; };
+		2905FDA3167FD05E00EA0F14 /* BlockTextPromptAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockTextPromptAlertView.m; sourceTree = "<group>"; };
 		29084D5915D2B2BC00CB7FFF /* JukaelaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaViewController.h; sourceTree = "<group>"; };
 		29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaViewController.m; sourceTree = "<group>"; };
 		29084D5D15D2B36D00CB7FFF /* JukaelaTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaTableViewController.h; sourceTree = "<group>"; };
@@ -298,14 +309,6 @@
 		298A643015E267BA009BF175 /* alert-red-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert-red-button@2x.png"; sourceTree = "<group>"; };
 		298A643115E267BA009BF175 /* alert-window.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert-window.png"; sourceTree = "<group>"; };
 		298A643215E267BA009BF175 /* alert-window@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alert-window@2x.png"; sourceTree = "<group>"; };
-		298A643C15E267D7009BF175 /* BlockActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockActionSheet.h; sourceTree = "<group>"; };
-		298A643D15E267D7009BF175 /* BlockActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockActionSheet.m; sourceTree = "<group>"; };
-		298A643E15E267D7009BF175 /* BlockAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockAlertView.h; sourceTree = "<group>"; };
-		298A643F15E267D7009BF175 /* BlockAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockAlertView.m; sourceTree = "<group>"; };
-		298A644015E267D7009BF175 /* BlockBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockBackground.h; sourceTree = "<group>"; };
-		298A644115E267D7009BF175 /* BlockBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockBackground.m; sourceTree = "<group>"; };
-		298A644215E267D7009BF175 /* BlockTextPromptAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockTextPromptAlertView.h; sourceTree = "<group>"; };
-		298A644315E267D7009BF175 /* BlockTextPromptAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockTextPromptAlertView.m; sourceTree = "<group>"; };
 		298A644815E26802009BF175 /* BlockUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockUI.h; sourceTree = "<group>"; };
 		298F7E051569821200516858 /* EditUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUserViewController.h; sourceTree = "<group>"; };
 		298F7E061569821200516858 /* EditUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUserViewController.m; sourceTree = "<group>"; };
@@ -320,6 +323,8 @@
 		299AF48116725D45000F1C45 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = separator.png; path = TestBed/separator.png; sourceTree = "<group>"; };
 		299BB4F8160E79D300898A7C /* loggedIn.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = loggedIn.aiff; sourceTree = "<group>"; };
 		299BB4FB160E7A4700898A7C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		29A6ED25168172D000DADDBB /* JRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRefreshControl.h; sourceTree = "<group>"; };
+		29A6ED26168172D000DADDBB /* JRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRefreshControl.m; sourceTree = "<group>"; };
 		29AA104F1556AA0900B8D3F5 /* JukaelaLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = JukaelaLogo.png; sourceTree = "<group>"; };
 		29AA10511556AD3D00B8D3F5 /* UIView+FindAndResignFirstResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FindAndResignFirstResponder.h"; sourceTree = "<group>"; };
 		29AA10521556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FindAndResignFirstResponder.m"; sourceTree = "<group>"; };
@@ -347,6 +352,10 @@
 		29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageConfirmationViewController.m; sourceTree = "<group>"; };
 		29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowUserViewController.h; sourceTree = "<group>"; };
 		29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowUserViewController.m; sourceTree = "<group>"; };
+		29CDF417168014D800DA88B6 /* YIFullScreenScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YIFullScreenScroll.h; sourceTree = "<group>"; };
+		29CDF418168014D800DA88B6 /* YIFullScreenScroll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YIFullScreenScroll.m; sourceTree = "<group>"; };
+		29CDF419168014D800DA88B6 /* UIView+YIFullScreenScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YIFullScreenScroll.h"; sourceTree = "<group>"; };
+		29CDF41A168014D800DA88B6 /* UIView+YIFullScreenScroll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YIFullScreenScroll.m"; sourceTree = "<group>"; };
 		29D4339F15FE0EE700ABCB2F /* JSCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSCoreTextView.h; sourceTree = "<group>"; };
 		29D433A015FE0EE700ABCB2F /* JSCoreTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSCoreTextView.m; sourceTree = "<group>"; };
 		29D433A115FE0EE700ABCB2F /* JSTwitterCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTwitterCoreTextView.h; sourceTree = "<group>"; };
@@ -670,14 +679,14 @@
 			isa = PBXGroup;
 			children = (
 				298A644815E26802009BF175 /* BlockUI.h */,
-				298A643C15E267D7009BF175 /* BlockActionSheet.h */,
-				298A643D15E267D7009BF175 /* BlockActionSheet.m */,
-				298A643E15E267D7009BF175 /* BlockAlertView.h */,
-				298A643F15E267D7009BF175 /* BlockAlertView.m */,
-				298A644015E267D7009BF175 /* BlockBackground.h */,
-				298A644115E267D7009BF175 /* BlockBackground.m */,
-				298A644215E267D7009BF175 /* BlockTextPromptAlertView.h */,
-				298A644315E267D7009BF175 /* BlockTextPromptAlertView.m */,
+				2905FD9C167FD05E00EA0F14 /* BlockActionSheet.h */,
+				2905FD9D167FD05E00EA0F14 /* BlockActionSheet.m */,
+				2905FD9E167FD05E00EA0F14 /* BlockAlertView.h */,
+				2905FD9F167FD05E00EA0F14 /* BlockAlertView.m */,
+				2905FDA0167FD05E00EA0F14 /* BlockBackground.h */,
+				2905FDA1167FD05E00EA0F14 /* BlockBackground.m */,
+				2905FDA2167FD05E00EA0F14 /* BlockTextPromptAlertView.h */,
+				2905FDA3167FD05E00EA0F14 /* BlockTextPromptAlertView.m */,
 			);
 			name = "Alert and Action Sheet";
 			sourceTree = "<group>";
@@ -706,6 +715,17 @@
 				29DB78C415B6F72D0056C68E /* PrettyToolbar.m */,
 			);
 			name = PrettyKit;
+			sourceTree = "<group>";
+		};
+		29CDF41D1680169400DA88B6 /* FullScreenScroll */ = {
+			isa = PBXGroup;
+			children = (
+				29CDF417168014D800DA88B6 /* YIFullScreenScroll.h */,
+				29CDF418168014D800DA88B6 /* YIFullScreenScroll.m */,
+				29CDF419168014D800DA88B6 /* UIView+YIFullScreenScroll.h */,
+				29CDF41A168014D800DA88B6 /* UIView+YIFullScreenScroll.m */,
+			);
+			name = FullScreenScroll;
 			sourceTree = "<group>";
 		};
 		29D4339E15FE0EDC00ABCB2F /* CoreTextView */ = {
@@ -957,6 +977,7 @@
 				29D4339E15FE0EDC00ABCB2F /* CoreTextView */,
 				29E5170B1608A29300CA422F /* Curled Views */,
 				29D433CA15FE276700ABCB2F /* Date Transformer */,
+				29CDF41D1680169400DA88B6 /* FullScreenScroll */,
 				29D433D115FE27E100ABCB2F /* Gravatar */,
 				29D5B82A15545CA4000D9374 /* Image Handling */,
 				29D433CF15FE27B400ABCB2F /* Jukaela Helpers */,
@@ -972,6 +993,8 @@
 				295CB26915E528DA001A43DA /* TM HTTP Stuff */,
 				2975292015CEF69800A3E71D /* WBNoticeView */,
 				29593D6D15FD150600380B2D /* YISplashScreen */,
+				29A6ED25168172D000DADDBB /* JRefreshControl.h */,
+				29A6ED26168172D000DADDBB /* JRefreshControl.m */,
 			);
 			name = "Custom Classes";
 			sourceTree = "<group>";
@@ -1206,10 +1229,6 @@
 				2975294015CEF6BE00A3E71D /* WBRedGradientView.m in Sources */,
 				29084D5B15D2B2BC00CB7FFF /* JukaelaViewController.m in Sources */,
 				29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */,
-				298A644415E267D7009BF175 /* BlockActionSheet.m in Sources */,
-				298A644515E267D7009BF175 /* BlockAlertView.m in Sources */,
-				298A644615E267D7009BF175 /* BlockBackground.m in Sources */,
-				298A644715E267D7009BF175 /* BlockTextPromptAlertView.m in Sources */,
 				295CB26D15E528EA001A43DA /* TMImgurUploader.m in Sources */,
 				295CB27415E528F4001A43DA /* NetworkActivityIndicatorManager.m in Sources */,
 				295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */,
@@ -1256,6 +1275,13 @@
 				2979C6851676C83400B61F3E /* UsersCollectionViewCell.m in Sources */,
 				2954F9E8167B892A000695EC /* GRButtons.m in Sources */,
 				29324FD4167FBD07001B1E0C /* SFHFKeychainUtils.m in Sources */,
+				2905FDA4167FD05E00EA0F14 /* BlockActionSheet.m in Sources */,
+				2905FDA5167FD05E00EA0F14 /* BlockAlertView.m in Sources */,
+				2905FDA6167FD05E00EA0F14 /* BlockBackground.m in Sources */,
+				2905FDA7167FD05E00EA0F14 /* BlockTextPromptAlertView.m in Sources */,
+				29CDF41B168014D800DA88B6 /* YIFullScreenScroll.m in Sources */,
+				29CDF41C168014D800DA88B6 /* UIView+YIFullScreenScroll.m in Sources */,
+				29A6ED27168172D000DADDBB /* JRefreshControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,6 +25,7 @@
 @property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) YIFullScreenScroll *fullScreenDelegate;
 
 @end
 
@@ -41,6 +42,8 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [_fullScreenDelegate layoutTabBarController];
+
     [kAppDelegate setCurrentViewController:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
@@ -61,11 +64,11 @@
 
 - (void)viewDidLoad
 {
-    [self setRestorationClass:[self class]];
+    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
     
     [self refreshTableInformation];
     
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    JRefreshControl *refreshControl = [[JRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];
     
@@ -283,6 +286,8 @@
 
 -(void)doubleTap:(NSNotification *)aNotification
 {
+    [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+
     NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
     
     [self setTempIndexPath:indexPathOfTappedRow];
@@ -480,4 +485,28 @@
     [hud removeFromSuperview];
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [_fullScreenDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    return [_fullScreenDelegate scrollViewShouldScrollToTop:scrollView];;
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewDidScrollToTop:scrollView];
+}
 @end

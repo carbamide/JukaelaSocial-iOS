@@ -65,23 +65,11 @@
     
     UIImage *tempImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     
-    CFUUIDRef UUIDRef = CFUUIDCreate(kCFAllocatorDefault);
-    CFStringRef UUIDSRef = CFUUIDCreateString(kCFAllocatorDefault, UUIDRef);
-    NSString *UUID = [NSString stringWithFormat:@"%@", UUIDSRef];
-    
-    CFRelease(UUIDSRef);
-    CFRelease(UUIDRef);
-    
     [TestFlight takeOff:kTestFlightAPIKey];
     
     [[TMImgurUploader sharedInstance] setAPIKey:kImgurAPIKey];
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
-    }
-    else {
-        [TestFlight setDeviceIdentifier:UUID];
-    }
+    [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
     
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
@@ -102,21 +90,6 @@
         [YISplashScreen hide];
         
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    }
-    else {
-        UIWindow *tempWindow = [kAppDelegate window];
-        
-        if ([[UIApplication sharedApplication] statusBarFrame].size.height > 20) {
-            [[kAppDelegate window] setFrame:CGRectMake(tempWindow.frame.origin.x, tempWindow.frame.origin.y + 40, tempWindow.frame.size.width, tempWindow.frame.size.height - 40)];
-        }
-        else {
-            if (tempWindow.frame.size.height > 500) {
-                [[kAppDelegate window] setFrame:CGRectMake(0, 0, tempWindow.frame.size.width, 548)];
-            }
-            else {
-                [[kAppDelegate window] setFrame:CGRectMake(0, 0, tempWindow.frame.size.width, 460)];
-            }
-        }
     }
     
     [self setExternalImageCache:[[NSCache alloc] init]];
@@ -202,43 +175,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"post_image" object:nil userInfo:@{@"image" : tempImage}];
     
     return YES;
-}
-
--(void)friendList:(id)sender
-{
-    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-    
-    ACAccountType *accountTypeFacebook = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-    
-    NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions", @"read_friendlists"]};
-    
-    [accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
-        if(granted) {
-            NSArray *accounts = [accountStore accountsWithAccountType:accountTypeFacebook];
-            
-            ACAccount *facebookAccount = [accounts lastObject];
-            
-            NSAssert([[facebookAccount credential] oauthToken], @"The OAuth token is invalid", nil);
-            
-            NSDictionary *parameters = @{@"access_token":[[facebookAccount credential] oauthToken]};
-            
-            NSLog(@"%@", parameters);
-            
-            NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/friends"];
-            
-            SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodGET URL:feedURL parameters:parameters];
-            
-            [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
-                NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
-                
-                [self setFacebookFriends:jsonData[@"data"]];
-                
-                NSLog(@"%@", [self facebookFriends]);
-            }];
-            
-        }
-    }];
-    
 }
 
 @end

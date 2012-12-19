@@ -12,12 +12,14 @@
 #import "JukaelaViewController.h"
 #import "JukaelaTableViewController.h"
 #import "JukaelaCollectionViewController.h"
+#import "JRefreshControl.h"
 #import "NSDate+RailsDateParser.h"
 #import "NSString+BackslashEscape.h"
 #import "PrettyKit.h"
 #import "UIImage+Resize.h"
 #import "UIImage+RoundedCorner.h"
 #import "UIImage+Alpha.h"
+#import "YIFullScreenScroll.h"
 
 static const CGFloat KEYBOARD_ANIMATION_DURATION = 0.3;
 static const CGFloat MINIMUM_SCROLL_FRACTION = 0.2;

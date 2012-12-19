@@ -25,7 +25,6 @@ NS_ENUM(NSInteger, SocialTypes) {
 
 @property (strong, nonatomic) UISwitch *facebookSwitch;
 @property (strong, nonatomic) UISwitch *twitterSwitch;
-@property (strong, nonatomic) UISwitch *confirmSwitch;
 @end
 
 @implementation SettingsViewController
@@ -117,12 +116,7 @@ NS_ENUM(NSInteger, SocialTypes) {
 {
     switch (section) {
         case 0:
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-                return 3;
-            }
-            else {
-                return 2;
-            }
+            return 2;
             break;
         case 1:
             return 1;
@@ -175,61 +169,23 @@ NS_ENUM(NSInteger, SocialTypes) {
             
             [[self twitterSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         }
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-            if ([indexPath row] == 1) {
-                [[cell textLabel] setText:@"Post to Facebook?"];
-                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-                
-                [self setFacebookSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
-                [[self facebookSwitch] setTag:FacebookType];
-                
-                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
-                    [[self facebookSwitch] setOn:YES];
-                }
-                else {
-                    [[self facebookSwitch] setOn:NO];
-                }
-                
-                [cell setAccessoryView:[self facebookSwitch]];
-                
-                [[self facebookSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-            }
-            if ([indexPath row] == 2) {
-                [[cell textLabel] setText:@"Confirm Posting?"];
-                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-                
-                [self setConfirmSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
-                [[self confirmSwitch] setTag:ConfirmType];
-                
-                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"]) {
-                    [[self confirmSwitch] setOn:YES];
-                }
-                else {
-                    [[self confirmSwitch] setOn:NO];
-                }
-                
-                [cell setAccessoryView:[self confirmSwitch]];
-                
-                [[self confirmSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-            }
-        }
         else if ([indexPath row] == 1) {
-            [[cell textLabel] setText:@"Confirm Posting?"];
+            [[cell textLabel] setText:@"Post to Facebook?"];
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             
-            [self setConfirmSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
-            [[self confirmSwitch] setTag:ConfirmType];
+            [self setFacebookSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+            [[self facebookSwitch] setTag:FacebookType];
             
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"]) {
-                [[self confirmSwitch] setOn:YES];
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+                [[self facebookSwitch] setOn:YES];
             }
             else {
-                [[self confirmSwitch] setOn:NO];
+                [[self facebookSwitch] setOn:NO];
             }
             
-            [cell setAccessoryView:[self confirmSwitch]];
+            [cell setAccessoryView:[self facebookSwitch]];
             
-            [[self confirmSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+            [[self facebookSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         }
     }
     else if ([indexPath section] == 1) {
@@ -261,33 +217,31 @@ NS_ENUM(NSInteger, SocialTypes) {
         case 0:
         {
             if ([sender isOn]) {
-                if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-                    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-                    
-                    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-                    
-                    NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-                    
-                    NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions", @"read_friendlists"]};
-                    
-                    [accountStore requestAccessToAccountsWithType:accountType options:options completion:^(BOOL granted, NSError *error) {
-                        if(granted) {
-                            if ([accountsArray count] > 0) {
-                                [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
-                                [[NSUserDefaults standardUserDefaults] synchronize];
-                            }
-                            else {
-                                [[self facebookSwitch] setOn:NO animated:YES];
-                                
-                                BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."];
-                                
-                                [noAccount setCancelButtonWithTitle:@"OK" block:nil];
-                                
-                                [noAccount show];
-                            }
+                ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+                
+                ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+                
+                NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+                
+                NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions", @"read_friendlists"]};
+                
+                [accountStore requestAccessToAccountsWithType:accountType options:options completion:^(BOOL granted, NSError *error) {
+                    if(granted) {
+                        if ([accountsArray count] > 0) {
+                            [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
                         }
-                    }];
-                }
+                        else {
+                            [[self facebookSwitch] setOn:NO animated:YES];
+                            
+                            BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."];
+                            
+                            [noAccount setCancelButtonWithTitle:@"OK" block:nil];
+                            
+                            [noAccount show];
+                        }
+                    }
+                }];
                 
             }
             else {
@@ -329,30 +283,8 @@ NS_ENUM(NSInteger, SocialTypes) {
             }
         }
             break;
-        case 2:
-        {
-            [[NSUserDefaults standardUserDefaults] setBool:[[self confirmSwitch] isOn] forKey:@"confirm_post"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-            break;
         default:
             break;
-    }
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        if (![[self twitterSwitch] isOn] && ![[self facebookSwitch] isOn]) {
-            [[self confirmSwitch] setOn:NO animated:YES];
-            
-            [[NSUserDefaults standardUserDefaults] setBool:[[self confirmSwitch] isOn] forKey:@"confirm_post"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-    }
-    else {
-        if (![[self twitterSwitch] isOn]) {
-            [[self confirmSwitch] setOn:NO animated:YES];
-            
-            [[NSUserDefaults standardUserDefaults] setBool:[[self confirmSwitch] isOn] forKey:@"confirm_post"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
     }
 }
 

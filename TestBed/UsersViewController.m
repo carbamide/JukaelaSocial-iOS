@@ -20,6 +20,7 @@
 @property (strong, nonatomic) NSMutableArray *tempArray;
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) YIFullScreenScroll *fullScreenDelegate;
 @end
 
 @implementation UsersViewController
@@ -35,6 +36,8 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [_fullScreenDelegate layoutTabBarController];
+
     [kAppDelegate setCurrentViewController:self];
     
     [super viewDidAppear:animated];
@@ -48,6 +51,10 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
+
+    [[self collectionView] setContentInset:UIEdgeInsetsMake(44, 0, 0, 0)];
     
     [self getUsers:YES];
     
@@ -170,6 +177,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    [_fullScreenDelegate showUIBarsWithScrollView:collectionView animated:YES];
+
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
     [progressHUD setMode:MBProgressHUDModeIndeterminate];
     [progressHUD setLabelText:@"Loading User..."];
@@ -224,4 +233,28 @@
     [hud removeFromSuperview];
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [_fullScreenDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    return [_fullScreenDelegate scrollViewShouldScrollToTop:scrollView];;
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewDidScrollToTop:scrollView];
+}
 @end

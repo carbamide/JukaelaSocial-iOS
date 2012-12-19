@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSArray *messagesArray;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
+@property (strong, nonatomic) YIFullScreenScroll *fullScreenDelegate;
 
 @end
 
@@ -32,11 +33,22 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [_fullScreenDelegate layoutTabBarController];
+
+    [super viewDidAppear:animated];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
+
+    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
+
+    JRefreshControl *refreshControl = [[JRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];
     
@@ -125,7 +137,9 @@
     [[cell contentText] setFontName:@"Helvetica-Light"];
     [[cell contentText] setFontSize:17];
     
-    [[cell contentText] setText:[self messagesArray][[indexPath row]][@"content"]];
+    if ([self messagesArray][[indexPath row]][@"content"] && [self messagesArray][[indexPath row]][@"content"] != [NSNull null]) {
+        [[cell contentText] setText:[self messagesArray][[indexPath row]][@"content"]];
+    }
     [[cell nameLabel] setText:[self messagesArray][[indexPath row]][@"from_name"]];
     
     if ([self messagesArray][[indexPath row]][@"from_username"] && [self messagesArray][[indexPath row]][@"from_username"] != [NSNull null]) {
@@ -171,4 +185,40 @@
     
     return cell;
 }
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [_fullScreenDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    return [_fullScreenDelegate scrollViewShouldScrollToTop:scrollView];;
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    [_fullScreenDelegate scrollViewDidScrollToTop:scrollView];
+}
+
+-(void)doubleTap:(NSNotification *)aNotification
+{
+    [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+}
+
 @end

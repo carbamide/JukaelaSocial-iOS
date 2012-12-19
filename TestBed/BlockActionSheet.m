@@ -23,15 +23,15 @@ static UIFont *buttonFont = nil;
     if (self == [BlockActionSheet class])
     {
         background = [UIImage imageNamed:kActionSheetBackground];
-        background = [background stretchableImageWithLeftCapWidth:0 topCapHeight:kActionSheetBackgroundCapHeight];
-        titleFont = kActionSheetTitleFont;
-        buttonFont = kActionSheetButtonFont;
+        background = [[background stretchableImageWithLeftCapWidth:0 topCapHeight:kActionSheetBackgroundCapHeight] retain];
+        titleFont = [kActionSheetTitleFont retain];
+        buttonFont = [kActionSheetButtonFont retain];
     }
 }
 
 + (id)sheetWithTitle:(NSString *)title
 {
-    return [[BlockActionSheet alloc] initWithTitle:title];
+    return [[[BlockActionSheet alloc] initWithTitle:title] autorelease];
 }
 
 - (id)initWithTitle:(NSString *)title 
@@ -62,6 +62,7 @@ static UIFont *buttonFont = nil;
             labelView.shadowOffset = kActionSheetTitleShadowOffset;
             labelView.text = title;
             [_view addSubview:labelView];
+            [labelView release];
             
             _height += size.height + 5;
         }
@@ -69,6 +70,13 @@ static UIFont *buttonFont = nil;
     }
     
     return self;
+}
+
+- (void) dealloc 
+{
+    [_view release];
+    [_blocks release];
+    [super dealloc];
 }
 
 - (NSUInteger)buttonCount
@@ -81,7 +89,7 @@ static UIFont *buttonFont = nil;
     if (index >= 0)
     {
         [_blocks insertObject:[NSArray arrayWithObjects:
-                               block ? [block copy] : [NSNull null],
+                               block ? [[block copy] autorelease] : [NSNull null],
                                title,
                                color,
                                nil]
@@ -90,7 +98,7 @@ static UIFont *buttonFont = nil;
     else
     {
         [_blocks addObject:[NSArray arrayWithObjects:
-                            block ? [block copy] : [NSNull null],
+                            block ? [[block copy] autorelease] : [NSNull null],
                             title,
                             color,
                             nil]];
@@ -164,6 +172,7 @@ static UIFont *buttonFont = nil;
     modalBackground.image = background;
     modalBackground.contentMode = UIViewContentModeScaleToFill;
     [_view insertSubview:modalBackground atIndex:0];
+    [modalBackground release];
     
     [BlockBackground sharedInstance].vignetteBackground = _vignetteBackground;
     [[BlockBackground sharedInstance] addToMainWindow:_view];
@@ -190,6 +199,8 @@ static UIFont *buttonFont = nil;
                                               _view.center = center;
                                           } completion:nil];
                      }];
+    
+    [self retain];
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated 
@@ -215,13 +226,15 @@ static UIFont *buttonFont = nil;
                              [[BlockBackground sharedInstance] reduceAlphaIfEmpty];
                          } completion:^(BOOL finished) {
                              [[BlockBackground sharedInstance] removeView:_view];
-                             _view = nil;
+                             [_view release]; _view = nil;
+                             [self autorelease];
                          }];
     }
     else
     {
         [[BlockBackground sharedInstance] removeView:_view];
-        _view = nil;
+        [_view release]; _view = nil;
+        [self autorelease];
     }
 }
 

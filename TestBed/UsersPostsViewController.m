@@ -42,7 +42,7 @@
 
 - (void)viewDidLoad
 {
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    JRefreshControl *refreshControl = [[JRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];
     

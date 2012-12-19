@@ -23,6 +23,4 @@
 @property (nonatomic) BOOL onlyToTwitter;
 @property (nonatomic) BOOL onlyToJukaela;
 
--(void)friendList:(id)sender;
-
 @end

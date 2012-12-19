@@ -23,7 +23,7 @@ static BlockBackground *_sharedInstance = nil;
 
     @synchronized(self) {
         if (_sharedInstance == nil) {
-            _sharedInstance = [[self alloc] init];
+            [[[self alloc] init] autorelease];
         }
     }
 
@@ -38,11 +38,30 @@ static BlockBackground *_sharedInstance = nil;
             return _sharedInstance;
         }
     }
-    NSAssert(NO, @ "[BlockBackground alloc] explicitly called on singleton class.", nil);
+    NSAssert(NO, @ "[BlockBackground alloc] explicitly called on singleton class.");
     return nil;
 }
 
 - (id)copyWithZone:(NSZone*)zone
+{
+    return self;
+}
+
+- (id)retain
+{
+    return self;
+}
+
+- (unsigned)retainCount
+{
+    return UINT_MAX;
+}
+
+- (oneway void)release
+{
+}
+
+- (id)autorelease
 {
     return self;
 }
@@ -64,7 +83,7 @@ static BlockBackground *_sharedInstance = nil;
 {
     if (self.hidden)
     {
-        _previousKeyWindow = [[UIApplication sharedApplication] keyWindow];
+        _previousKeyWindow = [[[UIApplication sharedApplication] keyWindow] retain];
         self.alpha = 0.0f;
         self.hidden = NO;
         self.userInteractionEnabled = YES;
@@ -82,6 +101,8 @@ static BlockBackground *_sharedInstance = nil;
         backgroundView.frame = self.bounds;
         backgroundView.contentMode = UIViewContentModeScaleToFill;
         [self addSubview:backgroundView];
+        [backgroundView release];
+        [_backgroundImage release];
         _backgroundImage = nil;
     }
     
@@ -112,6 +133,7 @@ static BlockBackground *_sharedInstance = nil;
     {
         self.hidden = YES;
         [_previousKeyWindow makeKeyWindow];
+        [_previousKeyWindow release];
         _previousKeyWindow = nil;
     }
     else
@@ -133,7 +155,7 @@ static BlockBackground *_sharedInstance = nil;
 	CGColorSpaceRelease(colorSpace);
 	
 	CGPoint center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
-	float radius = jMIN(self.bounds.size.width , self.bounds.size.height) ;
+	float radius = MIN(self.bounds.size.width , self.bounds.size.height) ;
 	CGContextDrawRadialGradient (context, gradient, center, 0, center, radius, kCGGradientDrawsAfterEndLocation);
 	CGGradientRelease(gradient);
 }

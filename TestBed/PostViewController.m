@@ -48,20 +48,6 @@
     [self getUsers];
     
     [self setAutocompleteUsernames:[[NSMutableArray alloc] init]];
-
-
-    _usernameTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    
-    [_usernameTableView setDelegate:self];
-    [_usernameTableView setDataSource:self];
-    [_usernameTableView setScrollEnabled:YES];
-    [_usernameTableView setHidden:YES];
-    
-    [[_usernameTableView layer] setCornerRadius:8];
-    [[_usernameTableView layer] setBorderColor:[[UIColor grayColor] CGColor]];
-    [[_usernameTableView layer] setBorderWidth:1];
-    
-    [[self view] addSubview:_usernameTableView];
     
     UIWindow *tempWindow = [kAppDelegate window];
     
@@ -84,6 +70,20 @@
     else {
         [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn)];
     }
+    
+    _usernameTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    
+    [_usernameTableView setDelegate:self];
+    [_usernameTableView setDataSource:self];
+    [_usernameTableView setScrollEnabled:YES];
+    [_usernameTableView setHidden:YES];
+    
+    [[_usernameTableView layer] setCornerRadius:8];
+    [[_usernameTableView layer] setBorderColor:[[UIColor grayColor] CGColor]];
+    [[_usernameTableView layer] setBorderWidth:1];
+    
+    [[self view] addSubview:_usernameTableView];
+    
     [[self theTextView] becomeFirstResponder];
     [[self theTextView] setDelegate:self];
     
@@ -150,7 +150,7 @@
     }
     else {
         [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn)];
-
+        
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"post_to_twitter"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
@@ -765,8 +765,8 @@
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     CGPoint cursorPosition = [textView caretRectForPosition:textView.selectedTextRange.start].origin;
-
-    [_usernameTableView setFrame:CGRectMake(cursorPosition.x, cursorPosition.y + 41, 166, 130)];
+        
+    [_usernameTableView setFrame:CGRectMake(cursorPosition.x, cursorPosition.y + 41, 166, 82)];
     
     [[self usernameTableView] setHidden:NO];
     
@@ -778,8 +778,9 @@
     NSArray *tempArray = [substring componentsSeparatedByString:@" "];
     
     [self setCurrentWord:[tempArray lastObject]];
-        
+    
     [self searchAutocompleteEntriesWithSubstring:[tempArray lastObject]];
+    
     
     return YES;
 }
@@ -832,8 +833,6 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:AutoCompleteRowIdentifier];
         
         [cell setBackgroundView:[[CellBackground alloc] init]];
-        
-        
     }
     
     [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
@@ -853,7 +852,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-
+    
     [_theTextView setText:[[_theTextView text] stringByReplacingOccurrencesOfString:[self currentWord] withString:[[selectedCell textLabel] text]]];
     
     [tableView setHidden:YES];
@@ -876,7 +875,7 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             NSArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
-                        
+            
             for (id userDict in tempArray) {
                 if (userDict[@"username"] && userDict[@"username"] != [NSNull null]) {
                     [[self usernameArray] addObject:userDict[@"username"]];
@@ -907,14 +906,14 @@
     [_autocompleteUsernames removeAllObjects];
     
     substring = [substring stringByReplacingOccurrencesOfString:@"@" withString:@""];
-
+    
     for (NSString *curString in [self usernameArray]) {
-        NSRange substringRange = [curString rangeOfString:substring];
+        NSRange substringRange = [curString rangeOfString:substring options:NSCaseInsensitiveSearch];
         if (substringRange.location == 0) {
             [_autocompleteUsernames addObject:curString];
         }
     }
-        
+    
     [[self usernameTableView] reloadData];
 }
 

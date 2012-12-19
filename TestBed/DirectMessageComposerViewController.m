@@ -171,7 +171,7 @@
     [_autocompleteUsernames removeAllObjects];
     
     for (NSString *curString in [self usernameArray]) {
-        NSRange substringRange = [curString rangeOfString:substring];
+        NSRange substringRange = [curString rangeOfString:substring options:NSCaseInsensitiveSearch];
         if (substringRange.location == 0) {
             [_autocompleteUsernames addObject:curString];
         }

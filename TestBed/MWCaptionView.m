@@ -54,7 +54,7 @@ static const CGFloat labelPadding = 10;
     _label.textColor = [UIColor whiteColor];
     _label.shadowColor = [UIColor blackColor];
     _label.shadowOffset = CGSizeMake(1, 1);
-    _label.font = [UIFont fontWithName:@"Helvetica-Light" size:17];
+    _label.font = [UIFont fontWithName:kHelveticaLight size:17];
     if ([_photo respondsToSelector:@selector(caption)]) {
         _label.text = [_photo caption] ? [_photo caption] : @" ";
     }

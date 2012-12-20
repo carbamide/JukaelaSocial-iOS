@@ -161,13 +161,13 @@
 
 +(void)repost:(NSIndexPath *)indexPathOfCell fromArray:(NSArray *)theArray withViewController:(FeedViewController *)viewController
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/repost.json", kSocialURL, theArray[[indexPathOfCell row]][@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/repost.json", kSocialURL, theArray[[indexPathOfCell row]][kID]]];
     
-    NSData *tempData = [[theArray[[indexPathOfCell row]][@"content"] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSData *tempData = [[theArray[[indexPathOfCell row]][kContent] stringWithSlashEscapes] dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     
     NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
     
-    NSString *requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
+    NSString *requestString = [RequestFactory postRequestWithContent:stringToSendAsContent userID:[kAppDelegate userID] imageURL:nil];
     
     NSLog(@"%@\n%@", [url absoluteString], requestString);
     
@@ -177,13 +177,13 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"stop_animating" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
             
             WBSuccessNoticeView *successNotice = [[WBSuccessNoticeView alloc] initWithView:[viewController view] title:@"Reposted"];
             

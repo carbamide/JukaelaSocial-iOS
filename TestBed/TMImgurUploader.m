@@ -37,7 +37,7 @@
 																	parameters:params
 													 constructingBodyWithBlock:^(id<TMMultipartFormData> formData) {
 																 [formData appendPartWithFileData:encodedImage
-																							 name:@"image"
+																							 name:kImageNotification
 																						 fileName:@"image.jpg"
 																						 mimeType:@"image/jpeg"];
 															 }];

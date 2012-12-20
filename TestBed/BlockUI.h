@@ -14,12 +14,12 @@
 #define kActionSheetButtonHeight   45
 #define kActionSheetTopMargin      15
 
-#define kActionSheetTitleFont           [UIFont fontWithName:@"Helvetica-Light" size:18]
+#define kActionSheetTitleFont           [UIFont fontWithName:kHelveticaLight size:18]
 #define kActionSheetTitleTextColor      [UIColor whiteColor]
 #define kActionSheetTitleShadowColor    [UIColor blackColor]
 #define kActionSheetTitleShadowOffset   CGSizeMake(0, -1)
 
-#define kActionSheetButtonFont          [UIFont fontWithName:@"Helvetica-Light" size:20]
+#define kActionSheetButtonFont          [UIFont fontWithName:kHelveticaLight size:20]
 #define kActionSheetButtonTextColor     [UIColor whiteColor]
 #define kActionSheetButtonShadowColor   [UIColor blackColor]
 #define kActionSheetButtonShadowOffset  CGSizeMake(0, -1)
@@ -34,17 +34,17 @@
 #define kAlertViewBorder         10
 #define kAlertButtonHeight       44
 
-#define kAlertViewTitleFont             [UIFont fontWithName:@"Helvetica-Light" size:20]
+#define kAlertViewTitleFont             [UIFont fontWithName:kHelveticaLight size:20]
 #define kAlertViewTitleTextColor        [UIColor colorWithWhite:244.0/255.0 alpha:1.0]
 #define kAlertViewTitleShadowColor      [UIColor blackColor]
 #define kAlertViewTitleShadowOffset     CGSizeMake(0, -1)
 
-#define kAlertViewMessageFont           [UIFont fontWithName:@"Helvetica-Light" size:18]
+#define kAlertViewMessageFont           [UIFont fontWithName:kHelveticaLight size:18]
 #define kAlertViewMessageTextColor      [UIColor colorWithWhite:244.0/255.0 alpha:1.0]
 #define kAlertViewMessageShadowColor    [UIColor blackColor]
 #define kAlertViewMessageShadowOffset   CGSizeMake(0, -1)
 
-#define kAlertViewButtonFont            [UIFont fontWithName:@"Helvetica-Light" size:18]
+#define kAlertViewButtonFont            [UIFont fontWithName:kHelveticaLight size:18]
 #define kAlertViewButtonTextColor       [UIColor whiteColor]
 #define kAlertViewButtonShadowColor     [UIColor blackColor]
 #define kAlertViewButtonShadowOffset    CGSizeMake(0, -1)

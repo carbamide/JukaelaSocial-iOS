@@ -38,7 +38,7 @@
     [[self externalImage] addGestureRecognizer:tapGesture];
     
     if (![[self externalImage] image]) {
-        [[self externalImage] addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionOld context:NULL];
+        [[self externalImage] addObserver:self forKeyPath:kImageNotification options:NSKeyValueObservingOptionOld context:NULL];
     }
 }
 
@@ -46,7 +46,7 @@
 {
     NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"show_image" object:nil userInfo:@{@"indexPath" : indexPath}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kShowImage object:nil userInfo:@{kIndexPath : indexPath}];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -56,12 +56,12 @@
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (object == [self externalImage] && [keyPath isEqualToString:@"image"] && (change[NSKeyValueChangeOldKey] == nil || change[NSKeyValueChangeOldKey] == [NSNull null])) {
+	if (object == [self externalImage] && [keyPath isEqualToString:kImageNotification] && (change[NSKeyValueChangeOldKey] == nil || change[NSKeyValueChangeOldKey] == [NSNull null])) {
         [[self externalImage] setNeedsLayout];
         
         [self setNeedsLayout];
         
-        [[self externalImage] removeObserver:self forKeyPath:@"image"];
+        [[self externalImage] removeObserver:self forKeyPath:kImageNotification];
     }
     
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];

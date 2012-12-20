@@ -23,7 +23,7 @@ static BlockBackground *_sharedInstance = nil;
 
     @synchronized(self) {
         if (_sharedInstance == nil) {
-            [[[self alloc] init] autorelease];
+            _sharedInstance = [[[self alloc] init] autorelease];
         }
     }
 
@@ -86,9 +86,10 @@ static BlockBackground *_sharedInstance = nil;
         _previousKeyWindow = [[[UIApplication sharedApplication] keyWindow] retain];
         self.alpha = 0.0f;
         self.hidden = NO;
-        self.userInteractionEnabled = YES;
-        [self makeKeyWindow];
     }
+    
+    self.userInteractionEnabled = YES;
+    [self makeKeyWindow];
     
     if (self.subviews.count > 0)
     {

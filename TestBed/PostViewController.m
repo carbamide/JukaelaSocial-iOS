@@ -57,14 +57,14 @@
         [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height + 100)];
     }
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
         [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn)];
     }
     else {
         [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn)];
     }
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
         [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn)];
     }
     else {
@@ -140,8 +140,8 @@
 {
     UIButton *tempButton = sender;
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"post_to_twitter"];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kPostToTwitterPreference];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [tempButton removeFromSuperview];
@@ -149,12 +149,12 @@
         [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn)];
     }
     else {
-        [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn)];
-        
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"post_to_twitter"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kPostToTwitterPreference];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [tempButton removeFromSuperview];
+        
+        [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn)];
     }
 }
 
@@ -162,8 +162,8 @@
 {
     UIButton *tempButton = sender;
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"post_to_facebook"];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kPostToFacebookPreference];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [tempButton removeFromSuperview];
@@ -171,12 +171,12 @@
         [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn)];
     }
     else {
-        [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn)];
-        
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"post_to_facebook"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kPostToFacebookPreference];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [tempButton removeFromSuperview];
+        
+        [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn)];
     }
 }
 
@@ -266,63 +266,44 @@
 {
     [self setIsPosting:YES];
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"confirm_post"] == YES && ![kAppDelegate onlyToTwitter] && ![kAppDelegate onlyToFacebook] && ![kAppDelegate onlyToJukaela]) {
-        BlockAlertView *confirmAlert = [[BlockAlertView alloc] initWithTitle:@"Confirm" message:@"Confirm sending to other services?"];
+    if ([kAppDelegate onlyToJukaela]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kPostOnlyToJukaela object:nil];
         
-        [confirmAlert addButtonWithTitle:@"Do it!" block:^{
-            [self sendJukaelaPost:YES];
-        }];
+        [self sendJukaelaPost:NO];
         
-        [confirmAlert addButtonWithTitle:@"Just to Jukaela!" block:^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
-            
-            [self sendJukaelaPost:NO];
-        }];
-        
-        [confirmAlert setCancelButtonWithTitle:@"Cancel" block:nil];
-        
-        [confirmAlert show];
+        return;
     }
-    else {
-        if ([kAppDelegate onlyToJukaela]) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
-            
-            [self sendJukaelaPost:NO];
-            
-            return;
-        }
+    
+    if ([kAppDelegate onlyToFacebook]) {
+        [self sendFacebookPost:[[self theTextView] text]];
         
-        if ([kAppDelegate onlyToFacebook]) {
-            [self sendFacebookPost:[[self theTextView] text]];
-            
-            return;
-        }
-        
-        if ([kAppDelegate onlyToTwitter]) {
-            if ([[[self theTextView] text] length] > 140) {
-                NSArray *tempArray = [Helpers splitString:[[self theTextView] text] maxCharacters:140];
-                
-                for (NSString *tempString in [tempArray reverseObjectEnumerator]) {
-                    [self sendTweet:tempString];
-                }
-            }
-            else {
-                [self sendTweet:[[self theTextView] text]];
-            }
-            return;
-        }
-        
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"just_to_jukaela" object:nil];
-        }
-        
-        [self sendJukaelaPost:YES];
+        return;
     }
+    
+    if ([kAppDelegate onlyToTwitter]) {
+        if ([[[self theTextView] text] length] > 140) {
+            NSArray *tempArray = [Helpers splitString:[[self theTextView] text] maxCharacters:140];
+            
+            for (NSString *tempString in [tempArray reverseObjectEnumerator]) {
+                [self sendTweet:tempString];
+            }
+        }
+        else {
+            [self sendTweet:[[self theTextView] text]];
+        }
+        return;
+    }
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference] && ![[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kPostOnlyToJukaela object:nil];
+    }
+    
+    [self sendJukaelaPost:YES];
 }
 
 -(void)sendJukaelaPost:(BOOL)continuePosting
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"set_change_type" object:@0];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChangeTypeNotification object:@0];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -365,7 +346,7 @@
                 [self jukaelaNetworkAction:stringToSendAsContent];
                 
                 if (continuePosting) {
-                    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+                    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
                         if ([[[self theTextView] text] length] > 140) {
                             NSArray *tempArray = [Helpers splitString:[[self theTextView] text] maxCharacters:140];
                             
@@ -378,7 +359,7 @@
                         }
                     }
                     
-                    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+                    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
                         [self sendFacebookPost:[[self theTextView] text]];
                     }
                 }
@@ -389,7 +370,7 @@
         [self jukaelaNetworkAction:stringToSendAsContent];
         
         if (continuePosting) {
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
                 if ([[[self theTextView] text] length] > 140) {
                     NSArray *tempArray = [Helpers splitString:[[self theTextView] text] maxCharacters:140];
                     
@@ -402,7 +383,7 @@
                 }
             }
             
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
                 [self sendFacebookPost:[[self theTextView] text]];
             }
         }
@@ -416,10 +397,10 @@
     NSString *requestString = nil;
     
     if ([self urlString]) {
-        requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@, \"image_url\": \"%@\"}", stringToSendAsContent, [kAppDelegate userID], [self urlString]];
+        requestString = [RequestFactory postRequestWithContent:stringToSendAsContent userID:[kAppDelegate userID] imageURL:[self urlString]];
     }
     else {
-        requestString = [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", stringToSendAsContent, [kAppDelegate userID]];
+        requestString = [RequestFactory postRequestWithContent:stringToSendAsContent userID:[kAppDelegate userID] imageURL:nil];
     }
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
@@ -431,7 +412,7 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [self dismissViewControllerAnimated:YES completion:^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
                 
@@ -458,7 +439,7 @@
 
 - (void)sendTweet:(NSString *)stringToSend
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_or_twitter_sending" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookOrTwitterCurrentlySending object:nil];
     
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     
@@ -493,7 +474,7 @@
                             if (!jsonData[@"error"]) {
                                 NSLog(@"Successfully posted to Twitter");
                                 
-                                [[NSNotificationCenter defaultCenter] postNotificationName:@"tweet_successful" object:nil];
+                                [[NSNotificationCenter defaultCenter] postNotificationName:kSuccessfulTweetNotification object:nil];
                             }
                             else {
                                 NSLog(@"Not posted to Twitter");
@@ -508,7 +489,7 @@
                             
                             [twitterPostingError show];
                         }
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"stop_animating" object:nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
                     }];
                 }
                 else {
@@ -523,7 +504,7 @@
                             if (!jsonData[@"error"]) {
                                 NSLog(@"Successfully posted to Twitter");
                                 
-                                [[NSNotificationCenter defaultCenter] postNotificationName:@"tweet_successful" object:nil];
+                                [[NSNotificationCenter defaultCenter] postNotificationName:kSuccessfulTweetNotification object:nil];
                             }
                             else {
                                 NSLog(@"Not posted to Twitter");
@@ -538,11 +519,9 @@
                             
                             [twitterPostingError show];
                         }
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"stop_animating" object:nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
                     }];
-                }
-                
-                
+                } 
             }
         }
         else {
@@ -553,7 +532,7 @@
     
     if ([kAppDelegate onlyToTwitter]) {
         [self dismissViewControllerAnimated:YES completion:^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
             
@@ -566,7 +545,7 @@
 
 - (void)sendFacebookPost:(NSString *)stringToSend
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_or_twitter_sending" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookOrTwitterCurrentlySending object:nil];
     
     if ([self tempImageData]) {
         stringToSend = [stringToSend stringByReplacingOccurrencesOfString:[self urlString] withString:@""];
@@ -621,7 +600,7 @@
                                 if (!jsonData[@"error"]) {
                                     NSLog(@"Successfully posted to Facebook");
                                     
-                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_successful" object:nil];
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:kSuccessfulFacebookNotification object:nil];
                                 }
                                 else {
                                     NSLog(@"Not posted to Facebook");
@@ -636,7 +615,7 @@
                                 
                                 [facebookPostingError show];
                             }
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"stop_animating" object:nil];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
                         }];
                     }
                     else {
@@ -659,7 +638,7 @@
                                 if (!jsonData[@"error"]) {
                                     NSLog(@"Successfully posted to Facebook");
                                     
-                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"facebook_successful" object:nil];
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:kSuccessfulFacebookNotification object:nil];
                                 }
                                 else {
                                     NSLog(@"Not posted to Facebook");
@@ -674,7 +653,7 @@
                                 
                                 [facebookPostingError show];
                             }
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"stop_animating" object:nil];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
                         }];
                     }
                 }
@@ -688,7 +667,7 @@
     
     if ([kAppDelegate onlyToFacebook]) {
         [self dismissViewControllerAnimated:YES completion:^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
             
@@ -765,7 +744,7 @@
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     CGPoint cursorPosition = [textView caretRectForPosition:textView.selectedTextRange.start].origin;
-        
+    
     [_usernameTableView setFrame:CGRectMake(cursorPosition.x, cursorPosition.y + 41, 166, 82)];
     
     [[self usernameTableView] setHidden:NO];
@@ -835,7 +814,7 @@
         [cell setBackgroundView:[[CellBackground alloc] init]];
     }
     
-    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+    [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:14]];
     
     [[cell textLabel] setText:[[self autocompleteUsernames] objectAtIndex:[indexPath row]]];
     
@@ -877,8 +856,8 @@
             NSArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
             
             for (id userDict in tempArray) {
-                if (userDict[@"username"] && userDict[@"username"] != [NSNull null]) {
-                    [[self usernameArray] addObject:userDict[@"username"]];
+                if (userDict[kUsername] && userDict[kUsername] != [NSNull null]) {
+                    [[self usernameArray] addObject:userDict[kUsername]];
                 }
             }
         }

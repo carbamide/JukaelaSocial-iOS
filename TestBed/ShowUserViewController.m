@@ -84,7 +84,7 @@
     [toolbar setBottomLineColor:[UIColor colorWithHex:0x303030]];
     [toolbar setTintColor:[toolbar gradientEndColor]];
     
-    if ([[kAppDelegate userID] isEqualToString:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]) {
+    if ([[kAppDelegate userID] isEqualToString:[NSString stringWithFormat:@"%@", [self userDict][kID]]]) {
         [self setToolbarItems:nil];
         
         return;
@@ -109,15 +109,15 @@
     NSString *followOrUnfollowString = @"Now following ";
     
     for (NSDictionary *dict in [self imFollowing]) {
-        if ([dict[@"id"] isEqualToNumber:[self userDict][@"id"]]) {
+        if ([dict[kID] isEqualToNumber:[self userDict][kID]]) {
             followOrUnfollowString = @"Unfollowed ";
             following = YES;
         }
     }
     
     for (NSDictionary *dict in [self relationships]) {
-        if ([dict[@"followed_id"] isEqualToNumber:[self userDict][@"id"]]) {
-            unfollowID = dict[@"id"];
+        if ([dict[@"followed_id"] isEqualToNumber:[self userDict][kID]]) {
+            unfollowID = dict[kID];
         }
     }
     if (following == YES) {
@@ -139,20 +139,20 @@
             [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
             [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
             
-            NSString *requestString = [NSString stringWithFormat:@"{\"commit\" : \"Unfollow\", \"id\" : \"%@\"}", [self userDict][@"id"]];
+            NSString *requestString = [RequestFactory unfollowRequestWithUserID:[self userDict][kID]];
             
             NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
             
             [request setHTTPBody:requestData];
             
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"%@%@", followOrUnfollowString, [self userDict][@"name"]]];
+                WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"%@%@", followOrUnfollowString, [self userDict][kName]]];
                 
                 [successNotice show];
                 
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
             }];
         }];
     }
@@ -185,7 +185,7 @@
             
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships.json", kSocialURL]];
             
-            NSString *requestString = [NSString stringWithFormat:@"{\"relationship\" : {\"followed_id\" : \"%@\"}, \"commit\" : \"Follow\"}", [self userDict][@"id"]];
+            NSString *requestString = [RequestFactory followRequestWithUserID:[self userDict][kID]];
             
             NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
             
@@ -195,7 +195,7 @@
                 if (data) {
                     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                     
-                    WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"Now following %@", [self userDict][@"name"]]];
+                    WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"Now following %@", [self userDict][kName]]];
                     
                     [successNotice show];
                     
@@ -205,7 +205,7 @@
                     
                     [self setToolbarItems:@[flexSpace, actionItem]];
                     
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
                 }
                 else {
                     BlockAlertView *jukaelaSocialPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error following or unfollowing"];
@@ -341,24 +341,24 @@
             [cell prepareForTableView:tableView indexPath:indexPath];
             
             [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
-            [[cell textLabel] setText:[self userDict][@"name"]];
+            [[cell textLabel] setText:[self userDict][kName]];
             [[cell detailTextLabel] setTextAlignment:NSTextAlignmentRight];
             
-            [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:18]];
-            [[cell detailTextLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+            [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:18]];
+            [[cell detailTextLabel] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
             
-            if ([self userDict][@"username"] && [self userDict][@"username"] != [NSNull null]) {
-                [[cell detailTextLabel] setText:[self userDict][@"username"]];
+            if ([self userDict][kUsername] && [self userDict][kUsername] != [NSNull null]) {
+                [[cell detailTextLabel] setText:[self userDict][kUsername]];
             }
             else {
                 [[cell detailTextLabel] setText:@"No username"];
             }
             
-            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]]];
+            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][kID]]]]];
             
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
             
-            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][@"id"]]]] error:nil];
+            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][kID]]]] error:nil];
             
             if (image) {
                 [[cell imageView] setImage:image];
@@ -367,7 +367,7 @@
                 if (attributes) {
                     if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
                         dispatch_async(queue, ^{
-                            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][@"email"] withSize:65]]];
+                            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][kEmail] withSize:65]]];
                             
 #if (TARGET_IPHONE_SIMULATOR)
                             image = [JEImages normalize:image];
@@ -376,7 +376,7 @@
                             
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 [[cell imageView] setImage:resizedImage];
-                                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self userDict][@"id"]]];
+                                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self userDict][kID]]];
                             });
                         });
                     }
@@ -384,7 +384,7 @@
             }
             else {
                 dispatch_async(queue, ^{
-                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][@"email"] withSize:65]]];
+                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][kEmail] withSize:65]]];
                     
 #if (TARGET_IPHONE_SIMULATOR)
                     image = [JEImages normalize:image];
@@ -396,7 +396,7 @@
                         
                         [cell setNeedsDisplay];
                         
-                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self userDict][@"id"]]];
+                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self userDict][kID]]];
                     });
                 });
             }
@@ -407,7 +407,7 @@
             
             [[cell detailTextLabel] setNumberOfLines:5];
             
-            [[cell detailTextLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+            [[cell detailTextLabel] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
             
             if ([self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ) {
                 [[cell detailTextLabel] setText:[self userDict][@"profile"]];
@@ -452,12 +452,12 @@
                 if (selectedIndex == 0) {
                     [tempSegContCell deselectAnimated:YES];
                     
-                    [self performSegueWithIdentifier:@"ShowFollowing" sender:nil];
+                    [self performSegueWithIdentifier:kShowFollowing sender:nil];
                 }
                 else if (selectedIndex == 1) {
                     [tempSegContCell deselectAnimated:YES];
                     
-                    [self performSegueWithIdentifier:@"ShowFollowers" sender:nil];
+                    [self performSegueWithIdentifier:kShowFollowers sender:nil];
                 }
                 else if (selectedIndex == 2) {
                     [tempSegContCell deselectAnimated:YES];
@@ -502,7 +502,7 @@
     else if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
         UsersPostsViewController *viewController = [segue destinationViewController];
         
-        [viewController setUserID:[self userDict][@"id"]];
+        [viewController setUserID:[self userDict][kID]];
         [viewController setUserPostArray:[self posts]];
     }
 }
@@ -515,7 +515,7 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [self userDict][@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [self userDict][kID]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -529,7 +529,7 @@
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
-            [self performSegueWithIdentifier:@"ShowUserPosts" sender:nil];
+            [self performSegueWithIdentifier:kShowUserPosts sender:nil];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's posts.  Please logout and log back in."];
@@ -540,7 +540,7 @@
 
 -(void)getNumberOfPosts
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/number_of_posts", kSocialURL, [self userDict][@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/number_of_posts", kSocialURL, [self userDict][kID]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -564,7 +564,7 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/following.json", kSocialURL, [self userDict][@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/following.json", kSocialURL, [self userDict][kID]]];
     
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     
@@ -611,7 +611,7 @@
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/followers.json", kSocialURL, [self userDict][@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/followers.json", kSocialURL, [self userDict][kID]]];
     
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     

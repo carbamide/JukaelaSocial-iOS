@@ -24,6 +24,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 @synthesize imageTapGesture;
 @synthesize repostedNameLabel;
 @synthesize repostTapGesture;
+@synthesize postDate;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -42,7 +43,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 9, 140, 15)];
         
         [nameLabel setTextAlignment:NSTextAlignmentLeft];
-        [nameLabel setFont:[UIFont fontWithName:@"Helvetica-Light" size:18]];
+        [nameLabel setFont:[UIFont fontWithName:kHelveticaLight size:18]];
         [nameLabel setBackgroundColor:[UIColor clearColor]];
         [nameLabel setTag:8];
         
@@ -50,7 +51,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 5, 140, 15)];
         [dateLabel setTextAlignment:NSTextAlignmentRight];
-        [dateLabel setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+        [dateLabel setFont:[UIFont fontWithName:kHelveticaLight size:14]];
         [dateLabel setBackgroundColor:[UIColor clearColor]];
         [dateLabel setTag:8];
         [dateLabel setTextColor:[UIColor colorWithWhite:0.5 alpha:1.0]];
@@ -59,7 +60,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 30, 140, 15)];
         [usernameLabel setTextAlignment:NSTextAlignmentLeft];
-        [usernameLabel setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+        [usernameLabel setFont:[UIFont fontWithName:kHelveticaLight size:14]];
         [usernameLabel setBackgroundColor:[UIColor clearColor]];
         [usernameLabel setTextColor:[UIColor colorWithWhite:0.5 alpha:1.0]];
         [usernameLabel setTag:8];
@@ -70,7 +71,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         repostedNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, 228, 20)];
         
         [repostedNameLabel setTextAlignment:NSTextAlignmentLeft];
-        [repostedNameLabel setFont:[UIFont fontWithName:@"Helvetica-Light" size:12]];
+        [repostedNameLabel setFont:[UIFont fontWithName:kHelveticaLight size:12]];
         [repostedNameLabel setTextColor:[UIColor darkGrayColor]];
         [repostedNameLabel setBackgroundColor:[UIColor clearColor]];
         [repostedNameLabel setTag:8];
@@ -118,7 +119,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 {
     [super layoutSubviews];
         
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"enable_cell" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
+    [[NSNotificationCenter defaultCenter] addObserverForName:kEnableCellNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
         [self setDisabled:NO];
         
         [[self contentText] setAlpha:1.0];
@@ -149,7 +150,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
     [[self detailTextLabel] setFrame:CGRectMake(90, 25, 150, 76)];
         
     if (![[self imageView] image]) {
-        [[self imageView] addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionOld context:NULL];
+        [[self imageView] addObserver:self forKeyPath:kImageNotification options:NSKeyValueObservingOptionOld context:NULL];
     }
 }
 
@@ -160,12 +161,12 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (object == [self imageView] && [keyPath isEqualToString:@"image"] && (change[NSKeyValueChangeOldKey] == nil || change[NSKeyValueChangeOldKey] == [NSNull null])) {
+	if (object == [self imageView] && [keyPath isEqualToString:kImageNotification] && (change[NSKeyValueChangeOldKey] == nil || change[NSKeyValueChangeOldKey] == [NSNull null])) {
         [[self imageView] setNeedsLayout];
         
         [self setNeedsLayout];
         
-        [[self imageView] removeObserver:self forKeyPath:@"image"];
+        [[self imageView] removeObserver:self forKeyPath:kImageNotification];
     }
 }
 
@@ -183,7 +184,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 {
     @try {
         if (![[self imageView] image]) {
-            [[self imageView] removeObserver:self forKeyPath:@"image"];
+            [[self imageView] removeObserver:self forKeyPath:kImageNotification];
         }
         
         if (![[self nameLabel] text]) {
@@ -213,13 +214,13 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         if(UIGestureRecognizerStateBegan == gesture.state) {
             NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"double_tap" object:nil userInfo:@{@"indexPath" : indexPath}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kDoubleTapNotification object:nil userInfo:@{kIndexPath : indexPath}];
         }
     }
     else {
         NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"double_tap" object:nil userInfo:@{@"indexPath" : indexPath}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kDoubleTapNotification object:nil userInfo:@{kIndexPath : indexPath}];
     }
 }
 
@@ -227,7 +228,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 {
     NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"send_to_user" object:nil userInfo:@{@"indexPath" : indexPath}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSendToUserNotification object:nil userInfo:@{kIndexPath : indexPath}];
     
 }
 
@@ -235,7 +236,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 {
     NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"repost_send_to_user" object:nil userInfo:@{@"indexPath" : indexPath}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kRepostSendToUserNotifiation object:nil userInfo:@{kIndexPath : indexPath}];
 }
 
 -(void)disableCell

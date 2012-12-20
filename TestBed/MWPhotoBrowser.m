@@ -301,11 +301,11 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
         UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonPressed:)] autorelease];
         
         [doneButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                            [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                            [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
                                             nil] forState:UIControlStateNormal];
         
         [doneButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                            [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                            [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
                                             nil] forState:UIControlStateDisabled];
         // Set appearance
         if ([UIBarButtonItem respondsToSelector:@selector(appearance)]) {

@@ -13,7 +13,7 @@
 #define DECOMPRESSED_IMAGE_KEY @"decompressedImage"
 #define DECODE_INFO_KEY @"decodeInfo"
 
-#define IMAGE_KEY @"image"
+#define IMAGE_KEY kImageNotification
 #define DELEGATE_KEY @"delegate"
 #define USER_INFO_KEY @"userInfo"
 

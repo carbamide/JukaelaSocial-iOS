@@ -18,13 +18,14 @@
 NS_ENUM(NSInteger, SocialTypes) {
     FacebookType,
     TwitterType,
-    ConfirmType
+    BadgeType
 };
 
 @interface SettingsViewController ()
 
 @property (strong, nonatomic) UISwitch *facebookSwitch;
 @property (strong, nonatomic) UISwitch *twitterSwitch;
+@property (strong, nonatomic) UISwitch *badgeSwitch;
 @end
 
 @implementation SettingsViewController
@@ -33,14 +34,14 @@ NS_ENUM(NSInteger, SocialTypes) {
 {
     [kAppDelegate setCurrentViewController:self];
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
         [[self twitterSwitch] setOn:YES];
     }
     else {
         [[self twitterSwitch] setOn:NO];
     }
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
         [[self facebookSwitch] setOn:YES];
     }
     else {
@@ -55,12 +56,12 @@ NS_ENUM(NSInteger, SocialTypes) {
     BlockActionSheet *logOutActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
     [logOutActionSheet setDestructiveButtonWithTitle:@"Logout" block:^{
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"read_username_from_defaults"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kReadUsernameFromDefaultsPreference];
         
-        [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"] andServiceName:@"Jukaela Social" error:nil];
+        [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] valueForKey:kUsername] andServiceName:kJukaelaSocialServiceName error:nil];
         
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"username"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_id"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUsername];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserID];
         
         [[NSUserDefaults standardUserDefaults] synchronize];
         
@@ -109,7 +110,7 @@ NS_ENUM(NSInteger, SocialTypes) {
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 5;
+    return 6;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -130,6 +131,9 @@ NS_ENUM(NSInteger, SocialTypes) {
         case 4:
             return 1;
             break;
+        case 5:
+            return 1;
+            break;
         default:
             return 1;
             break;
@@ -145,7 +149,7 @@ NS_ENUM(NSInteger, SocialTypes) {
         cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:18]];
+    [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:18]];
     
     [cell prepareForTableView:tableView indexPath:indexPath];
     
@@ -158,7 +162,7 @@ NS_ENUM(NSInteger, SocialTypes) {
             [self setTwitterSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
             [[self twitterSwitch] setTag:TwitterType];
             
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_twitter"]) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
                 [[self twitterSwitch] setOn:YES];
             }
             else {
@@ -176,7 +180,7 @@ NS_ENUM(NSInteger, SocialTypes) {
             [self setFacebookSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
             [[self facebookSwitch] setTag:FacebookType];
             
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"post_to_facebook"]) {
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
                 [[self facebookSwitch] setOn:YES];
             }
             else {
@@ -204,6 +208,27 @@ NS_ENUM(NSInteger, SocialTypes) {
         }
     }
     else if ([indexPath section] == 4) {
+        [[cell textLabel] setText:@"App Badge"];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
+        [self setBadgeSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+        [[self badgeSwitch] setTag:BadgeType];
+        
+        UIRemoteNotificationType notificationTypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+        
+        if (notificationTypes == (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)) {
+            [[self badgeSwitch] setOn:YES];
+        }
+        else {
+            [[self badgeSwitch] setOn:NO];
+        }
+        
+        [cell setAccessoryView:[self badgeSwitch]];
+        
+        [[self badgeSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+        
+    }
+    else if ([indexPath section] == 5) {
         if ([indexPath row] == 0) {
             [[cell textLabel] setText:@"Logout"];
         }
@@ -228,7 +253,7 @@ NS_ENUM(NSInteger, SocialTypes) {
                 [accountStore requestAccessToAccountsWithType:accountType options:options completion:^(BOOL granted, NSError *error) {
                     if(granted) {
                         if ([accountsArray count] > 0) {
-                            [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
+                            [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:kPostToFacebookPreference];
                             [[NSUserDefaults standardUserDefaults] synchronize];
                         }
                         else {
@@ -245,7 +270,7 @@ NS_ENUM(NSInteger, SocialTypes) {
                 
             }
             else {
-                [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:@"post_to_facebook"];
+                [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:kPostToFacebookPreference];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
         }
@@ -261,7 +286,7 @@ NS_ENUM(NSInteger, SocialTypes) {
                     if (granted) {
                         NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
                         if ([accountsArray count] > 0) {
-                            [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:@"post_to_twitter"];
+                            [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:kPostToTwitterPreference];
                             [[NSUserDefaults standardUserDefaults] synchronize];
                         }
                         else {
@@ -278,8 +303,21 @@ NS_ENUM(NSInteger, SocialTypes) {
                 
             }
             else {
-                [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:@"post_to_twitter"];
+                [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:kPostToTwitterPreference];
                 [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+            break;
+        case 2:
+        {
+            if ([sender isOn]) {
+                [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
+                                                                                       UIRemoteNotificationTypeBadge |
+                                                                                       UIRemoteNotificationTypeSound)];
+            }
+            else {
+                [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
+                                                                                       UIRemoteNotificationTypeSound)];
             }
         }
             break;
@@ -297,12 +335,12 @@ NS_ENUM(NSInteger, SocialTypes) {
             return;
             break;
         case 1:
-            [self performSegueWithIdentifier:@"EditUser" sender:self];
+            [self performSegueWithIdentifier:kShowEditUser sender:self];
             
             [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
             break;
         case 2:
-            [self performSegueWithIdentifier:@"SubmitFeedback" sender:self];
+            [self performSegueWithIdentifier:kShowSubmitFeedback sender:self];
             
             [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
             break;
@@ -312,6 +350,8 @@ NS_ENUM(NSInteger, SocialTypes) {
             [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
             break;
         case 4:
+            break;
+        case 5:
             [self logOut:nil];
             
             [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
@@ -348,7 +388,7 @@ NS_ENUM(NSInteger, SocialTypes) {
             }
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh_your_tables" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
         
         [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
     }];

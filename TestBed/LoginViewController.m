@@ -30,7 +30,7 @@
         
         [cell setTableViewBackgroundColor:[tableView backgroundColor]];
         
-        [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:18]];
+        [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:18]];
         
         if ([indexPath section] == 0) {
             
@@ -50,11 +50,11 @@
                 [_username setEnabled:YES];
                 [_username setBackgroundColor:[UIColor clearColor]];
                 [_username setTextAlignment:NSTextAlignmentRight];
-                [_username setPlaceholder:@"email"];
-                [_username setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+                [_username setPlaceholder:kEmail];
+                [_username setFont:[UIFont fontWithName:kHelveticaLight size:16]];
                 
-                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
-                    [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
+                    [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:kUsername]];
                     [_rememberUsername setChecked];
                 }
                 
@@ -82,7 +82,7 @@
                 [_password setBackgroundColor:[UIColor clearColor]];
                 [_password setTextAlignment:NSTextAlignmentRight];
                 [_password setPlaceholder:@"password"];
-                [_password setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+                [_password setFont:[UIFont fontWithName:kHelveticaLight size:16]];
 
                 [_password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
                 
@@ -109,15 +109,15 @@
     [_rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [_rememberUsername setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
-    [[_rememberUsername titleLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+    [[_rememberUsername titleLabel] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
     
     
     [footerView addSubview:_rememberUsername];
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
-        [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
+        [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:kUsername]];
         
-        [_password setText:[SFHFKeychainUtils getPasswordForUsername:[_username text] andServiceName:@"Jukaela Social" error:nil]];
+        [_password setText:[SFHFKeychainUtils getPasswordForUsername:[_username text] andServiceName:kJukaelaSocialServiceName error:nil]];
         
         [_rememberUsername setChecked];
     }
@@ -167,15 +167,15 @@
     NSError *error = nil;
     
     if ([_rememberUsername isChecked]) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"read_username_from_defaults"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kReadUsernameFromDefaultsPreference];
         
-        [SFHFKeychainUtils storeUsername:[_username text] andPassword:[_password text] forServiceName:@"Jukaela Social" updateExisting:YES error:&error];
+        [SFHFKeychainUtils storeUsername:[_username text] andPassword:[_password text] forServiceName:kJukaelaSocialServiceName updateExisting:YES error:&error];
     }
     else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"read_username_from_defaults"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kReadUsernameFromDefaultsPreference];
     }
     
-    [[NSUserDefaults standardUserDefaults] setValue:[_username text] forKey:@"username"];
+    [[NSUserDefaults standardUserDefaults] setValue:[_username text] forKey:kUsername];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [self setProgressHUD:[[MBProgressHUD alloc] initWithView:[self view]]];
@@ -189,8 +189,8 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/sessions.json", kSocialURL]];
     
-    NSString *requestString = [NSString stringWithFormat:@"{ \"session\": {\"email\" : \"%@\", \"password\" : \"%@\", \"apns\": \"%@\"}}", [_username text], [_password text], [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceToken"]];
-    
+    NSString *requestString = [RequestFactory loginRequestWithEmail:[_username text] password:[_password text] apns:[[NSUserDefaults standardUserDefaults] valueForKey:kDeviceTokenPreference]];
+            
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
@@ -215,11 +215,11 @@
                 [[[[self tabBarController] tabBar] items][3] setEnabled:YES];
                 [[[[self tabBarController] tabBar] items][4] setEnabled:YES];
 
-                [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[@"id"]]];
-                [kAppDelegate setUserEmail:[NSString stringWithFormat:@"%@", loginDict[@"email"]]];
-                [kAppDelegate setUserUsername:[NSString stringWithFormat:@"%@", loginDict[@"username"]]];
+                [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[kID]]];
+                [kAppDelegate setUserEmail:[NSString stringWithFormat:@"%@", loginDict[kEmail]]];
+                [kAppDelegate setUserUsername:[NSString stringWithFormat:@"%@", loginDict[kUsername]]];
                 
-                [[NSUserDefaults standardUserDefaults] setValue:[kAppDelegate userID] forKey:@"user_id"];
+                [[NSUserDefaults standardUserDefaults] setValue:[kAppDelegate userID] forKey:kUserID];
                 
                 [self getFeed];
             }
@@ -257,7 +257,7 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
     
-    NSString *requestString = [NSString stringWithFormat:@"{\"first\" : \"%i\", \"last\" : \"%i\"}", 0, 20];
+    NSString *requestString = [RequestFactory feedRequestFrom:0 to:20];
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
@@ -269,7 +269,7 @@
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
-            [self performSegueWithIdentifier:@"ShowFeed" sender:self];
+            [self performSegueWithIdentifier:kShowFeed sender:self];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading your feed.  Please logout and log back in."];
@@ -321,6 +321,12 @@
     
     [[self imageView] addGestureRecognizer:recognizer];
     
+    UIWindow *tempWindow = [kAppDelegate window];
+    
+    if (tempWindow.frame.size.height > 500) {
+        [[self imageView] setFrame:CGRectOffset(_imageView.frame, 0, 44)];
+    }
+    
     [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
     [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
@@ -334,8 +340,8 @@
     [[[self imageView] layer] setShadowRadius:3.0];
     [[self imageView] setClipsToBounds:NO];
 
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
-        [kAppDelegate setUserID:[[NSUserDefaults standardUserDefaults] valueForKey:@"user_id"]];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
+        [kAppDelegate setUserID:[[NSUserDefaults standardUserDefaults] valueForKey:kUserID]];
 
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
         
@@ -348,7 +354,7 @@
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"new_user" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
-        [[self username] setText:[aNotification userInfo][@"email"]];
+        [[self username] setText:[aNotification userInfo][kEmail]];
     }];
     _username = [[UITextField alloc] init];
     _password = [[UITextField alloc] init];
@@ -371,7 +377,7 @@
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"] == YES) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
         if ([[self rememberUsername] isChecked] == NO) {
             [[self rememberUsername] setChecked];
         }

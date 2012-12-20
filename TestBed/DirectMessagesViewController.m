@@ -44,7 +44,7 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:kDoubleTapNotification object:nil];
 
     _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
 
@@ -69,7 +69,7 @@
 
 -(void)showComposer:(id)sender
 {
-    [self performSegueWithIdentifier:@"Compose" sender:nil];;
+    [self performSegueWithIdentifier:kShowCompose sender:nil];;
 }
 
 -(void)getMessages
@@ -108,11 +108,11 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *contentText = [self messagesArray][[indexPath row]][@"content"];
+    NSString *contentText = [self messagesArray][[indexPath row]][kContent];
     
     CGSize constraint = CGSizeMake(300, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kHelveticaLight size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     return contentSize.height + 50 + 10;
 }
@@ -134,11 +134,11 @@
         [cell setBackgroundView:[[CellBackground alloc] init]];
     }
     
-    [[cell contentText] setFontName:@"Helvetica-Light"];
+    [[cell contentText] setFontName:kHelveticaLight];
     [[cell contentText] setFontSize:17];
     
-    if ([self messagesArray][[indexPath row]][@"content"] && [self messagesArray][[indexPath row]][@"content"] != [NSNull null]) {
-        [[cell contentText] setText:[self messagesArray][[indexPath row]][@"content"]];
+    if ([self messagesArray][[indexPath row]][kContent] && [self messagesArray][[indexPath row]][kContent] != [NSNull null]) {
+        [[cell contentText] setText:[self messagesArray][[indexPath row]][kContent]];
     }
     [[cell nameLabel] setText:[self messagesArray][[indexPath row]][@"from_name"]];
     
@@ -146,7 +146,7 @@
         [[cell usernameLabel] setText:[self messagesArray][[indexPath row]][@"from_username"]];
     }
     
-    NSDate *tempDate = [NSDate dateWithISO8601String:[self messagesArray][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
+    NSDate *tempDate = [NSDate dateWithISO8601String:[self messagesArray][[indexPath row]][kCreationDate] withFormatter:[self dateFormatter]];
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
@@ -177,7 +177,7 @@
                     [cell setNeedsDisplay];
                 }
                 
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self messagesArray][[indexPath row]][@"user_id"]]];
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self messagesArray][[indexPath row]][kUserID]]];
             });
         });
         

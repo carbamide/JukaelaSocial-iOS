@@ -132,7 +132,7 @@ float const yAdjustmentFactor = 1.3;
     self.bgImageTopStretchCap = 0.0;
     self.bgImageLeftStretchCap = 0.0;
     
-    self.fontName = @"Helvetica-Light";
+    self.fontName = kHelveticaLight;
     self.fontSize = 17.0;
     
     self.paddingTop = 0;

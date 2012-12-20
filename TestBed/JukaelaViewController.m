@@ -25,7 +25,7 @@
     [navBar setTintColor:[navBar gradientEndColor]];
     
     [navBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [UIFont fontWithName:@"Helvetica-Light" size:22], UITextAttributeFont,
+                                    [UIFont fontWithName:kHelveticaLight size:22], UITextAttributeFont,
                                     nil]];
 }
 

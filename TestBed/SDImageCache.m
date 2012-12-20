@@ -174,7 +174,7 @@ static natural_t get_free_memory(void)
     NSString *key = [arguments objectForKey:@"key"];
     id <SDImageCacheDelegate> delegate = [arguments objectForKey:@"delegate"];
     NSDictionary *info = [arguments objectForKey:@"userInfo"];
-    UIImage *image = [arguments objectForKey:@"image"];
+    UIImage *image = [arguments objectForKey:kImageNotification];
 
     if (image)
     {
@@ -213,7 +213,7 @@ static natural_t get_free_memory(void)
             image = decodedImage;
         }
 
-        [mutableArguments setObject:image forKey:@"image"];
+        [mutableArguments setObject:image forKey:kImageNotification];
     }
 
     [self performSelectorOnMainThread:@selector(notifyDelegate:) withObject:mutableArguments waitUntilDone:NO];

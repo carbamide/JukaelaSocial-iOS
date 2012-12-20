@@ -26,7 +26,7 @@
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
-
+@property (strong, nonatomic) NSCache *externalImageCache;
 @end
 
 @implementation UsersPostsViewController
@@ -42,6 +42,8 @@
 
 - (void)viewDidLoad
 {
+    [self setExternalImageCache:[[NSCache alloc] init]];
+    
     JRefreshControl *refreshControl = [[JRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];
@@ -52,7 +54,7 @@
     
     [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
-    [self setTitle:[[self userPostArray] lastObject][@"name"]];
+    [self setTitle:[[self userPostArray] lastObject][kName]];
     
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
     
@@ -68,7 +70,7 @@
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     
-    [defaultCenter addObserverForName:@"refresh_your_tables" object:nil queue:mainQueue usingBlock:^(NSNotification *notification) {
+    [defaultCenter addObserverForName:kRefreshYourTablesNotification object:nil queue:mainQueue usingBlock:^(NSNotification *notification) {
         [self refreshTableInformation];
     }];
 }
@@ -87,15 +89,15 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *contentText = [self userPostArray][[indexPath row]][@"content"];
+    NSString *contentText = [self userPostArray][[indexPath row]][kContent];
     
     CGSize constraint = CGSizeMake(275, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kHelveticaLight size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     CGFloat height;
     
-    if ([self userPostArray][[indexPath row]][@"repost_user_id"] && [self userPostArray][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
+    if ([self userPostArray][[indexPath row]][kRepostUserID] && [self userPostArray][[indexPath row]][kRepostUserID] != [NSNull null]) {
         height = jMAX(contentSize.height + 50 + 10, 90);
     }
     else {
@@ -122,12 +124,12 @@
     
     id cell = nil;
     
-    if ([self userPostArray][[indexPath row]][@"image_url"] && [self userPostArray][[indexPath row]][@"image_url"] != [NSNull null]) {
+    if ([self userPostArray][[indexPath row]][kImageURL] && [self userPostArray][[indexPath row]][kImageURL] != [NSNull null]) {
         cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
         
         if (cell) {
-            if ([[kAppDelegate externalImageCache] objectForKey:indexPath]) {
-                [[cell externalImage] setImage:[[kAppDelegate externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+            if ([[self externalImageCache] objectForKey:indexPath]) {
+                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
             }
             else {
                 [[cell externalImage] setImage:nil];
@@ -149,14 +151,14 @@
         }
     }
     
-    if ([self userPostArray][[indexPath row]][@"image_url"] && [self userPostArray][[indexPath row]][@"image_url"] != [NSNull null]) {
+    if ([self userPostArray][[indexPath row]][kImageURL] && [self userPostArray][[indexPath row]][kImageURL] != [NSNull null]) {
         if (![[cell externalImage] image]) {
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
             
             objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
             
             dispatch_async(queue, ^{
-                NSMutableString *tempString = [NSMutableString stringWithString:[self userPostArray][[indexPath row]][@"image_url"]];
+                NSMutableString *tempString = [NSMutableString stringWithString:[self userPostArray][[indexPath row]][kImageURL]];
                 
                 [tempString insertString:@"s" atIndex:24];
                 
@@ -169,55 +171,55 @@
         }
     }
     
-    [[cell contentText] setFontName:@"Helvetica-Light"];
+    [[cell contentText] setFontName:kHelveticaLight];
     [[cell contentText] setFontSize:14];
     
-    if ([self userPostArray][[indexPath row]][@"content"]) {
-        [[cell contentText] setText:[self userPostArray][[indexPath row]][@"content"]];
+    if ([self userPostArray][[indexPath row]][kContent]) {
+        [[cell contentText] setText:[self userPostArray][[indexPath row]][kContent]];
     }
     else {
         [[cell contentText] setText:@"Loading..."];
     }
     
-    if ([self userPostArray][[indexPath row]][@"name"] && [self userPostArray][[indexPath row]][@"name"] != [NSNull null]) {
-        [[cell nameLabel] setText:[self userPostArray][[indexPath row]][@"name"]];
+    if ([self userPostArray][[indexPath row]][kName] && [self userPostArray][[indexPath row]][kName] != [NSNull null]) {
+        [[cell nameLabel] setText:[self userPostArray][[indexPath row]][kName]];
     }
     
-    if ([self userPostArray][[indexPath row]][@"username"] && [self userPostArray][[indexPath row]][@"username"] != [NSNull null]) {
-        [[cell usernameLabel] setText:[self userPostArray][[indexPath row]][@"username"]];
+    if ([self userPostArray][[indexPath row]][kUsername] && [self userPostArray][[indexPath row]][kUsername] != [NSNull null]) {
+        [[cell usernameLabel] setText:[self userPostArray][[indexPath row]][kUsername]];
     }
     
-    if ([self userPostArray][[indexPath row]][@"repost_user_id"] && [self userPostArray][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
-        CGSize contentSize = [[self userPostArray][[indexPath row]][@"content"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:17]
+    if ([self userPostArray][[indexPath row]][kRepostUserID] && [self userPostArray][[indexPath row]][kRepostUserID] != [NSNull null]) {
+        CGSize contentSize = [[self userPostArray][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kHelveticaLight size:17]
                                                                            constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                                lineBreakMode:NSLineBreakByWordWrapping];
         
-        CGSize nameSize = [[self userPostArray][[indexPath row]][@"name"] sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:14]
+        CGSize nameSize = [[self userPostArray][[indexPath row]][kName] sizeWithFont:[UIFont fontWithName:kHelveticaLight size:14]
                                                                      constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                          lineBreakMode:NSLineBreakByWordWrapping];
         
         CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
         
-        if ([[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"user_id"]] isEqualToString:[kAppDelegate userID]]) {
+        if ([[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
             [[cell repostedNameLabel] setFrame:CGRectMake(12, height, 228, 20)];
         }
         else {
             [[cell repostedNameLabel] setFrame:CGRectMake(86, height, 228, 20)];
         }
-        [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [self userPostArray][[indexPath row]][@"repost_name"]]];
+        [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [self userPostArray][[indexPath row]][kRepostName]]];
     }
     
-    NSDate *tempDate = [NSDate dateWithISO8601String:[self userPostArray][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
+    NSDate *tempDate = [NSDate dateWithISO8601String:[self userPostArray][[indexPath row]][kCreationDate] withFormatter:[self dateFormatter]];
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"user_id"]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][kUserID]]]]];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
     objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
     
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"user_id"]]]] error:nil];
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][kUserID]]]] error:nil];
     
     if (image) {
         [[cell imageView] setImage:image];
@@ -226,7 +228,7 @@
         if (attributes) {
             if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
                 dispatch_async(queue, ^{
-                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userPostArray][[indexPath row]][@"email"] withSize:40]]];
+                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userPostArray][[indexPath row]][kEmail] withSize:40]]];
                     
 #if (TARGET_IPHONE_SIMULATOR)
                     image = [JEImages normalize:image];
@@ -241,7 +243,7 @@
                             [cell setNeedsDisplay];
                         }
                         
-                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"user_id"]]];
+                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][kUserID]]];
                     });
                 });
             }
@@ -249,7 +251,7 @@
     }
     else {
         dispatch_async(queue, ^{
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userPostArray][[indexPath row]][@"email"] withSize:40]]];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userPostArray][[indexPath row]][kEmail] withSize:40]]];
             
 #if (TARGET_IPHONE_SIMULATOR)
             image = [JEImages normalize:image];
@@ -264,7 +266,7 @@
                     [cell setNeedsDisplay];
                 }
                 
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][@"user_id"]]];
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][kUserID]]];
             });
         });
     }
@@ -280,14 +282,14 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"ShowReplyView"]) {
+    if ([[segue identifier] isEqualToString:kShowReplyView]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
-        [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self userPostArray][[[self tempIndexPath] row]][@"username"]]];
+        [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self userPostArray][[[self tempIndexPath] row]][kUsername]]];
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }
-    else if ([[segue identifier] isEqualToString:@"ShowRepostView"]) {
+    else if ([[segue identifier] isEqualToString:kShowRepostView]) {
         UITableViewCell *tempCell = [[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
         
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
@@ -315,12 +317,12 @@
             
             [[self refreshControl] endRefreshing];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
     }];
 }
 

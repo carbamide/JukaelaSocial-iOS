@@ -121,8 +121,8 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/direct_messages.json", kSocialURL]];
     
-    NSString *requestString = [NSString stringWithFormat:@"{\"direct_message\": {\"content\":\"%@\", \"from_user_id\":%@}, \"username\" : \"%@\"}", [[self textView] text], [kAppDelegate userID], [[self textField] text]];
-    
+    NSString *requestString = [RequestFactory directMessageRequestWithContent:[[self textView] text] userID:[kAppDelegate userID] username:[[self textField] text]];
+        
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
@@ -220,7 +220,7 @@
         
     }
     
-    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+    [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:14]];
     
     [[cell textLabel] setText:[[self autocompleteUsernames] objectAtIndex:[indexPath row]]];
     
@@ -262,8 +262,8 @@
             NSArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
             
             for (id userDict in tempArray) {
-                if (userDict[@"username"] && userDict[@"username"] != [NSNull null]) {
-                    [[self usernameArray] addObject:userDict[@"username"]];
+                if (userDict[kUsername] && userDict[kUsername] != [NSNull null]) {
+                    [[self usernameArray] addObject:userDict[kUsername]];
                 }
             }
         }

@@ -16,8 +16,6 @@
 @property (strong, nonatomic) NSString *userUsername;
 
 @property (nonatomic, assign) id currentViewController;
-@property (strong, nonatomic) NSCache *externalImageCache;
-@property (strong, nonatomic) NSArray *facebookFriends;
 
 @property (nonatomic) BOOL onlyToFacebook;
 @property (nonatomic) BOOL onlyToTwitter;

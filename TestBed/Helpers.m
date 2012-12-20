@@ -107,7 +107,7 @@
     BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:aMessage];
     
     [errorAlert addButtonWithTitle:@"Logout" block:^{
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"read_username_from_defaults"];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kReadUsernameFromDefaultsPreference];
         
         [[[aViewController tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
         

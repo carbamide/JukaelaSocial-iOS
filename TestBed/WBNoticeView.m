@@ -269,13 +269,13 @@
     self.titleLabel.textColor = [UIColor whiteColor];
     self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     self.titleLabel.shadowColor = [UIColor blackColor];
-    self.titleLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
+    self.titleLabel.font = [UIFont fontWithName:kHelveticaLight size:14];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.text = title;
     
     // Make the message label
     self.messageLabel = [[UILabel alloc]initWithFrame:CGRectMake(55.0, 10.0 + 10.0, viewWidth - 70.0, messageLineHeight)];
-    self.messageLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:13];
+    self.messageLabel.font = [UIFont fontWithName:kHelveticaLight size:13];
     self.messageLabel.textColor = [UIColor colorWithRed:239.0/255.0 green:167.0/255.0 blue:163.0/255.0 alpha:1.0];
     self.messageLabel.backgroundColor = [UIColor clearColor];
     self.messageLabel.text = message;
@@ -362,7 +362,7 @@
     self.titleLabel.textColor = [UIColor whiteColor];
     self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     self.titleLabel.shadowColor = [UIColor blackColor];
-    self.titleLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
+    self.titleLabel.font = [UIFont fontWithName:kHelveticaLight size:14];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.text = title;
     
@@ -429,7 +429,7 @@
     self.titleLabel.textColor = [UIColor blackColor];
     self.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     self.titleLabel.shadowColor = [UIColor whiteColor];
-    self.titleLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:12];
+    self.titleLabel.font = [UIFont fontWithName:kHelveticaLight size:12];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.text = title;
     [self.titleLabel sizeToFit];

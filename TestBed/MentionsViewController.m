@@ -26,6 +26,7 @@
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) YIFullScreenScroll *fullScreenDelegate;
+@property (strong, nonatomic) NSCache *externalImageCache;
 
 @end
 
@@ -46,24 +47,26 @@
 
     [kAppDelegate setCurrentViewController:self];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:@"double_tap" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:@"send_to_user" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(repostSwitchToSelectedUser:) name:@"repost_send_to_user" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:kDoubleTapNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:kSendToUserNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(repostSwitchToSelectedUser:) name:kRepostSendToUserNotifiation object:nil];
     
     [super viewDidAppear:animated];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"double_tap" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"send_to_user" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"repost_send_to_user" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kDoubleTapNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSendToUserNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kRepostSendToUserNotifiation object:nil];
     
     [super viewDidDisappear:animated];
 }
 
 - (void)viewDidLoad
 {
+    [self setExternalImageCache:[[NSCache alloc] init]];
+    
     _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
     
     [self refreshTableInformation];
@@ -91,7 +94,7 @@
 
 -(void)composePost:(UIBarButtonItem *)sender
 {
-    [self performSegueWithIdentifier:@"ShowPostView" sender:self];
+    [self performSegueWithIdentifier:kShowPostView sender:self];
 }
 
 -(void)setupNotifications
@@ -99,7 +102,7 @@
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     
-    [defaultCenter addObserverForName:@"refresh_your_tables" object:nil queue:mainQueue usingBlock:^(NSNotification *notification) {
+    [defaultCenter addObserverForName:kRefreshYourTablesNotification object:nil queue:mainQueue usingBlock:^(NSNotification *notification) {
         [self refreshTableInformation];
     }];
 }
@@ -118,13 +121,13 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *contentText = [self mentions][[indexPath row]][@"content"];
+    NSString *contentText = [self mentions][[indexPath row]][kContent];
     
     CGSize constraint = CGSizeMake(315, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kHelveticaLight size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
-    if ([self mentions][[indexPath row]][@"repost_user_id"] && [self mentions][[indexPath row]][@"repost_user_id"] != [NSNull null]) {
+    if ([self mentions][[indexPath row]][kRepostUserID] && [self mentions][[indexPath row]][kRepostUserID] != [NSNull null]) {
         return contentSize.height + 50 + 10 + 20;
     }
     else {
@@ -149,12 +152,12 @@
     
     id cell = nil;
     
-    if ([self mentions][[indexPath row]][@"image_url"] && [self mentions][[indexPath row]][@"image_url"] != [NSNull null]) {
+    if ([self mentions][[indexPath row]][kImageURL] && [self mentions][[indexPath row]][kImageURL] != [NSNull null]) {
         cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
         
         if (cell) {
-            if ([[kAppDelegate externalImageCache] objectForKey:indexPath]) {
-                [[cell externalImage] setImage:[[kAppDelegate externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+            if ([[self externalImageCache] objectForKey:indexPath]) {
+                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
             }
             else {
                 [[cell externalImage] setImage:nil];
@@ -176,13 +179,13 @@
         }
     }
     
-    if ([self mentions][[indexPath row]][@"image_url"] && [self mentions][[indexPath row]][@"image_url"] != [NSNull null]) {
+    if ([self mentions][[indexPath row]][kImageURL] && [self mentions][[indexPath row]][kImageURL] != [NSNull null]) {
         if (![[cell externalImage] image]) {
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
             objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
             
             dispatch_async(queue, ^{
-                NSMutableString *tempString = [NSMutableString stringWithString:[self mentions][[indexPath row]][@"image_url"]];
+                NSMutableString *tempString = [NSMutableString stringWithString:[self mentions][[indexPath row]][kImageURL]];
                 
                 [tempString insertString:@"s" atIndex:24];
                 
@@ -195,11 +198,11 @@
         }
     }
     
-    [[cell contentText] setFontName:@"Helvetica-Light"];
+    [[cell contentText] setFontName:kHelveticaLight];
     [[cell contentText] setFontSize:17];
     
-    if ([self mentions][[indexPath row]][@"content"]) {
-        [[cell contentText] setText:[self mentions][[indexPath row]][@"content"]];
+    if ([self mentions][[indexPath row]][kContent]) {
+        [[cell contentText] setText:[self mentions][[indexPath row]][kContent]];
     }
     else {
         [[cell contentText] setText:@"Loading..."];
@@ -213,7 +216,7 @@
         [[cell usernameLabel] setText:[self mentions][[indexPath row]][@"sender_username"]];
     }
     
-    NSDate *tempDate = [NSDate dateWithISO8601String:[self mentions][[indexPath row]][@"created_at"] withFormatter:[self dateFormatter]];
+    NSDate *tempDate = [NSDate dateWithISO8601String:[self mentions][[indexPath row]][kCreationDate] withFormatter:[self dateFormatter]];
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
@@ -288,14 +291,14 @@
 {
     [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
 
-    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
     
     [self setTempIndexPath:indexPathOfTappedRow];
     
     BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
     
     [cellActionSheet addButtonWithTitle:@"Reply" block:^{
-        [self performSegueWithIdentifier:@"ShowReplyView" sender:self];
+        [self performSegueWithIdentifier:kShowReplyView sender:self];
         
     }];
     
@@ -307,7 +310,7 @@
             
             [tempCell disableCell];
             
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][@"id"]]];
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][kID]]];
             
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
             
@@ -336,14 +339,14 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"ShowReplyView"]) {
+    if ([[segue identifier] isEqualToString:kShowReplyView]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
         [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self mentions][[[self tempIndexPath] row]][@"sender_username"]]];
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }
-    else if ([[segue identifier] isEqualToString:@"ShowUser"]) {
+    else if ([[segue identifier] isEqualToString:kShowUser]) {
         UINavigationController *navigationController = [segue destinationViewController];
         ShowUserViewController *viewController = (ShowUserViewController *)[navigationController topViewController];
         
@@ -389,7 +392,7 @@
         
         [[self activityIndicator] stopAnimating];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"enable_cell" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
     }];
     
     
@@ -415,7 +418,7 @@
     
     [progressHUD show:YES];
     
-    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -438,7 +441,7 @@
         
         [progressHUD hide:YES];
         
-        [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+        [self performSegueWithIdentifier:kShowUser sender:nil];
     }];
 }
 
@@ -453,11 +456,11 @@
     
     [progressHUD show:YES];
     
-    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][@"repost_user_id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][kRepostUserID]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -476,7 +479,7 @@
         
         [progressHUD hide:YES];
         
-        [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+        [self performSegueWithIdentifier:kShowUser sender:nil];
     }];
 }
 

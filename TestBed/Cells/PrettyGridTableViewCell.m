@@ -80,37 +80,7 @@
 
 - (UIFont *) fontFromLabel:(UILabel *)label 
 {
-    UIFont *font = label.font;
-    
-    
-    /* If the font hasn't been changed, the first time it's accessed the font
-     size isn't set, so we have to "guess" it. */
-    if (!font.pointSize) 
-    {
-        if (label == self.cell.textLabel) 
-        {
-            font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize]];
-        }
-        
-        else if (label == self.cell.detailTextLabel) 
-        {
-            float fontSize = 0;
-            switch (self.cell->_style) 
-            {
-                case UITableViewCellStyleSubtitle:
-                    fontSize = 15;
-                    break;
-                case UITableViewCellStyleValue1:
-                case UITableViewCellStyleValue2:
-                    fontSize = [UIFont labelFontSize];
-                default:
-                    break;
-            }
-            font = [UIFont systemFontOfSize:fontSize];
-        }
-    }
-    
-    return [UIFont fontWithName:@"Helvetica-Light" size:16];
+   return [UIFont fontWithName:kHelveticaLight size:16];
 }
 
 - (CGSize) drawText:(NSString *)text basedOnLabel:(UILabel *)label inRect:(CGRect)rect showAsSelected:(BOOL)selected 

@@ -51,11 +51,11 @@
     [self setPasswordTextField:[[UITextField alloc] init]];
     [self setPasswordConfirmTextField:[[UITextField alloc] init]];
     
-    [[self nameTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
-    [[self usernameTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
-    [[self emailTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
-    [[self passwordTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
-    [[self passwordConfirmTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+    [[self nameTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[self usernameTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[self emailTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[self passwordTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[self passwordConfirmTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
     
     [super viewDidLoad];
 }
@@ -93,8 +93,8 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users.json", kSocialURL]];
     
-    NSString *requestString = [NSString stringWithFormat:@"{\"user\": { \"name\":\"%@\",\"username\":\"%@\", \"email\":\"%@\", \"password\":\"%@\", \"password_confirmation\":\"%@\"}}", [[self nameTextField] text], [[self usernameTextField] text], [[self emailTextField] text], [[self passwordTextField] text], [[self passwordConfirmTextField] text]];
-    
+    NSString *requestString = [RequestFactory createNewUserRequestWithName:[[self nameTextField] text] username:[[self usernameTextField] text] email:[[self emailTextField] text] password:[[self passwordTextField] text] passwordConfirmation:[[self passwordConfirmTextField] text]];
+        
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -111,7 +111,7 @@
             if ([[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil] isKindOfClass:[NSDictionary class]]) {
                 NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
 
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"new_user" object:nil userInfo:@{@"email" : [[self emailTextField] text]}];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"new_user" object:nil userInfo:@{kEmail : [[self emailTextField] text]}];
                 
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
@@ -167,7 +167,8 @@
     }
     
     [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
-    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+    
+    [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:12]];
     
     if ([indexPath row] == 0) {
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];

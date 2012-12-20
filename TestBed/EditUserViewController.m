@@ -12,6 +12,7 @@
 @interface EditUserViewController ()
 -(NSArray *)fieldsArray;
 @property (strong, nonatomic) NSDictionary *tempDict;
+@property (strong, nonatomic) UISwitch *emailSwitch;
 @end
 
 @implementation EditUserViewController
@@ -48,16 +49,16 @@
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
-            if ([self tempDict][@"name"] && [self tempDict][@"name"] != [NSNull null]) {
-                [[self nameTextField] setText:[self tempDict][@"name"]];
+            if ([self tempDict][kName] && [self tempDict][kName] != [NSNull null]) {
+                [[self nameTextField] setText:[self tempDict][kName]];
             }
             
-            if ([self tempDict][@"username"] && [self tempDict][@"username"] != [NSNull null]) {
-                [[self usernameTextField] setText:[self tempDict][@"username"]];
+            if ([self tempDict][kUsername] && [self tempDict][kUsername] != [NSNull null]) {
+                [[self usernameTextField] setText:[self tempDict][kUsername]];
             }
             
-            if ([self tempDict][@"email"] && [self tempDict][@"email"] != [NSNull null]) {
-                [[self emailTextField] setText:[self tempDict][@"email"]];
+            if ([self tempDict][kEmail] && [self tempDict][kEmail] != [NSNull null]) {
+                [[self emailTextField] setText:[self tempDict][kEmail]];
             }
             
             if ([self tempDict][@"profile"] && [self tempDict][@"profile"] != [NSNull null]) {
@@ -103,13 +104,13 @@
     [self setPasswordConfirmTextField:[[UITextField alloc] init]];
     [self setProfileTextView:[[UITextView alloc] init]];
     
-    [[self nameTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
-    [[self usernameTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
-    [[self emailTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
-    [[self passwordTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
-    [[self passwordConfirmTextField] setFont:[UIFont fontWithName:@"Helvetica-Light" size:16]];
+    [[self nameTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[self usernameTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[self emailTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[self passwordTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[self passwordConfirmTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
 
-    [[self profileTextView] setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+    [[self profileTextView] setFont:[UIFont fontWithName:kHelveticaLight size:14]];
     
     [super viewDidLoad];
 }
@@ -149,7 +150,7 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@", kSocialURL, [kAppDelegate userID]]];
     
-    NSString *requestString = [NSString stringWithFormat:@"{\"user\": { \"name\":\"%@\",\"username\":\"%@\", \"email\":\"%@\", \"password\":\"%@\", \"password_confirmation\":\"%@\", \"profile\":\"%@\"}}", [[self nameTextField] text], [[self usernameTextField] text], [[self emailTextField] text], [[self passwordTextField] text], [[self passwordConfirmTextField] text], [[self profileTextView] text]];
+    NSString *requestString = [RequestFactory editUserRequestWithName:[[self nameTextField] text] username:[[self usernameTextField] text] email:[[self emailTextField] text] password:[[self passwordTextField] text] passwordConfirmation:[[self passwordConfirmTextField] text] profile:[[self profileTextView] text] sendEmail:[NSNumber numberWithBool:[[self emailSwitch] isOn]]];
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
@@ -209,7 +210,7 @@
     
     [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
     
-    [[cell textLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+    [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:12]];
     
     if ([indexPath row] == 0) {
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
@@ -264,6 +265,14 @@
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
+        [self setEmailSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
+    
+        [cell setAccessoryView:[self emailSwitch]];
+    }
+    if ([indexPath row] == 6) {
+        [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
         [[self profileTextView] setFrame:CGRectMake(110, 10, 195, 100)];
         [[self profileTextView] setAutocapitalizationType:UITextAutocorrectionTypeDefault];
         [[self profileTextView] setBackgroundColor:[UIColor clearColor]];
@@ -277,7 +286,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath row] == 5) {
+    if ([indexPath row] == 6) {
         return 120;
     }
     else {
@@ -294,7 +303,7 @@
 
 -(NSArray *)fieldsArray
 {
-    NSArray *tempArray = @[@"Name", @"Username", @"Email", @"Password", @"Confirm", @"Profile"];
+    NSArray *tempArray = @[@"Name", @"Username", @"Email", @"Password", @"Confirm", @"Email Alerts", @"Profile"];
     
     return tempArray;
 }

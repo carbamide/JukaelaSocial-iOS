@@ -45,19 +45,19 @@
     [YISplashScreen show];
     
     [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                          [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                                          [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
                                                           nil] forState:UIControlStateNormal];
     
     [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                          [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                                          [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
                                                           nil] forState:UIControlStateDisabled];
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                                       [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
                                                        nil] forState:UIControlStateNormal];
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       [UIFont fontWithName:@"Helvetica-Light" size:0.0], UITextAttributeFont,
+                                                       [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
                                                        nil] forState:UIControlStateSelected];
     
     
@@ -73,12 +73,10 @@
     
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@NO: @"post_to_twitter",
-     @NO: @"post_to_facebook",
-     @NO: @"confirm_post"}];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@NO: kPostToTwitterPreference,
+     @NO: kPostToFacebookPreference}];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
-                                                                           UIRemoteNotificationTypeBadge |
                                                                            UIRemoteNotificationTypeSound)];
     
     Method customOpenUrl = class_getInstanceMethod([UIApplication class], @selector(customOpenURL:));
@@ -86,20 +84,18 @@
     
     method_exchangeImplementations(openUrl, customOpenUrl);
     
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"read_username_from_defaults"]) {
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference]) {
         [YISplashScreen hide];
         
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
     }
-    
-    [self setExternalImageCache:[[NSCache alloc] init]];
-    
+        
     if (tempImage) {
         [YISplashScreen hide];
         
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"post_image" object:nil userInfo:@{@"image" : tempImage}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kPostImage object:nil userInfo:@{kImageNotification : tempImage}];
     }
     
     return YES;
@@ -107,10 +103,10 @@
 
 -(void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    if (![[NSUserDefaults standardUserDefaults] valueForKey:@"deviceToken"]) {
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:kDeviceTokenPreference]) {
         NSString *deviceTokenString = [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<"withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
         
-        [[NSUserDefaults standardUserDefaults] setValue:deviceTokenString forKey:@"deviceToken"];
+        [[NSUserDefaults standardUserDefaults] setValue:deviceTokenString forKey:kDeviceTokenPreference];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
@@ -131,7 +127,7 @@
     NSString *alertString = [NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]];
     
     if ([application applicationState] == UIApplicationStateActive) {
-        BlockAlertView *pushAlert = [[BlockAlertView alloc] initWithTitle:@"Jukaela Social" message:alertString];
+        BlockAlertView *pushAlert = [[BlockAlertView alloc] initWithTitle:kJukaelaSocialServiceName message:alertString];
         
         [pushAlert setCancelButtonWithTitle:@"OK" block:nil];
         
@@ -172,7 +168,7 @@
     
     UIImage *tempImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"post_image" object:nil userInfo:@{@"image" : tempImage}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kPostImage object:nil userInfo:@{kImageNotification : tempImage}];
     
     return YES;
 }

@@ -63,11 +63,11 @@
     
     [progressHUD show:YES];
     
-    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][@"indexPath"];
+    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][kID]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -86,7 +86,7 @@
         
         [progressHUD hide:YES];
         
-        [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+        [self performSegueWithIdentifier:kShowUser sender:nil];
     }];
 }
 
@@ -124,7 +124,7 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"ShowUser"]) {
+    if ([[segue identifier] isEqualToString:kShowUser]) {
         ShowUserViewController *viewController = [segue destinationViewController];
         
         [viewController setUserDict:_tempDict];
@@ -150,13 +150,13 @@
 {
     UsersCollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"UsersCell" forIndexPath:indexPath];
     
-    [[cell textLabel] setText:[self usersArray][[indexPath row]][@"name"]];
+    [[cell textLabel] setText:[self usersArray][[indexPath row]][kName]];
     
-    if ([self usersArray][[indexPath row]][@"username"] && [self usersArray][[indexPath row]][@"username"] != [NSNull null]) {
-        [[cell usernameLabel] setText:[self usersArray][[indexPath row]][@"username"]];
+    if ([self usersArray][[indexPath row]][kUsername] && [self usersArray][[indexPath row]][kUsername] != [NSNull null]) {
+        [[cell usernameLabel] setText:[self usersArray][[indexPath row]][kUsername]];
     }
         
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"id"]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][kID]]]]];
     
     if (image) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -168,7 +168,7 @@
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
         dispatch_async(queue, ^{
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][@"email"]] withSize:65]]];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][kEmail]] withSize:65]]];
             
 #if (TARGET_IPHONE_SIMULATOR)
             image = [JEImages normalize:image];
@@ -179,7 +179,7 @@
                 [[cell imageView] setImage:resizedImage];
                 [cell setNeedsDisplay];
                 
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self usersArray][[indexPath row]][@"id"]]];
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self usersArray][[indexPath row]][kID]]];
             });
         });
     }
@@ -200,7 +200,7 @@
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPath row]][@"id"]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPath row]][kID]]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
@@ -219,7 +219,7 @@
         
         [progressHUD hide:YES];
         
-        [self performSegueWithIdentifier:@"ShowUser" sender:nil];
+        [self performSegueWithIdentifier:kShowUser sender:nil];
     }];
 }
 

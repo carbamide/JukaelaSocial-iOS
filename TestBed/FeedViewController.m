@@ -21,7 +21,6 @@
 #import "PostViewController.h"
 #import "ShareObject.h"
 #import "ShowUserViewController.h"
-#import "SORelativeDateTransformer.h"
 #import "SVModalWebViewController.h"
 #import "WBErrorNoticeView.h"
 #import "WBSuccessNoticeView.h"
@@ -35,7 +34,6 @@
 @interface FeedViewController ()
 @property (strong, nonatomic) NSString *stringToPost;
 @property (nonatomic) enum ChangeType currentChangeType;
-@property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @property (nonatomic) BOOL fbSuccess;
 @property (nonatomic) BOOL twitterSuccess;
 @property (nonatomic) BOOL jukaelaSuccess;
@@ -103,9 +101,7 @@
     [self setDocumentsFolder:[Helpers documentsPath]];
     
     [self setupNotifications];
-    
-    [self setDateFormatter:[[NSDateFormatter alloc] init]];
-    
+        
     [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
     UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
@@ -121,9 +117,7 @@
     [[[[self navigationItem] rightBarButtonItem] valueForKey:@"view"] addGestureRecognizer:gesture];
     
     [self setCurrentChangeType:-1];
-    
-    [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
-    
+        
     if ([self loadedDirectly] && [[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         
@@ -625,7 +619,7 @@
     
     CGSize constraint = CGSizeMake(300, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kHelveticaLight size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     if ([self theFeed][[indexPath row]][kRepostUserID] && [self theFeed][[indexPath row]][kRepostUserID] != [NSNull null]) {
         return contentSize.height + 50 + 10 + 20;
@@ -708,7 +702,7 @@
         }
     }
     
-    [[cell contentText] setFontName:kHelveticaLight];
+    [[cell contentText] setFontName:kFontPreference];
     [[cell contentText] setFontSize:17];
     
     if ([self theFeed][[indexPath row]][kContent]) {
@@ -740,16 +734,16 @@
         CGSize contentSize;
         
         if ([self theFeed][[indexPath row]][kImageURL] && [self theFeed][[indexPath row]][kImageURL] != [NSNull null]) {
-            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kHelveticaLight size:17]
+            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kFontPreference size:17]
                                                                   constrainedToSize:CGSizeMake(185 - (7.5 * 2), 20000)
                                                                       lineBreakMode:NSLineBreakByWordWrapping];
         }
         else {
-            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kHelveticaLight size:17]
+            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kFontPreference size:17]
                                                                   constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                       lineBreakMode:NSLineBreakByWordWrapping];
         }
-        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont fontWithName:kHelveticaLight size:14]
+        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont fontWithName:kFontPreference size:14]
                                                                constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                    lineBreakMode:NSLineBreakByWordWrapping];
         
@@ -763,9 +757,7 @@
         [[cell repostedNameLabel] setUserInteractionEnabled:NO];
     }
     
-    NSDate *tempDate = [NSDate dateWithISO8601String:[self theFeed][[indexPath row]][kCreationDate] withFormatter:[self dateFormatter]];
-    
-    [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
+    [cell setDate:[self theFeed][[indexPath row]][kCreationDate]];
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsFolder] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self theFeed][[indexPath row]][kUserID]]]]];
     

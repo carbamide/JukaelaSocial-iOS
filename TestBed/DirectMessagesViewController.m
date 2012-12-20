@@ -112,7 +112,7 @@
     
     CGSize constraint = CGSizeMake(300, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kHelveticaLight size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     return contentSize.height + 50 + 10;
 }
@@ -134,7 +134,7 @@
         [cell setBackgroundView:[[CellBackground alloc] init]];
     }
     
-    [[cell contentText] setFontName:kHelveticaLight];
+    [[cell contentText] setFontName:kFontPreference];
     [[cell contentText] setFontSize:17];
     
     if ([self messagesArray][[indexPath row]][kContent] && [self messagesArray][[indexPath row]][kContent] != [NSNull null]) {

@@ -25,7 +25,9 @@
 - (BOOL)customOpenURL:(NSURL*)url
 {
     SEL selector = @selector(handleURL:);
+    
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
     if ([appDelegate currentViewController]) {
         [[appDelegate currentViewController] performSelectorOnMainThread:selector withObject:url waitUntilDone:NO];
         return YES;
@@ -44,22 +46,10 @@
 {
     [YISplashScreen show];
     
-    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                          [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
-                                                          nil] forState:UIControlStateNormal];
-    
-    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                          [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
-                                                          nil] forState:UIControlStateDisabled];
-    
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
-                                                       nil] forState:UIControlStateNormal];
-    
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
-                                                       nil] forState:UIControlStateSelected];
-    
+    [self setDateFormatter:[[NSDateFormatter alloc] init]];
+    [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
+
+    [self setupAppearance];
     
     NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
     
@@ -70,9 +60,7 @@
     [[TMImgurUploader sharedInstance] setAPIKey:kImgurAPIKey];
     
     [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
-    
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    
+        
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{@NO: kPostToTwitterPreference,
      @NO: kPostToFacebookPreference}];
     
@@ -171,6 +159,25 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kPostImage object:nil userInfo:@{kImageNotification : tempImage}];
     
     return YES;
+}
+
+- (void)setupAppearance
+{
+    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                          [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
+                                                          nil] forState:UIControlStateNormal];
+    
+    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                          [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
+                                                          nil] forState:UIControlStateDisabled];
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                       [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
+                                                       nil] forState:UIControlStateNormal];
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                       [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
+                                                       nil] forState:UIControlStateSelected];
 }
 
 @end

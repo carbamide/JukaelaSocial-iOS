@@ -220,7 +220,7 @@
         
     }
     
-    [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:14]];
+    [[cell textLabel] setFont:[UIFont fontWithName:kFontPreference size:14]];
     
     [[cell textLabel] setText:[[self autocompleteUsernames] objectAtIndex:[indexPath row]]];
     

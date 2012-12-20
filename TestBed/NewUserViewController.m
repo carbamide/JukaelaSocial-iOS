@@ -51,11 +51,11 @@
     [self setPasswordTextField:[[UITextField alloc] init]];
     [self setPasswordConfirmTextField:[[UITextField alloc] init]];
     
-    [[self nameTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
-    [[self usernameTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
-    [[self emailTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
-    [[self passwordTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
-    [[self passwordConfirmTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[self nameTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
+    [[self usernameTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
+    [[self emailTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
+    [[self passwordTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
+    [[self passwordConfirmTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
     
     [super viewDidLoad];
 }
@@ -168,7 +168,7 @@
     
     [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
     
-    [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:12]];
+    [[cell textLabel] setFont:[UIFont fontWithName:kFontPreference size:12]];
     
     if ([indexPath row] == 0) {
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];

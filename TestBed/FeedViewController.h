@@ -24,7 +24,6 @@ NS_ENUM(NSInteger, ChangeType) {
 @property (strong, nonatomic) NSMutableArray *theFeed;
 @property (strong, nonatomic) UITextView *textView;
 @property (strong, nonatomic) NSMutableDictionary *nameDict;
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic) BOOL loadedDirectly;

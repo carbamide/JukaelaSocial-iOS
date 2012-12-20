@@ -25,7 +25,6 @@ NS_ENUM(NSInteger, SocialTypes) {
 
 @property (strong, nonatomic) UISwitch *facebookSwitch;
 @property (strong, nonatomic) UISwitch *twitterSwitch;
-@property (strong, nonatomic) UISwitch *badgeSwitch;
 @end
 
 @implementation SettingsViewController
@@ -110,7 +109,7 @@ NS_ENUM(NSInteger, SocialTypes) {
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 6;
+    return 5;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -129,9 +128,6 @@ NS_ENUM(NSInteger, SocialTypes) {
             return 1;
             break;
         case 4:
-            return 1;
-            break;
-        case 5:
             return 1;
             break;
         default:
@@ -207,28 +203,7 @@ NS_ENUM(NSInteger, SocialTypes) {
             [[cell textLabel] setText:@"Clear Image Cache"];
         }
     }
-    else if ([indexPath section] == 4) {
-        [[cell textLabel] setText:@"App Badge"];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
-        [self setBadgeSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
-        [[self badgeSwitch] setTag:BadgeType];
-        
-        UIRemoteNotificationType notificationTypes = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
-        
-        if (notificationTypes == (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)) {
-            [[self badgeSwitch] setOn:YES];
-        }
-        else {
-            [[self badgeSwitch] setOn:NO];
-        }
-        
-        [cell setAccessoryView:[self badgeSwitch]];
-        
-        [[self badgeSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-        
-    }
-    else if ([indexPath section] == 5) {
+     else if ([indexPath section] == 4) {
         if ([indexPath row] == 0) {
             [[cell textLabel] setText:@"Logout"];
         }
@@ -308,19 +283,6 @@ NS_ENUM(NSInteger, SocialTypes) {
             }
         }
             break;
-        case 2:
-        {
-            if ([sender isOn]) {
-                [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
-                                                                                       UIRemoteNotificationTypeBadge |
-                                                                                       UIRemoteNotificationTypeSound)];
-            }
-            else {
-                [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
-                                                                                       UIRemoteNotificationTypeSound)];
-            }
-        }
-            break;
         default:
             break;
     }
@@ -350,8 +312,6 @@ NS_ENUM(NSInteger, SocialTypes) {
             [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
             break;
         case 4:
-            break;
-        case 5:
             [self logOut:nil];
             
             [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];

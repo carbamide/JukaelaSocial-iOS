@@ -168,9 +168,7 @@
     NSString *stringToSendAsContent = [[NSString alloc] initWithData:tempData encoding:NSASCIIStringEncoding];
     
     NSString *requestString = [RequestFactory postRequestWithContent:stringToSendAsContent userID:[kAppDelegate userID] imageURL:nil];
-    
-    NSLog(@"%@\n%@", [url absoluteString], requestString);
-    
+        
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
@@ -179,7 +177,7 @@
         if (data) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kJukaelaSuccessfulNotification object:nil];
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             

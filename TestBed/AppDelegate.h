@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SORelativeDateTransformer.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -14,6 +15,9 @@
 @property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSString *userEmail;
 @property (strong, nonatomic) NSString *userUsername;
+
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 
 @property (nonatomic, assign) id currentViewController;
 

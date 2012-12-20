@@ -64,6 +64,10 @@
             if ([self tempDict][@"profile"] && [self tempDict][@"profile"] != [NSNull null]) {
                 [[self profileTextView] setText:[self tempDict][@"profile"]];
             }
+            
+            if ([self tempDict][@"send_email"] && [self tempDict][@"send_email"] != [NSNull null]) {
+                [[self emailSwitch] setOn:[[self tempDict][@"send_email"] boolValue]];
+            }
         }
         else {
             [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
@@ -104,13 +108,13 @@
     [self setPasswordConfirmTextField:[[UITextField alloc] init]];
     [self setProfileTextView:[[UITextView alloc] init]];
     
-    [[self nameTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
-    [[self usernameTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
-    [[self emailTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
-    [[self passwordTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
-    [[self passwordConfirmTextField] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[self nameTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
+    [[self usernameTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
+    [[self emailTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
+    [[self passwordTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
+    [[self passwordConfirmTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
 
-    [[self profileTextView] setFont:[UIFont fontWithName:kHelveticaLight size:14]];
+    [[self profileTextView] setFont:[UIFont fontWithName:kFontPreference size:14]];
     
     [super viewDidLoad];
 }
@@ -210,7 +214,7 @@
     
     [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
     
-    [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:12]];
+    [[cell textLabel] setFont:[UIFont fontWithName:kFontPreference size:12]];
     
     if ([indexPath row] == 0) {
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];

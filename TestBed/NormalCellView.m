@@ -25,6 +25,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 @synthesize repostedNameLabel;
 @synthesize repostTapGesture;
 @synthesize postDate;
+@synthesize dateTimer;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -40,10 +41,10 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         [[self contentView] addSubview:contentText];
         
-        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 9, 140, 15)];
+        nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 9, 140, 16)];
         
         [nameLabel setTextAlignment:NSTextAlignmentLeft];
-        [nameLabel setFont:[UIFont fontWithName:kHelveticaLight size:18]];
+        [nameLabel setFont:[UIFont fontWithName:kFontPreference size:18]];
         [nameLabel setBackgroundColor:[UIColor clearColor]];
         [nameLabel setTag:8];
         
@@ -51,7 +52,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 5, 140, 15)];
         [dateLabel setTextAlignment:NSTextAlignmentRight];
-        [dateLabel setFont:[UIFont fontWithName:kHelveticaLight size:14]];
+        [dateLabel setFont:[UIFont fontWithName:kFontPreference size:14]];
         [dateLabel setBackgroundColor:[UIColor clearColor]];
         [dateLabel setTag:8];
         [dateLabel setTextColor:[UIColor colorWithWhite:0.5 alpha:1.0]];
@@ -60,7 +61,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         
         usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 30, 140, 15)];
         [usernameLabel setTextAlignment:NSTextAlignmentLeft];
-        [usernameLabel setFont:[UIFont fontWithName:kHelveticaLight size:14]];
+        [usernameLabel setFont:[UIFont fontWithName:kFontPreference size:14]];
         [usernameLabel setBackgroundColor:[UIColor clearColor]];
         [usernameLabel setTextColor:[UIColor colorWithWhite:0.5 alpha:1.0]];
         [usernameLabel setTag:8];
@@ -71,7 +72,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         repostedNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, 228, 20)];
         
         [repostedNameLabel setTextAlignment:NSTextAlignmentLeft];
-        [repostedNameLabel setFont:[UIFont fontWithName:kHelveticaLight size:12]];
+        [repostedNameLabel setFont:[UIFont fontWithName:kFontPreference size:12]];
         [repostedNameLabel setTextColor:[UIColor darkGrayColor]];
         [repostedNameLabel setBackgroundColor:[UIColor clearColor]];
         [repostedNameLabel setTag:8];
@@ -176,6 +177,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 	
     [[self imageView] setImage:nil];
     [[self repostedNameLabel] setText:nil];
+    [[self dateTimer] invalidate];
     
 	[super prepareForReuse];
 }
@@ -261,4 +263,25 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 {
     
 }
+
+-(void)setDate:(NSString *)date
+{
+    postDate = date;
+    
+    if (![dateTimer isValid]) {
+        dateTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(updateDateLabel) userInfo:nil repeats:YES];
+    }
+    
+    NSDate *tempDate = [NSDate dateWithISO8601String:self.postDate withFormatter:[kAppDelegate dateFormatter]];
+    
+    [[self dateLabel] setText:[[kAppDelegate dateTransformer] transformedValue:tempDate]];
+}
+
+-(void)updateDateLabel
+{
+    NSDate *tempDate = [NSDate dateWithISO8601String:self.postDate withFormatter:[kAppDelegate dateFormatter]];
+    
+    [[self dateLabel] setText:[[kAppDelegate dateTransformer] transformedValue:tempDate]];
+}
+
 @end

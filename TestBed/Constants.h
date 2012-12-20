@@ -69,6 +69,7 @@ static char *const kIndexPathAssociationKey = "Jukaela_index_path";
 #define kImageNotification @"image"
 #define kIndexPath @"indexPath"
 #define kEnableCellNotification @"enable_cell"
+#define kJukaelaSuccessfulNotification @"jukaela_successful"
 
 #define kShowPostView @"ShowPostView"
 #define kShowUser @"ShowUser"
@@ -87,6 +88,7 @@ static char *const kIndexPathAssociationKey = "Jukaela_index_path";
 #define kPostToTwitterPreference @"post_to_twitter"
 #define kPostToFacebookPreference @"post_to_facebook"
 #define kJukaelaSocialServiceName @"Jukaela Social"
+#define kFontPreference [[NSUserDefaults standardUserDefaults] valueForKey:@"font_preference"] ? [[NSUserDefaults standardUserDefaults] valueForKey:@"font_preference"] : kHelveticaLight
 
 #define jMIN(a,b) (((a)<(b))?(a):(b))
 #define jMAX(a,b) (((a)>(b))?(a):(b))

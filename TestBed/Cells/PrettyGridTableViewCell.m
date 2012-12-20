@@ -80,7 +80,7 @@
 
 - (UIFont *) fontFromLabel:(UILabel *)label 
 {
-   return [UIFont fontWithName:kHelveticaLight size:16];
+   return [UIFont fontWithName:kFontPreference size:16];
 }
 
 - (CGSize) drawText:(NSString *)text basedOnLabel:(UILabel *)label inRect:(CGRect)rect showAsSelected:(BOOL)selected 

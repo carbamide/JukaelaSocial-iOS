@@ -87,9 +87,23 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>4</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>ProximaNova-Light.otf</string>
+		<string>ProximaNova-Reg.otf</string>
+		<string>Museo_Slab_300.otf</string>
+		<string>Museo_Slab_500.otf</string>
+		<string>joystix monospace.otf</string>
+		<string>ambitsek.otf</string>
+		<string>Signika-Regular.otf</string>
+		<string>Signika-Semibold.otf</string>
+		<string></string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard</string>
 	<key>UIRequiredDeviceCapabilities</key>

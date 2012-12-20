@@ -414,7 +414,7 @@
             [self dismissViewControllerAnimated:YES completion:^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kJukaelaSuccessfulNotification object:nil];
                 
                 [kAppDelegate setOnlyToJukaela:NO];
                 [kAppDelegate setOnlyToFacebook:NO];
@@ -534,7 +534,7 @@
         [self dismissViewControllerAnimated:YES completion:^{
             [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kJukaelaSuccessfulNotification object:nil];
             
             [kAppDelegate setOnlyToJukaela:NO];
             [kAppDelegate setOnlyToFacebook:NO];
@@ -669,7 +669,7 @@
         [self dismissViewControllerAnimated:YES completion:^{
             [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"jukaela_successful" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kJukaelaSuccessfulNotification object:nil];
             
             [kAppDelegate setOnlyToJukaela:NO];
             [kAppDelegate setOnlyToFacebook:NO];
@@ -814,7 +814,7 @@
         [cell setBackgroundView:[[CellBackground alloc] init]];
     }
     
-    [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:14]];
+    [[cell textLabel] setFont:[UIFont fontWithName:kFontPreference size:14]];
     
     [[cell textLabel] setText:[[self autocompleteUsernames] objectAtIndex:[indexPath row]]];
     
@@ -832,7 +832,10 @@
 {
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     
-    [_theTextView setText:[[_theTextView text] stringByReplacingOccurrencesOfString:[self currentWord] withString:[[selectedCell textLabel] text]]];
+    NSRange tempRange = [[_theTextView text] rangeOfString:[self currentWord] options:NSBackwardsSearch];
+    
+    [_theTextView setText:[[_theTextView text] stringByReplacingCharactersInRange:tempRange withString:[[selectedCell textLabel] text]]];
+    [_theTextView setText:[[_theTextView text] stringByReplacingOccurrencesOfString:@"@@" withString:@"@"]];
     
     [tableView setHidden:YES];
 }
@@ -889,7 +892,7 @@
     for (NSString *curString in [self usernameArray]) {
         NSRange substringRange = [curString rangeOfString:substring options:NSCaseInsensitiveSearch];
         if (substringRange.location == 0) {
-            [_autocompleteUsernames addObject:curString];
+            [_autocompleteUsernames addObject:[NSString stringWithFormat:@"@%@", curString]];
         }
     }
     

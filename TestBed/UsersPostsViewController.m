@@ -93,7 +93,7 @@
     
     CGSize constraint = CGSizeMake(275, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kHelveticaLight size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     CGFloat height;
     
@@ -171,8 +171,8 @@
         }
     }
     
-    [[cell contentText] setFontName:kHelveticaLight];
-    [[cell contentText] setFontSize:14];
+    [[cell contentText] setFontName:kFontPreference];
+    [[cell contentText] setFontSize:17];
     
     if ([self userPostArray][[indexPath row]][kContent]) {
         [[cell contentText] setText:[self userPostArray][[indexPath row]][kContent]];
@@ -190,11 +190,11 @@
     }
     
     if ([self userPostArray][[indexPath row]][kRepostUserID] && [self userPostArray][[indexPath row]][kRepostUserID] != [NSNull null]) {
-        CGSize contentSize = [[self userPostArray][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kHelveticaLight size:17]
+        CGSize contentSize = [[self userPostArray][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kFontPreference size:17]
                                                                            constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                                lineBreakMode:NSLineBreakByWordWrapping];
         
-        CGSize nameSize = [[self userPostArray][[indexPath row]][kName] sizeWithFont:[UIFont fontWithName:kHelveticaLight size:14]
+        CGSize nameSize = [[self userPostArray][[indexPath row]][kName] sizeWithFont:[UIFont fontWithName:kFontPreference size:14]
                                                                      constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                          lineBreakMode:NSLineBreakByWordWrapping];
         

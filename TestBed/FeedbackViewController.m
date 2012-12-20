@@ -27,7 +27,7 @@
 {
     [[[self feedbackTextView] layer] setCornerRadius:8];
     
-    [[self feedbackTextView] setFont:[UIFont fontWithName:kHelveticaLight size:14]];
+    [[self feedbackTextView] setFont:[UIFont fontWithName:kFontPreference size:14]];
     
     [[self feedbackTextView] becomeFirstResponder];
     

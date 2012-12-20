@@ -344,8 +344,8 @@
             [[cell textLabel] setText:[self userDict][kName]];
             [[cell detailTextLabel] setTextAlignment:NSTextAlignmentRight];
             
-            [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:18]];
-            [[cell detailTextLabel] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+            [[cell textLabel] setFont:[UIFont fontWithName:kFontPreference size:18]];
+            [[cell detailTextLabel] setFont:[UIFont fontWithName:kFontPreference size:16]];
             
             if ([self userDict][kUsername] && [self userDict][kUsername] != [NSNull null]) {
                 [[cell detailTextLabel] setText:[self userDict][kUsername]];
@@ -407,7 +407,7 @@
             
             [[cell detailTextLabel] setNumberOfLines:5];
             
-            [[cell detailTextLabel] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+            [[cell detailTextLabel] setFont:[UIFont fontWithName:kFontPreference size:16]];
             
             if ([self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ) {
                 [[cell detailTextLabel] setText:[self userDict][@"profile"]];

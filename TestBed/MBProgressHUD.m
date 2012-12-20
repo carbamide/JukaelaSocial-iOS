@@ -285,8 +285,8 @@
         self.labelText = nil;
         self.detailsLabelText = nil;
         self.opacity = 0.8f;
-        self.labelFont = [UIFont fontWithName:kHelveticaLight size:LABELFONTSIZE];
-        self.detailsLabelFont = [UIFont fontWithName:kHelveticaLight size:LABELDETAILSFONTSIZE];
+        self.labelFont = [UIFont fontWithName:kFontPreference size:LABELFONTSIZE];
+        self.detailsLabelFont = [UIFont fontWithName:kFontPreference size:LABELDETAILSFONTSIZE];
         self.xOffset = 0.0f;
         self.yOffset = 0.0f;
 		self.dimBackground = NO;

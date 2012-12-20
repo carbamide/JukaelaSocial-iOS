@@ -23,7 +23,8 @@ extern NSString * const kJKPrepareForReuseNotification;
 @property (strong, nonatomic) UILongPressGestureRecognizer *longPressGesture;
 @property (strong, nonatomic) UITapGestureRecognizer *imageTapGesture;
 @property (strong, nonatomic) UITapGestureRecognizer *repostTapGesture;
-@property (strong, nonatomic) NSDate *postDate;
+@property (strong, nonatomic, setter = setDate:) NSString *postDate;
+@property (strong, nonatomic) NSTimer *dateTimer;
 
 -(void)disableCell;
 -(void)doubleTapAction:(UIGestureRecognizer *)gesture;

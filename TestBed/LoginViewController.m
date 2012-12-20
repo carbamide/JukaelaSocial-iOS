@@ -29,8 +29,8 @@
         cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
         [cell setTableViewBackgroundColor:[tableView backgroundColor]];
-        
-        [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:18]];
+                
+        [[cell textLabel] setFont:[UIFont fontWithName:kFontPreference size:18]];
         
         if ([indexPath section] == 0) {
             
@@ -51,7 +51,7 @@
                 [_username setBackgroundColor:[UIColor clearColor]];
                 [_username setTextAlignment:NSTextAlignmentRight];
                 [_username setPlaceholder:kEmail];
-                [_username setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+                [_username setFont:[UIFont fontWithName:kFontPreference size:16]];
                 
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
                     [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:kUsername]];
@@ -82,7 +82,7 @@
                 [_password setBackgroundColor:[UIColor clearColor]];
                 [_password setTextAlignment:NSTextAlignmentRight];
                 [_password setPlaceholder:@"password"];
-                [_password setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+                [_password setFont:[UIFont fontWithName:kFontPreference size:16]];
 
                 [_password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
                 
@@ -109,7 +109,7 @@
     [_rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [_rememberUsername setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
-    [[_rememberUsername titleLabel] setFont:[UIFont fontWithName:kHelveticaLight size:16]];
+    [[_rememberUsername titleLabel] setFont:[UIFont fontWithName:kFontPreference size:16]];
     
     
     [footerView addSubview:_rememberUsername];

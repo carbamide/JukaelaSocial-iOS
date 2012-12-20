@@ -98,11 +98,10 @@
 		<string>ProximaNova-Reg.otf</string>
 		<string>Museo_Slab_300.otf</string>
 		<string>Museo_Slab_500.otf</string>
-		<string>joystix monospace.otf</string>
+		<string>joystix-monospace.otf</string>
 		<string>ambitsek.otf</string>
 		<string>Signika-Regular.otf</string>
 		<string>Signika-Semibold.otf</string>
-		<string></string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard</string>

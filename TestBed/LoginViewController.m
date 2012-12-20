@@ -183,7 +183,7 @@
     [[self progressHUD] setLabelText:@"Logging in..."];
     [[self progressHUD] setDelegate:self];
     
-    [[self view] addSubview:[self progressHUD]];
+    [[[self view] window] addSubview:[self progressHUD]];
     
     [[self progressHUD] show:YES];
     

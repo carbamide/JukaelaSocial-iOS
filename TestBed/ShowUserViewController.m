@@ -19,6 +19,9 @@
 
 @interface ShowUserViewController ()
 @property (strong, nonatomic) NSNumber *postCount;
+@property (strong, nonatomic) NSNumber *followerCount;
+@property (strong, nonatomic) NSNumber *followingCount;
+
 @end
 
 @implementation ShowUserViewController
@@ -67,9 +70,11 @@
 -(void)setupArraysDispatch
 {
     dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [self getNumberOfPosts];
+        [self getNumberOfFollowers];
+        [self getNumberOfFollowing];
         [self getFollowers];
         [self getFollowing];
-        [self getNumberOfPosts];
         [self getimFollowing];
     });
 }
@@ -317,7 +322,13 @@
         return 100;
     }
     else if ([indexPath section] == 1) {
-        return 120;
+        NSString *contentText = [self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ? [self userDict][@"profile"] : @"This user hasn't set a profile!";
+        
+        CGSize constraint = CGSizeMake(300, 20000);
+        
+        CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:16] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+
+        return contentSize.height + 20;
     }
     else {
         return 55;
@@ -338,6 +349,8 @@
     
     switch (indexPath.section) {
         case 0: {
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            
             [cell prepareForTableView:tableView indexPath:indexPath];
             
             [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
@@ -403,9 +416,11 @@
         }
             break;
         case 1: {
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+
             [cell prepareForTableView:tableView indexPath:indexPath];
             
-            [[cell detailTextLabel] setNumberOfLines:5];
+            [[cell detailTextLabel] setNumberOfLines:6];
             
             [[cell detailTextLabel] setFont:[UIFont fontWithName:kFontPreference size:16]];
             
@@ -413,7 +428,7 @@
                 [[cell detailTextLabel] setText:[self userDict][@"profile"]];
             }
             else {
-                [[cell detailTextLabel] setText:@"No user profile"];
+                [[cell detailTextLabel] setText:@"This user hasn't set a profile!"];
             }
             
             [[cell detailTextLabel] setTextColor:[UIColor blackColor]];
@@ -433,11 +448,19 @@
             
             [segmentedCell setNumberOfElements:3];
             
-            [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self following][@"user"] count]] atIndex:0];
-            [segmentedCell setDetailText:@"Following" atIndex:0];
+            if ([[self followingCount] intValue] > 0) {
+                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self followingCount]] atIndex:0];
+            }
+            else {
+                [segmentedCell setText:@"0" atIndex:0];
+            }
             
-            [segmentedCell setText:[NSString stringWithFormat:@"%i", [[self followers] count]] atIndex:1];
-            [segmentedCell setDetailText:@"Followers" atIndex:1];
+            if ([[self followerCount] intValue] > 0) {
+                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self followerCount]] atIndex:1];
+            }
+            else {
+                [segmentedCell setText:@"0" atIndex:1];
+            }
             
             if ([[self postCount] intValue] > 0) {
                 [segmentedCell setText:[NSString stringWithFormat:@"%@", [self postCount]] atIndex:2];
@@ -446,6 +469,8 @@
                 [segmentedCell setText:@"0" atIndex:2];
             }
             
+            [segmentedCell setDetailText:@"Following" atIndex:0];
+            [segmentedCell setDetailText:@"Followers" atIndex:1];
             [segmentedCell setDetailText:@"Posts" atIndex:2];
             
             [segmentedCell setActionBlock:^(NSIndexPath *indexPath, int selectedIndex) {
@@ -551,6 +576,50 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             [self setPostCount:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"count"]];
+            
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else {
+            NSLog(@"Error retrieving posts count");
+        }
+    }];
+}
+
+-(void)getNumberOfFollowers
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/number_of_followers", kSocialURL, [self userDict][kID]]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [self setFollowerCount:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"count"]];
+            
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else {
+            NSLog(@"Error retrieving posts count");
+        }
+    }];
+}
+
+-(void)getNumberOfFollowing
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/number_of_following", kSocialURL, [self userDict][kID]]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [self setFollowingCount:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"count"]];
             
             [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
         }

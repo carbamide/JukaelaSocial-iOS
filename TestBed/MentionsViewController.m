@@ -19,6 +19,7 @@
 #import "WBSuccessNoticeView.h"
 #import "NormalWithImageCellView.h"
 #import "UIImageView+Curled.h"
+#import "WBErrorNoticeView.h"
 
 @interface MentionsViewController ()
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
@@ -281,6 +282,62 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath row] == ([[self mentions] count] - 1)) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/pages/mentions.json", kSocialURL]];
+        
+        NSString *requestString = [RequestFactory feedRequestFrom:[[self mentions] count] to:[[self mentions] count] + 20];
+        
+        NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+        
+        NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+                
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+                
+                NSInteger oldTableViewCount = [[self mentions] count];
+                
+                [[self mentions] addObjectsFromArray:tempArray];
+                
+                @try {
+                    [[self tableView] beginUpdates];
+                    
+                    int tempArrayCount = [tempArray count];
+                    
+                    for (int i = 0; i < tempArrayCount; i++) {
+                        NSInteger rowInt = oldTableViewCount + i;
+                        
+                        [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:rowInt inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    }
+                    [[self tableView] endUpdates];
+                }
+                @catch (NSException *exception) {
+                    if (exception) {
+                        NSLog(@"%@", exception);
+                    }
+                    
+                    [[self tableView] reloadData];
+                }
+                @finally {
+                    [[self activityIndicator] stopAnimating];
+                    
+                    NSLog(@"Inside finally");
+                }
+            }
+            else {
+                WBErrorNoticeView *notice = [[WBErrorNoticeView alloc] initWithView:[self view] title:@"Error reloading Feed"];
+                
+                [notice show];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
+        }];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    }
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -368,10 +425,14 @@
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions.json", kSocialURL]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/pages/mentions.json", kSocialURL]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSString *requestString = [RequestFactory feedRequestFrom:0 to:20];
     
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+
+    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+        
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
             [self setMentions:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];

@@ -688,7 +688,11 @@
                 dispatch_async(queue, ^{
                     NSMutableString *tempString = [NSMutableString stringWithString:[self theFeed][[indexPath row]][kImageURL]];
                     
-                    [tempString insertString:@"s" atIndex:24];
+                    NSString *tempExtensionString = [NSString stringWithFormat:@".%@", [tempString pathExtension]];
+                                        
+                    [tempString stringByReplacingOccurrencesOfString:tempExtensionString withString:@""];
+                    [tempString appendFormat:@"s"];
+                    [tempString appendString:tempExtensionString];
                     
                     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
                     

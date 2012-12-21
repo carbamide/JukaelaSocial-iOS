@@ -1428,7 +1428,7 @@
 					"\"$(SRCROOT)/Bitly\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FEE0C520-F104-438F-A9F7-16FFD8C67918";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F07592D4-2375-48B1-8E1F-EE446EE05BA9";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1465,7 +1465,7 @@
 					"\"$(SRCROOT)/Bitly\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FEE0C520-F104-438F-A9F7-16FFD8C67918";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F07592D4-2375-48B1-8E1F-EE446EE05BA9";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

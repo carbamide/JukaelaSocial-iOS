@@ -11,7 +11,7 @@
 
 @interface UsersPostsViewController : UITableViewController <MBProgressHUDDelegate>
 
-@property (strong, nonatomic) NSArray *userPostArray;
+@property (strong, nonatomic) NSMutableArray *userPostArray;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSDictionary *tempDict;

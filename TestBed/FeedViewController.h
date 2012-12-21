@@ -28,6 +28,7 @@ NS_ENUM(NSInteger, ChangeType) {
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic) BOOL loadedDirectly;
 
-- (void)initializeActivityIndicator;
+-(void)initializeActivityIndicator;
+-(void)refreshControlRefresh:(id)sender;
 
 @end

@@ -528,7 +528,7 @@
         UsersPostsViewController *viewController = [segue destinationViewController];
         
         [viewController setUserID:[self userDict][kID]];
-        [viewController setUserPostArray:[self posts]];
+        [viewController setUserPostArray:[[self posts] mutableCopy]];
     }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -542,11 +542,11 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [self userDict][kID]]];
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    NSString *requestString = [RequestFactory feedRequestFrom:0 to:20];
     
-    [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+    
+    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
@@ -559,7 +559,6 @@
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's posts.  Please logout and log back in."];
         }
-        
     }];
 }
 
@@ -577,7 +576,7 @@
         if (data) {
             [self setPostCount:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"count"]];
             
-            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
         }
         else {
             NSLog(@"Error retrieving posts count");
@@ -599,7 +598,7 @@
         if (data) {
             [self setFollowerCount:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"count"]];
             
-            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
         }
         else {
             NSLog(@"Error retrieving posts count");
@@ -621,7 +620,7 @@
         if (data) {
             [self setFollowingCount:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"count"]];
             
-            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
         }
         else {
             NSLog(@"Error retrieving posts count");
@@ -642,8 +641,6 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-            
-            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
@@ -666,8 +663,6 @@
             [self setImFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"user"]];
             [self setRelationships:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"relationships"]];
             
-            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
-            
             [self setupToolbar];
         }
         else {
@@ -689,8 +684,6 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             
             [self setFollowers:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-            
-            [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];

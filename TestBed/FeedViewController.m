@@ -347,6 +347,8 @@
 
 -(void)switchToSelectedUser:(NSNotification *)aNotification
 {
+    [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+
     if (![self progressHUD]) {
         [self setProgressHUD:[[MBProgressHUD alloc] initWithView:[self view]]];
     }

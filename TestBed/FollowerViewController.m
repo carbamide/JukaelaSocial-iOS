@@ -49,6 +49,8 @@
 {    
     [super viewDidLoad];
     
+    [[self navigationController] setToolbarHidden:YES animated:YES];
+
     [[self collectionView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
 }
 

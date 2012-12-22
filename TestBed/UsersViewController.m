@@ -7,19 +7,19 @@
 //
 
 #import <objc/runtime.h>
-#import "AppDelegate.h"
 #import "CellBackground.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
 #import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
-#import "UsersViewController.h"
 #import "UsersCollectionViewCell.h"
+#import "UsersViewController.h"
 
 @interface UsersViewController ()
-@property (strong, nonatomic) NSMutableArray *tempArray;
 @property (strong, nonatomic) NSDictionary *tempDict;
+@property (strong, nonatomic) NSMutableArray *tempArray;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+
 @property (strong, nonatomic) YIFullScreenScroll *fullScreenDelegate;
 @end
 
@@ -179,12 +179,12 @@
 {
     [_fullScreenDelegate showUIBarsWithScrollView:collectionView animated:YES];
 
-    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
+    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithWindow:[[self view] window]];
     [progressHUD setMode:MBProgressHUDModeIndeterminate];
     [progressHUD setLabelText:@"Loading User..."];
     [progressHUD setDelegate:self];
     
-    [[self view] addSubview:progressHUD];
+    [[[self view] window] addSubview:progressHUD];
     
     [progressHUD show:YES];
     

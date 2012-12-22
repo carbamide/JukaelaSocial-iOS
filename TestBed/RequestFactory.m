@@ -55,4 +55,9 @@
     return [NSString stringWithFormat:@"{\"relationship\" : {\"followed_id\" : \"%@\"}, \"commit\" : \"Follow\"}", userID];
 }
 
++(NSString *)userFromUsername:(NSString *)username
+{
+    return [NSString stringWithFormat:@"{\"username\" : \"%@\"}", username];
+}
+
 @end

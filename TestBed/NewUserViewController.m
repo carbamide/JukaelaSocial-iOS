@@ -6,15 +6,15 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "AppDelegate.h"
+
 #import "NewUserViewController.h"
 
 @interface NewUserViewController ()
-@property (strong, nonatomic) UITextField *nameTextField;
-@property (strong, nonatomic) UITextField *usernameTextField;
 @property (strong, nonatomic) UITextField *emailTextField;
-@property (strong, nonatomic) UITextField *passwordTextField;
+@property (strong, nonatomic) UITextField *nameTextField;
 @property (strong, nonatomic) UITextField *passwordConfirmTextField;
+@property (strong, nonatomic) UITextField *passwordTextField;
+@property (strong, nonatomic) UITextField *usernameTextField;
 
 -(NSArray *)fieldsArray;
 @end
@@ -109,8 +109,6 @@
         
         if (data) {
             if ([[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil] isKindOfClass:[NSDictionary class]]) {
-                NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
-
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"new_user" object:nil userInfo:@{kEmail : [[self emailTextField] text]}];
                 
                 [self dismissViewControllerAnimated:YES completion:nil];

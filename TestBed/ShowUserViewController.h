@@ -10,11 +10,11 @@
 
 @interface ShowUserViewController : JukaelaTableViewController
 
-@property (strong, nonatomic) NSDictionary *userDict;
 @property (strong, nonatomic) NSArray *followers;
-@property (strong, nonatomic) NSDictionary *following;
-@property (strong, nonatomic) NSArray *posts;
 @property (strong, nonatomic) NSArray *imFollowing;
+@property (strong, nonatomic) NSArray *posts;
 @property (strong, nonatomic) NSArray *relationships;
+@property (strong, nonatomic) NSDictionary *following;
+@property (strong, nonatomic) NSDictionary *userDict;
 
 @end

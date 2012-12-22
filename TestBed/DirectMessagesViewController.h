@@ -7,7 +7,8 @@
 //
 
 #import "JukaelaTableViewController.h"
+#import "MBProgressHUD.h"
 
-@interface DirectMessagesViewController : JukaelaTableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface DirectMessagesViewController : JukaelaTableViewController <UITableViewDataSource, UITableViewDelegate, MBProgressHUDDelegate>
 
 @end

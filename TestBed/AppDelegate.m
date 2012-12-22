@@ -6,19 +6,14 @@
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
 
+#import <Accounts/Accounts.h>
 #import <objc/runtime.h>
-#import "AppDelegate.h"
-#import <Accounts/Accounts.h>
-
-//#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
 #import <Social/Social.h>
-#import <Accounts/Accounts.h>
-//#endif
+#import "FeedViewController.h"
 #import "TestFlight.h"
 #import "TMImgurUploader.h"
 #import "YISplashScreen.h"
 #import "YISplashScreenAnimation.h"
-#import "FeedViewController.h"
 
 @implementation UIApplication (Private)
 
@@ -153,9 +148,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-    NSLog(@"%@", [url absoluteString]);
-    
+{    
     UIImage *tempImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kPostImage object:nil userInfo:@{kImageNotification : tempImage}];

@@ -6,11 +6,13 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "AppDelegate.h"
 #import "EditUserViewController.h"
+#import "SFHFKeychainUtils.h"
 
 @interface EditUserViewController ()
+
 -(NSArray *)fieldsArray;
+
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) UISwitch *emailSwitch;
 @end
@@ -67,6 +69,13 @@
             
             if ([self tempDict][@"send_email"] && [self tempDict][@"send_email"] != [NSNull null]) {
                 [[self emailSwitch] setOn:[[self tempDict][@"send_email"] boolValue]];
+            }
+            
+            NSString *password = [SFHFKeychainUtils getPasswordForUsername:[self tempDict][kEmail] andServiceName:kJukaelaSocialServiceName error:&error];
+
+            if (password) {
+                [[self passwordTextField] setText:password];
+                [[self passwordConfirmTextField] setText:password];
             }
         }
         else {

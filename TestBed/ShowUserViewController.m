@@ -7,7 +7,6 @@
 //
 
 #import <objc/runtime.h>
-#import "AppDelegate.h"
 #import "FollowerViewController.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
@@ -18,10 +17,9 @@
 #import "WBStickyNoticeView.h"
 
 @interface ShowUserViewController ()
-@property (strong, nonatomic) NSNumber *postCount;
 @property (strong, nonatomic) NSNumber *followerCount;
 @property (strong, nonatomic) NSNumber *followingCount;
-
+@property (strong, nonatomic) NSNumber *postCount;
 @end
 
 @implementation ShowUserViewController
@@ -46,9 +44,7 @@
 {
     [super viewDidLoad];
     
-    if ([[[self navigationController] viewControllers] count] <= 1) {
-        [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)]];
-    }
+    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)]];
     
     [[self navigationItem] setTitle:@"Show User"];
     

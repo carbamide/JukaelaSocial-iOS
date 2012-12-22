@@ -50,7 +50,7 @@
 	NSMutableArray *tempLinks = [_links mutableCopy];
 	
 	NSArray *expressions = [[[NSArray alloc] initWithObjects:@"(@[a-zA-Z0-9_]+)", // screen names
-                             @"(#[a-zA-Z0-9_-]+)", // hash tags
+    //                         @"(#[a-zA-Z0-9_-]+)", // hash tags
                              nil] autorelease];
 	//get #hashtags and @usernames
 	for (NSString *expression in expressions)
@@ -70,27 +70,27 @@
 			
 			if ([matchedString hasPrefix:@"@"]) // usernames
 			{
-				NSString *username = [matchedString	substringFromIndex:1];
-				
-				AHMarkedHyperlink *hyperlink = [[[AHMarkedHyperlink alloc] initWithString:[NSString stringWithFormat:@"http://twitter.com/%@", username]
+				//NSString *username = [matchedString	substringFromIndex:1];
+				                
+				AHMarkedHyperlink *hyperlink = [[[AHMarkedHyperlink alloc] initWithString:matchedString
 																	 withValidationStatus:AH_URL_VALID
 																			 parentString:[self text]
 																				 andRange:[match range]] autorelease];
 				[tempLinks addObject:hyperlink];
 			}
-			else if ([matchedString hasPrefix:@"#"]) // hash tag
-			{
-				NSString *searchTerm = [[matchedString substringFromIndex:1] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-				
-				AHMarkedHyperlink *hyperlink = [[[AHMarkedHyperlink alloc] initWithString:[NSString stringWithFormat:@"http://twitter.com/search?q=%@", searchTerm]
-																	 withValidationStatus:AH_URL_VALID
-																			 parentString:[self text]
-																				 andRange:[match range]] autorelease];
-				[tempLinks addObject:hyperlink];
-			}
+//			else if ([matchedString hasPrefix:@"#"]) // hash tag
+//			{
+//				NSString *searchTerm = [[matchedString substringFromIndex:1] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//				
+//				AHMarkedHyperlink *hyperlink = [[[AHMarkedHyperlink alloc] initWithString:[NSString stringWithFormat:@"http://twitter.com/search?q=%@", searchTerm]
+//																	 withValidationStatus:AH_URL_VALID
+//																			 parentString:[self text]
+//																				 andRange:[match range]] autorelease];
+//				[tempLinks addObject:hyperlink];
+//			}
 		}
 	}
-	
+	    
 	[_links release];
 	_links = [tempLinks copy];
 	[tempLinks release], tempLinks = nil;

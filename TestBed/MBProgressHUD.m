@@ -252,10 +252,10 @@
 
 -(id)initWithView:(UIView *)view {
 	// Let's check if the view is nil (this is a common error when using the windw initializer above)
-	if (!view) {
-		[NSException raise:@"MBProgressHUDViewIsNillException" 
-					format:@"The view used in the MBProgressHUD initializer is nil."];
-	}
+//	if (!view) {
+//		[NSException raise:@"MBProgressHUDViewIsNillException" 
+//					format:@"The view used in the MBProgressHUD initializer is nil."];
+//	}
 	id me = [self initWithFrame:view.bounds];
 	// We need to take care of rotation ourselfs if we're adding the HUD to a window
 	if ([view isKindOfClass:[UIWindow class]]) {

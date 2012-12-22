@@ -7,19 +7,18 @@
 //
 
 #import <objc/runtime.h>
-#import "AppDelegate.h"
-#import "UsersCollectionViewCell.h"
-#import "FollowerViewController.h"
 #import "CellBackground.h"
+#import "FollowerViewController.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
 #import "ShowUserViewController.h"
+#import "UsersCollectionViewCell.h"
 #import "UsersPostsViewController.h"
 
 @interface FollowerViewController ()
-@property (strong, nonatomic) NSMutableArray *tempArray;
 @property (strong, nonatomic) NSDictionary *tempDict;
-
+@property (strong, nonatomic) NSMutableArray *tempArray;
+@property (strong, nonatomic) MBProgressHUD *progressHUD;
 @end
 
 @implementation FollowerViewController
@@ -46,50 +45,58 @@
 }
 
 -(void)viewDidLoad
-{    
+{
     [super viewDidLoad];
     
+    if ([[self navigationController] viewControllers][0] != self) {
+        [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf)]];
+    }
+    
     [[self navigationController] setToolbarHidden:YES animated:YES];
-
+    
     [[self collectionView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
 }
 
 -(void)switchToSelectedUser:(NSNotification *)aNotification
 {
-    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
-    [progressHUD setMode:MBProgressHUDModeIndeterminate];
-    [progressHUD setLabelText:@"Loading User..."];
-    [progressHUD setDelegate:self];
-    
-    [[self view] addSubview:progressHUD];
-    
-    [progressHUD show:YES];
-    
-    NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][kID]]];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {
-            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+    if ([kAppDelegate currentViewController] == self) {
+        if (![self progressHUD]) {
+            [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
         }
-        else {
-            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
-        }
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];
+        [[self progressHUD] setLabelText:@"Loading User..."];
+        [[self progressHUD] setDelegate:self];
         
-        [progressHUD hide:YES];
+        [[[self view] window] addSubview:[self progressHUD]];
         
-        [self performSegueWithIdentifier:kShowUser sender:nil];
-    }];
+        [[self progressHUD] show:YES];
+        
+        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
+        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPathOfTappedRow row]][kID]]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+        
+        [request setHTTPMethod:@"GET"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            }
+            else {
+                [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
+            }
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [[self progressHUD] hide:YES];
+            
+            [self performSegueWithIdentifier:kShowUser sender:nil];
+        }];
+    }
 }
 
 -(void)getUsers
@@ -157,7 +164,7 @@
     if ([self usersArray][[indexPath row]][kUsername] && [self usersArray][[indexPath row]][kUsername] != [NSNull null]) {
         [[cell usernameLabel] setText:[self usersArray][[indexPath row]][kUsername]];
     }
-        
+    
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][kID]]]]];
     
     if (image) {
@@ -191,12 +198,12 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:[self view]];
+    MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithWindow:[[self view] window]];
     [progressHUD setMode:MBProgressHUDModeIndeterminate];
     [progressHUD setLabelText:@"Loading User..."];
     [progressHUD setDelegate:self];
     
-    [[self view] addSubview:progressHUD];
+    [[[self view] window] addSubview:progressHUD];
     
     [progressHUD show:YES];
     
@@ -238,6 +245,11 @@
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake(5, 5, 5, 5);
+}
+
+-(void)dismissSelf
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

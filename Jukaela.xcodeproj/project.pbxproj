@@ -150,7 +150,6 @@
 		29D5B84915546055000D9374 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D5B84815546055000D9374 /* QuartzCore.framework */; };
 		29D5B85915547665000D9374 /* 57.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B85815547665000D9374 /* 57.png */; };
 		29D5B85B15547671000D9374 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B85A15547671000D9374 /* iTunesArtwork.png */; };
-		29D5B866155476D2000D9374 /* underPageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B865155476D2000D9374 /* underPageBackground.png */; };
 		29D5B868155478C5000D9374 /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D5B867155478C5000D9374 /* 114.png */; };
 		29DB78C515B6F72D0056C68E /* PrettyCustomViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78B315B6F72D0056C68E /* PrettyCustomViewTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29DB78C615B6F72D0056C68E /* PrettyGridTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78B515B6F72D0056C68E /* PrettyGridTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -205,7 +204,7 @@
 		29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaTableViewController.m; sourceTree = "<group>"; };
 		2915698B15FFAFCA0084A29C /* ShareObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareObject.h; sourceTree = "<group>"; };
 		2915698C15FFAFCA0084A29C /* ShareObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareObject.m; sourceTree = "<group>"; };
-		291DABA516839DAE00BD3D6D /* Signika-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Signika-Regular.otf"; sourceTree = "<group>"; };
+		291DABA516839DAE00BD3D6D /* Signika-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Signika-Regular.otf"; path = "../Signika-Regular.otf"; sourceTree = "<group>"; };
 		291DABA616839DAE00BD3D6D /* Signika-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Signika-Semibold.otf"; sourceTree = "<group>"; };
 		291EB58115649366005FB66D /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
 		291EB58215649366005FB66D /* PostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostViewController.m; sourceTree = "<group>"; };
@@ -408,7 +407,6 @@
 		29D5B84A1554612A000D9374 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		29D5B85815547665000D9374 /* 57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 57.png; sourceTree = "<group>"; };
 		29D5B85A15547671000D9374 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
-		29D5B865155476D2000D9374 /* underPageBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = underPageBackground.png; sourceTree = "<group>"; };
 		29D5B867155478C5000D9374 /* 114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 114.png; sourceTree = "<group>"; };
 		29DB78B215B6F72D0056C68E /* PrettyCustomViewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyCustomViewTableViewCell.h; sourceTree = "<group>"; };
 		29DB78B315B6F72D0056C68E /* PrettyCustomViewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyCustomViewTableViewCell.m; sourceTree = "<group>"; };
@@ -658,6 +656,13 @@
 			name = Private;
 			sourceTree = "<group>";
 		};
+		29781D2F1684D5E80097AB1F /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
 		298A640C15E2679F009BF175 /* AlertView */ = {
 			isa = PBXGroup;
 			children = (
@@ -871,6 +876,7 @@
 		29D5B84715545FD6000D9374 /* TableView Stuff */ = {
 			isa = PBXGroup;
 			children = (
+				29781D2F1684D5E80097AB1F /* New Group */,
 				29D5B83515545FC6000D9374 /* ShadowedTableView.h */,
 				29D5B83615545FC6000D9374 /* ShadowedTableView.m */,
 				29D5B83715545FC6000D9374 /* CellBackground.h */,
@@ -886,7 +892,6 @@
 		29D5B85C15547678000D9374 /* Artwork */ = {
 			isa = PBXGroup;
 			children = (
-				291DABA516839DAE00BD3D6D /* Signika-Regular.otf */,
 				291DABA616839DAE00BD3D6D /* Signika-Semibold.otf */,
 				2959461F1683927D00F2D861 /* ambitsek.otf */,
 				295946201683927D00F2D861 /* joystix-monospace.otf */,
@@ -920,7 +925,6 @@
 				299AF48116725D45000F1C45 /* separator.png */,
 				29AA109E1557263900B8D3F5 /* Settings.png */,
 				29AA109F1557263900B8D3F5 /* Settings@2x.png */,
-				29D5B865155476D2000D9374 /* underPageBackground.png */,
 				290045D815576D9C004F113A /* Users.png */,
 				290045D915576D9C004F113A /* Users@2x.png */,
 			);
@@ -977,6 +981,8 @@
 				293B952215EB0B730036A7FF /* NewUserViewController.m */,
 				291EB58115649366005FB66D /* PostViewController.h */,
 				291EB58215649366005FB66D /* PostViewController.m */,
+				2976435B16826DB600D79876 /* RequestFactory.h */,
+				2976435C16826DB600D79876 /* RequestFactory.m */,
 				29AA10951557254400B8D3F5 /* SettingsViewController.h */,
 				29AA10961557254500B8D3F5 /* SettingsViewController.m */,
 				2915698B15FFAFCA0084A29C /* ShareObject.h */,
@@ -989,8 +995,6 @@
 				292434701565E330007C8E8C /* UsersPostsViewController.m */,
 				290045D415576D5D004F113A /* UsersViewController.h */,
 				290045D515576D5D004F113A /* UsersViewController.m */,
-				2976435B16826DB600D79876 /* RequestFactory.h */,
-				2976435C16826DB600D79876 /* RequestFactory.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -1024,6 +1028,7 @@
 				29593D6D15FD150600380B2D /* YISplashScreen */,
 				29A6ED25168172D000DADDBB /* JRefreshControl.h */,
 				29A6ED26168172D000DADDBB /* JRefreshControl.m */,
+				291DABA516839DAE00BD3D6D /* Signika-Regular.otf */,
 			);
 			name = "Custom Classes";
 			sourceTree = "<group>";
@@ -1151,7 +1156,6 @@
 				2956876E1552C96700FE741C /* MainStoryboard.storyboard in Resources */,
 				29D5B85915547665000D9374 /* 57.png in Resources */,
 				29D5B85B15547671000D9374 /* iTunesArtwork.png in Resources */,
-				29D5B866155476D2000D9374 /* underPageBackground.png in Resources */,
 				29D5B868155478C5000D9374 /* 114.png in Resources */,
 				29AA10501556AA0900B8D3F5 /* JukaelaLogo.png in Resources */,
 				29AA10581556AE2B00B8D3F5 /* Default.png in Resources */,
@@ -1421,6 +1425,7 @@
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = "TestBed/Jukaela-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -1428,7 +1433,7 @@
 					"\"$(SRCROOT)/Bitly\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F07592D4-2375-48B1-8E1F-EE446EE05BA9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FEE0C520-F104-438F-A9F7-16FFD8C67918";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1458,6 +1463,7 @@
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = "TestBed/Jukaela-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -1465,7 +1471,7 @@
 					"\"$(SRCROOT)/Bitly\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F07592D4-2375-48B1-8E1F-EE446EE05BA9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FEE0C520-F104-438F-A9F7-16FFD8C67918";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

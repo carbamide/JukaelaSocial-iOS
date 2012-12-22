@@ -21,11 +21,12 @@ NS_ENUM(NSInteger, ChangeType) {
 
 @interface FeedViewController : UITableViewController <MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, JSCoreTextViewDelegate, MWPhotoBrowserDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate>
 
-@property (strong, nonatomic) NSMutableArray *theFeed;
-@property (strong, nonatomic) UITextView *textView;
-@property (strong, nonatomic) NSMutableDictionary *nameDict;
 @property (strong, nonatomic) NSDictionary *tempDict;
+@property (strong, nonatomic) NSMutableArray *theFeed;
+@property (strong, nonatomic) NSMutableDictionary *nameDict;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) UITextView *textView;
+
 @property (nonatomic) BOOL loadedDirectly;
 
 -(void)initializeActivityIndicator;

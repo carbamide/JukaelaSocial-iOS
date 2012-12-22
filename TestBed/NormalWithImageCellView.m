@@ -7,7 +7,7 @@
 //
 
 #import "Constants.h"
-#import "AppDelegate.h"
+
 #import "NormalWithImageCellView.h"
 
 @implementation NormalWithImageCellView
@@ -67,4 +67,10 @@
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
+-(void)prepareForReuse
+{
+    [[self externalImage] setImage:nil];
+    
+    [super prepareForReuse];
+}
 @end

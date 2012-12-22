@@ -6,20 +6,26 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "DirectMessagesViewController.h"
-#import "NormalCellView.h"
-#import "CellBackground.h"
 #import <objc/message.h>
+#import "CellBackground.h"
+#import "DirectMessagesViewController.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
+#import "MBProgressHUD.h"
+#import "NormalCellView.h"
+#import "ShowUserViewController.h"
 #import "SORelativeDateTransformer.h"
+#import "SVModalWebViewController.h"
+
 
 @interface DirectMessagesViewController ()
 @property (strong, nonatomic) NSArray *messagesArray;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSDictionary *tempDict;
+
+@property (strong, nonatomic) MBProgressHUD *progressHUD;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @property (strong, nonatomic) YIFullScreenScroll *fullScreenDelegate;
-
 @end
 
 @implementation DirectMessagesViewController
@@ -36,7 +42,9 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [_fullScreenDelegate layoutTabBarController];
-
+    
+    [kAppDelegate setCurrentViewController:self];
+    
     [super viewDidAppear:animated];
 }
 
@@ -45,9 +53,10 @@
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:kDoubleTapNotification object:nil];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:kSendToUserNotification object:nil];
+    
     _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
-
+    
     JRefreshControl *refreshControl = [[JRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];
@@ -63,6 +72,12 @@
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
     
     [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kLoadUserWithUsernameNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        NSString *usernameString = [aNotification userInfo][@"username"];
+        
+        [self requestWithUsername:usernameString];
+    }];
     
 	[self getMessages];
 }
@@ -103,7 +118,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -218,7 +232,119 @@
 
 -(void)doubleTap:(NSNotification *)aNotification
 {
-    [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+    if ([kAppDelegate currentViewController] == self) {
+        [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+    }
 }
+
+- (void)handleURL:(NSURL*)url
+{
+    [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+    
+    SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
+    
+    [webViewController setBarsTintColor:[UIColor darkGrayColor]];
+    
+    [self presentModalViewController:webViewController animated:YES];
+}
+
+-(void)requestWithUsername:(NSString *)username
+{
+    if ([kAppDelegate currentViewController] == self) {
+        [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+        
+        MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithWindow:[[self view] window]];
+        [progressHUD setMode:MBProgressHUDModeIndeterminate];
+        [progressHUD setLabelText:@"Loading User..."];
+        [progressHUD setDelegate:self];
+        
+        [[[self view] window] addSubview:progressHUD];
+        
+        [progressHUD show:YES];
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/user_from_username.json", kSocialURL]];
+        
+        NSString *requestString = [RequestFactory userFromUsername:username];
+        
+        NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+        
+        NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            }
+            else {
+                [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
+            }
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [progressHUD hide:YES];
+            
+            [self performSegueWithIdentifier:kShowUser sender:nil];
+        }];
+    }
+}
+
+-(void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:kShowUser]) {
+        UINavigationController *navigationController = [segue destinationViewController];
+        ShowUserViewController *viewController = (ShowUserViewController *)[navigationController topViewController];
+        
+        [viewController setUserDict:_tempDict];
+    }
+}
+
+-(void)switchToSelectedUser:(NSNotification *)aNotification
+{
+    if ([kAppDelegate currentViewController] == self) {
+        [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+        
+        if (![self progressHUD]) {
+            [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
+        }
+        [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];
+        [[self progressHUD] setLabelText:@"Loading User..."];
+        [[self progressHUD] setDelegate:self];
+        
+        [[[self view] window] addSubview:[self progressHUD]];
+        
+        [[self progressHUD] show:YES];
+        
+        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
+        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self messagesArray][[indexPathOfTappedRow row]][kUserID]]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+        
+        [request setHTTPMethod:@"GET"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            }
+            else {
+                [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
+            }
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [[self progressHUD] hide:YES];
+            
+            [self performSegueWithIdentifier:kShowUser sender:nil];
+        }];
+    }
+}
+
 
 @end

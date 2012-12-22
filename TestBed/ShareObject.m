@@ -9,10 +9,8 @@
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 #import <Twitter/Twitter.h>
-#import "AppDelegate.h"
+#import "NormalCellView.h"
 #import "ShareObject.h"
-#import "NormalCellView.h"
-#import "NormalCellView.h"
 #import "WBSuccessNoticeView.h"
 
 @implementation ShareObject

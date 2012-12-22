@@ -18,5 +18,6 @@
 +(NSString *)postRequestWithContent:(NSString *)content userID:(NSString *)userID imageURL:(NSString *)imageURL;
 +(NSString *)unfollowRequestWithUserID:(NSNumber *)userID;
 +(NSString *)followRequestWithUserID:(NSNumber *)userID;
++(NSString *)userFromUsername:(NSString *)username;
 
 @end

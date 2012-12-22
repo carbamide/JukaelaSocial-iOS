@@ -35,6 +35,12 @@
     [[self imageView] setImage:[self theImage]];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [kAppDelegate setCurrentViewController:self];
+
+    [super viewDidAppear:animated];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

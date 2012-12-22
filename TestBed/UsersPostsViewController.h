@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
+#import "MWPhotoBrowser.h"
 
-@interface UsersPostsViewController : UITableViewController <MBProgressHUDDelegate>
+@interface UsersPostsViewController : UITableViewController <MBProgressHUDDelegate, MWPhotoBrowserDelegate>
 
-@property (strong, nonatomic) NSMutableArray *userPostArray;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
-@property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSDictionary *tempDict;
+@property (strong, nonatomic) NSMutableArray *userPostArray;
+@property (strong, nonatomic) NSString *userID;
 
 @end

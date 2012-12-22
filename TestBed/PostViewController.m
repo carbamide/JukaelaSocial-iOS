@@ -7,34 +7,29 @@
 //
 
 #import <Accounts/Accounts.h>
-#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_5_1
 #import <Social/Social.h>
-#endif
 #import <Twitter/Twitter.h>
-#import "AppDelegate.h"
-#import "PostViewController.h"
+#import "CellBackground.h"
+#import "GravatarHelper.h"
+#import "ImageConfirmationViewController.h"
 #import "NSString+BackslashEscape.h"
+#import "PostViewController.h"
 #import "SVModalWebViewController.h"
 #import "TMImgurUploader.h"
 #import "UIImage+Resize.h"
-#import "ImageConfirmationViewController.h"
-#import "AppDelegate.h"
-#import "GravatarHelper.h"
-#import "CellBackground.h"
 
 @interface PostViewController ()
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *facebookAccount;
 @property (strong, nonatomic) NSData *tempImageData;
-@property (strong, nonatomic) NSString *currentString;
-@property (nonatomic) BOOL isPosting;
-@property (nonatomic) BOOL imageAdded;
-@property (strong, nonatomic) UITableView *usernameTableView;
-@property (strong, nonatomic) NSMutableArray *usernameArray;
 @property (strong, nonatomic) NSMutableArray *autocompleteUsernames;
-
+@property (strong, nonatomic) NSMutableArray *usernameArray;
+@property (strong, nonatomic) NSString *currentString;
 @property (strong, nonatomic) NSString *currentWord;
+@property (strong, nonatomic) UITableView *usernameTableView;
 
+@property (nonatomic) BOOL imageAdded;
+@property (nonatomic) BOOL isPosting;
 @end
 
 #define COLOR_RGB(r,g,b,a)      [UIColor colorWithRed:((r)/255.0) green:((g)/255.0) blue:((b)/255.0) alpha:(a)]
@@ -52,8 +47,9 @@
     UIWindow *tempWindow = [kAppDelegate window];
     
     if (tempWindow.frame.size.height > 500) {
-        [[self photoButton] setFrame:CGRectMake(_photoButton.frame.origin.x, _photoButton.frame.origin.y + 100, _photoButton.frame.size.width, _photoButton.frame.size.height)];
-        [[self countDownLabel] setFrame:CGRectMake(_countDownLabel.frame.origin.x, _countDownLabel.frame.origin.y + 100, _countDownLabel.frame.size.width, _countDownLabel.frame.size.height)];
+        [[self photoButton] setFrame:CGRectOffset(_photoButton.frame, 0, 90)];
+        [[self countDownLabel] setFrame:CGRectOffset(_countDownLabel.frame, 0, 90)];
+
         [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height + 100)];
     }
     
@@ -731,16 +727,6 @@
     return;
 }
 
-- (void)handleURL:(NSURL*)url
-{
-    SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
-    
-    [webViewController setBarsTintColor:[UIColor darkGrayColor]];
-    
-    [self presentModalViewController:webViewController animated:YES];
-}
-
-
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     CGPoint cursorPosition = [textView caretRectForPosition:textView.selectedTextRange.start].origin;
@@ -897,6 +883,13 @@
     }
     
     [[self usernameTableView] reloadData];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [kAppDelegate setCurrentViewController:self];
+
+    [super viewDidAppear:animated];
 }
 
 @end

@@ -70,6 +70,7 @@ static char *const kIndexPathAssociationKey = "Jukaela_index_path";
 #define kIndexPath @"indexPath"
 #define kEnableCellNotification @"enable_cell"
 #define kJukaelaSuccessfulNotification @"jukaela_successful"
+#define kLoadUserWithUsernameNotification @"user_with_username"
 
 #define kShowPostView @"ShowPostView"
 #define kShowUser @"ShowUser"

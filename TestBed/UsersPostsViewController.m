@@ -7,27 +7,28 @@
 //
 
 #import <objc/runtime.h>
-#import "AppDelegate.h"
-#import "NormalCellView.h"
 #import "CellBackground.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
 #import "NSDate+RailsDateParser.h"
 #import "UsersPostsViewController.h"
-#import "PostViewController.h"
 #import "NormalCellView.h"
-#import "ShareObject.h"
-#import "SORelativeDateTransformer.h"
-#import "WBSuccessNoticeView.h"
 #import "NormalWithImageCellView.h"
-#import "UIImageView+Curled.h"
+#import "PostViewController.h"
+#import "ShareObject.h"
+#import "ShowUserViewController.h"
+#import "SORelativeDateTransformer.h"
+#import "SVModalWebViewController.h"
+#import "WBSuccessNoticeView.h"
 #import "WBErrorNoticeView.h"
+#import "UIImageView+Curled.h"
 
 @interface UsersPostsViewController ()
-@property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
-@property (strong, nonatomic) NSNotificationCenter *refreshTableNotificationCenter;
+@property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
 @property (strong, nonatomic) NSCache *externalImageCache;
+@property (strong, nonatomic) MBProgressHUD *progressHUD;
+@property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @end
 
 @implementation UsersPostsViewController
@@ -41,8 +42,21 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [kAppDelegate setCurrentViewController:self];
+    
+    [[self navigationController] setToolbarHidden:YES animated:YES];
+
+    [super viewDidAppear:animated];
+}
+
 - (void)viewDidLoad
 {
+    if ([[self navigationController] viewControllers][0] != self) {
+        [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf)]];
+    }
+    
     [self setExternalImageCache:[[NSCache alloc] init]];
     
     JRefreshControl *refreshControl = [[JRefreshControl alloc] init];
@@ -60,8 +74,18 @@
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
+        
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:kSendToUserNotification object:nil];
     
-    [[self navigationController] setToolbarHidden:YES animated:YES];
+    [[NSNotificationCenter defaultCenter] addObserverForName:kLoadUserWithUsernameNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        NSString *usernameString = [aNotification userInfo][@"username"];
+        
+        [self requestWithUsername:usernameString];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kShowImage object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self showImage:aNotification];
+    }];
     
     [super viewDidLoad];
 }
@@ -92,20 +116,16 @@
 {
     NSString *contentText = [self userPostArray][[indexPath row]][kContent];
     
-    CGSize constraint = CGSizeMake(275, 20000);
+    CGSize constraint = CGSizeMake(300, 20000);
     
     CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
-    CGFloat height;
-    
     if ([self userPostArray][[indexPath row]][kRepostUserID] && [self userPostArray][[indexPath row]][kRepostUserID] != [NSNull null]) {
-        height = jMAX(contentSize.height + 50 + 10, 90);
+        return contentSize.height + 50 + 10 + 20;
     }
     else {
-        height = jMAX(contentSize.height + 50 + 10, 75);
+        return contentSize.height + 50 + 10;
     }
-    
-    return height;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -128,15 +148,7 @@
     if ([self userPostArray][[indexPath row]][kImageURL] && [self userPostArray][[indexPath row]][kImageURL] != [NSNull null]) {
         cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
         
-        if (cell) {
-            if ([[self externalImageCache] objectForKey:indexPath]) {
-                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
-            }
-            else {
-                [[cell externalImage] setImage:nil];
-            }
-        }
-        else if (!cell) {
+        if (!cell) {
             cell = [[NormalWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellWithImageCellIdentifier];
             
             [cell setBackgroundView:[[CellBackground alloc] init]];
@@ -153,22 +165,62 @@
     }
     
     if ([self userPostArray][[indexPath row]][kImageURL] && [self userPostArray][[indexPath row]][kImageURL] != [NSNull null]) {
+        NSMutableString *tempString = [NSMutableString stringWithString:[self userPostArray][[indexPath row]][kImageURL]];
+        
+        NSString *tempExtensionString = [NSString stringWithFormat:@".%@", [tempString pathExtension]];
+        
+        [tempString stringByReplacingOccurrencesOfString:tempExtensionString withString:@""];
+        [tempString appendFormat:@"s"];
+        [tempString appendString:tempExtensionString];
+        
         if (![[cell externalImage] image]) {
-            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-            
-            objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
-            
-            dispatch_async(queue, ^{
-                NSMutableString *tempString = [NSMutableString stringWithString:[self userPostArray][[indexPath row]][kImageURL]];
+            if ([[self externalImageCache] objectForKey:indexPath]) {
+                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+            }
+            else if ([[NSFileManager defaultManager] fileExistsAtPath:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
+                UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
                 
-                [tempString insertString:@"s" atIndex:24];
+                [[cell externalImage] setImage:externalImageFromDisk borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
                 
-                UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
+                if (externalImageFromDisk) {
+                    [[self externalImageCache] setObject:externalImageFromDisk forKey:indexPath];
+                }
+            }
+            else {
+                dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [[cell externalImage] setImage:image borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
+                
+                dispatch_async(queue, ^{
+                    
+                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
+                    
+                    if (image) {
+                        [[self externalImageCache] setObject:image forKey:indexPath];
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[cell externalImage] setImage:image borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                        
+                        [Helpers saveImage:image withFileName:[tempString lastPathComponent]];
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^(void) {
+                            NSString *path = [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithString:[tempString lastPathComponent]]];
+                            
+                            NSData *data = nil;
+                            
+                            if ([[tempString pathExtension] isEqualToString:@".png"]) {
+                                data = UIImagePNGRepresentation(image);
+                            }
+                            else {
+                                data = UIImageJPEGRepresentation(image, 1.0);
+                            }
+                            
+                            [data writeToFile:path atomically:YES];
+                        });
+                    });
                 });
-            });
+            }
         }
     }
     
@@ -192,12 +244,12 @@
     
     if ([self userPostArray][[indexPath row]][kRepostUserID] && [self userPostArray][[indexPath row]][kRepostUserID] != [NSNull null]) {
         CGSize contentSize = [[self userPostArray][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kFontPreference size:17]
-                                                                           constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
-                                                                               lineBreakMode:NSLineBreakByWordWrapping];
+                                                                         constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
+                                                                             lineBreakMode:NSLineBreakByWordWrapping];
         
         CGSize nameSize = [[self userPostArray][[indexPath row]][kName] sizeWithFont:[UIFont fontWithName:kFontPreference size:14]
-                                                                     constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
-                                                                         lineBreakMode:NSLineBreakByWordWrapping];
+                                                                   constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
+                                                                       lineBreakMode:NSLineBreakByWordWrapping];
         
         CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
         
@@ -283,7 +335,12 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:kShowReplyView]) {
+    if ([[segue identifier] isEqualToString:kShowUser]) {
+        ShowUserViewController *viewController = [segue destinationViewController];
+        
+        [viewController setUserDict:_tempDict];
+    }
+    else if ([[segue identifier] isEqualToString:kShowReplyView]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
         [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self userPostArray][[[self tempIndexPath] row]][kUsername]]];
@@ -344,7 +401,7 @@
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
         NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
-                
+        
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
                 NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
@@ -372,7 +429,7 @@
                     
                     [[self tableView] reloadData];
                 }
-                @finally {                    
+                @finally {
                     NSLog(@"Inside finally");
                 }
             }
@@ -387,4 +444,146 @@
     }
 }
 
+- (void)handleURL:(NSURL*)url
+{
+    SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
+    
+    [webViewController setBarsTintColor:[UIColor darkGrayColor]];
+    
+    [self presentModalViewController:webViewController animated:YES];
+}
+
+-(void)requestWithUsername:(NSString *)username
+{
+    if ([kAppDelegate currentViewController] == self) {
+        if (![self progressHUD]) {
+            [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
+        }
+        [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];
+        [[self progressHUD] setLabelText:@"Loading User..."];
+        [[self progressHUD] setDelegate:self];
+        
+        [[[self view] window] addSubview:[self progressHUD]];
+        
+        [[self progressHUD] show:YES];
+        
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/user_from_username.json", kSocialURL]];
+        
+        NSString *requestString = [RequestFactory userFromUsername:username];
+        
+        NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+        
+        NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            }
+            else {
+                [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
+            }
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [[self progressHUD] hide:YES];
+            
+            [self performSegueWithIdentifier:kShowUser sender:nil];
+        }];
+    }
+}
+
+-(void)switchToSelectedUser:(NSNotification *)aNotification
+{
+    if ([kAppDelegate currentViewController] == self) {
+        if (![self progressHUD]) {
+            [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
+        }
+        [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];
+        [[self progressHUD] setLabelText:@"Loading User..."];
+        [[self progressHUD] setDelegate:self];
+        
+        [[[self view] window] addSubview:[self progressHUD]];
+        
+        [[self progressHUD] show:YES];
+        
+        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
+        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
+        NSURL *url = nil;
+        
+        if ([self userPostArray][[indexPathOfTappedRow row]][kOriginalPosterID] && [self userPostArray][[indexPathOfTappedRow row]][kOriginalPosterID] != [NSNull null]) {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self userPostArray][[indexPathOfTappedRow row]][kOriginalPosterID]]];
+        }
+        else {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self userPostArray][[indexPathOfTappedRow row]][kUserID]]];
+        }
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+        
+        [request setHTTPMethod:@"GET"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            }
+            else {
+                [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
+            }
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            
+            [[self progressHUD] hide:YES];
+            
+            [self performSegueWithIdentifier:kShowUser sender:nil];
+        }];
+    }
+}
+
+-(void)didReceiveMemoryWarning
+{
+    [[self externalImageCache] removeAllObjects];
+    
+    [super didReceiveMemoryWarning];
+}
+
+-(void)dismissSelf
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)showImage:(NSNotification *)aNotification
+{
+    if ([kAppDelegate currentViewController] == self) {        
+        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
+        
+        NSURL *urlOfImage = [NSURL URLWithString:[self userPostArray][[indexPathOfTappedRow row]][kImageURL]];
+        
+        MWPhoto *tempPhoto = [MWPhoto photoWithURL:urlOfImage];
+        
+        [tempPhoto setCaption:[self userPostArray][[indexPathOfTappedRow row]][kContent]];
+        
+        [self setPhotos:@[tempPhoto]];
+        
+        MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+        
+        [browser setDisplayActionButton:YES];
+                
+        [[self navigationController] pushViewController:browser animated:YES];
+    }
+}
+
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
+{
+    return [[self photos] count];
+}
+
+- (MWPhoto *)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
+{
+    if (index < [[self photos] count]) {
+        return [[self photos] objectAtIndex:index];
+    }
+    return nil;
+}
 @end

@@ -7,10 +7,10 @@
 //
 
 #import "Constants.h"
-#import "AppDelegate.h"
+
 #import "NormalCellView.h"
 
-NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_PrepareForReuse2";
+NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReuse2";
 
 @implementation NormalCellView
 
@@ -23,7 +23,6 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 @synthesize longPressGesture;
 @synthesize imageTapGesture;
 @synthesize repostedNameLabel;
-@synthesize repostTapGesture;
 @synthesize postDate;
 @synthesize dateTimer;
 
@@ -32,7 +31,7 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
-        contentText = [[JSCoreTextView alloc] initWithFrame:CGRectMake(0, 50, 315, 140)];
+        contentText = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(0, 50, 315, 140)];
         [contentText setBackgroundColor:[UIColor clearColor]];
         [contentText setClipsToBounds:YES];
         [contentText setPaddingLeft:8];
@@ -107,12 +106,6 @@ NSString * const kJKPrepareForReuseNotification = @"CPCallbacksTableViewCell_Pre
         imageTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sendToUser:)];
         
         [[self imageView] addGestureRecognizer:imageTapGesture];
-    }
-    
-    if (![self repostTapGesture]) {
-        repostTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(repostSendToUser:)];
-        
-        [[self repostedNameLabel] addGestureRecognizer:repostTapGesture];
     }
 }
 

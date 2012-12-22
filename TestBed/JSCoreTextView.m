@@ -1,9 +1,9 @@
 //
 //	Copyright 2011 James Addyman (JamSoft). All rights reserved.
-//	
+//
 //	Redistribution and use in source and binary forms, with or without modification, are
 //	permitted provided that the following conditions are met:
-//	
+//
 //		1. Redistributions of source code must retain the above copyright notice, this list of
 //			conditions and the following disclaimer.
 //
@@ -54,7 +54,7 @@ float const yAdjustmentFactor = 1.3;
 
 @synthesize delegate = _delegate;
 
-@synthesize text = _text; 
+@synthesize text = _text;
 @synthesize textAlignment = _textAlignment;
 
 @synthesize fontName = _fontName;
@@ -74,11 +74,11 @@ float const yAdjustmentFactor = 1.3;
 
 @synthesize underlined = _underlined;
 
-+ (CGFloat)measureFrameHeightForText:(NSString *)text 
-							fontName:(NSString *)fontName 
-							fontSize:(CGFloat)fontSize 
-				  constrainedToWidth:(CGFloat)width 
-						  paddingTop:(CGFloat)paddingTop 
++ (CGFloat)measureFrameHeightForText:(NSString *)text
+							fontName:(NSString *)fontName
+							fontSize:(CGFloat)fontSize
+				  constrainedToWidth:(CGFloat)width
+						  paddingTop:(CGFloat)paddingTop
 						 paddingLeft:(CGFloat)paddingLeft
 {
 	if (![text length])
@@ -106,7 +106,7 @@ float const yAdjustmentFactor = 1.3;
 	CFRelease(framesetter);
 	
 	int returnVal = size.height + (paddingTop * 2) + 1; // the + 1 might be a bit hacky, but it solves an issue where suggestFrameSizeWithContstrains may return a height that *only-just* doesn't
-														// fit the given text and it's attributes... It doesn't appear to have any adverse effects in every other situation.
+    // fit the given text and it's attributes... It doesn't appear to have any adverse effects in every other situation.
 	
 	return (CGFloat)returnVal;
 }
@@ -139,8 +139,8 @@ float const yAdjustmentFactor = 1.3;
     self.paddingLeft = 0;
     
     self.textColor = [UIColor blackColor];
-    self.linkColor = [UIColor blueColor];
-    self.highlightedLinkColor = [UIColor blueColor];
+    self.linkColor = [UIColor colorWithHex:0x4087cd];
+    self.highlightedLinkColor = [UIColor colorWithHex:0x4087cd];
     self.highlightColor = [UIColor grayColor];
 	
 	self.underlined = NO;
@@ -252,7 +252,7 @@ float const yAdjustmentFactor = 1.3;
 {
 	_bgImageLeftStretchCap = leftStretchCap;
 	
-	[self setNeedsDisplay];	
+	[self setNeedsDisplay];
 }
 
 
@@ -306,7 +306,7 @@ float const yAdjustmentFactor = 1.3;
 #pragma mark Touch Handling
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
+{    
 	UITouch *touch = [touches anyObject];
 	CGPoint location = [touch locationInView:self];
 	_linkLocation = location;
@@ -327,8 +327,12 @@ float const yAdjustmentFactor = 1.3;
 		CGPathRef path = CTFrameGetPath(_frame);
 		CGRect rect = CGPathGetBoundingBox(path);
         
-        CGFloat y = self.frame.origin.y + rect.size.height - origin.y;
-
+        //CGFloat y = self.frame.origin.y + rect.size.height - origin.y;
+        
+        CGFloat y = rect.size.height - origin.y;
+        
+        //Good e-freakin-nough.  Ergh.
+        
 		if ((location.y >= y) && (location.x >= origin.x))
 		{
 			line = CFArrayGetValueAtIndex(lines, i);
@@ -350,11 +354,11 @@ float const yAdjustmentFactor = 1.3;
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{	
+{
 	[super touchesMoved:touches withEvent:event];
 	
 	UITouch *touch = [touches anyObject];
-	CGPoint location = [touch locationInView:self];	
+	CGPoint location = [touch locationInView:self];
 	location.y += (self.fontSize / yAdjustmentFactor);
 	location.x -= self.paddingLeft;
 	
@@ -404,12 +408,19 @@ float const yAdjustmentFactor = 1.3;
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-
+    
 	if (_touchedLink)
 	{
-        [[UIApplication sharedApplication] openURL:[_touchedLink URL]];
+        NSString *urlString = [[_touchedLink URL] absoluteString];
+        if ([urlString hasPrefix:@"@"]) {
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kLoadUserWithUsernameNotification object:nil userInfo:@{@"username": [urlString substringFromIndex:1]}];
+        }
+        else {
+            [[UIApplication sharedApplication] openURL:[_touchedLink URL]];
+        }
 	}
-	else {        
+	else {
         [(NormalCellView *)[[self superview] superview] doubleTapAction:nil];
     }
     
@@ -507,7 +518,7 @@ float const yAdjustmentFactor = 1.3;
 	}
 	
 	CFMutableAttributedStringRef maString = CFAttributedStringCreateMutable(kCFAllocatorDefault, 0);
-
+    
 	CFAttributedStringBeginEditing(maString);
 	CFAttributedStringReplaceString(maString, CFRangeMake(0, 0), (CFStringRef)self.text);
 	
@@ -539,14 +550,14 @@ float const yAdjustmentFactor = 1.3;
 			CFAttributedStringSetAttribute(maString, range, kCTForegroundColorAttributeName, [self.linkColor CGColor]);
 			CFAttributedStringSetAttribute(maString, range, kCTUnderlineColorAttributeName, [self.linkColor CGColor]);
 		}
-				
+        
 		if ([link isEqual:_touchedLink])
 		{
 			CFAttributedStringSetAttribute(maString, range, kCTForegroundColorAttributeName, [self.highlightedLinkColor CGColor]);
 			CFAttributedStringSetAttribute(maString, range, kCTUnderlineColorAttributeName, [self.highlightedLinkColor CGColor]);
 		}
 	}
-		
+    
 	CFAttributedStringEndEditing(maString);
 	
 	_framesetter = CTFramesetterCreateWithAttributedString(maString);
@@ -556,7 +567,7 @@ float const yAdjustmentFactor = 1.3;
 }
 
 - (void)drawInContext:(CGContextRef)ctx bounds:(CGRect)bounds
-{	
+{
 	[self createFramesetter];
 	
 	CGRect frameRect = bounds;
@@ -565,11 +576,11 @@ float const yAdjustmentFactor = 1.3;
 	
 	frameRect.size.height = FLT_MAX;
 	
-	frameRect.size.height = [[self class] measureFrameHeightForText:self.text 
-														   fontName:self.fontName 
-														   fontSize:self.fontSize 
-												 constrainedToWidth:frameRect.size.width 
-														 paddingTop:self.paddingTop 
+	frameRect.size.height = [[self class] measureFrameHeightForText:self.text
+														   fontName:self.fontName
+														   fontSize:self.fontSize
+												 constrainedToWidth:frameRect.size.width
+														 paddingTop:self.paddingTop
 														paddingLeft:self.paddingLeft];
 	
 	frameRect.origin.y = CGRectGetMaxY(bounds) - frameRect.size.height;
@@ -638,7 +649,7 @@ float const yAdjustmentFactor = 1.3;
 					CGFloat y = rect.origin.y + rect.size.height - origin.y;
 					runBounds.origin.y += y - (self.fontSize / yAdjustmentFactor);
 					
-					// adjust the rect to be slightly bigger than the text					
+					// adjust the rect to be slightly bigger than the text
 					runBounds.origin.x -= self.fontSize / 4;
 					runBounds.size.width += self.fontSize / 2;
 					runBounds.origin.y -= self.fontSize / 8;                // this is more favourable
@@ -689,7 +700,7 @@ float const yAdjustmentFactor = 1.3;
 		}
 		
 		[bg drawInRect:rect]; // Using 'bounds' here causes the bubble to be drawn with a white line near the stretching point.
-		                      // Using 'rect' fixes it... no idea why.
+        // Using 'rect' fixes it... no idea why.
 	}
 	
 	bounds.size.width -= self.paddingLeft * 2;

@@ -8,7 +8,6 @@
 
 #import "CellBackground.h"
 
-
 @implementation CellBackground
 
 +(Class)layerClass

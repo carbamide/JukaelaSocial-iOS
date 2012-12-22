@@ -7,7 +7,6 @@
 //
 
 #import <AudioToolbox/AudioToolbox.h>
-#import "AppDelegate.h"
 #import "FeedViewController.h"
 #import "LoginViewController.h"
 #import "SFHFKeychainUtils.h"
@@ -158,7 +157,7 @@
     return 2;
 }
 
--(IBAction)loginAction:(id)sender
+-(void)loginAction:(id)sender
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -178,7 +177,7 @@
     [[NSUserDefaults standardUserDefaults] setValue:[_username text] forKey:kUsername];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [self setProgressHUD:[[MBProgressHUD alloc] initWithView:[self view]]];
+    [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
     [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];
     [[self progressHUD] setLabelText:@"Logging in..."];
     [[self progressHUD] setDelegate:self];
@@ -315,6 +314,8 @@
 
 -(void)viewDidLoad
 {
+    [kAppDelegate setCurrentViewController:self];
+
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMyLove:)];
     
     [recognizer setNumberOfTapsRequired:2];
@@ -356,6 +357,7 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:@"new_user" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
         [[self username] setText:[aNotification userInfo][kEmail]];
     }];
+    
     _username = [[UITextField alloc] init];
     _password = [[UITextField alloc] init];
 }

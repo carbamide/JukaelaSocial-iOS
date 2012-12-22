@@ -13,6 +13,7 @@
 @interface ImageConfirmationViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
+
 @property (strong, nonatomic) UIImage *theImage;
 @property (strong, nonatomic) UIImagePickerController *pickerController;
 

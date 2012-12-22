@@ -6,14 +6,13 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "DirectMessageComposerViewController.h"
-#import "AppDelegate.h"
-#import "GravatarHelper.h"
 #import "CellBackground.h"
+#import "DirectMessageComposerViewController.h"
+#import "GravatarHelper.h"
 
 @interface DirectMessageComposerViewController ()
-@property (strong, nonatomic) NSMutableArray *usernameArray;
 @property (strong, nonatomic) NSMutableArray *autocompleteUsernames;
+@property (strong, nonatomic) NSMutableArray *usernameArray;
 @end
 
 @implementation DirectMessageComposerViewController
@@ -51,8 +50,9 @@
     UIWindow *tempWindow = [kAppDelegate window];
     
     if (tempWindow.frame.size.height > 500) {
-        [[self countDownLabel] setFrame:CGRectMake(_countDownLabel.frame.origin.x, _countDownLabel.frame.origin.y + 100, _countDownLabel.frame.size.width, _countDownLabel.frame.size.height)];
-        [[self textView] setFrame:CGRectMake(_textView.frame.origin.x, _textView.frame.origin.y, _textView.frame.size.width, _textView.frame.size.height + 100)];
+        [[self countDownLabel] setFrame:CGRectOffset(_countDownLabel.frame, 0, 90)];
+        
+        [[self textView] setFrame:CGRectMake(_textView.frame.origin.x, _textView.frame.origin.y, _textView.frame.size.width, _textView.frame.size.height + 90)];
     }
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [kAppDelegate userID]]]]];

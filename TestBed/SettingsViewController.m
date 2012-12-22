@@ -8,12 +8,9 @@
 
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
-#import "AppDelegate.h"
 #import "SettingsViewController.h"
-#ifdef __IPHONE_6_0
-#endif
-#import "TestFlight.h"
 #import "SFHFKeychainUtils.h"
+#import "TestFlight.h"
 
 NS_ENUM(NSInteger, SocialTypes) {
     FacebookType,
@@ -22,7 +19,6 @@ NS_ENUM(NSInteger, SocialTypes) {
 };
 
 @interface SettingsViewController ()
-
 @property (strong, nonatomic) UISwitch *facebookSwitch;
 @property (strong, nonatomic) UISwitch *twitterSwitch;
 @end

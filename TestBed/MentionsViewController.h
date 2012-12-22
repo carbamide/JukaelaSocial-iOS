@@ -11,9 +11,9 @@
 
 @interface MentionsViewController : JukaelaTableViewController <MBProgressHUDDelegate>
 
-@property (strong, nonatomic) NSMutableArray *mentions;
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
-@property (strong, nonatomic) NSString *userID;
 @property (strong, nonatomic) NSDictionary *tempDict;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSMutableArray *mentions;
+@property (strong, nonatomic) NSString *userID;
 
 @end

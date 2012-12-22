@@ -10,13 +10,13 @@
 
 @interface DirectMessageComposerViewController : JukaelaViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate>
 
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *postButton;
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) IBOutlet UILabel *countDownLabel;
 @property (strong, nonatomic) IBOutlet UITextField *textField;
 @property (strong, nonatomic) IBOutlet UITextView *textView;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *postButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) IBOutlet UIView *backgroundView;
-@property (strong, nonatomic) IBOutlet UILabel *countDownLabel;
 
 @property (strong, nonatomic) UITableView *usernameTableView;
 

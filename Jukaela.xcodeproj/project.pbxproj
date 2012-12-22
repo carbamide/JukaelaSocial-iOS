@@ -76,7 +76,6 @@
 		2976435D16826DB600D79876 /* RequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2976435C16826DB600D79876 /* RequestFactory.m */; };
 		2979C6851676C83400B61F3E /* UsersCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2979C6841676C83400B61F3E /* UsersCollectionViewCell.m */; };
 		297FE039156846E0005FBFDA /* FollowerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 297FE038156846E0005FBFDA /* FollowerViewController.m */; };
-		2986775515B50CBD0027C7CA /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775415B50CBD0027C7CA /* Twitter.framework */; };
 		2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775A15B5148B0027C7CA /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		2988B25E1605534A00D0202E /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988B25D1605534A00D0202E /* FeedbackViewController.m */; };
 		298A641D15E267B2009BF175 /* action-black-button-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 298A640F15E267B2009BF175 /* action-black-button-selected.png */; };
@@ -488,7 +487,6 @@
 				2975554315CF2DF800CAA9A7 /* libz.dylib in Frameworks */,
 				29295F6415C3373700F1968B /* Social.framework in Frameworks */,
 				2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */,
-				2986775515B50CBD0027C7CA /* Twitter.framework in Frameworks */,
 				293A7426155F68AA004D27D2 /* Security.framework in Frameworks */,
 				29D5B84915546055000D9374 /* QuartzCore.framework in Frameworks */,
 				2956875B1552C96700FE741C /* UIKit.framework in Frameworks */,

@@ -253,7 +253,7 @@ NS_ENUM(NSInteger, SocialTypes) {
                 
                 ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
                 
-                [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
+                [accountStore requestAccessToAccountsWithType:accountType options:0 completion:^(BOOL granted, NSError *error) {
                     if (granted) {
                         NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
                         if ([accountsArray count] > 0) {

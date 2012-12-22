@@ -8,7 +8,6 @@
 #import <Accounts/Accounts.h>
 #import <objc/runtime.h>
 #import <Social/Social.h>
-#import <Twitter/Twitter.h>
 #import "AHMarkedHyperlink.h"
 #import "FeedViewController.h"
 #import "CellBackground.h"
@@ -998,7 +997,7 @@
     
     [webViewController setBarsTintColor:[UIColor darkGrayColor]];
     
-    [self presentModalViewController:webViewController animated:YES];
+    [self presentViewController:webViewController animated:YES completion:nil];
 }
 
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
@@ -1010,7 +1009,8 @@
         
         [errorAlert show];
     }
-    [controller dismissModalViewControllerAnimated: YES];
+    
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)refreshControlRefresh:(id)sender

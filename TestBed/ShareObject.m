@@ -8,7 +8,6 @@
 
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
-#import <Twitter/Twitter.h>
 #import "NormalCellView.h"
 #import "ShareObject.h"
 #import "WBSuccessNoticeView.h"
@@ -23,14 +22,14 @@
     
     ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     
-    [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
+    [accountStore requestAccessToAccountsWithType:accountType options:0 completion:^(BOOL granted, NSError *error) {
         if(granted) {
             NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
             
             if ([accountsArray count] > 0) {
                 ACAccount *twitterAccount = accountsArray[0];
                 
-                TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:@{@"status": stringToSend} requestMethod:TWRequestMethodPOST];
+                SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:nil];
                 
                 [postRequest setAccount:twitterAccount];
                 

@@ -128,7 +128,7 @@
     [mailViewController setMessageBody:self.mainWebView.request.URL.absoluteString isHTML:NO];
     mailViewController.modalPresentationStyle = UIModalPresentationFormSheet;
     
-    [self presentModalViewController:mailViewController animated:YES];
+    [self presentViewController:mailViewController animated:YES completion:nil];
 }
 
 #pragma mark - Initialization
@@ -347,7 +347,7 @@
 }
 
 - (void)doneButtonClicked:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark -
@@ -373,7 +373,7 @@
   		[mailViewController setMessageBody:self.mainWebView.request.URL.absoluteString isHTML:NO];
 		mailViewController.modalPresentationStyle = UIModalPresentationFormSheet;
         
-		[self presentModalViewController:mailViewController animated:YES];
+        [self presentViewController:mailViewController animated:YES completion:nil];
 	}
     
 }
@@ -385,7 +385,7 @@
           didFinishWithResult:(MFMailComposeResult)result
                         error:(NSError *)error
 {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

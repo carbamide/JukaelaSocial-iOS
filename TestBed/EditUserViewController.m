@@ -130,7 +130,7 @@
 
 -(IBAction)cancel:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)saveProfile:(id)sender

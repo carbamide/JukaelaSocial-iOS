@@ -591,7 +591,7 @@
     
     [webViewController setBarsTintColor:[UIColor darkGrayColor]];
     
-    [self presentModalViewController:webViewController animated:YES];
+    [self presentViewController:webViewController animated:YES completion:nil];
 }
 
 -(void)requestWithUsername:(NSString *)username

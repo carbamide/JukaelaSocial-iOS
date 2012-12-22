@@ -102,7 +102,7 @@
 
 - (void)done:(id)sender
 {
-	[self.parentViewController dismissModalViewControllerAnimated:YES];
+    [[self parentViewController] dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

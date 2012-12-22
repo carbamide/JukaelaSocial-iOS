@@ -8,7 +8,6 @@
 
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
-#import <Twitter/Twitter.h>
 #import "CellBackground.h"
 #import "GravatarHelper.h"
 #import "ImageConfirmationViewController.h"
@@ -445,21 +444,20 @@
         stringToSend = [stringToSend stringByReplacingOccurrencesOfString:[self urlString] withString:@""];
     }
     
-    [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
+    [accountStore requestAccessToAccountsWithType:accountType options:0 completion:^(BOOL granted, NSError *error) {
         if(granted) {
             NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
             
             if ([accountsArray count] > 0) {
                 ACAccount *twitterAccount = accountsArray[0];
                 
-                TWRequest *postRequest = nil;
+                SLRequest *postRequest = nil;
                 
                 if ([self tempImageData]) {
-                    postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"] parameters:nil requestMethod:TWRequestMethodPOST];
+                    postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"https://upload.twitter.com/1/statuses/update_with_media.json"] parameters:nil];
                     
-                    [postRequest addMultiPartData:[self tempImageData] withName:@"media[]" type:@"multipart/form-data"];
-                    
-                    [postRequest addMultiPartData:[stringToSend dataUsingEncoding:NSUTF8StringEncoding] withName:@"status" type:@"multipart/form-data"];
+                    [postRequest addMultipartData:[self tempImageData] withName:@"media[]" type:@"multipart/form-data" filename:@"image.jpg"];
+                    [postRequest addMultipartData:[stringToSend dataUsingEncoding:NSUTF8StringEncoding] withName:@"status" type:@"multipart/form-data" filename:nil];
                     
                     [postRequest setAccount:twitterAccount];
                     
@@ -489,8 +487,8 @@
                     }];
                 }
                 else {
-                    postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:@{@"status": stringToSend} requestMethod:TWRequestMethodPOST];
-                    
+                    postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:nil];
+
                     [postRequest setAccount:twitterAccount];
                     
                     [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {

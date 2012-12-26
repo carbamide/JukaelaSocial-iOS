@@ -37,7 +37,7 @@
 
 -(void)getUserInfo:(NSString *)userID
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, userID]];
     
@@ -49,7 +49,7 @@
 
             [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             if ([self tempDict][kName] && [self tempDict][kName] != [NSNull null]) {
                 [[self nameTextField] setText:[self tempDict][kName]];
@@ -92,7 +92,7 @@
 {
     [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     
@@ -175,7 +175,7 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[ActivityManager sharedManager] decrementActivityCount];
         
         if (data) {
             [self dismissViewControllerAnimated:YES completion:nil];

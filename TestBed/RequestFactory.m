@@ -35,10 +35,16 @@
     return [NSString stringWithFormat:@"{\"user\": { \"name\":\"%@\",\"username\":\"%@\", \"email\":\"%@\", \"password\":\"%@\", \"password_confirmation\":\"%@\"}}", name, username, email, password, passwordConfirmation];
 }
 
-+(NSString *)postRequestWithContent:(NSString *)content userID:(NSString *)userID imageURL:(NSString *)imageURL
++(NSString *)postRequestWithContent:(NSString *)content userID:(NSString *)userID imageURL:(NSString *)imageURL withReplyTo:(NSNumber *)replyToID;
 {
-    if (imageURL) {
+    if (imageURL && replyToID) {
+        return [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@, \"image_url\": \"%@\", \"in_reply_to\": %@}", content, userID, imageURL, replyToID];
+    }
+    else if (imageURL && !replyToID) {
         return [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@, \"image_url\": \"%@\"}", content, userID, imageURL];
+    }
+    else if (!imageURL && replyToID) {
+        return [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@, \"in_reply_to\": %@}", content, userID, replyToID];
     }
     else {
         return [NSString stringWithFormat:@"{\"content\":\"%@\",\"user_id\":%@}", content, userID];

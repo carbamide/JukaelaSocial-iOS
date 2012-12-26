@@ -159,7 +159,7 @@
 
 -(void)loginAction:(id)sender
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     [[self view] findAndResignFirstResponder];
     
@@ -233,7 +233,7 @@
             }
         }
         else {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [[self progressHUD] hide:YES];
             
@@ -244,7 +244,7 @@
             [errorAlert show];
         }
         
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[ActivityManager sharedManager] decrementActivityCount];
     }];
 }
 
@@ -252,7 +252,7 @@
 {
     [[self progressHUD] setLabelText:@"Loading Feed..."];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
     
@@ -266,7 +266,7 @@
         if (data) {
             [self setTempFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [self performSegueWithIdentifier:kShowFeed sender:self];
         }

@@ -1,8 +1,8 @@
 //
-//  UsersPostsViewController.m
+//  ThreadedPostsViewController.m
 //  Jukaela
 //
-//  Created by Josh Barrow on 5/17/12.
+//  Created by Josh on 12/26/12.
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
@@ -11,7 +11,7 @@
 #import "GravatarHelper.h"
 #import "JEImages.h"
 #import "NSDate+RailsDateParser.h"
-#import "UsersPostsViewController.h"
+#import "ThreadedPostsViewController.h"
 #import "NormalCellView.h"
 #import "NormalWithImageCellView.h"
 #import "PostViewController.h"
@@ -23,7 +23,7 @@
 #import "WBErrorNoticeView.h"
 #import "UIImageView+Curled.h"
 
-@interface UsersPostsViewController ()
+@interface ThreadedPostsViewController ()
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
 @property (strong, nonatomic) NSCache *externalImageCache;
@@ -31,7 +31,7 @@
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
 @end
 
-@implementation UsersPostsViewController
+@implementation ThreadedPostsViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -44,37 +44,29 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [kAppDelegate setCurrentViewController:self];
-    
     [[self navigationController] setToolbarHidden:YES animated:YES];
 
+    [kAppDelegate setCurrentViewController:self];
+        
     [super viewDidAppear:animated];
 }
 
 - (void)viewDidLoad
 {
-    if ([[self navigationController] viewControllers][0] != self) {
-        [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf)]];
-    }
+    [[self navigationController] setToolbarHidden:YES animated:NO];
+
+    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf)]];
+    
+    NSLog(@"%@", [self threadedPosts]);
     
     [self setExternalImageCache:[[NSCache alloc] init]];
     
-    JRefreshControl *refreshControl = [[JRefreshControl alloc] init];
-    
-    [refreshControl setTintColor:[UIColor blackColor]];
-    
-    [refreshControl addTarget:self action:@selector(refreshTableInformation) forControlEvents:UIControlEventValueChanged];
-    
-    [self setRefreshControl:refreshControl];
-    
     [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-    
-    [self setTitle:[[self userPostArray] lastObject][kName]];
-    
+        
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
-        
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:kSendToUserNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kLoadUserWithUsernameNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
@@ -88,16 +80,6 @@
     }];
     
     [super viewDidLoad];
-}
-
--(void)setupNotifications
-{
-    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-    
-    [defaultCenter addObserverForName:kRefreshYourTablesNotification object:nil queue:mainQueue usingBlock:^(NSNotification *notification) {
-        [self refreshTableInformation];
-    }];
 }
 
 - (void)viewDidUnload
@@ -114,13 +96,13 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *contentText = [self userPostArray][[indexPath row]][kContent];
+    NSString *contentText = [self threadedPosts][[indexPath row]][kContent];
     
     CGSize constraint = CGSizeMake(300, 20000);
     
     CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
-    if ([self userPostArray][[indexPath row]][kRepostUserID] && [self userPostArray][[indexPath row]][kRepostUserID] != [NSNull null]) {
+    if ([self threadedPosts][[indexPath row]][kRepostUserID] && [self threadedPosts][[indexPath row]][kRepostUserID] != [NSNull null]) {
         return contentSize.height + 50 + 10 + 20;
     }
     else {
@@ -135,7 +117,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self userPostArray] count];
+    return [[self threadedPosts] count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -145,7 +127,7 @@
     
     id cell = nil;
     
-    if ([self userPostArray][[indexPath row]][kImageURL] && [self userPostArray][[indexPath row]][kImageURL] != [NSNull null]) {
+    if ([self threadedPosts][[indexPath row]][kImageURL] && [self threadedPosts][[indexPath row]][kImageURL] != [NSNull null]) {
         cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
         
         if (!cell) {
@@ -164,8 +146,8 @@
         }
     }
     
-    if ([self userPostArray][[indexPath row]][kImageURL] && [self userPostArray][[indexPath row]][kImageURL] != [NSNull null]) {
-        NSMutableString *tempString = [NSMutableString stringWithString:[self userPostArray][[indexPath row]][kImageURL]];
+    if ([self threadedPosts][[indexPath row]][kImageURL] && [self threadedPosts][[indexPath row]][kImageURL] != [NSNull null]) {
+        NSMutableString *tempString = [NSMutableString stringWithString:[self threadedPosts][[indexPath row]][kImageURL]];
         
         NSString *tempExtensionString = [NSString stringWithFormat:@".%@", [tempString pathExtension]];
         
@@ -227,52 +209,52 @@
     [[cell contentText] setFontName:kFontPreference];
     [[cell contentText] setFontSize:17];
     
-    if ([self userPostArray][[indexPath row]][kContent]) {
-        [[cell contentText] setText:[self userPostArray][[indexPath row]][kContent]];
+    if ([self threadedPosts][[indexPath row]][kContent]) {
+        [[cell contentText] setText:[self threadedPosts][[indexPath row]][kContent]];
     }
     else {
         [[cell contentText] setText:@"Loading..."];
     }
     
-    if ([self userPostArray][[indexPath row]][kName] && [self userPostArray][[indexPath row]][kName] != [NSNull null]) {
-        [[cell nameLabel] setText:[self userPostArray][[indexPath row]][kName]];
+    if ([self threadedPosts][[indexPath row]][kName] && [self threadedPosts][[indexPath row]][kName] != [NSNull null]) {
+        [[cell nameLabel] setText:[self threadedPosts][[indexPath row]][kName]];
     }
     
-    if ([self userPostArray][[indexPath row]][kUsername] && [self userPostArray][[indexPath row]][kUsername] != [NSNull null]) {
-        [[cell usernameLabel] setText:[NSString stringWithFormat:@"@%@", [self userPostArray][[indexPath row]][kUsername]]];
+    if ([self threadedPosts][[indexPath row]][kUsername] && [self threadedPosts][[indexPath row]][kUsername] != [NSNull null]) {
+        [[cell usernameLabel] setText:[NSString stringWithFormat:@"@%@", [self threadedPosts][[indexPath row]][kUsername]]];
     }
     
-    if ([self userPostArray][[indexPath row]][kRepostUserID] && [self userPostArray][[indexPath row]][kRepostUserID] != [NSNull null]) {
-        CGSize contentSize = [[self userPostArray][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kFontPreference size:17]
+    if ([self threadedPosts][[indexPath row]][kRepostUserID] && [self threadedPosts][[indexPath row]][kRepostUserID] != [NSNull null]) {
+        CGSize contentSize = [[self threadedPosts][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kFontPreference size:17]
                                                                          constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                              lineBreakMode:NSLineBreakByWordWrapping];
         
-        CGSize nameSize = [[self userPostArray][[indexPath row]][kName] sizeWithFont:[UIFont fontWithName:kFontPreference size:14]
+        CGSize nameSize = [[self threadedPosts][[indexPath row]][kName] sizeWithFont:[UIFont fontWithName:kFontPreference size:14]
                                                                    constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                        lineBreakMode:NSLineBreakByWordWrapping];
         
         CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
         
-        if ([[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
+        if ([[NSString stringWithFormat:@"%@", [self threadedPosts][[indexPath row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
             [[cell repostedNameLabel] setFrame:CGRectMake(12, height, 228, 20)];
         }
         else {
             [[cell repostedNameLabel] setFrame:CGRectMake(86, height, 228, 20)];
         }
-        [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [self userPostArray][[indexPath row]][kRepostName]]];
+        [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [self threadedPosts][[indexPath row]][kRepostName]]];
     }
     
-    NSDate *tempDate = [NSDate dateWithISO8601String:[self userPostArray][[indexPath row]][kCreationDate] withFormatter:[self dateFormatter]];
+    NSDate *tempDate = [NSDate dateWithISO8601String:[self threadedPosts][[indexPath row]][kCreationDate] withFormatter:[self dateFormatter]];
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][kUserID]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self threadedPosts][[indexPath row]][kUserID]]]]];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
     objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
     
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][kUserID]]]] error:nil];
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self threadedPosts][[indexPath row]][kUserID]]]] error:nil];
     
     if (image) {
         [[cell imageView] setImage:image];
@@ -281,7 +263,7 @@
         if (attributes) {
             if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
                 dispatch_async(queue, ^{
-                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userPostArray][[indexPath row]][kEmail] withSize:40]]];
+                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self threadedPosts][[indexPath row]][kEmail] withSize:40]]];
                     
 #if (TARGET_IPHONE_SIMULATOR)
                     image = [JEImages normalize:image];
@@ -296,7 +278,7 @@
                             [cell setNeedsDisplay];
                         }
                         
-                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][kUserID]]];
+                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self threadedPosts][[indexPath row]][kUserID]]];
                     });
                 });
             }
@@ -304,7 +286,7 @@
     }
     else {
         dispatch_async(queue, ^{
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userPostArray][[indexPath row]][kEmail] withSize:40]]];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self threadedPosts][[indexPath row]][kEmail] withSize:40]]];
             
 #if (TARGET_IPHONE_SIMULATOR)
             image = [JEImages normalize:image];
@@ -319,7 +301,7 @@
                     [cell setNeedsDisplay];
                 }
                 
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self userPostArray][[indexPath row]][kUserID]]];
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self threadedPosts][[indexPath row]][kUserID]]];
             });
         });
     }
@@ -343,7 +325,7 @@
     else if ([[segue identifier] isEqualToString:kShowReplyView]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
-        [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self userPostArray][[[self tempIndexPath] row]][kUsername]]];
+        [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self threadedPosts][[[self tempIndexPath] row]][kUsername]]];
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }
@@ -358,32 +340,6 @@
     }
 }
 
-
--(void)refreshTableInformation
-{
-    [[ActivityManager sharedManager] incrementActivityCount];
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [self userID]]];
-    
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {
-            [self setUserPostArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-            
-            [[self tableView] reloadData];
-            
-            [[self refreshControl] endRefreshing];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
-        }
-        else {
-            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
-    }];
-}
-
 -(void)hudWasHidden:(MBProgressHUD *)hud
 {
     [hud removeFromSuperview];
@@ -391,12 +347,12 @@
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath row] == ([[self userPostArray] count] - 1)) {
+    if ([indexPath row] == ([[self threadedPosts] count] - 1)) {
         [[ActivityManager sharedManager] incrementActivityCount];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [self userID]]];
         
-        NSString *requestString = [RequestFactory feedRequestFrom:[[self userPostArray] count] to:[[self userPostArray] count] + 20];
+        NSString *requestString = [RequestFactory feedRequestFrom:[[self threadedPosts] count] to:[[self threadedPosts] count] + 20];
         
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
@@ -406,9 +362,9 @@
             if (data) {
                 NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
                 
-                NSInteger oldTableViewCount = [[self userPostArray] count];
+                NSInteger oldTableViewCount = [[self threadedPosts] count];
                 
-                [[self userPostArray] addObjectsFromArray:tempArray];
+                [[self threadedPosts] addObjectsFromArray:tempArray];
                 
                 @try {
                     [[self tableView] beginUpdates];
@@ -512,11 +468,11 @@
         
         NSURL *url = nil;
         
-        if ([self userPostArray][[indexPathOfTappedRow row]][kOriginalPosterID] && [self userPostArray][[indexPathOfTappedRow row]][kOriginalPosterID] != [NSNull null]) {
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self userPostArray][[indexPathOfTappedRow row]][kOriginalPosterID]]];
+        if ([self threadedPosts][[indexPathOfTappedRow row]][kOriginalPosterID] && [self threadedPosts][[indexPathOfTappedRow row]][kOriginalPosterID] != [NSNull null]) {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self threadedPosts][[indexPathOfTappedRow row]][kOriginalPosterID]]];
         }
         else {
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self userPostArray][[indexPathOfTappedRow row]][kUserID]]];
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self threadedPosts][[indexPathOfTappedRow row]][kUserID]]];
         }
         
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -555,21 +511,21 @@
 
 -(void)showImage:(NSNotification *)aNotification
 {
-    if ([kAppDelegate currentViewController] == self) {        
+    if ([kAppDelegate currentViewController] == self) {
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
         
-        NSURL *urlOfImage = [NSURL URLWithString:[self userPostArray][[indexPathOfTappedRow row]][kImageURL]];
+        NSURL *urlOfImage = [NSURL URLWithString:[self threadedPosts][[indexPathOfTappedRow row]][kImageURL]];
         
         MWPhoto *tempPhoto = [MWPhoto photoWithURL:urlOfImage];
         
-        [tempPhoto setCaption:[self userPostArray][[indexPathOfTappedRow row]][kContent]];
+        [tempPhoto setCaption:[self threadedPosts][[indexPathOfTappedRow row]][kContent]];
         
         [self setPhotos:@[tempPhoto]];
         
         MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
         
         [browser setDisplayActionButton:YES];
-                
+        
         [[self navigationController] pushViewController:browser animated:YES];
     }
 }

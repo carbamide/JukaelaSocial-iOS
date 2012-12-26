@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
 
+#import "ActivityManager.h"
 #import "BlockAlertView.h"
 #import "BlockActionSheet.h"
 #import "Helpers.h"
@@ -40,6 +41,7 @@ static char *const kIndexPathAssociationKey = "Jukaela_index_path";
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+#define COLOR_RGB(r,g,b,a)      [UIColor colorWithRed:((r)/255.0) green:((g)/255.0) blue:((b)/255.0) alpha:(a)]
 
 #define kHelveticaLight @"Helvetica-Light"
 #define kImageURL @"image_url"
@@ -83,6 +85,7 @@ static char *const kIndexPathAssociationKey = "Jukaela_index_path";
 #define kShowFollowing @"ShowFollowing"
 #define kShowFollowers @"ShowFollowers"
 #define kShowUserPosts @"ShowUserPosts"
+#define kShowThread @"ShowThread"
 
 #define kReadUsernameFromDefaultsPreference @"read_username_from_defaults"
 #define kDeviceTokenPreference @"deviceToken"

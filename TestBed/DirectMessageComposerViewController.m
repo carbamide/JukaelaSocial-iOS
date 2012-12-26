@@ -117,7 +117,7 @@
 
 -(IBAction)post:(id)sender
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/direct_messages.json", kSocialURL]];
     
@@ -128,7 +128,7 @@
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[ActivityManager sharedManager] decrementActivityCount];
         
         if (!data) {
             BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"There has been an error sending your message."];
@@ -249,7 +249,7 @@
         [self setUsernameArray:[[NSMutableArray alloc] init]];
     }
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users.json", kSocialURL]];
     
@@ -257,7 +257,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             NSArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
             

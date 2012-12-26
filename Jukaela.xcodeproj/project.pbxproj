@@ -56,7 +56,6 @@
 		295946211683927D00F2D861 /* ambitsek.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2959461F1683927D00F2D861 /* ambitsek.otf */; };
 		295946221683927D00F2D861 /* joystix-monospace.otf in Resources */ = {isa = PBXBuildFile; fileRef = 295946201683927D00F2D861 /* joystix-monospace.otf */; };
 		295CB26D15E528EA001A43DA /* TMImgurUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB26C15E528EA001A43DA /* TMImgurUploader.m */; };
-		295CB27415E528F4001A43DA /* NetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB26F15E528F4001A43DA /* NetworkActivityIndicatorManager.m */; };
 		295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB27115E528F4001A43DA /* TMHTTPClient.m */; };
 		295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB27315E528F4001A43DA /* TMHTTPRequest.m */; };
 		29714EA015C7204300109E5A /* SORelativeDateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */; };
@@ -139,6 +138,7 @@
 		29D433C715FE1F6400ABCB2F /* AHHyperlinkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C115FE1F6400ABCB2F /* AHHyperlinkScanner.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29D433C815FE1F6400ABCB2F /* AHLinkLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C315FE1F6400ABCB2F /* AHLinkLexer.l */; };
 		29D433C915FE1F6400ABCB2F /* AHMarkedHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C515FE1F6400ABCB2F /* AHMarkedHyperlink.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29D5115F168B9E1200FF298B /* ThreadedPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5115E168B9E1200FF298B /* ThreadedPostsViewController.m */; };
 		29D5B81515545B3A000D9374 /* GravatarHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B81415545B3A000D9374 /* GravatarHelper.m */; };
 		29D5B82015545C8D000D9374 /* JEImages.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B81F15545C8D000D9374 /* JEImages.m */; };
 		29D5B82715545C9F000D9374 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B82215545C9F000D9374 /* UIImage+Alpha.m */; };
@@ -159,6 +159,7 @@
 		29DB78CB15B6F72D0056C68E /* PrettyShadowPlainTableview.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78C015B6F72D0056C68E /* PrettyShadowPlainTableview.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29DB78CC15B6F72D0056C68E /* PrettyTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78C215B6F72D0056C68E /* PrettyTabBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29DB78CD15B6F72D0056C68E /* PrettyToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DB78C415B6F72D0056C68E /* PrettyToolbar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29E2A8FB16866CF4003F05A4 /* ActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E2A8FA16866CF4003F05A4 /* ActivityManager.m */; };
 		29E517131608A2A000CA422F /* CurledViewBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E5170E1608A2A000CA422F /* CurledViewBase.m */; };
 		29E517141608A2A000CA422F /* UIButton+Curled.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E517101608A2A000CA422F /* UIButton+Curled.m */; };
 		29E517151608A2A000CA422F /* UIImageView+Curled.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E517121608A2A000CA422F /* UIImageView+Curled.m */; };
@@ -261,8 +262,6 @@
 		295946201683927D00F2D861 /* joystix-monospace.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "joystix-monospace.otf"; sourceTree = "<group>"; };
 		295CB26B15E528EA001A43DA /* TMImgurUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMImgurUploader.h; sourceTree = "<group>"; };
 		295CB26C15E528EA001A43DA /* TMImgurUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMImgurUploader.m; sourceTree = "<group>"; };
-		295CB26E15E528F4001A43DA /* NetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
-		295CB26F15E528F4001A43DA /* NetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
 		295CB27015E528F4001A43DA /* TMHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMHTTPClient.h; sourceTree = "<group>"; };
 		295CB27115E528F4001A43DA /* TMHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMHTTPClient.m; sourceTree = "<group>"; };
 		295CB27215E528F4001A43DA /* TMHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMHTTPRequest.h; sourceTree = "<group>"; };
@@ -388,6 +387,8 @@
 		29D433C415FE1F6400ABCB2F /* AHMarkedHyperlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHMarkedHyperlink.h; sourceTree = "<group>"; };
 		29D433C515FE1F6400ABCB2F /* AHMarkedHyperlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHMarkedHyperlink.m; sourceTree = "<group>"; };
 		29D433C615FE1F6400ABCB2F /* AutoHyperlinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoHyperlinks.h; sourceTree = "<group>"; };
+		29D5115D168B9E1200FF298B /* ThreadedPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadedPostsViewController.h; sourceTree = "<group>"; };
+		29D5115E168B9E1200FF298B /* ThreadedPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadedPostsViewController.m; sourceTree = "<group>"; };
 		29D5B81315545B3A000D9374 /* GravatarHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GravatarHelper.h; sourceTree = "<group>"; };
 		29D5B81415545B3A000D9374 /* GravatarHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GravatarHelper.m; sourceTree = "<group>"; };
 		29D5B81E15545C8D000D9374 /* JEImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JEImages.h; sourceTree = "<group>"; };
@@ -426,6 +427,8 @@
 		29DB78C215B6F72D0056C68E /* PrettyTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyTabBar.m; sourceTree = "<group>"; };
 		29DB78C315B6F72D0056C68E /* PrettyToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyToolbar.h; sourceTree = "<group>"; };
 		29DB78C415B6F72D0056C68E /* PrettyToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyToolbar.m; sourceTree = "<group>"; };
+		29E2A8F916866CF4003F05A4 /* ActivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityManager.h; sourceTree = "<group>"; };
+		29E2A8FA16866CF4003F05A4 /* ActivityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityManager.m; sourceTree = "<group>"; };
 		29E5170D1608A2A000CA422F /* CurledViewBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurledViewBase.h; sourceTree = "<group>"; };
 		29E5170E1608A2A000CA422F /* CurledViewBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurledViewBase.m; sourceTree = "<group>"; };
 		29E5170F1608A2A000CA422F /* UIButton+Curled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Curled.h"; sourceTree = "<group>"; };
@@ -570,6 +573,7 @@
 			isa = PBXGroup;
 			children = (
 				29D5B85D1554768F000D9374 /* Singletons */,
+				29E2A8FC16867217003F05A4 /* Objects */,
 				29D5B85E15547695000D9374 /* User Interface */,
 				29D5B85F1554769D000D9374 /* View Controllers */,
 				29D5B860155476A4000D9374 /* Custom Classes */,
@@ -607,8 +611,6 @@
 		295CB26915E528DA001A43DA /* TM HTTP Stuff */ = {
 			isa = PBXGroup;
 			children = (
-				295CB26E15E528F4001A43DA /* NetworkActivityIndicatorManager.h */,
-				295CB26F15E528F4001A43DA /* NetworkActivityIndicatorManager.m */,
 				295CB27015E528F4001A43DA /* TMHTTPClient.h */,
 				295CB27115E528F4001A43DA /* TMHTTPClient.m */,
 				295CB27215E528F4001A43DA /* TMHTTPRequest.h */,
@@ -979,14 +981,12 @@
 				293B952215EB0B730036A7FF /* NewUserViewController.m */,
 				291EB58115649366005FB66D /* PostViewController.h */,
 				291EB58215649366005FB66D /* PostViewController.m */,
-				2976435B16826DB600D79876 /* RequestFactory.h */,
-				2976435C16826DB600D79876 /* RequestFactory.m */,
 				29AA10951557254400B8D3F5 /* SettingsViewController.h */,
 				29AA10961557254500B8D3F5 /* SettingsViewController.m */,
-				2915698B15FFAFCA0084A29C /* ShareObject.h */,
-				2915698C15FFAFCA0084A29C /* ShareObject.m */,
 				29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */,
 				29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */,
+				29D5115D168B9E1200FF298B /* ThreadedPostsViewController.h */,
+				29D5115E168B9E1200FF298B /* ThreadedPostsViewController.m */,
 				2979C6831676C83400B61F3E /* UsersCollectionViewCell.h */,
 				2979C6841676C83400B61F3E /* UsersCollectionViewCell.m */,
 				2924346F1565E330007C8E8C /* UsersPostsViewController.h */,
@@ -1044,6 +1044,19 @@
 				29DB78B915B6F72D0056C68E /* PrettyTableViewCell.m */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		29E2A8FC16867217003F05A4 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				29E2A8F916866CF4003F05A4 /* ActivityManager.h */,
+				29E2A8FA16866CF4003F05A4 /* ActivityManager.m */,
+				2915698B15FFAFCA0084A29C /* ShareObject.h */,
+				2915698C15FFAFCA0084A29C /* ShareObject.m */,
+				2976435B16826DB600D79876 /* RequestFactory.h */,
+				2976435C16826DB600D79876 /* RequestFactory.m */,
+			);
+			name = Objects;
 			sourceTree = "<group>";
 		};
 		29E5170B1608A29300CA422F /* Curled Views */ = {
@@ -1269,7 +1282,6 @@
 				29084D5B15D2B2BC00CB7FFF /* JukaelaViewController.m in Sources */,
 				29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */,
 				295CB26D15E528EA001A43DA /* TMImgurUploader.m in Sources */,
-				295CB27415E528F4001A43DA /* NetworkActivityIndicatorManager.m in Sources */,
 				295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */,
 				295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */,
 				293751ED15EA63E10082864C /* SVModalWebViewController.m in Sources */,
@@ -1322,6 +1334,8 @@
 				29CDF41C168014D800DA88B6 /* UIView+YIFullScreenScroll.m in Sources */,
 				29A6ED27168172D000DADDBB /* JRefreshControl.m in Sources */,
 				2976435D16826DB600D79876 /* RequestFactory.m in Sources */,
+				29E2A8FB16866CF4003F05A4 /* ActivityManager.m in Sources */,
+				29D5115F168B9E1200FF298B /* ThreadedPostsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1431,7 +1445,7 @@
 					"\"$(SRCROOT)/Bitly\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FEE0C520-F104-438F-A9F7-16FFD8C67918";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F07592D4-2375-48B1-8E1F-EE446EE05BA9";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

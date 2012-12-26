@@ -19,6 +19,7 @@
 @property (strong, nonatomic) IBOutlet UITextView *theTextView;
 @property (strong, nonatomic) IBOutlet UIView *backgroundView;
 
+@property (strong, nonatomic) NSNumber *inReplyTo;
 @property (strong, nonatomic) NSString *replyString;
 @property (strong, nonatomic) NSString *repostString;
 @property (strong, nonatomic) NSString *urlString;

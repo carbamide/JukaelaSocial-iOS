@@ -77,7 +77,7 @@
         }
     }
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users.json", kSocialURL]];
     
@@ -85,7 +85,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
@@ -141,7 +141,7 @@
     [[cell textLabel] setText:[self usersArray][[indexPath row]][kName]];
     
     if ([self usersArray][[indexPath row]][kUsername] && [self usersArray][[indexPath row]][kUsername] != [NSNull null]) {
-        [[cell usernameLabel] setText:[self usersArray][[indexPath row]][kUsername]];
+        [[cell usernameLabel] setText:[NSString stringWithFormat:@"@%@", [self usersArray][[indexPath row]][kUsername]]];
     }
     
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][kID]]]]];
@@ -188,7 +188,7 @@
     
     [progressHUD show:YES];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self usersArray][[indexPath row]][kID]]];
     
@@ -205,7 +205,7 @@
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
         }
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[ActivityManager sharedManager] decrementActivityCount];
         
         [progressHUD hide:YES];
         

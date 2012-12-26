@@ -130,7 +130,7 @@
             
             [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            [[ActivityManager sharedManager] incrementActivityCount];
             
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships/%@.json", kSocialURL, unfollowID]];
             
@@ -151,7 +151,7 @@
                 
                 [successNotice show];
                 
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                [[ActivityManager sharedManager] decrementActivityCount];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
             }];
@@ -166,7 +166,7 @@
             
             [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            [[ActivityManager sharedManager] incrementActivityCount];
             
             UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
             
@@ -194,7 +194,7 @@
             
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                 if (data) {
-                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    [[ActivityManager sharedManager] decrementActivityCount];
                     
                     WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"Now following %@", [self userDict][kName]]];
                     
@@ -215,7 +215,7 @@
                     
                     [jukaelaSocialPostingError show];
                     
-                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    [[ActivityManager sharedManager] decrementActivityCount];
                     
                     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
                     
@@ -357,7 +357,7 @@
             [[cell detailTextLabel] setFont:[UIFont fontWithName:kFontPreference size:16]];
             
             if ([self userDict][kUsername] && [self userDict][kUsername] != [NSNull null]) {
-                [[cell detailTextLabel] setText:[self userDict][kUsername]];
+                [[cell detailTextLabel] setText:[NSString stringWithFormat:@"@%@", [self userDict][kUsername]]];
             }
             else {
                 [[cell detailTextLabel] setText:@"No username"];
@@ -534,7 +534,7 @@
 
 -(void)getPosts
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/show_microposts_for_user.json", kSocialURL, [self userDict][kID]]];
     
@@ -548,7 +548,7 @@
         if (data) {
             [self setPosts:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [self performSegueWithIdentifier:kShowUserPosts sender:nil];
         }
@@ -626,7 +626,7 @@
 
 -(void)getFollowing
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/following.json", kSocialURL, [self userDict][kID]]];
     
@@ -634,7 +634,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
         }
@@ -646,7 +646,7 @@
 
 -(void)getimFollowing
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/following.json", kSocialURL, [kAppDelegate userID]]];
     
@@ -654,7 +654,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [self setImFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"user"]];
             [self setRelationships:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"relationships"]];
@@ -669,7 +669,7 @@
 
 -(void)getFollowers
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/followers.json", kSocialURL, [self userDict][kID]]];
     
@@ -677,7 +677,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [self setFollowers:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
         }

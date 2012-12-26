@@ -31,8 +31,6 @@
 @property (nonatomic) BOOL isPosting;
 @end
 
-#define COLOR_RGB(r,g,b,a)      [UIColor colorWithRed:((r)/255.0) green:((g)/255.0) blue:((b)/255.0) alpha:(a)]
-
 @implementation PostViewController
 
 - (void)viewDidLoad
@@ -300,7 +298,7 @@
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:kChangeTypeNotification object:@0];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     
@@ -328,7 +326,7 @@
                 BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription]];
                 
                 [errorAlert setCancelButtonWithTitle:@"OK" block:^{
-                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    [[ActivityManager sharedManager] decrementActivityCount];
                     
                     [self setupNavbarForPosting];
                 }];
@@ -392,10 +390,10 @@
     NSString *requestString = nil;
     
     if ([self urlString]) {
-        requestString = [RequestFactory postRequestWithContent:stringToSendAsContent userID:[kAppDelegate userID] imageURL:[self urlString]];
+        requestString = [RequestFactory postRequestWithContent:stringToSendAsContent userID:[kAppDelegate userID] imageURL:[self urlString] withReplyTo:[self inReplyTo]];
     }
     else {
-        requestString = [RequestFactory postRequestWithContent:stringToSendAsContent userID:[kAppDelegate userID] imageURL:nil];
+        requestString = [RequestFactory postRequestWithContent:stringToSendAsContent userID:[kAppDelegate userID] imageURL:nil withReplyTo:[self inReplyTo]];
     }
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
@@ -404,7 +402,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [self dismissViewControllerAnimated:YES completion:^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
@@ -425,7 +423,7 @@
             
             [jukaelaSocialPostingError show];
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [self setupNavbarForPosting];
         }
@@ -830,7 +828,7 @@
         [self setUsernameArray:[[NSMutableArray alloc] init]];
     }
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users.json", kSocialURL]];
     
@@ -838,7 +836,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             NSArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
             

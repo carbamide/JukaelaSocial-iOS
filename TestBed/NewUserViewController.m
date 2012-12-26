@@ -43,7 +43,7 @@
     
     [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
         
     [self setNameTextField:[[UITextField alloc] init]];
     [self setUsernameTextField:[[UITextField alloc] init]];
@@ -105,7 +105,7 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[ActivityManager sharedManager] decrementActivityCount];
         
         if (data) {
             if ([[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil] isKindOfClass:[NSDictionary class]]) {

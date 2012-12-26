@@ -93,7 +93,7 @@
         [self setMessagesArray:nil];
     }
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/direct_messages.json", kSocialURL]];
     
@@ -105,7 +105,7 @@
             
             [[self tableView] reloadData];
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading your direct messages..  Please logout and log back in."];
@@ -157,7 +157,7 @@
     [[cell nameLabel] setText:[self messagesArray][[indexPath row]][@"from_name"]];
     
     if ([self messagesArray][[indexPath row]][@"from_username"] && [self messagesArray][[indexPath row]][@"from_username"] != [NSNull null]) {
-        [[cell usernameLabel] setText:[self messagesArray][[indexPath row]][@"from_username"]];
+        [[cell usernameLabel] setText:[NSString stringWithFormat:@"@%@", [self messagesArray][[indexPath row]][@"from_username"]]];
     }
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[self messagesArray][[indexPath row]][kCreationDate] withFormatter:[self dateFormatter]];
@@ -278,7 +278,7 @@
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
             }
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [progressHUD hide:YES];
             
@@ -320,7 +320,7 @@
         
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
         
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [[ActivityManager sharedManager] incrementActivityCount];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self messagesArray][[indexPathOfTappedRow row]][kUserID]]];
         
@@ -337,7 +337,7 @@
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
             }
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [[self progressHUD] hide:YES];
             

@@ -235,7 +235,7 @@
             }
         }
     }
-
+    
     
     [[cell contentText] setFontName:kFontPreference];
     [[cell contentText] setFontSize:17];
@@ -252,7 +252,7 @@
     }
     
     if ([self mentions][[indexPath row]][@"sender_username"] && [self mentions][[indexPath row]][@"sender_username"] != [NSNull null]) {
-        [[cell usernameLabel] setText:[self mentions][[indexPath row]][@"sender_username"]];
+        [[cell usernameLabel] setText:[NSString stringWithFormat:@"@%@", [self mentions][[indexPath row]][@"sender_username"]]];
     }
     
     NSDate *tempDate = [NSDate dateWithISO8601String:[self mentions][[indexPath row]][kCreationDate] withFormatter:[self dateFormatter]];
@@ -323,7 +323,7 @@
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath row] == ([[self mentions] count] - 1)) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [[ActivityManager sharedManager] incrementActivityCount];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/pages/mentions.json", kSocialURL]];
         
@@ -373,7 +373,7 @@
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
         }];
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[ActivityManager sharedManager] decrementActivityCount];
     }
 }
 
@@ -401,7 +401,7 @@
         
         if ([[NSString stringWithFormat:@"%@", [self mentions][[indexPathOfTappedRow row]][@"sender_user_id"]] isEqualToString:[kAppDelegate userID]]) {
             [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+                [[ActivityManager sharedManager] incrementActivityCount];
                 
                 NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
                 
@@ -420,7 +420,7 @@
                     
                     [self refreshTableInformation];
                     
-                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    [[ActivityManager sharedManager] decrementActivityCount];
                 }];
             }];
         }
@@ -464,7 +464,7 @@
         [[self activityIndicator] startAnimating];
     }
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/pages/mentions.json", kSocialURL]];
     
@@ -486,7 +486,7 @@
             
             [[self refreshControl] endRefreshing];
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
@@ -527,7 +527,7 @@
         
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
         
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [[ActivityManager sharedManager] incrementActivityCount];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][@"sender_user_id"]]];
         
@@ -544,7 +544,7 @@
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
             }
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [[self progressHUD] hide:YES];
             
@@ -623,7 +623,7 @@
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
             }
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [progressHUD hide:YES];
             

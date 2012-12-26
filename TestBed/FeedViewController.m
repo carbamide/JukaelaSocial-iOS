@@ -21,6 +21,7 @@
 #import "ShareObject.h"
 #import "ShowUserViewController.h"
 #import "SVModalWebViewController.h"
+#import "ThreadedPostsViewController.h"
 #import "UIImageView+Curled.h"
 #import "WBErrorNoticeView.h"
 #import "WBStickyNoticeView.h"
@@ -31,6 +32,7 @@
 @property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) NSCache *externalImageCache;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
+@property (strong, nonatomic) NSMutableArray *tempArray;
 @property (strong, nonatomic) NSString *documentsFolder;
 @property (strong, nonatomic) NSString *stringToPost;
 @property (strong, nonatomic) NSTimer *refreshTimer;
@@ -116,7 +118,7 @@
     [self setCurrentChangeType:-1];
     
     if ([self loadedDirectly] && [[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [[ActivityManager sharedManager] incrementActivityCount];
         
         NSError *error = nil;
         
@@ -164,7 +166,7 @@
                 }
             }
             else {
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                [[ActivityManager sharedManager] decrementActivityCount];
                 
                 [[self progressHUD] hide:YES];
                 
@@ -175,7 +177,7 @@
                 [(LoginViewController *)[[self navigationController] topViewController] setDoNotLogin:YES];
             }
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
         }];
     }
     else {
@@ -359,7 +361,7 @@
         
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
         
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [[ActivityManager sharedManager] incrementActivityCount];
         
         NSURL *url = nil;
         
@@ -383,7 +385,7 @@
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
             }
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [[self progressHUD] hide:YES];
             
@@ -448,7 +450,7 @@
         to = 20;
     }
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
     
@@ -543,7 +545,7 @@
             
             [self setCurrentChangeType:-1];
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [[self refreshControl] endRefreshing];
         }
@@ -708,7 +710,7 @@
     }
     
     if ([self theFeed][[indexPath row]][kUsername] && [self theFeed][[indexPath row]][kUsername] != [NSNull null]) {
-        [[cell usernameLabel] setText:[self theFeed][[indexPath row]][kUsername]];
+        [[cell usernameLabel] setText:[NSString stringWithFormat:@"@%@", [self theFeed][[indexPath row]][kUsername]]];
     }
     
     if ([self theFeed][[indexPath row]][kRepostUserID] && [self theFeed][[indexPath row]][kRepostUserID] != [NSNull null]) {
@@ -806,7 +808,7 @@
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath row] == ([[self theFeed] count] - 1)) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [[ActivityManager sharedManager] incrementActivityCount];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
         
@@ -858,7 +860,7 @@
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
         }];
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[ActivityManager sharedManager] decrementActivityCount];
     }
 }
 
@@ -876,7 +878,6 @@
         
         [cellActionSheet addButtonWithTitle:@"Reply" block:^{
             [self performSegueWithIdentifier:kShowReplyView sender:self];
-            
         }];
         
         [cellActionSheet addButtonWithTitle:@"Repost" block:^{
@@ -910,9 +911,23 @@
             [ShareObject sharePostViaMail:tempCell withViewController:self];
         }];
         
+        if ([self theFeed][[indexPathOfTappedRow row]][@"in_reply_to"] != [NSNull null]) {
+            [cellActionSheet addButtonWithTitle:@"Show Thread" block:^{
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/thread_for_micropost.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][kID]]];
+ 
+                NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+                
+                [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                    [self setTempArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+
+                    [self performSegueWithIdentifier:kShowThread sender:self];
+                }];
+            }];
+        }
+        
         if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPathOfTappedRow row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
             [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+                [[ActivityManager sharedManager] incrementActivityCount];
                 
                 NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
                 
@@ -933,7 +948,7 @@
                     
                     [self refreshTableInformation:indexPathOfTappedRow from:0 to:[[self theFeed] count] removeSplash:NO];
                     
-                    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    [[ActivityManager sharedManager] decrementActivityCount];
                 }];
             }];
         }
@@ -970,6 +985,7 @@
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
         [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self theFeed][[[self tempIndexPath] row]][kUsername]]];
+        [viewController setInReplyTo:[self theFeed][[[self tempIndexPath] row]][kID]];
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }
@@ -981,6 +997,14 @@
         [viewController setRepostString:[NSString stringWithFormat:@"%@", [[tempCell textLabel] text]]];
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
+    }
+    else if ([[segue identifier] isEqualToString:kShowThread]) {
+        UINavigationController *navigationController = [segue destinationViewController];
+        ThreadedPostsViewController *viewController = (ThreadedPostsViewController *)[navigationController topViewController];
+        
+        NSLog(@"%@", [self tempArray]);
+        
+        [viewController setThreadedPosts:[self tempArray]];
     }
 }
 
@@ -1017,7 +1041,7 @@
 {
     [self initializeActivityIndicator];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[ActivityManager sharedManager] incrementActivityCount];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
     
@@ -1062,7 +1086,7 @@
         
         [[self activityIndicator] stopAnimating];
         
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[ActivityManager sharedManager] decrementActivityCount];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
     }];
@@ -1124,7 +1148,7 @@
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
             }
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[ActivityManager sharedManager] decrementActivityCount];
             
             [[self progressHUD] hide:YES];
             

@@ -31,7 +31,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
-        contentText = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(0, 50, 315, 140)];
+        contentText = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(0, 50, 315, 170)];
         [contentText setBackgroundColor:[UIColor clearColor]];
         [contentText setClipsToBounds:YES];
         [contentText setPaddingLeft:8];

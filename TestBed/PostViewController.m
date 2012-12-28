@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSData *tempImageData;
 @property (strong, nonatomic) NSMutableArray *autocompleteUsernames;
 @property (strong, nonatomic) NSMutableArray *usernameArray;
+@property (strong, nonatomic) NSMutableArray *usersArray;
 @property (strong, nonatomic) NSString *currentString;
 @property (strong, nonatomic) NSString *currentWord;
 @property (strong, nonatomic) UITableView *usernameTableView;
@@ -46,7 +47,7 @@
     if (tempWindow.frame.size.height > 500) {
         [[self photoButton] setFrame:CGRectOffset(_photoButton.frame, 0, 90)];
         [[self countDownLabel] setFrame:CGRectOffset(_countDownLabel.frame, 0, 90)];
-
+        
         [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height + 100)];
     }
     
@@ -469,6 +470,7 @@
                                 [[NSNotificationCenter defaultCenter] postNotificationName:kSuccessfulTweetNotification object:nil];
                             }
                             else {
+                                NSLog(@"%@", jsonData[@"error"]);
                                 NSLog(@"Not posted to Twitter");
                             }
                         }
@@ -485,8 +487,8 @@
                     }];
                 }
                 else {
-                    postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:nil];
-
+                    postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:@{@"status" : stringToSend}];
+                    
                     [postRequest setAccount:twitterAccount];
                     
                     [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
@@ -499,6 +501,7 @@
                                 [[NSNotificationCenter defaultCenter] postNotificationName:kSuccessfulTweetNotification object:nil];
                             }
                             else {
+                                NSLog(@"%@", jsonData[@"error"]);
                                 NSLog(@"Not posted to Twitter");
                             }
                         }
@@ -513,7 +516,7 @@
                         }
                         [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
                     }];
-                } 
+                }
             }
         }
         else {
@@ -537,6 +540,26 @@
 
 - (void)sendFacebookPost:(NSString *)stringToSend
 {
+    __block NSString *blockString = nil;
+    
+    NSError *error = NULL;
+    
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9_]+" options:NSRegularExpressionCaseInsensitive error:&error];
+    
+    [regex enumerateMatchesInString:stringToSend options:0 range:NSMakeRange(0, [stringToSend length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop){        
+        for (id userDict in [self usersArray]) {
+            if (userDict[@"username"] != [NSNull null] && userDict[@"name"] != [NSNull null]) {
+                if ([userDict[@"username"] isEqualToString:[[stringToSend substringWithRange:match.range] substringFromIndex:1]]) {
+                    blockString = [stringToSend stringByReplacingOccurrencesOfString:[stringToSend substringWithRange:match.range] withString:userDict[@"name"]];
+                }
+            }
+        }
+    }];
+    
+    if (blockString) {
+        stringToSend = blockString;
+    }
+        
     [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookOrTwitterCurrentlySending object:nil];
     
     if ([self tempImageData]) {
@@ -840,6 +863,8 @@
             
             NSArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
             
+            [self setUsersArray:[tempArray mutableCopy]];
+            
             for (id userDict in tempArray) {
                 if (userDict[kUsername] && userDict[kUsername] != [NSNull null]) {
                     [[self usernameArray] addObject:userDict[kUsername]];
@@ -884,7 +909,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [kAppDelegate setCurrentViewController:self];
-
+    
     [super viewDidAppear:animated];
 }
 

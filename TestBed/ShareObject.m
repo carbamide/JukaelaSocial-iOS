@@ -29,7 +29,7 @@
             if ([accountsArray count] > 0) {
                 ACAccount *twitterAccount = accountsArray[0];
                 
-                SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:nil];
+                SLRequest *postRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"] parameters:@{@"status" : stringToSend}];
                 
                 [postRequest setAccount:twitterAccount];
                 
@@ -47,6 +47,7 @@
                             [successNotice show];
                         }
                         else {
+                            NSLog(@"%@", jsonData[@"error"]);
                             NSLog(@"Not posted to Twitter");
                         }
                     }

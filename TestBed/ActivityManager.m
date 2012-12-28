@@ -42,8 +42,6 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         });
     }
-    
-    NSLog(@"The current network activity indicator count is %d", _count);
 }
 
 -(void)incrementActivityCount

@@ -24,24 +24,24 @@
 -(TMHTTPRequest*)uploadImage:(UIImage*)image finishedBlock:(uploadBlock)completionBlock
 {
 	NSData * encodedImage = UIImageJPEGRepresentation(image, 0.8);
-
+    
 	NSMutableDictionary	* params = [NSMutableDictionary dictionaryWithCapacity:3];
-
+    
 	[params setObject:self.APIKey
 			   forKey:@"key"];
-
+    
 	TMHTTPClient * imgurclient = [[TMHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://api.imgur.com/2/"]];
-
+    
 	NSMutableURLRequest *request = [imgurclient multipartFormRequestWithMethod:@"POST"
 																		  path:@"upload.json"
 																	parameters:params
 													 constructingBodyWithBlock:^(id<TMMultipartFormData> formData) {
-																 [formData appendPartWithFileData:encodedImage
-																							 name:kImageNotification
-																						 fileName:@"image.jpg"
-																						 mimeType:@"image/jpeg"];
-															 }];
-
+                                                         [formData appendPartWithFileData:encodedImage
+                                                                                     name:kImageNotification
+                                                                                 fileName:@"image.jpg"
+                                                                                 mimeType:@"image/jpeg"];
+                                                     }];
+    
 	TMHTTPRequest	* req = [imgurclient HTTPRequestOperationWithRequest:request
 															   success:^(TMHTTPRequest *operation, id responseObject) {
 																   NSLog(@"IMGURUPLOAD S: %@", responseObject);
@@ -52,15 +52,15 @@
 															   }
 															   failure:^(TMHTTPRequest *operation, NSError *error) {
 																   NSLog(@"IMGURUPLOAD F: %@", operation.responseString);
-
+                                                                   
 																   if(completionBlock)
 																   {
 																	   completionBlock(nil, error);
 																   }
 															   }];
-
+    
 	[imgurclient enqueueHTTPRequestOperation:req];
-
+    
 	return req;
 }
 

@@ -525,11 +525,29 @@
                 
             }
             else if ([self currentChangeType] == DELETE_POST) {
-                [[self tableView] beginUpdates];
-                [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:19 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                @try {
+                    [[self tableView] beginUpdates];
+                    [[self tableView] deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    [[self tableView] insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:19 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    
+                    [[self tableView] endUpdates];
+                }
+                @catch (NSException *exception) {
+                    if (exception) {
+                        NSLog(@"%@", exception);
+                        NSLog(@"Crazy things just happened with the integrity of this table, yo");
+                        
+                        [self setCurrentChangeType:-1];
+                        
+                        [self setTheFeed:nil];
+                        
+                        [self refreshTableInformation:nil from:0 to:20 removeSplash:NO];
+                    }
+                }
+                @finally {
+                    NSLog(@"Inside finally");
+                }
                 
-                [[self tableView] endUpdates];
             }
             else {
                 if ([[self activityIndicator] isAnimating]) {
@@ -828,6 +846,8 @@
                 
                 [[self theFeed] addObjectsFromArray:tempArray];
                 
+                NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
+                
                 @try {
                     [[self tableView] beginUpdates];
                     
@@ -876,6 +896,24 @@
         
         BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
         
+        if (![[NSString stringWithFormat:@"%@", [self theFeed][[indexPathOfTappedRow row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
+            [cellActionSheet addButtonWithTitle:@"Like" block:^{
+                [[ActivityManager sharedManager] incrementActivityCount];
+                
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/like.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][kID]]];
+                
+                NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+                
+                [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                    NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
+                    
+                    [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
+                    
+                    [[ActivityManager sharedManager] decrementActivityCount];
+                }];
+            }];
+        }
+        
         [cellActionSheet addButtonWithTitle:@"Reply" block:^{
             [self performSegueWithIdentifier:kShowReplyView sender:self];
         }];
@@ -914,12 +952,12 @@
         if ([self theFeed][[indexPathOfTappedRow row]][@"in_reply_to"] != [NSNull null]) {
             [cellActionSheet addButtonWithTitle:@"Show Thread" block:^{
                 NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/thread_for_micropost.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][kID]]];
- 
+                
                 NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
                 
                 [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                     [self setTempArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
-
+                    
                     [self performSegueWithIdentifier:kShowThread sender:self];
                 }];
             }];
@@ -1001,8 +1039,6 @@
     else if ([[segue identifier] isEqualToString:kShowThread]) {
         UINavigationController *navigationController = [segue destinationViewController];
         ThreadedPostsViewController *viewController = (ThreadedPostsViewController *)[navigationController topViewController];
-        
-        NSLog(@"%@", [self tempArray]);
         
         [viewController setThreadedPosts:[self tempArray]];
     }

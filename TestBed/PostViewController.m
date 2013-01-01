@@ -386,6 +386,8 @@
 
 -(void)jukaelaNetworkAction:(NSString *)stringToSendAsContent
 {
+    stringToSendAsContent = [stringToSendAsContent stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+    
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts.json", kSocialURL]];
     
     NSString *requestString = nil;

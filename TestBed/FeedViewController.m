@@ -896,7 +896,7 @@
         
         BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
         
-//        if (![[NSString stringWithFormat:@"%@", [self theFeed][[indexPathOfTappedRow row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
+        if (![[NSString stringWithFormat:@"%@", [self theFeed][[indexPathOfTappedRow row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
             [cellActionSheet addButtonWithTitle:@"Like" block:^{
                 [[ActivityManager sharedManager] incrementActivityCount];
                 
@@ -912,7 +912,7 @@
                     [[ActivityManager sharedManager] decrementActivityCount];
                 }];
             }];
-//        }
+        }
         
         [cellActionSheet addButtonWithTitle:@"Reply" block:^{
             [self performSegueWithIdentifier:kShowReplyView sender:self];

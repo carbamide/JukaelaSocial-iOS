@@ -182,6 +182,7 @@
 		29E5177C1608B2BE00CA422F /* NormalWithImageCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E5177B1608B2BE00CA422F /* NormalWithImageCellView.m */; };
 		29EA394515609BCE003A21E7 /* NSString+BackslashEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */; };
 		29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29EB71BD15E811D50072B97A /* CoreText.framework */; };
+		29F977EE1693E38C0075A4FF /* UsersWhoLikedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F977ED1693E38C0075A4FF /* UsersWhoLikedViewController.m */; };
 		29F99E971676C2D000ADC3D1 /* JukaelaCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F99E961676C2D000ADC3D1 /* JukaelaCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -474,6 +475,8 @@
 		29EA394315609BCE003A21E7 /* NSString+BackslashEscape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BackslashEscape.h"; sourceTree = "<group>"; };
 		29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BackslashEscape.m"; sourceTree = "<group>"; };
 		29EB71BD15E811D50072B97A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		29F977EC1693E38B0075A4FF /* UsersWhoLikedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersWhoLikedViewController.h; sourceTree = "<group>"; };
+		29F977ED1693E38C0075A4FF /* UsersWhoLikedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersWhoLikedViewController.m; sourceTree = "<group>"; };
 		29F99E951676C2D000ADC3D1 /* JukaelaCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaCollectionViewController.h; sourceTree = "<group>"; };
 		29F99E961676C2D000ADC3D1 /* JukaelaCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -963,6 +966,8 @@
 				2988B25D1605534A00D0202E /* FeedbackViewController.m */,
 				29204EEE1553684200D5479D /* FeedViewController.h */,
 				29204EEF1553684200D5479D /* FeedViewController.m */,
+				29F977EC1693E38B0075A4FF /* UsersWhoLikedViewController.h */,
+				29F977ED1693E38C0075A4FF /* UsersWhoLikedViewController.m */,
 				297FE037156846E0005FBFDA /* FollowerViewController.h */,
 				297FE038156846E0005FBFDA /* FollowerViewController.m */,
 				29C251571672BFED00F27ABC /* ImageConfirmationViewController.h */,
@@ -1336,6 +1341,7 @@
 				2976435D16826DB600D79876 /* RequestFactory.m in Sources */,
 				29E2A8FB16866CF4003F05A4 /* ActivityManager.m in Sources */,
 				29D5115F168B9E1200FF298B /* ThreadedPostsViewController.m in Sources */,
+				29F977EE1693E38C0075A4FF /* UsersWhoLikedViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

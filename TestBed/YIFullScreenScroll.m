@@ -92,7 +92,7 @@
         
         UINavigationBar* navBar = self.navigationBar;
         UIToolbar* toolbar = self.toolbar;
-            
+        
         // hide original background & add non-translucent one
         if (_ignoresTranslucent) {
             [self _hideOriginalAndAddOpaqueBackgroundOnUIBar:navBar];
@@ -150,7 +150,7 @@
             _isObservingToolbar = NO;
         }
     }
-
+    
     // set UI-bars back to initial state if all of fullScreenScroll is deallocated
     if (!_hasOpaqueNavBarBackgroundOnInit) {
         self.navigationBar.translucent = _isNavBarTranslucentOnInit;
@@ -218,9 +218,9 @@
     }
     // create opaque background
     else {
-//        originalBackground = [bar.subviews objectAtIndex:0];
-//        opaqueBarImageView = [[UIImageView alloc] initWithImage:[originalBackground.image copy]];
-//        [bar insertSubview:opaqueBarImageView atIndex:0];
+        //        originalBackground = [bar.subviews objectAtIndex:0];
+        //        opaqueBarImageView = [[UIImageView alloc] initWithImage:[originalBackground.image copy]];
+        //        [bar insertSubview:opaqueBarImageView atIndex:0];
     }
     originalBackground.hidden = YES;
     opaqueBarImageView.opaque = YES;
@@ -261,8 +261,10 @@
         return;
     }
     
-    UIImageView* originalBackground = [bar.subviews objectAtIndex:0];
-    originalBackground.hidden = NO;
+    if (bar.subviews.count > 0) {
+        UIImageView* originalBackground = [bar.subviews objectAtIndex:0];
+        originalBackground.hidden = NO;
+    }
 }
 
 - (void)dealloc
@@ -279,12 +281,12 @@
 {
     _enabled = enabled;
     
-//    if (enabled) {
-//        [self _setupUIBarBackgrounds];
-//    }
-//    else {
-//        [self _teardownUIBarBackgrounds];
-//    }
+    //    if (enabled) {
+    //        [self _setupUIBarBackgrounds];
+    //    }
+    //    else {
+    //        [self _teardownUIBarBackgrounds];
+    //    }
     
 }
 
@@ -359,7 +361,7 @@
 - (void)_layoutWithScrollView:(UIScrollView*)scrollView deltaY:(CGFloat)deltaY
 {
     UINavigationBar* navBar = self.navigationBar;
-
+    
     if (!self.enabled) return;
     
     // navbar

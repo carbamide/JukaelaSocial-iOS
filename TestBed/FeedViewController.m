@@ -23,6 +23,7 @@
 #import "SVModalWebViewController.h"
 #import "ThreadedPostsViewController.h"
 #import "UIImageView+Curled.h"
+#import "UsersWhoLikedViewController.h"
 #import "WBErrorNoticeView.h"
 #import "WBStickyNoticeView.h"
 #import "WBSuccessNoticeView.h"
@@ -905,12 +906,30 @@
                 NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
                 
                 [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                    NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
+                    [self refreshControlRefresh:nil];
                     
                     [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
                     
                     [[ActivityManager sharedManager] decrementActivityCount];
                 }];
+            }];
+        }
+        
+        if ([self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] && [self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] != [NSNull null]) {
+            
+            NSString *pluralization = nil;
+            
+            if ((unsigned long)[(NSArray *)[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] count] == 1) {
+                pluralization = @"Like";
+            }
+            else {
+                pluralization = @"Likes";
+            }
+            
+            [cellActionSheet addButtonWithTitle:[NSString stringWithFormat:@"%lu %@", (unsigned long)[(NSArray *)[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] count], pluralization] block:^{
+                [self setTempArray:[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"]];
+
+                [self performSegueWithIdentifier:@"UsersWhoLiked" sender:self];                
             }];
         }
         
@@ -1041,6 +1060,12 @@
         ThreadedPostsViewController *viewController = (ThreadedPostsViewController *)[navigationController topViewController];
         
         [viewController setThreadedPosts:[self tempArray]];
+    }
+    else if ([[segue identifier] isEqualToString:@"UsersWhoLiked"]) {
+        UINavigationController *navigationController = [segue destinationViewController];
+        UsersWhoLikedViewController *viewController = (UsersWhoLikedViewController *)[navigationController topViewController];
+        
+        [viewController setUsersArray:[self tempArray]];
     }
 }
 

@@ -33,8 +33,8 @@ static char *const kIndexPathAssociationKey = "Jukaela_index_path";
 
 #define kAppDelegate (AppDelegate *)[[UIApplication sharedApplication] delegate]
 
-#define kSocialURL @"http://localhost:3000"
-//#define kSocialURL @"http://cold-planet-7717.herokuapp.com"
+//#define kSocialURL @"http://localhost:3000"
+#define kSocialURL @"http://cold-planet-7717.herokuapp.com"
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)

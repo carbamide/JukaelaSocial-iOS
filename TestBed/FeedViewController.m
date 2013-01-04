@@ -888,7 +888,6 @@
 -(void)doubleTap:(NSNotification *)aNotification
 {
     if ([kAppDelegate currentViewController] == self) {
-        
         [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
         
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
@@ -898,47 +897,58 @@
         BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
         
         if (![[NSString stringWithFormat:@"%@", [self theFeed][[indexPathOfTappedRow row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
-            [cellActionSheet addButtonWithTitle:@"Like" block:^{
-                [[ActivityManager sharedManager] incrementActivityCount];
-                
-                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/like.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][kID]]];
-                
-                NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
-                
-                [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                    [self refreshControlRefresh:nil];
+            BOOL addTheLikeButton = YES;
+            
+            if ([self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] && [self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] != [NSNull null]) {
+                for (NSDictionary *userWhoLiked in [self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"]) {
+                    if ([[userWhoLiked[@"user_id"] stringValue] isEqualToString:[kAppDelegate userID]]) {
+                        addTheLikeButton = NO;
+                    }
+                }
+            }
+            
+            if (addTheLikeButton) {
+                [cellActionSheet addButtonWithTitle:@"Like" block:^{
+                    [[ActivityManager sharedManager] incrementActivityCount];
                     
-                    [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
+                    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/like.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][kID]]];
                     
-                    [[ActivityManager sharedManager] decrementActivityCount];
+                    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+                    
+                    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                        [self refreshControlRefresh:nil];
+                        
+                        [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
+                        
+                        WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:@"Liked!"];
+                        
+                        [successNotice show];
+                        
+                        [[ActivityManager sharedManager] decrementActivityCount];
+                    }];
                 }];
-            }];
+            }
         }
         
-        if ([self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] && [self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] != [NSNull null]) {
-            
+        if ([self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] && [self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] != [NSNull null] && (unsigned long)[(NSArray *)[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] count] > 0) {
             NSString *pluralization = nil;
             
             if ((unsigned long)[(NSArray *)[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] count] == 1) {
                 pluralization = @"Like";
             }
-            else {
+            else if ((unsigned long)[(NSArray *)[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] count] > 1) {
                 pluralization = @"Likes";
             }
             
             [cellActionSheet addButtonWithTitle:[NSString stringWithFormat:@"%lu %@", (unsigned long)[(NSArray *)[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] count], pluralization] block:^{
                 [self setTempArray:[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"]];
-
-                [self performSegueWithIdentifier:@"UsersWhoLiked" sender:self];                
+                
+                [self performSegueWithIdentifier:@"UsersWhoLiked" sender:self];
             }];
         }
         
         [cellActionSheet addButtonWithTitle:@"Reply" block:^{
             [self performSegueWithIdentifier:kShowReplyView sender:self];
-        }];
-        
-        [cellActionSheet addButtonWithTitle:@"Repost" block:^{
-            [ShareObject repost:indexPathOfTappedRow fromArray:[self theFeed] withViewController:self];
         }];
         
         [cellActionSheet addButtonWithTitle:@"Share to Twitter" block:^{

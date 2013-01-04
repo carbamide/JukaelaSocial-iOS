@@ -51,20 +51,21 @@
         [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height + 100)];
     }
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
-        [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn)];
+    if (![self replyString]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
+            [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn)];
+        }
+        else {
+            [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn)];
+        }
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
+            [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn)];
+        }
+        else {
+            [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn)];
+        }
     }
-    else {
-        [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn)];
-    }
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
-        [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn)];
-    }
-    else {
-        [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn)];
-    }
-    
     _usernameTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     
     [_usernameTableView setDelegate:self];
@@ -127,6 +128,8 @@
     
     if (_replyString) {
         [_theTextView setText:[_replyString stringByAppendingString:@" "]];
+        
+        [kAppDelegate setOnlyToJukaela:YES];
     }
 }
 
@@ -548,7 +551,7 @@
     
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"@[a-zA-Z0-9_]+" options:NSRegularExpressionCaseInsensitive error:&error];
     
-    [regex enumerateMatchesInString:stringToSend options:0 range:NSMakeRange(0, [stringToSend length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop){        
+    [regex enumerateMatchesInString:stringToSend options:0 range:NSMakeRange(0, [stringToSend length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop){
         for (id userDict in [self usersArray]) {
             if (userDict[@"username"] != [NSNull null] && userDict[@"name"] != [NSNull null]) {
                 if ([userDict[@"username"] isEqualToString:[[stringToSend substringWithRange:match.range] substringFromIndex:1]]) {
@@ -561,7 +564,7 @@
     if (blockString) {
         stringToSend = blockString;
     }
-        
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookOrTwitterCurrentlySending object:nil];
     
     if ([self tempImageData]) {

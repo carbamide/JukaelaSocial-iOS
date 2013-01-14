@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingsViewController : JukaelaTableViewController
+@interface SettingsViewController : JukaelaTableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 
 -(void)logOut:(id)sender;
 

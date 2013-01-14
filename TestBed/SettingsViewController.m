@@ -21,6 +21,8 @@ NS_ENUM(NSInteger, SocialTypes) {
 @interface SettingsViewController ()
 @property (strong, nonatomic) UISwitch *facebookSwitch;
 @property (strong, nonatomic) UISwitch *twitterSwitch;
+@property (strong, nonatomic) UIPickerView *pickerView;
+
 @end
 
 @implementation SettingsViewController
@@ -88,6 +90,10 @@ NS_ENUM(NSInteger, SocialTypes) {
 {
     [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
+    [self setPickerView:[[UIPickerView alloc] init]];
+    [[self pickerView] setDelegate:self];
+    [[self pickerView] setShowsSelectionIndicator:YES];
+    
     [super viewDidLoad];
 }
 
@@ -112,7 +118,7 @@ NS_ENUM(NSInteger, SocialTypes) {
 {
     switch (section) {
         case 0:
-            return 2;
+            return 3;
             break;
         case 1:
             return 1;
@@ -183,6 +189,17 @@ NS_ENUM(NSInteger, SocialTypes) {
             
             [[self facebookSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         }
+        else if ([indexPath row] == 2) {
+            [[cell textLabel] setText:@"Default Icon Style"];
+            
+            if ([[NSUserDefaults standardUserDefaults] stringForKey:@"avatar_type"]) {
+                [[cell detailTextLabel] setText:[[NSUserDefaults standardUserDefaults] stringForKey:@"avatar_type"]];
+            }
+            
+            [[cell detailTextLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:10]];
+            
+            [[cell detailTextLabel] setTextColor:[UIColor darkGrayColor]];
+        }
     }
     else if ([indexPath section] == 1) {
         if ([indexPath row] == 0) {
@@ -219,7 +236,7 @@ NS_ENUM(NSInteger, SocialTypes) {
                 
                 NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
                 
-                NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream", @"publish_actions", @"read_friendlists"]};
+                NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"email"]};
                 
                 [accountStore requestAccessToAccountsWithType:accountType options:options completion:^(BOOL granted, NSError *error) {
                     if(granted) {
@@ -290,6 +307,35 @@ NS_ENUM(NSInteger, SocialTypes) {
 {
     switch ([indexPath section]) {
         case 0:
+            if ([indexPath row] == 2) {                
+                if ([[self pickerView] superview] == nil)
+                {
+                    [[[self view] window] addSubview:[self pickerView]];
+
+                    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+                    CGSize pickerSize = [[self pickerView] sizeThatFits:CGSizeZero];
+                    CGRect startRect = CGRectMake(0.0, screenRect.origin.y + screenRect.size.height, pickerSize.width, pickerSize.height);
+                    
+                    [[self pickerView] setFrame:startRect];
+
+                    CGRect pickerRect = CGRectMake(0.0, screenRect.origin.y + screenRect.size.height - pickerSize.height, pickerSize.width, pickerSize.height);
+
+                    [UIView beginAnimations:nil context:NULL];
+                    [UIView setAnimationDuration:0.3];                    
+                    [UIView setAnimationDelegate:self];
+                    
+                    [[self pickerView] setFrame:pickerRect];
+                    
+                    CGRect newFrame = [[self tableView] frame];
+                    
+                    newFrame.size.height -= [self pickerView].frame.size.height;
+                    
+                    [[self tableView] setFrame:newFrame];
+                    [UIView commitAnimations];
+                    
+                    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)]];
+                }
+            }
             return;
             break;
         case 1:
@@ -317,11 +363,45 @@ NS_ENUM(NSInteger, SocialTypes) {
     }
 }
 
+- (void)slideDownDidStop
+{
+    [[self pickerView] removeFromSuperview];
+}
+
+-(void)doneAction:(id)sender
+{
+    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+    CGRect endFrame = [self pickerView].frame;
+    endFrame.origin.y = screenRect.origin.y + screenRect.size.height;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDidStopSelector:@selector(slideDownDidStop)];
+    
+    [[self pickerView] setFrame:endFrame];
+    
+    [UIView commitAnimations];
+    
+    CGRect newFrame = [[self tableView] frame];
+    newFrame.size.height += [self pickerView].frame.size.height;
+    
+    [[self tableView] setFrame:newFrame];
+    
+    [[self navigationItem] setRightBarButtonItem:nil];
+    
+    NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
+    
+    [self clearImageCache];
+    
+    [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 -(void)clearImageCache
 {
     BlockActionSheet *eraseAction = [[BlockActionSheet alloc] initWithTitle:nil];
     
-    [eraseAction setDestructiveButtonWithTitle:@"Clear Cache" block:^{
+    [eraseAction setDestructiveButtonWithTitle:@"Clear Image Cache" block:^{
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         if ([paths count] > 0) {
             NSError *error = nil;
@@ -352,6 +432,61 @@ NS_ENUM(NSInteger, SocialTypes) {
     [eraseAction setCancelButtonWithTitle:@"Cancel" block:nil];
     
     [eraseAction showInView:[self view]];
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [[self pickerViewComponents] count];
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return [self pickerViewComponents][row];
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+    
+    [[cell detailTextLabel] setText:[self pickerViewComponents][row]];
+
+    switch (row) {
+        case 0:
+            [[NSUserDefaults standardUserDefaults] setValue:@"mm" forKey:@"avatar_type"];
+
+            break;
+        case 1:
+            [[NSUserDefaults standardUserDefaults] setValue:@"identicon" forKey:@"avatar_type"];
+
+            break;
+        case 2:
+            [[NSUserDefaults standardUserDefaults] setValue:@"monsterid" forKey:@"avatar_type"];
+            
+            break;
+        case 3:
+            [[NSUserDefaults standardUserDefaults] setValue:@"wavatar" forKey:@"avatar_type"];
+            
+            break;
+        case 4:
+            [[NSUserDefaults standardUserDefaults] setValue:@"retro" forKey:@"avatar_type"];
+            
+            break;
+        default:
+            break;
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self doneAction:nil];
+}
+
+-(NSArray *)pickerViewComponents
+{
+    return @[@"Mystery Man", @"Identicon", @"Monster ID", @"Wavatar", @"Retro"];
 }
 
 @end

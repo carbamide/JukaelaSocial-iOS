@@ -107,7 +107,6 @@
     UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
     
     [[self navigationItem] setRightBarButtonItem:composeButton];
-    
     [[self navigationItem] setHidesBackButton:YES];
     
     UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];

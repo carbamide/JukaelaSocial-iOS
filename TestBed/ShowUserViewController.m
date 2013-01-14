@@ -134,6 +134,8 @@
             
             NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships/%@.json", kSocialURL, unfollowID]];
             
+            NSLog(@"%@", [url absoluteString]);
+            
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
             
             [request setHTTPMethod:@"DELETE"];

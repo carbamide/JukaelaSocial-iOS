@@ -18,10 +18,12 @@
     dispatch_once(&pred, ^{
         _sharedObject = [[self alloc] init];
     });
+    
     return _sharedObject;
 }
 
-- (id)init {
+- (id)init
+{
     if (self = [super init]) {
         _count = 0;
         

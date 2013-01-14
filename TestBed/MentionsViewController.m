@@ -496,8 +496,6 @@
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
     }];
-    
-    
 }
 
 -(void)goMakeFriends

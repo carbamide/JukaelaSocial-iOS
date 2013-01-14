@@ -61,6 +61,10 @@
     [[self collectionView] setBackgroundColor:[UIColor clearColor]];
     
     [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kRefreshYourTablesNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self getUsers:YES];
+    }];
 }
 
 -(void)getUsers:(BOOL)showActivityIndicator

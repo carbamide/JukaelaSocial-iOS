@@ -57,7 +57,8 @@
     [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
         
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{@NO: kPostToTwitterPreference,
-     @NO: kPostToFacebookPreference}];
+     @NO: kPostToFacebookPreference,
+     @"avatar_type": @"retro"}];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
                                                                            UIRemoteNotificationTypeSound)];

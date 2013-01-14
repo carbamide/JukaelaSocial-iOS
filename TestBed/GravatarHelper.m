@@ -33,7 +33,7 @@
                           result[12], result[13], result[14], result[15]
                           ];
     
-	NSString *gravatarEndPoint = [NSString stringWithFormat:@"http://www.gravatar.com/avatar/%@?s=%i&d=mm", md5email, size];
+	NSString *gravatarEndPoint = [NSString stringWithFormat:@"http://www.gravatar.com/avatar/%@?s=%i&d=%@", md5email, size, [[NSUserDefaults standardUserDefaults] stringForKey:@"avatar_type"]];
     
 	return [NSURL URLWithString:gravatarEndPoint];
 }

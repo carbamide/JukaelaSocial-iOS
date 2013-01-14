@@ -369,6 +369,8 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
+            [[ActivityManager sharedManager] decrementActivityCount];
+            
             [self setUserPostArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
             
             [[self tableView] reloadData];
@@ -404,6 +406,8 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
+                [[ActivityManager sharedManager] decrementActivityCount];
+
                 NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
                 
                 NSInteger oldTableViewCount = [[self userPostArray] count];

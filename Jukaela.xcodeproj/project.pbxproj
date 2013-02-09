@@ -36,6 +36,8 @@
 		293751EF15EA63E10082864C /* SVWebViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 293751EC15EA63E10082864C /* SVWebViewController.bundle */; };
 		293751F515EA65F10082864C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 293751F415EA65F10082864C /* MessageUI.framework */; };
 		293A7426155F68AA004D27D2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 293A7425155F68AA004D27D2 /* Security.framework */; };
+		293B8F9416C6274C00E73902 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 293B8F9316C6274C00E73902 /* Default-Portrait~ipad.png */; };
+		293B8F9616C6275300E73902 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 293B8F9516C6275300E73902 /* Default-Portrait@2x~ipad.png */; };
 		293B952315EB0B740036A7FF /* NewUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 293B952215EB0B730036A7FF /* NewUserViewController.m */; };
 		2954F9E8167B892A000695EC /* GRButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 2954F9E7167B892A000695EC /* GRButtons.m */; };
 		2956875B1552C96700FE741C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2956875A1552C96700FE741C /* UIKit.framework */; };
@@ -231,6 +233,8 @@
 		293751EC15EA63E10082864C /* SVWebViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVWebViewController.bundle; sourceTree = "<group>"; };
 		293751F415EA65F10082864C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		293A7425155F68AA004D27D2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		293B8F9316C6274C00E73902 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
+		293B8F9516C6275300E73902 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
 		293B952115EB0B730036A7FF /* NewUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewUserViewController.h; sourceTree = "<group>"; };
 		293B952215EB0B730036A7FF /* NewUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewUserViewController.m; sourceTree = "<group>"; };
 		2954F9E6167B892A000695EC /* GRButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRButtons.h; sourceTree = "<group>"; };
@@ -534,6 +538,8 @@
 		2956874B1552C96700FE741C = {
 			isa = PBXGroup;
 			children = (
+				293B8F9516C6275300E73902 /* Default-Portrait@2x~ipad.png */,
+				293B8F9316C6274C00E73902 /* Default-Portrait~ipad.png */,
 				295687601552C96700FE741C /* Jukaela Social */,
 				295687591552C96700FE741C /* Frameworks */,
 				295687571552C96700FE741C /* Products */,
@@ -1218,6 +1224,8 @@
 				291DABA716839DAE00BD3D6D /* Signika-Regular.otf in Resources */,
 				291DABA816839DAE00BD3D6D /* Signika-Semibold.otf in Resources */,
 				297CE45916967B3A00802445 /* NoticeView.bundle in Resources */,
+				293B8F9416C6274C00E73902 /* Default-Portrait~ipad.png in Resources */,
+				293B8F9616C6275300E73902 /* Default-Portrait@2x~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1413,7 +1421,8 @@
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestBed/Jukaela-Prefix.pch";
@@ -1429,7 +1438,7 @@
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = "TestBed/Jukaela-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -1437,7 +1446,9 @@
 					"\"$(SRCROOT)/Bitly\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F07592D4-2375-48B1-8E1F-EE446EE05BA9";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1450,7 +1461,8 @@
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1467,7 +1479,7 @@
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = "TestBed/Jukaela-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -1475,7 +1487,9 @@
 					"\"$(SRCROOT)/Bitly\"",
 				);
 				PRODUCT_NAME = Jukaela;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F07592D4-2375-48B1-8E1F-EE446EE05BA9";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

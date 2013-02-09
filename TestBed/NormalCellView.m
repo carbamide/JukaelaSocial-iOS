@@ -31,7 +31,12 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
-        contentText = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(0, 50, 315, 170)];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            contentText = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(0, 50, 760, 170)];
+        }
+        else {
+            contentText = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(0, 50, 315, 170)];
+        }
         [contentText setBackgroundColor:[UIColor clearColor]];
         [contentText setClipsToBounds:YES];
         [contentText setPaddingLeft:8];
@@ -49,7 +54,13 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         
         [self addSubview:nameLabel];
         
-        dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 5, 140, 15)];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(620, 5, 140, 15)];
+        }
+        else {
+            dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 5, 140, 15)];
+        }
+        
         [dateLabel setTextAlignment:NSTextAlignmentRight];
         [dateLabel setFont:[UIFont fontWithName:kFontPreference size:14]];
         [dateLabel setBackgroundColor:[UIColor clearColor]];
@@ -112,7 +123,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-        
+    
     [[NSNotificationCenter defaultCenter] addObserverForName:kEnableCellNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
         [self setDisabled:NO];
         
@@ -134,15 +145,15 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
     [[[self imageView] layer] setShadowColor:[[UIColor lightGrayColor] CGColor]];
     [[[self imageView] layer] setShadowRadius:5];
     [[[self imageView] layer] setShadowOpacity:0.8];
-
+    
     [[[self imageView] layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)] CGPath]];
-
+    
     [[self textLabel] setHidden:YES];
     
     [[self usernameLabel] setFrame:CGRectMake(53, 30, 140, 15)];
     
     [[self detailTextLabel] setFrame:CGRectMake(90, 25, 150, 76)];
-        
+    
     if (![[self imageView] image]) {
         [[self imageView] addObserver:self forKeyPath:kImageNotification options:NSKeyValueObservingOptionOld context:NULL];
     }

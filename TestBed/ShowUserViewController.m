@@ -322,7 +322,7 @@
     else if ([indexPath section] == 1) {
         NSString *contentText = [self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ? [self userDict][@"profile"] : @"This user hasn't set a profile!";
         
-        CGSize constraint = CGSizeMake(300, 20000);
+        CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
         
         CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:16] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
 

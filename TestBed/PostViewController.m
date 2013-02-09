@@ -45,10 +45,18 @@
     UIWindow *tempWindow = [kAppDelegate window];
     
     if (tempWindow.frame.size.height > 500) {
-        [[self photoButton] setFrame:CGRectOffset(_photoButton.frame, 0, 90)];
-        [[self countDownLabel] setFrame:CGRectOffset(_countDownLabel.frame, 0, 90)];
-        
-        [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height + 100)];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [[self photoButton] setFrame:CGRectOffset(_photoButton.frame, 0, 500)];
+            [[self countDownLabel] setFrame:CGRectOffset(_countDownLabel.frame, 450, 500)];
+            
+            [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width + 450, _theTextView.frame.size.height + 250)];
+        }
+        else {
+            [[self photoButton] setFrame:CGRectOffset(_photoButton.frame, 0, 90)];
+            [[self countDownLabel] setFrame:CGRectOffset(_countDownLabel.frame, 0, 90)];
+            
+            [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height + 100)];
+        }
     }
     
     if (![self replyString]) {

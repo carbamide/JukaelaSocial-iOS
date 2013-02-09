@@ -98,7 +98,7 @@
 {
     NSString *contentText = [self threadedPosts][[indexPath row]][kContent];
     
-    CGSize constraint = CGSizeMake(300, 20000);
+    CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
     
     CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     

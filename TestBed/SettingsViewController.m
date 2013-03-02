@@ -216,7 +216,7 @@ NS_ENUM(NSInteger, SocialTypes) {
             [[cell textLabel] setText:@"Clear Image Cache"];
         }
     }
-     else if ([indexPath section] == 4) {
+    else if ([indexPath section] == 4) {
         if ([indexPath row] == 0) {
             [[cell textLabel] setText:@"Logout"];
         }
@@ -307,21 +307,28 @@ NS_ENUM(NSInteger, SocialTypes) {
 {
     switch ([indexPath section]) {
         case 0:
-            if ([indexPath row] == 2) {                
+            if ([indexPath row] == 2) {
                 if ([[self pickerView] superview] == nil)
                 {
                     [[[self view] window] addSubview:[self pickerView]];
-
+                    
                     CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
                     CGSize pickerSize = [[self pickerView] sizeThatFits:CGSizeZero];
                     CGRect startRect = CGRectMake(0.0, screenRect.origin.y + screenRect.size.height, pickerSize.width, pickerSize.height);
                     
                     [[self pickerView] setFrame:startRect];
-
-                    CGRect pickerRect = CGRectMake(0.0, screenRect.origin.y + screenRect.size.height - pickerSize.height, pickerSize.width, pickerSize.height);
-
+                    
+                    CGRect pickerRect;
+                    
+                    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+                        pickerRect = CGRectMake(0, screenRect.origin.y + screenRect.size.height - pickerSize.height, screenRect.size.width, pickerSize.height);
+                    }
+                    else {
+                        pickerRect = CGRectMake(0.0, screenRect.origin.y + screenRect.size.height - pickerSize.height, pickerSize.width, pickerSize.height);
+                    }
+                    
                     [UIView beginAnimations:nil context:NULL];
-                    [UIView setAnimationDuration:0.3];                    
+                    [UIView setAnimationDuration:0.3];
                     [UIView setAnimationDelegate:self];
                     
                     [[self pickerView] setFrame:pickerRect];
@@ -454,15 +461,15 @@ NS_ENUM(NSInteger, SocialTypes) {
     UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
     
     [[cell detailTextLabel] setText:[self pickerViewComponents][row]];
-
+    
     switch (row) {
         case 0:
             [[NSUserDefaults standardUserDefaults] setValue:@"mm" forKey:@"avatar_type"];
-
+            
             break;
         case 1:
             [[NSUserDefaults standardUserDefaults] setValue:@"identicon" forKey:@"avatar_type"];
-
+            
             break;
         case 2:
             [[NSUserDefaults standardUserDefaults] setValue:@"monsterid" forKey:@"avatar_type"];

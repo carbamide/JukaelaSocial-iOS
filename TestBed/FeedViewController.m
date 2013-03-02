@@ -1043,6 +1043,7 @@
             PostViewController *viewController = (PostViewController *)[navigationController topViewController];
             
             [viewController setImageFromExternalSource:[self tempImage]];
+            [viewController setModalPresentationStyle:UIModalPresentationFormSheet];
         }
         
         [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];

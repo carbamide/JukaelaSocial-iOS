@@ -65,7 +65,9 @@
     
     [self setRefreshControl:refreshControl];
     
-    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(showComposer:)]];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(showComposer:)]];
+    }
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     

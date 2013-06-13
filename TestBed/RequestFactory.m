@@ -10,11 +10,6 @@
 
 @implementation RequestFactory
 
-+(NSString *)directMessageRequestWithContent:(NSString *)content userID:(NSString *)userID username:(NSString *)username
-{
-    return [NSString stringWithFormat:@"{\"direct_message\": {\"content\":\"%@\", \"from_user_id\":%@}, \"username\" : \"%@\"}", content, userID, username];
-}
-
 +(NSString *)editUserRequestWithName:(NSString *)name username:(NSString *)username email:(NSString *)email password:(NSString *)password passwordConfirmation:(NSString *)passwordConfirmation profile:(NSString *)profile sendEmail:(NSNumber *)sendEmail
 {
     return [NSString stringWithFormat:@"{\"user\": { \"name\":\"%@\",\"username\":\"%@\", \"email\":\"%@\", \"password\":\"%@\", \"password_confirmation\":\"%@\", \"profile\":\"%@\", \"send_email\": %@}}", name, username, email, password, passwordConfirmation, profile, sendEmail];

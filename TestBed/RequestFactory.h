@@ -10,7 +10,6 @@
 
 @interface RequestFactory : NSObject
 
-+(NSString *)directMessageRequestWithContent:(NSString *)content userID:(NSString *)userID username:(NSString *)username;
 +(NSString *)editUserRequestWithName:(NSString *)name username:(NSString *)username email:(NSString *)email password:(NSString *)password passwordConfirmation:(NSString *)passwordConfirmation profile:(NSString *)profile sendEmail:(NSNumber *)sendEmail;
 +(NSString *)loginRequestWithEmail:(NSString *)email password:(NSString *)password apns:(NSString *)apns;
 +(NSString *)feedRequestFrom:(int)from to:(int)to;

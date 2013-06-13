@@ -104,25 +104,19 @@
 
 +(void)errorAndLogout:(UIViewController *)aViewController withMessage:(NSString *)aMessage;
 {
-    BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:aMessage];
-    
-    [errorAlert addButtonWithTitle:@"Logout" block:^{
+    RIButtonItem *logoutButton = [RIButtonItem itemWithLabel:@"Logout" action:^{
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kReadUsernameFromDefaultsPreference];
         
         [[[aViewController tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
         
         [[aViewController tabBarController] setSelectedIndex:0];
         
-        [[[[aViewController tabBarController] tabBar] items][1] setEnabled:NO];
-        [[[[aViewController tabBarController] tabBar] items][2] setEnabled:NO];
-        [[[[aViewController tabBarController] tabBar] items][3] setEnabled:NO];
-        [[[[aViewController tabBarController] tabBar] items][4] setEnabled:NO];
-
+        for (UITabBarItem *item in [[[aViewController tabBarController] tabBar] items]) {
+            [item setEnabled:NO];
+        }
     }];
     
-    [errorAlert addButtonWithTitle:@"Cancel" block:^{
-        return;
-    }];
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:aMessage cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] otherButtonItems:logoutButton, nil];
     
     [errorAlert show];
 }

@@ -42,6 +42,7 @@
     
     [self setAutocompleteUsernames:[[NSMutableArray alloc] init]];
     
+    
     UIWindow *tempWindow = [kAppDelegate window];
     
     if (tempWindow.frame.size.height > 500) {
@@ -172,66 +173,66 @@
 
 -(IBAction)takePhoto:(id)sender
 {
-    if ([self imageAdded]) {
-        BlockActionSheet *removePhotoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
-        
-        [removePhotoActionSheet setDestructiveButtonWithTitle:@"Remove Photo" block:^{
-            [self setTempImageData:nil];
-            
-            [[self photoButton] setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
-            
-            [self setImageAdded:NO];
-        }];
-        
-        [removePhotoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-        
-        [removePhotoActionSheet showInView:[self view]];
-    }
-    else {
-        if ([self tempImageData]) {
-            BlockActionSheet *removePhoto = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
-            
-            [removePhoto setDestructiveButtonWithTitle:@"Remove Photo" block:^{
-                [self setUrlString:nil];
-                [self setTempImageData:nil];
-            }];
-            
-            [removePhoto setCancelButtonWithTitle:@"Cancel" block:nil];
-            
-            [removePhoto showInView:[self view]];
-        }
-        else {
-            BlockActionSheet *photoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Photo Source"];
-            
-            [self setCurrentString:[[self theTextView] text]];
-            
-            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-                [photoActionSheet addButtonWithTitle:@"Take Photo" block:^{
-                    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-                    
-                    [imagePicker setDelegate:self];
-                    [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-                    [imagePicker setAllowsEditing:NO];
-                    
-                    [self presentViewController:imagePicker animated:YES completion:nil];
-                }];
-            }
-            
-            [photoActionSheet addButtonWithTitle:@"Choose Existing" block:^{
-                UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-                
-                [imagePicker setDelegate:self];
-                [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-                [imagePicker setAllowsEditing:NO];
-                
-                [self presentViewController:imagePicker animated:YES completion:nil];
-            }];
-            
-            [photoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-            
-            [photoActionSheet showInView:[self view]];
-        }
-    }
+//    if ([self imageAdded]) {
+//        BlockActionSheet *removePhotoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
+//        
+//        [removePhotoActionSheet setDestructiveButtonWithTitle:@"Remove Photo" block:^{
+//            [self setTempImageData:nil];
+//            
+//            [[self photoButton] setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
+//            
+//            [self setImageAdded:NO];
+//        }];
+//        
+//        [removePhotoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+//        
+//        [removePhotoActionSheet showInView:[self view]];
+//    }
+//    else {
+//        if ([self tempImageData]) {
+//            BlockActionSheet *removePhoto = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
+//            
+//            [removePhoto setDestructiveButtonWithTitle:@"Remove Photo" block:^{
+//                [self setUrlString:nil];
+//                [self setTempImageData:nil];
+//            }];
+//            
+//            [removePhoto setCancelButtonWithTitle:@"Cancel" block:nil];
+//            
+//            [removePhoto showInView:[self view]];
+//        }
+//        else {
+//            BlockActionSheet *photoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Photo Source"];
+//            
+//            [self setCurrentString:[[self theTextView] text]];
+//            
+//            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+//                [photoActionSheet addButtonWithTitle:@"Take Photo" block:^{
+//                    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+//                    
+//                    [imagePicker setDelegate:self];
+//                    [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+//                    [imagePicker setAllowsEditing:NO];
+//                    
+//                    [self presentViewController:imagePicker animated:YES completion:nil];
+//                }];
+//            }
+//            
+//            [photoActionSheet addButtonWithTitle:@"Choose Existing" block:^{
+//                UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+//                
+//                [imagePicker setDelegate:self];
+//                [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+//                [imagePicker setAllowsEditing:NO];
+//                
+//                [self presentViewController:imagePicker animated:YES completion:nil];
+//            }];
+//            
+//            [photoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+//            
+//            [photoActionSheet showInView:[self view]];
+//        }
+//    }
 }
 
 -(void)setupNavbarForPosting
@@ -305,6 +306,9 @@
                                        UIViewAutoresizingFlexibleRightMargin |
                                        UIViewAutoresizingFlexibleTopMargin |
                                        UIViewAutoresizingFlexibleBottomMargin)];
+    
+    [activityView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    
     [activityView startAnimating];
     
     UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
@@ -320,13 +324,13 @@
             if (error) {
                 [self setIsPosting:NO];
                 
-                BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription]];
-                
-                [errorAlert setCancelButtonWithTitle:@"OK" block:^{
+                RIButtonItem *errorItem = [RIButtonItem itemWithLabel:@"OK" action:^{
                     [[ActivityManager sharedManager] decrementActivityCount];
                     
                     [self setupNavbarForPosting];
                 }];
+                
+                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] cancelButtonItem:errorItem otherButtonItems:nil, nil];
                 
                 [errorAlert show];
             }
@@ -416,10 +420,8 @@
         else {
             [self setIsPosting:NO];
             
-            BlockAlertView *jukaelaSocialPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting to Jukaela Social"];
-            
-            [jukaelaSocialPostingError setCancelButtonWithTitle:@"OK" block:nil];
-            
+            UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error posting to Jukaela Social!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+
             [jukaelaSocialPostingError show];
             
             [[ActivityManager sharedManager] decrementActivityCount];
@@ -475,11 +477,9 @@
                         else {
                             [self setIsPosting:NO];
                             
-                            BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Twitter."];
+                            UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error posting your Jukaela Social post to Twitter." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                             
-                            [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                            
-                            [twitterPostingError show];
+                            [jukaelaSocialPostingError show];
                         }
                         [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
                     }];
@@ -506,11 +506,9 @@
                         else {
                             [self setIsPosting:NO];
                             
-                            BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Twitter."];
+                            UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error posting your Jukaela Social post to Twitter." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                             
-                            [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                            
-                            [twitterPostingError show];
+                            [jukaelaSocialPostingError show];
                         }
                         [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
                     }];
@@ -622,11 +620,9 @@
                             else {
                                 [self setIsPosting:NO];
                                 
-                                BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Facebook."];
+                                UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error posting your Jukaela Social post to Facebook." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                                 
-                                [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                                
-                                [facebookPostingError show];
+                                [jukaelaSocialPostingError show];
                             }
                             [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
                         }];
@@ -660,11 +656,9 @@
                             else {
                                 [self setIsPosting:NO];
                                 
-                                BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error posting your Jukaela Social post to Facebook."];
+                                UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error posting your Jukaela Social post to Facebook." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                                 
-                                [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                                
-                                [facebookPostingError show];
+                                [jukaelaSocialPostingError show];
                             }
                             [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
                         }];

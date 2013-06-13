@@ -102,6 +102,9 @@
                                        UIViewAutoresizingFlexibleRightMargin |
                                        UIViewAutoresizingFlexibleTopMargin |
                                        UIViewAutoresizingFlexibleBottomMargin)];
+    
+    [activityView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    
     [activityView startAnimating];
     
     UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
@@ -143,6 +146,9 @@
                                        UIViewAutoresizingFlexibleRightMargin |
                                        UIViewAutoresizingFlexibleTopMargin |
                                        UIViewAutoresizingFlexibleBottomMargin)];
+    
+    [activityView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+
     [activityView startAnimating];
     
     UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
@@ -225,6 +231,7 @@
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
+        [[self nameTextField] setTextAlignment:NSTextAlignmentRight];
         [[self nameTextField] setFrame:CGRectMake(110, 14, 185, 30)];
         [[self nameTextField] setAutocapitalizationType:UITextAutocapitalizationTypeWords];
         
@@ -234,6 +241,7 @@
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
+        [[self usernameTextField] setTextAlignment:NSTextAlignmentRight];
         [[self usernameTextField] setFrame:CGRectMake(110, 11, 185, 30)];
         [[self usernameTextField] setAutocapitalizationType:UITextAutocapitalizationTypeNone];
         
@@ -244,9 +252,9 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self emailTextField] setFrame:CGRectMake(110, 10, 185, 30)];
-        
+        [[self emailTextField] setTextAlignment:NSTextAlignmentRight];
         [[self emailTextField] setKeyboardType:UIKeyboardTypeEmailAddress];
-        [[self usernameTextField] setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+        [[self emailTextField] setAutocapitalizationType:UITextAutocapitalizationTypeNone];
         
         [cell addSubview:[self emailTextField]];
     }
@@ -255,7 +263,7 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self passwordTextField] setFrame:CGRectMake(110, 10, 185, 30)];
-        
+        [[self passwordTextField] setTextAlignment:NSTextAlignmentRight];
         [[self passwordTextField] setSecureTextEntry:YES];
         
         [cell addSubview:[self passwordTextField]];
@@ -265,7 +273,7 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self passwordConfirmTextField] setFrame:CGRectMake(110, 10, 185, 30)];
-        
+        [[self passwordConfirmTextField] setTextAlignment:NSTextAlignmentRight];
         [[self passwordConfirmTextField] setSecureTextEntry:YES];
         
         [cell addSubview:[self passwordConfirmTextField]];

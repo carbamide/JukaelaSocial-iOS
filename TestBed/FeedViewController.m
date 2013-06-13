@@ -131,10 +131,9 @@
                 NSDictionary *loginDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 if (loginDict) {
-                    [[[[self tabBarController] tabBar] items][1] setEnabled:YES];
-                    [[[[self tabBarController] tabBar] items][2] setEnabled:YES];
-                    [[[[self tabBarController] tabBar] items][3] setEnabled:YES];
-                    [[[[self tabBarController] tabBar] items][4] setEnabled:YES];
+                    for (UITabBarItem *item in [[[self tabBarController] tabBar] items]) {
+                        [item setEnabled:YES];
+                    }
                     
                     [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[kID]]];
                     [kAppDelegate setUserEmail:[NSString stringWithFormat:@"%@", loginDict[kEmail]]];
@@ -149,11 +148,10 @@
                 else {
                     [[self progressHUD] hide:YES];
                     
-                    UIAlertView *loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"The login has failed. Sorry!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                                        
-                    [loginFailedAlert setCancelButtonWithTitle:@"OK" block:^{
+                    UIAlertView *loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Your login has failed." cancelButtonItem:[RIButtonItem itemWithLabel:@"OK" action:^{
                         [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
-                    }];
+                    }]
+                                                                      otherButtonItems:nil, nil];
                     
                     [loginFailedAlert show];
                 }
@@ -178,37 +176,6 @@
     }
     
     [super viewDidLoad];
-}
-
--(void)longPress:(UILongPressGestureRecognizer *)aGesture
-{
-    if ([aGesture state] == UIGestureRecognizerStateBegan) {
-        BlockActionSheet *longPressActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Share..."];
-        
-        [longPressActionSheet addButtonWithTitle:@"Facebook Only" block:^{
-            [kAppDelegate setOnlyToFacebook:YES];
-            
-            [self composePost:nil];
-        }];
-        
-        [longPressActionSheet addButtonWithTitle:@"Twitter Only"  block:^{
-            [kAppDelegate setOnlyToTwitter:YES];
-            
-            [self composePost:nil];
-        }];
-        
-        [longPressActionSheet addButtonWithTitle:@"Jukaela Only" block:^{
-            [kAppDelegate setOnlyToJukaela:YES];
-            
-            [self composePost:nil];
-        }];
-        
-        [longPressActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-        
-        [longPressActionSheet showInView:[self view]];
-    }
-    
-    
 }
 
 - (void)initializeActivityIndicator
@@ -301,11 +268,10 @@
 -(void)switchToSelectedUser:(NSNotification *)aNotification
 {
     if ([kAppDelegate currentViewController] == self) {
-        
-        
         if (![self progressHUD]) {
             [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
         }
+        
         [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];
         [[self progressHUD] setLabelText:@"Loading User..."];
         [[self progressHUD] setDelegate:self];
@@ -462,9 +428,7 @@
                         NSLog(@"Crazy things just happened with the integrity of this table, yo");
                     }
                     
-                    BlockAlertView *tableError = [[BlockAlertView alloc] initWithTitle:@"Table Integrity Issue!" message:[NSString stringWithFormat:@"Table has been restored.  Error %i", difference]];
-                    
-                    [tableError setCancelButtonWithTitle:@"OK" block:nil];
+                    UIAlertView *tableError = [[UIAlertView alloc] initWithTitle:@"Table Integrity Issue!" message:[NSString stringWithFormat:@"Table has been restored.  Error %i", difference] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
                     [tableError show];
                     
@@ -607,12 +571,12 @@
         
         if (![[cell externalImage] image]) {
             if ([[self externalImageCache] objectForKey:indexPath]) {
-                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath]];
+                [[cell externalImage] setImage:[[[self externalImageCache] objectForKey:indexPath] thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh]];
             }
             else if ([[NSFileManager defaultManager] fileExistsAtPath:[[self documentsFolder] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
                 UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[self documentsFolder] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
                 
-                [[cell externalImage] setImage:externalImageFromDisk];
+                [[cell externalImage] setImage:[externalImageFromDisk thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh]];
                 
                 if (externalImageFromDisk) {
                     [[self externalImageCache] setObject:externalImageFromDisk forKey:indexPath];
@@ -624,7 +588,6 @@
                 objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
                 
                 dispatch_async(queue, ^{
-                    
                     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
                     
                     if (image) {
@@ -632,7 +595,7 @@
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[cell externalImage] setImage:image];
+                        [[cell externalImage] setImage:[image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh]];
                         
                         [Helpers saveImage:image withFileName:[tempString lastPathComponent]];
                         
@@ -791,13 +754,15 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSMutableArray *tempArray = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] mutableCopy];
                 
                 NSInteger oldTableViewCount = [[self theFeed] count];
                 
-                [[self theFeed] addObjectsFromArray:tempArray];
+                NSMutableArray *rehashOfOldArray = [NSMutableArray arrayWithArray:[self theFeed]];
                 
-                NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
+                [rehashOfOldArray addObjectsFromArray:tempArray];
+                
+                [self setTheFeed:rehashOfOldArray];
                 
                 @try {
                     [[self tableView] beginUpdates];
@@ -837,15 +802,18 @@
 
 -(void)doubleTap:(NSNotification *)aNotification
 {
+    RIButtonItem *likeButton = nil;
+    RIButtonItem *usersWhoLiked = nil;
+    RIButtonItem *replyButton = nil;
+    RIButtonItem *showThread = nil;
+    RIButtonItem *deleteThread = nil;
+    RIButtonItem *cancelButton = nil;
+    
     if ([kAppDelegate currentViewController] == self) {
-        
-        
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
         
         [self setTempIndexPath:indexPathOfTappedRow];
-        
-        BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
-        
+                
         if (![[NSString stringWithFormat:@"%@", [self theFeed][[indexPathOfTappedRow row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
             BOOL addTheLikeButton = YES;
             
@@ -858,7 +826,7 @@
             }
             
             if (addTheLikeButton) {
-                [cellActionSheet addButtonWithTitle:@"Like" block:^{
+                likeButton = [RIButtonItem itemWithLabel:@"Like" action:^{
                     [[ActivityManager sharedManager] incrementActivityCount];
                     
                     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/like.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][kID]]];
@@ -890,46 +858,19 @@
                 pluralization = @"Likes";
             }
             
-            [cellActionSheet addButtonWithTitle:[NSString stringWithFormat:@"%lu %@", (unsigned long)[(NSArray *)[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] count], pluralization] block:^{
+            usersWhoLiked = [RIButtonItem itemWithLabel:[NSString stringWithFormat:@"%lu %@", (unsigned long)[(NSArray *)[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"] count], pluralization] action:^{
                 [self setTempArray:[self theFeed][[indexPathOfTappedRow row]][@"users_who_liked"]];
                 
                 [self performSegueWithIdentifier:@"UsersWhoLiked" sender:self];
             }];
         }
         
-        [cellActionSheet addButtonWithTitle:@"Reply" block:^{
+        replyButton = [RIButtonItem itemWithLabel:@"Reply" action:^{
             [self performSegueWithIdentifier:kShowReplyView sender:self];
         }];
         
-        [cellActionSheet addButtonWithTitle:@"Share to Twitter" block:^{
-            NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
-            
-            if ([[[tempCell contentText] text] length] > 140) {
-                NSArray *tempArray = [Helpers splitString:[[tempCell contentText] text] maxCharacters:140];
-                
-                for (NSString *tempString in [tempArray reverseObjectEnumerator]) {
-                    [ShareObject shareToTwitter:tempString withViewController:self];
-                }
-            }
-            else {
-                [ShareObject shareToTwitter:[[tempCell contentText] text] withViewController:self];
-            }
-        }];
-        
-        [cellActionSheet addButtonWithTitle:@"Share to Facebook" block:^{
-            NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
-            
-            [ShareObject shareToFacebook:[[tempCell contentText] text] withViewController:self];
-        }];
-        
-        [cellActionSheet addButtonWithTitle:@"Share via Mail" block:^{
-            NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
-            
-            [ShareObject sharePostViaMail:tempCell withViewController:self];
-        }];
-        
         if ([self theFeed][[indexPathOfTappedRow row]][@"in_reply_to"] != [NSNull null]) {
-            [cellActionSheet addButtonWithTitle:@"Show Thread" block:^{
+            showThread = [RIButtonItem itemWithLabel:@"Show Thread" action:^{
                 NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/thread_for_micropost.json", kSocialURL, [self theFeed][[indexPathOfTappedRow row]][kID]]];
                 
                 NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
@@ -943,7 +884,7 @@
         }
         
         if ([[NSString stringWithFormat:@"%@", [self theFeed][[indexPathOfTappedRow row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
-            [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
+            deleteThread = [RIButtonItem itemWithLabel:@"Delete Post" action:^{
                 [[ActivityManager sharedManager] incrementActivityCount];
                 
                 NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
@@ -970,13 +911,15 @@
             }];
         }
         
-        [cellActionSheet setCancelButtonWithTitle:@"Cancel" block:^{
+        cancelButton = [RIButtonItem itemWithLabel:@"Cancel" action:^{
             [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
             
             return;
         }];
         
-        [cellActionSheet showInView:[self view]];
+        UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:cancelButton destructiveButtonItem:deleteThread otherButtonItems:replyButton, likeButton, usersWhoLiked, showThread, nil];
+
+        [cellActionSheet showFromTabBar:[[self tabBarController] tabBar]];
     }
 }
 
@@ -1049,10 +992,8 @@
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     if (result == MFMailComposeResultFailed) {
-        BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"There was an error sending your email"];
-        
-        [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
-        
+        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error sending your email" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
         [errorAlert show];
     }
     

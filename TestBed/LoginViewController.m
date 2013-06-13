@@ -55,9 +55,6 @@
                     [_rememberUsername setChecked];
                 }
                 
-                [_username setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
-                
-                
                 [cell addSubview:_username];
             }
             else {
@@ -80,8 +77,6 @@
                 [_password setTextAlignment:NSTextAlignmentRight];
                 [_password setPlaceholder:@"password"];
                 [_password setFont:[UIFont systemFontOfSize:16]];
-
-                [_password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
                 
                 [cell addSubview:_password];
             }
@@ -197,18 +192,9 @@
             loginDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             
             if (loginDict) {
-                NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"loggedIn" ofType:@"aiff"];
-                
-                SystemSoundID soundID;
-                
-                AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath: soundPath], &soundID);
-                
-                AudioServicesPlaySystemSound (soundID);
-                
-                [[[[self tabBarController] tabBar] items][1] setEnabled:YES];
-                [[[[self tabBarController] tabBar] items][2] setEnabled:YES];
-                [[[[self tabBarController] tabBar] items][3] setEnabled:YES];
-                [[[[self tabBarController] tabBar] items][4] setEnabled:YES];
+                for (UITabBarItem *item in [[[self tabBarController] tabBar] items]) {
+                    [item setEnabled:YES];
+                }
 
                 [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[kID]]];
                 [kAppDelegate setUserEmail:[NSString stringWithFormat:@"%@", loginDict[kEmail]]];
@@ -221,9 +207,7 @@
             else {
                 [[self progressHUD] hide:YES];
                 
-                BlockAlertView *loginFailedAlert = [[BlockAlertView alloc] initWithTitle:@"Login Failed" message:@"The login has failed. Sorry!"];
-                
-                [loginFailedAlert setCancelButtonWithTitle:@"OK" block:nil];
+                UIAlertView *loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"The login has failed." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 
                 [loginFailedAlert show];
             }
@@ -233,11 +217,9 @@
             
             [[self progressHUD] hide:YES];
             
-            BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"Unable to login"];
+            UIAlertView *loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"The login has failed." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             
-            [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
-            
-            [errorAlert show];
+            [loginFailedAlert show];
         }
         
         [[ActivityManager sharedManager] decrementActivityCount];
@@ -326,10 +308,9 @@
     
     [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
-    [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
-    [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
-    [[[[self tabBarController] tabBar] items][3] setEnabled:NO];
-    [[[[self tabBarController] tabBar] items][4] setEnabled:NO];
+    for (UITabBarItem *item in [[[self tabBarController] tabBar] items]) {
+        [item setEnabled:NO];
+    }
 
     [[[self imageView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
     [[[self imageView] layer] setShadowOffset:CGSizeMake(0, 1)];
@@ -360,11 +341,7 @@
 
 -(void)showMyLove:(id)sender
 {
-    BlockAlertView *alert = [[BlockAlertView alloc] initWithTitle:@"My Love" message:@"This app was inspired by my wife Candice. She's the most beautiful, caring, lovely woman that I've ever known. She is my inspiration, she is my heart and I wouldn't be the person that I am if it weren't for her.  Candice, I love you."];
-    
-    [alert setCancelButtonWithTitle:@"OK" block:nil];
-    
-    [alert show];
+
 }
 
 -(void)viewDidAppear:(BOOL)animated

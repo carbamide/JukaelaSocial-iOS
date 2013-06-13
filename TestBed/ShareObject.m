@@ -52,10 +52,8 @@
                         }
                     }
                     else {
-                        BlockAlertView *twitterPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error sharing to Twitter."];
-                        
-                        [twitterPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                        
+                        UIAlertView *twitterPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error sharing to Twitter." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        
                         [twitterPostingError show];
                     }
                     [[feedViewController activityIndicator] stopAnimating];
@@ -112,11 +110,7 @@
                         }
                     }
                     else {
-                        BlockAlertView *facebookPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error sharing to Facebook"];
-                        
-                        [facebookPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                        
-                        [facebookPostingError show];
+
                     }
                     [[feedViewController activityIndicator] stopAnimating];
                 }];
@@ -148,11 +142,7 @@
         [feedViewController presentViewController:viewController animated:YES completion:nil];
     }
     else {
-        BlockAlertView *notAbleToSendMailAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"There are no mail accounts set up on this device."];
-        
-        [notAbleToSendMailAlert setCancelButtonWithTitle:@"OK" block:nil];
-        
-        [notAbleToSendMailAlert show];
+
     }
 }
 

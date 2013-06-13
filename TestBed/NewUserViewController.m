@@ -75,6 +75,9 @@
                                        UIViewAutoresizingFlexibleRightMargin |
                                        UIViewAutoresizingFlexibleTopMargin |
                                        UIViewAutoresizingFlexibleBottomMargin)];
+    
+    [activityView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+
     [activityView startAnimating];
     
     UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
@@ -82,9 +85,7 @@
     [[self navigationItem] setRightBarButtonItem:loadingView];
     
     if (![[[self passwordTextField] text] isEqualToString:[[self passwordConfirmTextField] text]]) {
-        BlockAlertView *passwordsDontMatchAlert = [[BlockAlertView alloc] initWithTitle:@"Password" message:@"The passwords must match"];
-        
-        [passwordsDontMatchAlert setCancelButtonWithTitle:@"OK" block:nil];
+        UIAlertView *passwordsDontMatchAlert = [[UIAlertView alloc] initWithTitle:@"Password" message:@"The passwords must match" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [passwordsDontMatchAlert show];
         
@@ -114,22 +115,10 @@
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
             else {
-                BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"Error creating your new user account.  Please try again."];
-                
-                [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
-                
-                [errorAlert show];
-                
                 [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
             }
         }
         else {
-            BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"Error creating your new user account.  Please try again."];
-            
-            [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
-            
-            [errorAlert show];
-            
             [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
         }
     }];
@@ -172,7 +161,8 @@
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [[self nameTextField] setFrame:CGRectMake(110, 14, 185, 30)];
+        [[self nameTextField] setTextAlignment:NSTextAlignmentRight];
+        [[self nameTextField] setFrame:CGRectMake(110, 10, 185, 30)];
         [[self nameTextField] setAutocapitalizationType:UITextAutocapitalizationTypeWords];
         
         [cell addSubview:[self nameTextField]];
@@ -181,7 +171,8 @@
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        [[self usernameTextField] setFrame:CGRectMake(110, 11, 185, 30)];
+        [[self usernameTextField] setTextAlignment:NSTextAlignmentRight];
+        [[self usernameTextField] setFrame:CGRectMake(110, 10, 185, 30)];
         [[self usernameTextField] setAutocapitalizationType:UITextAutocapitalizationTypeNone];
         
         [cell addSubview:[self usernameTextField]];
@@ -191,7 +182,7 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self emailTextField] setFrame:CGRectMake(110, 10, 185, 30)];
-        
+        [[self emailTextField] setTextAlignment:NSTextAlignmentRight];
         [[self emailTextField] setKeyboardType:UIKeyboardTypeEmailAddress];
         [[self usernameTextField] setAutocapitalizationType:UITextAutocapitalizationTypeNone];
         
@@ -202,7 +193,7 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self passwordTextField] setFrame:CGRectMake(110, 10, 185, 30)];
-        
+        [[self passwordTextField] setTextAlignment:NSTextAlignmentRight];
         [[self passwordTextField] setSecureTextEntry:YES];
         
         [cell addSubview:[self passwordTextField]];
@@ -212,7 +203,7 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self passwordConfirmTextField] setFrame:CGRectMake(110, 10, 185, 30)];
-        
+        [[self passwordConfirmTextField] setTextAlignment:NSTextAlignmentRight];
         [[self passwordConfirmTextField] setSecureTextEntry:YES];
         
         [cell addSubview:[self passwordConfirmTextField]];

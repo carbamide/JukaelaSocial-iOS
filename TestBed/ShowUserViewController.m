@@ -93,137 +93,131 @@
 
 -(void)followActionSheet:(id)sender
 {
-    BOOL following = NO;
-    
-    BlockActionSheet *followOrUnfollow = [[BlockActionSheet alloc] initWithTitle:nil];
-    
-    NSNumber *unfollowID = nil;
-    
-    NSString *followOrUnfollowString = @"Now following ";
-    
-    for (NSDictionary *dict in [self imFollowing]) {
-        if ([dict[kID] isEqualToNumber:[self userDict][kID]]) {
-            followOrUnfollowString = @"Unfollowed ";
-            following = YES;
-        }
-    }
-    
-    for (NSDictionary *dict in [self relationships]) {
-        if ([dict[@"followed_id"] isEqualToNumber:[self userDict][kID]]) {
-            unfollowID = dict[kID];
-        }
-    }
-    if (following == YES) {
-        [followOrUnfollow setDestructiveButtonWithTitle:@"Unfollow" block:^{
-            [self setImFollowing:nil];
-            [self setRelationships:nil];
-            
-            [self changeToActivityIndicator];
-            
-            [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
-            
-            [[ActivityManager sharedManager] incrementActivityCount];
-            
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships/%@.json", kSocialURL, unfollowID]];
-            
-            NSLog(@"%@", [url absoluteString]);
-            
-            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-            
-            [request setHTTPMethod:@"DELETE"];
-            [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-            [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-            
-            NSString *requestString = [RequestFactory unfollowRequestWithUserID:[self userDict][kID]];
-            
-            NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
-            
-            [request setHTTPBody:requestData];
-            
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"%@%@", followOrUnfollowString, [self userDict][kName]]];
-                
-                [successNotice show];
-                
-                [[ActivityManager sharedManager] decrementActivityCount];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
-            }];
-        }];
-    }
-    else {
-        [followOrUnfollow addButtonWithTitle:@"Follow" block:^{
-            [self setImFollowing:nil];
-            [self setRelationships:nil];
-            
-            [self changeToActivityIndicator];
-            
-            [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
-            
-            [[ActivityManager sharedManager] incrementActivityCount];
-            
-            UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
-            
-            [activityView sizeToFit];
-            
-            [activityView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin |
-                                               UIViewAutoresizingFlexibleRightMargin |
-                                               UIViewAutoresizingFlexibleTopMargin |
-                                               UIViewAutoresizingFlexibleBottomMargin)];
-            [activityView startAnimating];
-            
-            UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
-            
-            UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-            
-            [self setToolbarItems:@[flexSpace, loadingView]];
-            
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships.json", kSocialURL]];
-            
-            NSString *requestString = [RequestFactory followRequestWithUserID:[self userDict][kID]];
-            
-            NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
-            
-            NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
-            
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                if (data) {
-                    [[ActivityManager sharedManager] decrementActivityCount];
-                    
-                    WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"Now following %@", [self userDict][kName]]];
-                    
-                    [successNotice show];
-                    
-                    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-                    
-                    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
-                    
-                    [self setToolbarItems:@[flexSpace, actionItem]];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
-                }
-                else {
-                    BlockAlertView *jukaelaSocialPostingError = [[BlockAlertView alloc] initWithTitle:@"Oh No!" message:@"There has been an error following or unfollowing"];
-                    
-                    [jukaelaSocialPostingError setCancelButtonWithTitle:@"OK" block:nil];
-                    
-                    [jukaelaSocialPostingError show];
-                    
-                    [[ActivityManager sharedManager] decrementActivityCount];
-                    
-                    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-                    
-                    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
-                    
-                    [self setToolbarItems:@[flexSpace, actionItem]];
-                }
-            }];
-        }];
-    }
-    
-    [followOrUnfollow setCancelButtonWithTitle:@"Cancel" block:nil];
-    
-    [followOrUnfollow showInView:[self view]];
+//    BOOL following = NO;
+//    
+//    BlockActionSheet *followOrUnfollow = [[BlockActionSheet alloc] initWithTitle:nil];
+//    
+//    NSNumber *unfollowID = nil;
+//    
+//    NSString *followOrUnfollowString = @"Now following ";
+//    
+//    for (NSDictionary *dict in [self imFollowing]) {
+//        if ([dict[kID] isEqualToNumber:[self userDict][kID]]) {
+//            followOrUnfollowString = @"Unfollowed ";
+//            following = YES;
+//        }
+//    }
+//    
+//    for (NSDictionary *dict in [self relationships]) {
+//        if ([dict[@"followed_id"] isEqualToNumber:[self userDict][kID]]) {
+//            unfollowID = dict[kID];
+//        }
+//    }
+//    if (following == YES) {
+//        [followOrUnfollow setDestructiveButtonWithTitle:@"Unfollow" block:^{
+//            [self setImFollowing:nil];
+//            [self setRelationships:nil];
+//            
+//            [self changeToActivityIndicator];
+//            
+//            [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
+//            
+//            [[ActivityManager sharedManager] incrementActivityCount];
+//            
+//            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships/%@.json", kSocialURL, unfollowID]];
+//            
+//            NSLog(@"%@", [url absoluteString]);
+//            
+//            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+//            
+//            [request setHTTPMethod:@"DELETE"];
+//            [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+//            [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+//            
+//            NSString *requestString = [RequestFactory unfollowRequestWithUserID:[self userDict][kID]];
+//            
+//            NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+//            
+//            [request setHTTPBody:requestData];
+//            
+//            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//                WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"%@%@", followOrUnfollowString, [self userDict][kName]]];
+//                
+//                [successNotice show];
+//                
+//                [[ActivityManager sharedManager] decrementActivityCount];
+//                
+//                [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
+//            }];
+//        }];
+//    }
+//    else {
+//        [followOrUnfollow addButtonWithTitle:@"Follow" block:^{
+//            [self setImFollowing:nil];
+//            [self setRelationships:nil];
+//            
+//            [self changeToActivityIndicator];
+//            
+//            [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
+//            
+//            [[ActivityManager sharedManager] incrementActivityCount];
+//            
+//            UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+//            
+//            [activityView sizeToFit];
+//            
+//            [activityView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin |
+//                                               UIViewAutoresizingFlexibleRightMargin |
+//                                               UIViewAutoresizingFlexibleTopMargin |
+//                                               UIViewAutoresizingFlexibleBottomMargin)];
+//            [activityView startAnimating];
+//            
+//            UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+//            
+//            UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//            
+//            [self setToolbarItems:@[flexSpace, loadingView]];
+//            
+//            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships.json", kSocialURL]];
+//            
+//            NSString *requestString = [RequestFactory followRequestWithUserID:[self userDict][kID]];
+//            
+//            NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+//            
+//            NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+//            
+//            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//                if (data) {
+//                    [[ActivityManager sharedManager] decrementActivityCount];
+//                    
+//                    WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"Now following %@", [self userDict][kName]]];
+//                    
+//                    [successNotice show];
+//                    
+//                    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//                    
+//                    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
+//                    
+//                    [self setToolbarItems:@[flexSpace, actionItem]];
+//                    
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
+//                }
+//                else {
+//                    [[ActivityManager sharedManager] decrementActivityCount];
+//                    
+//                    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//                    
+//                    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
+//                    
+//                    [self setToolbarItems:@[flexSpace, actionItem]];
+//                }
+//            }];
+//        }];
+//    }
+//    
+//    [followOrUnfollow setCancelButtonWithTitle:@"Cancel" block:nil];
+//    
+//    [followOrUnfollow showInView:[self view]];
 }
 
 -(void)followingAndRelationshipsDispatch
@@ -243,6 +237,9 @@
                                        UIViewAutoresizingFlexibleRightMargin |
                                        UIViewAutoresizingFlexibleTopMargin |
                                        UIViewAutoresizingFlexibleBottomMargin)];
+    
+    [activityView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    
     [activityView startAnimating];
     
     UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];

@@ -32,7 +32,6 @@
 //  Created by James Addyman on 16/12/2011.
 //  Copyright 2011 JamSoft. All rights reserved.
 //
-#import "UIColor+ColorWithHex.h"
 #import "JSCoreTextView.h"
 #import <CoreText/CoreText.h>
 #import <QuartzCore/QuartzCore.h>
@@ -421,7 +420,7 @@ float const yAdjustmentFactor = 1.3;
         }
 	}
 	else {
-        [(NormalCellView *)[[self superview] superview] doubleTapAction:nil];
+        [(NormalCellView *)[[[self superview] superview] superview] doubleTapAction:nil];
     }
     
 	_touchedLink = nil;

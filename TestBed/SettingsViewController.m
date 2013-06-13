@@ -49,9 +49,7 @@ NS_ENUM(NSInteger, SocialTypes) {
 
 -(void)logOut:(id)sender
 {
-    BlockActionSheet *logOutActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
-    
-    [logOutActionSheet setDestructiveButtonWithTitle:@"Logout" block:^{
+    RIButtonItem *logoutButton = [RIButtonItem itemWithLabel:@"Logout" action:^{
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kReadUsernameFromDefaultsPreference];
         
         [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] valueForKey:kUsername] andServiceName:kJukaelaSocialServiceName error:nil];
@@ -65,15 +63,14 @@ NS_ENUM(NSInteger, SocialTypes) {
         
         [[self tabBarController] setSelectedIndex:0];
         
-        [[[[self tabBarController] tabBar] items][1] setEnabled:NO];
-        [[[[self tabBarController] tabBar] items][2] setEnabled:NO];
-        [[[[self tabBarController] tabBar] items][3] setEnabled:NO];
-        [[[[self tabBarController] tabBar] items][4] setEnabled:NO];
+        for (UITabBarItem *item in [[[self tabBarController] tabBar] items]) {
+            [item setEnabled:NO];
+        }
     }];
     
-    [logOutActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+    UIActionSheet *logoutActionSheet = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:logoutButton otherButtonItems:nil, nil];
     
-    [logOutActionSheet showInView:[self view]];
+    [logoutActionSheet showFromTabBar:[[self tabBarController] tabBar]];
 }
 
 -(id)initWithStyle:(UITableViewStyle)style
@@ -89,7 +86,7 @@ NS_ENUM(NSInteger, SocialTypes) {
 {
     [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
     
-    [self setPickerView:[[UIPickerView alloc] init]];
+    [self setPickerView:[[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 320, 216)]];
     [[self pickerView] setDelegate:self];
     [[self pickerView] setShowsSelectionIndicator:YES];
     
@@ -147,7 +144,7 @@ NS_ENUM(NSInteger, SocialTypes) {
     }
     
     [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:18]];
-        
+    
     if ([indexPath section] == 0) {
         if ([indexPath row] == 0) {
             [[cell textLabel] setText:@"Post to Twitter?"];
@@ -187,15 +184,9 @@ NS_ENUM(NSInteger, SocialTypes) {
             [[self facebookSwitch] addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         }
         else if ([indexPath row] == 2) {
-            [[cell textLabel] setText:@"Default Icon Style"];
+            [[self pickerView] setFrame:CGRectInset([cell frame], 0, -70)];
             
-            if ([[NSUserDefaults standardUserDefaults] stringForKey:@"avatar_type"]) {
-                [[cell detailTextLabel] setText:[[NSUserDefaults standardUserDefaults] stringForKey:@"avatar_type"]];
-            }
-            
-            [[cell detailTextLabel] setFont:[UIFont fontWithName:@"Helvetica-Light" size:10]];
-            
-            [[cell detailTextLabel] setTextColor:[UIColor darkGrayColor]];
+            [cell addSubview:[self pickerView]];
         }
     }
     else if ([indexPath section] == 1) {
@@ -243,12 +234,6 @@ NS_ENUM(NSInteger, SocialTypes) {
                         }
                         else {
                             [[self facebookSwitch] setOn:NO animated:YES];
-                            
-                            BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Facebook account set up.  Please set one up in the Settings app."];
-                            
-                            [noAccount setCancelButtonWithTitle:@"OK" block:nil];
-                            
-                            [noAccount show];
                         }
                     }
                 }];
@@ -276,12 +261,6 @@ NS_ENUM(NSInteger, SocialTypes) {
                         }
                         else {
                             [[self twitterSwitch] setOn:NO animated:YES];
-                            
-                            BlockAlertView *noAccount = [[BlockAlertView alloc] initWithTitle:@"No Accounts" message:@"You don't seem to have a Twitter account set up.  Please set one up in the Settings app."];
-                            
-                            [noAccount setCancelButtonWithTitle:@"OK" block:nil];
-                            
-                            [noAccount show];
                         }
                     }
                 }];
@@ -304,43 +283,6 @@ NS_ENUM(NSInteger, SocialTypes) {
 {
     switch ([indexPath section]) {
         case 0:
-            if ([indexPath row] == 2) {
-                if ([[self pickerView] superview] == nil)
-                {
-                    [[[self view] window] addSubview:[self pickerView]];
-                    
-                    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
-                    CGSize pickerSize = [[self pickerView] sizeThatFits:CGSizeZero];
-                    CGRect startRect = CGRectMake(0.0, screenRect.origin.y + screenRect.size.height, pickerSize.width, pickerSize.height);
-                    
-                    [[self pickerView] setFrame:startRect];
-                    
-                    CGRect pickerRect;
-                    
-                    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-                        pickerRect = CGRectMake(0, screenRect.origin.y + screenRect.size.height - pickerSize.height, screenRect.size.width, pickerSize.height);
-                    }
-                    else {
-                        pickerRect = CGRectMake(0.0, screenRect.origin.y + screenRect.size.height - pickerSize.height, pickerSize.width, pickerSize.height);
-                    }
-                    
-                    [UIView beginAnimations:nil context:NULL];
-                    [UIView setAnimationDuration:0.3];
-                    [UIView setAnimationDelegate:self];
-                    
-                    [[self pickerView] setFrame:pickerRect];
-                    
-                    CGRect newFrame = [[self tableView] frame];
-                    
-                    newFrame.size.height -= [self pickerView].frame.size.height;
-                    
-                    [[self tableView] setFrame:newFrame];
-                    [UIView commitAnimations];
-                    
-                    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)]];
-                }
-            }
-            return;
             break;
         case 1:
             [self performSegueWithIdentifier:kShowEditUser sender:self];
@@ -374,26 +316,6 @@ NS_ENUM(NSInteger, SocialTypes) {
 
 -(void)doneAction:(id)sender
 {
-    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
-    CGRect endFrame = [self pickerView].frame;
-    endFrame.origin.y = screenRect.origin.y + screenRect.size.height;
-    
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDidStopSelector:@selector(slideDownDidStop)];
-    
-    [[self pickerView] setFrame:endFrame];
-    
-    [UIView commitAnimations];
-    
-    CGRect newFrame = [[self tableView] frame];
-    newFrame.size.height += [self pickerView].frame.size.height;
-    
-    [[self tableView] setFrame:newFrame];
-    
-    [[self navigationItem] setRightBarButtonItem:nil];
-    
     NSIndexPath *indexPath = [[self tableView] indexPathForSelectedRow];
     
     [self clearImageCache];
@@ -403,9 +325,7 @@ NS_ENUM(NSInteger, SocialTypes) {
 
 -(void)clearImageCache
 {
-    BlockActionSheet *eraseAction = [[BlockActionSheet alloc] initWithTitle:nil];
-    
-    [eraseAction setDestructiveButtonWithTitle:@"Clear Image Cache" block:^{
+    RIButtonItem *buttonItem = [RIButtonItem itemWithLabel:@"Clear Image Cache" action:^{
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         if ([paths count] > 0) {
             NSError *error = nil;
@@ -416,15 +336,7 @@ NS_ENUM(NSInteger, SocialTypes) {
             for (NSString *file in [fileManager contentsOfDirectoryAtPath:directory error:&error]) {
                 NSString *filePath = [directory stringByAppendingPathComponent:file];
                 
-                BOOL fileDeleted = [fileManager removeItemAtPath:filePath error:&error];
-                
-                if (fileDeleted != YES || error != nil) {
-                    BlockAlertView *errorAlert = [[BlockAlertView alloc] initWithTitle:@"Error" message:@"There has been an error.  Please reinstall Jukaela Social."];
-                    
-                    [errorAlert setCancelButtonWithTitle:@"OK" block:nil];
-                    
-                    [errorAlert show];
-                }
+                [fileManager removeItemAtPath:filePath error:&error];
             }
         }
         
@@ -433,9 +345,9 @@ NS_ENUM(NSInteger, SocialTypes) {
         [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
     }];
     
-    [eraseAction setCancelButtonWithTitle:@"Cancel" block:nil];
-    
-    [eraseAction showInView:[self view]];
+    UIActionSheet *eraseAction = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:buttonItem otherButtonItems:nil, nil];
+        
+    [eraseAction showFromTabBar:[[self tabBarController] tabBar]];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -455,10 +367,6 @@ NS_ENUM(NSInteger, SocialTypes) {
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    UITableViewCell *cell = [[self tableView] cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
-    
-    [[cell detailTextLabel] setText:[self pickerViewComponents][row]];
-    
     switch (row) {
         case 0:
             [[NSUserDefaults standardUserDefaults] setValue:@"mm" forKey:@"avatar_type"];
@@ -493,4 +401,18 @@ NS_ENUM(NSInteger, SocialTypes) {
     return @[@"Mystery Man", @"Identicon", @"Monster ID", @"Wavatar", @"Retro"];
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath section] == 0) {
+        if ([indexPath row] == 2) {
+            return 100;
+        }
+        else {
+            return 44;
+        }
+    }
+    else {
+        return 44;
+    }
+}
 @end

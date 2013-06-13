@@ -378,55 +378,55 @@
 
 -(void)doubleTap:(NSNotification *)aNotification
 {
-    if ([kAppDelegate currentViewController] == self) {
-        
-        
-        
-        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
-        
-        [self setTempIndexPath:indexPathOfTappedRow];
-        
-        BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
-        
-        [cellActionSheet addButtonWithTitle:@"Reply" block:^{
-            [self performSegueWithIdentifier:kShowReplyView sender:self];
-            
-        }];
-        
-        if ([[NSString stringWithFormat:@"%@", [self mentions][[indexPathOfTappedRow row]][@"sender_user_id"]] isEqualToString:[kAppDelegate userID]]) {
-            [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
-                [[ActivityManager sharedManager] incrementActivityCount];
-                
-                NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
-                
-                [tempCell disableCell];
-                
-                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][kID]]];
-                
-                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-                
-                [request setHTTPMethod:@"DELETE"];
-                [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-                [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-                
-                [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                    [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
-                    
-                    [self refreshTableInformation];
-                    
-                    [[ActivityManager sharedManager] decrementActivityCount];
-                }];
-            }];
-        }
-        
-        [cellActionSheet setCancelButtonWithTitle:@"Cancel" block:^{
-            [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
-            
-            return;
-        }];
-        
-        [cellActionSheet showInView:[self view]];
-    }
+//    if ([kAppDelegate currentViewController] == self) {
+//        
+//        
+//        
+//        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
+//        
+//        [self setTempIndexPath:indexPathOfTappedRow];
+//        
+//        BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
+//        
+//        [cellActionSheet addButtonWithTitle:@"Reply" block:^{
+//            [self performSegueWithIdentifier:kShowReplyView sender:self];
+//            
+//        }];
+//        
+//        if ([[NSString stringWithFormat:@"%@", [self mentions][[indexPathOfTappedRow row]][@"sender_user_id"]] isEqualToString:[kAppDelegate userID]]) {
+//            [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
+//                [[ActivityManager sharedManager] incrementActivityCount];
+//                
+//                NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+//                
+//                [tempCell disableCell];
+//                
+//                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][kID]]];
+//                
+//                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+//                
+//                [request setHTTPMethod:@"DELETE"];
+//                [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+//                [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+//                
+//                [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//                    [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+//                    
+//                    [self refreshTableInformation];
+//                    
+//                    [[ActivityManager sharedManager] decrementActivityCount];
+//                }];
+//            }];
+//        }
+//        
+//        [cellActionSheet setCancelButtonWithTitle:@"Cancel" block:^{
+//            [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
+//            
+//            return;
+//        }];
+//        
+//        [cellActionSheet showInView:[self view]];
+//    }
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -450,8 +450,9 @@
 {
     if (![self activityIndicator]) {
         [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
-        
+                
         [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+
     }
     
     [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
@@ -496,9 +497,7 @@
 
 -(void)goMakeFriends
 {
-    BlockAlertView *mentionsError = [[BlockAlertView alloc] initWithTitle:@"No mentions!" message:@"Man, you need to make some friends!  Go to the Users tab and talk to someone!"];
-    
-    [mentionsError setCancelButtonWithTitle:@"OK" block:nil];
+    UIAlertView *mentionsError = [[UIAlertView alloc] initWithTitle:@"No mentions!" message:@"Man, you need to make some friends!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     
     [mentionsError show];
 }

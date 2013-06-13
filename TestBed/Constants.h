@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
 
-#import "UIColor+ColorWithHex.h"
-
 #import "ActivityManager.h"
 #import "Helpers.h"
 #import "JukaelaViewController.h"
@@ -19,6 +17,9 @@
 #import "UIImage+Resize.h"
 #import "UIImage+RoundedCorner.h"
 #import "UIImage+Alpha.h"
+#import "RIButtonItem.h"
+#import "UIAlertView+Blocks.h"
+#import "UIActionSheet+Blocks.h"
 
 static const CGFloat KEYBOARD_ANIMATION_DURATION = 0.3;
 static const CGFloat MINIMUM_SCROLL_FRACTION = 0.2;

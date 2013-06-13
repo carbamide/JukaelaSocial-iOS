@@ -7,7 +7,6 @@
 //  https://github.com/samvermette/SVWebViewController
 
 #import "SVWebViewController.h"
-#import "BlockActionSheet.h"
 
 @interface SVWebViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
@@ -88,34 +87,34 @@
     return actionBarButtonItem;
 }
 
-- (BlockActionSheet *)pageActionSheet {
-    
-    BlockActionSheet *pageActionSheet = [[BlockActionSheet alloc] initWithTitle:self.mainWebView.request.URL.absoluteString];
-    
-    if((self.availableActions & SVWebViewControllerAvailableActionsCopyLink) == SVWebViewControllerAvailableActionsCopyLink) {
-        [pageActionSheet addButtonWithTitle:@"Copy Link" block:^{
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            pasteboard.string = self.mainWebView.request.URL.absoluteString;
-        }];
-    }
-    
-    if((self.availableActions & SVWebViewControllerAvailableActionsOpenInSafari) == SVWebViewControllerAvailableActionsOpenInSafari) {
-        [pageActionSheet addButtonWithTitle:@"Open in Safari" block:^{
-            [[UIApplication sharedApplication] openURL:self.mainWebView.request.URL];
-        }];
-    }
-    
-    SVWebViewController *svWebViewController = self;
-    
-    if([MFMailComposeViewController canSendMail] && (self.availableActions & SVWebViewControllerAvailableActionsMailLink) == SVWebViewControllerAvailableActionsMailLink) {
-        [pageActionSheet addButtonWithTitle:@"Mail Link to this Page" block:^{
-            [svWebViewController showMailer];
-        }];
-    }
-    
-    [pageActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-    
-    return pageActionSheet;
+- (instancetype)pageActionSheet {
+//    
+//    BlockActionSheet *pageActionSheet = [[BlockActionSheet alloc] initWithTitle:self.mainWebView.request.URL.absoluteString];
+//    
+//    if((self.availableActions & SVWebViewControllerAvailableActionsCopyLink) == SVWebViewControllerAvailableActionsCopyLink) {
+//        [pageActionSheet addButtonWithTitle:@"Copy Link" block:^{
+//            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+//            pasteboard.string = self.mainWebView.request.URL.absoluteString;
+//        }];
+//    }
+//    
+//    if((self.availableActions & SVWebViewControllerAvailableActionsOpenInSafari) == SVWebViewControllerAvailableActionsOpenInSafari) {
+//        [pageActionSheet addButtonWithTitle:@"Open in Safari" block:^{
+//            [[UIApplication sharedApplication] openURL:self.mainWebView.request.URL];
+//        }];
+//    }
+//    
+//    SVWebViewController *svWebViewController = self;
+//    
+//    if([MFMailComposeViewController canSendMail] && (self.availableActions & SVWebViewControllerAvailableActionsMailLink) == SVWebViewControllerAvailableActionsMailLink) {
+//        [pageActionSheet addButtonWithTitle:@"Mail Link to this Page" block:^{
+//            [svWebViewController showMailer];
+//        }];
+//    }
+//    
+//    [pageActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+//    
+    return nil;
 }
 
 -(void)showMailer
@@ -316,33 +315,33 @@
 }
 
 - (void)actionButtonClicked:(id)sender {
-    
-    BlockActionSheet *pageActionSheet = [[BlockActionSheet alloc] initWithTitle:self.mainWebView.request.URL.absoluteString];
-    
-    if((self.availableActions & SVWebViewControllerAvailableActionsCopyLink) == SVWebViewControllerAvailableActionsCopyLink) {
-        [pageActionSheet addButtonWithTitle:@"Copy Link" block:^{
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            pasteboard.string = self.mainWebView.request.URL.absoluteString;
-        }];
-    }
-    
-    if((self.availableActions & SVWebViewControllerAvailableActionsOpenInSafari) == SVWebViewControllerAvailableActionsOpenInSafari) {
-        [pageActionSheet addButtonWithTitle:@"Open in Safari" block:^{
-            [[UIApplication sharedApplication] openURL:self.mainWebView.request.URL];
-        }];
-    }
-    
-    SVWebViewController *svWebViewController = self;
-    
-    if([MFMailComposeViewController canSendMail] && (self.availableActions & SVWebViewControllerAvailableActionsMailLink) == SVWebViewControllerAvailableActionsMailLink) {
-        [pageActionSheet addButtonWithTitle:@"Mail Link to this Page" block:^{
-            [svWebViewController showMailer];
-        }];
-    }
-    
-    [pageActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-        
-    [pageActionSheet showInView:[self view]];
+//    
+//    BlockActionSheet *pageActionSheet = [[BlockActionSheet alloc] initWithTitle:self.mainWebView.request.URL.absoluteString];
+//    
+//    if((self.availableActions & SVWebViewControllerAvailableActionsCopyLink) == SVWebViewControllerAvailableActionsCopyLink) {
+//        [pageActionSheet addButtonWithTitle:@"Copy Link" block:^{
+//            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+//            pasteboard.string = self.mainWebView.request.URL.absoluteString;
+//        }];
+//    }
+//    
+//    if((self.availableActions & SVWebViewControllerAvailableActionsOpenInSafari) == SVWebViewControllerAvailableActionsOpenInSafari) {
+//        [pageActionSheet addButtonWithTitle:@"Open in Safari" block:^{
+//            [[UIApplication sharedApplication] openURL:self.mainWebView.request.URL];
+//        }];
+//    }
+//    
+//    SVWebViewController *svWebViewController = self;
+//    
+//    if([MFMailComposeViewController canSendMail] && (self.availableActions & SVWebViewControllerAvailableActionsMailLink) == SVWebViewControllerAvailableActionsMailLink) {
+//        [pageActionSheet addButtonWithTitle:@"Mail Link to this Page" block:^{
+//            [svWebViewController showMailer];
+//        }];
+//    }
+//    
+//    [pageActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
+//        
+//    [pageActionSheet showInView:[self view]];
 }
 
 - (void)doneButtonClicked:(id)sender {

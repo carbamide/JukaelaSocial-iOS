@@ -21,7 +21,6 @@
 #import "SVModalWebViewController.h"
 #import "WBSuccessNoticeView.h"
 #import "WBErrorNoticeView.h"
-#import "UIImageView+Curled.h"
 
 @interface ThreadedPostsViewController ()
 @property (strong, nonatomic) NSArray *photos;
@@ -76,7 +75,7 @@
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kShowImage object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
-        [self showImage:aNotification];
+       // [self showImage:aNotification];
     }];
     
     [super viewDidLoad];
@@ -100,7 +99,7 @@
     
     CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     if ([self threadedPosts][[indexPath row]][kRepostUserID] && [self threadedPosts][[indexPath row]][kRepostUserID] != [NSNull null]) {
         return contentSize.height + 50 + 10 + 20;
@@ -157,12 +156,12 @@
         
         if (![[cell externalImage] image]) {
             if ([[self externalImageCache] objectForKey:indexPath]) {
-                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath]];
             }
             else if ([[NSFileManager defaultManager] fileExistsAtPath:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
                 UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
                 
-                [[cell externalImage] setImage:externalImageFromDisk borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                [[cell externalImage] setImage:externalImageFromDisk];
                 
                 if (externalImageFromDisk) {
                     [[self externalImageCache] setObject:externalImageFromDisk forKey:indexPath];
@@ -182,7 +181,7 @@
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[cell externalImage] setImage:image borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                        [[cell externalImage] setImage:image];
                         
                         [Helpers saveImage:image withFileName:[tempString lastPathComponent]];
                         
@@ -225,11 +224,11 @@
     }
     
     if ([self threadedPosts][[indexPath row]][kRepostUserID] && [self threadedPosts][[indexPath row]][kRepostUserID] != [NSNull null]) {
-        CGSize contentSize = [[self threadedPosts][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kFontPreference size:17]
+        CGSize contentSize = [[self threadedPosts][[indexPath row]][kContent] sizeWithFont:[UIFont systemFontOfSize:17]
                                                                          constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                              lineBreakMode:NSLineBreakByWordWrapping];
         
-        CGSize nameSize = [[self threadedPosts][[indexPath row]][kName] sizeWithFont:[UIFont fontWithName:kFontPreference size:14]
+        CGSize nameSize = [[self threadedPosts][[indexPath row]][kName] sizeWithFont:[UIFont systemFontOfSize:14]
                                                                    constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                        lineBreakMode:NSLineBreakByWordWrapping];
         
@@ -360,7 +359,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+                NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 NSInteger oldTableViewCount = [[self threadedPosts] count];
                 
@@ -433,7 +432,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             }
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
@@ -483,7 +482,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             }
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
@@ -509,37 +508,4 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)showImage:(NSNotification *)aNotification
-{
-    if ([kAppDelegate currentViewController] == self) {
-        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
-        
-        NSURL *urlOfImage = [NSURL URLWithString:[self threadedPosts][[indexPathOfTappedRow row]][kImageURL]];
-        
-        MWPhoto *tempPhoto = [MWPhoto photoWithURL:urlOfImage];
-        
-        [tempPhoto setCaption:[self threadedPosts][[indexPathOfTappedRow row]][kContent]];
-        
-        [self setPhotos:@[tempPhoto]];
-        
-        MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-        
-        [browser setDisplayActionButton:YES];
-        
-        [[self navigationController] pushViewController:browser animated:YES];
-    }
-}
-
-- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
-{
-    return [[self photos] count];
-}
-
-- (MWPhoto *)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
-{
-    if (index < [[self photos] count]) {
-        return [[self photos] objectAtIndex:index];
-    }
-    return nil;
-}
 @end

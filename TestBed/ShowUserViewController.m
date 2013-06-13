@@ -77,14 +77,6 @@
 
 -(void)setupToolbar
 {
-    PrettyToolbar *toolbar = (PrettyToolbar *)self.navigationController.toolbar;
-    
-    [toolbar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
-    [toolbar setGradientStartColor:[UIColor colorWithHex:0x969696]];
-    [toolbar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
-    [toolbar setBottomLineColor:[UIColor colorWithHex:0x303030]];
-    [toolbar setTintColor:[toolbar gradientEndColor]];
-    
     if ([[kAppDelegate userID] isEqualToString:[NSString stringWithFormat:@"%@", [self userDict][kID]]]) {
         [self setToolbarItems:nil];
         
@@ -324,8 +316,8 @@
         
         CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
         
-        CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:16] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-
+        CGSize contentSize = [contentText sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        
         return contentSize.height + 20;
     }
     else {
@@ -336,27 +328,25 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    static NSString *SegmentedCellIdentifier = @"SegmentedCell";
+    //static NSString *SegmentedCellIdentifier = @"SegmentedCell";
     
-    PrettyGridTableViewCell *segmentedCell;
+    // PrettyGridTableViewCell *segmentedCell;
     
-    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
     switch (indexPath.section) {
         case 0: {
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             
-            [cell prepareForTableView:tableView indexPath:indexPath];
-            
             [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
             [[cell textLabel] setText:[self userDict][kName]];
             [[cell detailTextLabel] setTextAlignment:NSTextAlignmentRight];
             
-            [[cell textLabel] setFont:[UIFont fontWithName:kFontPreference size:18]];
-            [[cell detailTextLabel] setFont:[UIFont fontWithName:kFontPreference size:16]];
+            [[cell textLabel] setFont:[UIFont systemFontOfSize:18]];
+            [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:16]];
             
             if ([self userDict][kUsername] && [self userDict][kUsername] != [NSNull null]) {
                 [[cell detailTextLabel] setText:[NSString stringWithFormat:@"@%@", [self userDict][kUsername]]];
@@ -415,12 +405,10 @@
             break;
         case 1: {
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-
-            [cell prepareForTableView:tableView indexPath:indexPath];
             
             [[cell detailTextLabel] setNumberOfLines:6];
             
-            [[cell detailTextLabel] setFont:[UIFont fontWithName:kFontPreference size:16]];
+            [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:16]];
             
             if ([self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ) {
                 [[cell detailTextLabel] setText:[self userDict][@"profile"]];
@@ -434,95 +422,96 @@
             return cell;
         }
         case 2: {
-            segmentedCell = [tableView dequeueReusableCellWithIdentifier:SegmentedCellIdentifier];
-            
-            if (segmentedCell == nil) {
-                segmentedCell = [[PrettySegmentedControlTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SegmentedCellIdentifier];
-            }
-            
-            __weak PrettyGridTableViewCell *tempSegContCell = segmentedCell;
-            
-            [segmentedCell prepareForTableView:tableView indexPath:indexPath];
-            
-            [segmentedCell setNumberOfElements:3];
-            
-            if ([[self followingCount] intValue] > 0) {
-                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self followingCount]] atIndex:0];
-            }
-            else {
-                [segmentedCell setText:@"0" atIndex:0];
-            }
-            
-            if ([[self followerCount] intValue] > 0) {
-                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self followerCount]] atIndex:1];
-            }
-            else {
-                [segmentedCell setText:@"0" atIndex:1];
-            }
-            
-            if ([[self postCount] intValue] > 0) {
-                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self postCount]] atIndex:2];
-            }
-            else {
-                [segmentedCell setText:@"0" atIndex:2];
-            }
-            
-            [segmentedCell setDetailText:@"Following" atIndex:0];
-            [segmentedCell setDetailText:@"Followers" atIndex:1];
-            [segmentedCell setDetailText:@"Posts" atIndex:2];
-            
-            [segmentedCell setActionBlock:^(NSIndexPath *indexPath, int selectedIndex) {
-                if (selectedIndex == 0) {
-                    [tempSegContCell deselectAnimated:YES];
-                    
-                    [self performSegueWithIdentifier:kShowFollowing sender:nil];
-                }
-                else if (selectedIndex == 1) {
-                    [tempSegContCell deselectAnimated:YES];
-                    
-                    [self performSegueWithIdentifier:kShowFollowers sender:nil];
-                }
-                else if (selectedIndex == 2) {
-                    [tempSegContCell deselectAnimated:YES];
-                    
-                    [self getPosts];
-                }
-            }];
-        }
-            return segmentedCell;
+            //            segmentedCell = [tableView dequeueReusableCellWithIdentifier:SegmentedCellIdentifier];
+            //
+            //            if (segmentedCell == nil) {
+            //                segmentedCell = [[PrettySegmentedControlTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SegmentedCellIdentifier];
+            //            }
+            //
+            //            __weak PrettyGridTableViewCell *tempSegContCell = segmentedCell;
+            //
+            //            [segmentedCell prepareForTableView:tableView indexPath:indexPath];
+            //
+            //            [segmentedCell setNumberOfElements:3];
+            //
+            //            if ([[self followingCount] intValue] > 0) {
+            //                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self followingCount]] atIndex:0];
+            //            }
+            //            else {
+            //                [segmentedCell setText:@"0" atIndex:0];
+            //            }
+            //
+            //            if ([[self followerCount] intValue] > 0) {
+            //                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self followerCount]] atIndex:1];
+            //            }
+            //            else {
+            //                [segmentedCell setText:@"0" atIndex:1];
+            //            }
+            //
+            //            if ([[self postCount] intValue] > 0) {
+            //                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self postCount]] atIndex:2];
+            //            }
+            //            else {
+            //                [segmentedCell setText:@"0" atIndex:2];
+            //            }
+            //
+            //            [segmentedCell setDetailText:@"Following" atIndex:0];
+            //            [segmentedCell setDetailText:@"Followers" atIndex:1];
+            //            [segmentedCell setDetailText:@"Posts" atIndex:2];
+            //
+            //            [segmentedCell setActionBlock:^(NSIndexPath *indexPath, int selectedIndex) {
+            //                if (selectedIndex == 0) {
+            //                    [tempSegContCell deselectAnimated:YES];
+            //
+            //                    [self performSegueWithIdentifier:kShowFollowing sender:nil];
+            //                }
+            //                else if (selectedIndex == 1) {
+            //                    [tempSegContCell deselectAnimated:YES];
+            //
+            //                    [self performSegueWithIdentifier:kShowFollowers sender:nil];
+            //                }
+            //                else if (selectedIndex == 2) {
+            //                    [tempSegContCell deselectAnimated:YES];
+            //
+            //                    [self getPosts];
+            //                }
+            //            }];
+            //        }
+            //            return segmentedCell;
             break;
         default:
             break;
+        }
     }
-    
     return cell;
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"ShowFollowers"]) {
-        PrettySegmentedControlTableViewCell *tempCell = (PrettySegmentedControlTableViewCell *)[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
-        
-        [tempCell deselectAnimated:YES];
-        
-        FollowerViewController *viewController = [segue destinationViewController];
-        
-        
-        [viewController setUsersArray:[self followers]];
-        [viewController setTitle:@"Followers"];
-    }
-    else if ([[segue identifier] isEqualToString:@"ShowFollowing"]) {
-        PrettySegmentedControlTableViewCell *tempCell = (PrettySegmentedControlTableViewCell *)[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
-        
-        [tempCell deselectAnimated:YES];
-        
-        FollowerViewController *viewController = [segue destinationViewController];
-        
-        [viewController setUsersArray:[self following][@"user"]];
-        
-        [viewController setTitle:@"Following"];
-    }
-    else if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
+//    if ([[segue identifier] isEqualToString:@"ShowFollowers"]) {
+//        PrettySegmentedControlTableViewCell *tempCell = (PrettySegmentedControlTableViewCell *)[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
+//        
+//        [tempCell deselectAnimated:YES];
+//        
+//        FollowerViewController *viewController = [segue destinationViewController];
+//        
+//        
+//        [viewController setUsersArray:[self followers]];
+//        [viewController setTitle:@"Followers"];
+//    }
+//    else if ([[segue identifier] isEqualToString:@"ShowFollowing"]) {
+//        PrettySegmentedControlTableViewCell *tempCell = (PrettySegmentedControlTableViewCell *)[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
+//        
+//        [tempCell deselectAnimated:YES];
+//        
+//        FollowerViewController *viewController = [segue destinationViewController];
+//        
+//        [viewController setUsersArray:[self following][@"user"]];
+//        
+//        [viewController setTitle:@"Following"];
+//    }
+   // else
+        if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
         UsersPostsViewController *viewController = [segue destinationViewController];
         
         [viewController setUserID:[self userDict][kID]];
@@ -548,7 +537,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [self setPosts:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setPosts:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             
             [[ActivityManager sharedManager] decrementActivityCount];
             
@@ -572,7 +561,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [self setPostCount:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"count"]];
+            [self setPostCount:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil][@"count"]];
             
             [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
         }
@@ -594,7 +583,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [self setFollowerCount:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"count"]];
+            [self setFollowerCount:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil][@"count"]];
             
             [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
         }
@@ -616,7 +605,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [self setFollowingCount:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"count"]];
+            [self setFollowingCount:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil][@"count"]];
             
             [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
         }
@@ -638,7 +627,7 @@
         if (data) {
             [[ActivityManager sharedManager] decrementActivityCount];
             
-            [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setFollowing:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
@@ -658,8 +647,8 @@
         if (data) {
             [[ActivityManager sharedManager] decrementActivityCount];
             
-            [self setImFollowing:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"user"]];
-            [self setRelationships:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil][@"relationships"]];
+            [self setImFollowing:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil][@"user"]];
+            [self setRelationships:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil][@"relationships"]];
             
             [self setupToolbar];
         }
@@ -681,7 +670,7 @@
         if (data) {
             [[ActivityManager sharedManager] decrementActivityCount];
             
-            [self setFollowers:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setFollowers:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];

@@ -19,7 +19,7 @@
                                                          theImage.size.height, 
                                                          8, (4 * theImage.size.width), 
                                                          genericColorSpace, 
-                                                         kCGImageAlphaPremultipliedFirst);
+                                                         2);
     
     CGColorSpaceRelease(genericColorSpace);
     CGContextSetInterpolationQuality(thumbBitmapCtxt, kCGInterpolationDefault);

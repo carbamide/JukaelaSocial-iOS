@@ -23,13 +23,11 @@
 {
     static NSString *CellIdentifier = @"Cell";
     
-    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
-        [cell setTableViewBackgroundColor:[tableView backgroundColor]];
-                
-        [[cell textLabel] setFont:[UIFont fontWithName:kFontPreference size:18]];
+        [[cell textLabel] setFont:[UIFont systemFontOfSize:18]];
         
         if ([indexPath section] == 0) {
             
@@ -50,7 +48,7 @@
                 [_username setBackgroundColor:[UIColor clearColor]];
                 [_username setTextAlignment:NSTextAlignmentRight];
                 [_username setPlaceholder:kEmail];
-                [_username setFont:[UIFont fontWithName:kFontPreference size:16]];
+                [_username setFont:[UIFont systemFontOfSize:16]];
                 
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
                     [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:kUsername]];
@@ -81,7 +79,7 @@
                 [_password setBackgroundColor:[UIColor clearColor]];
                 [_password setTextAlignment:NSTextAlignmentRight];
                 [_password setPlaceholder:@"password"];
-                [_password setFont:[UIFont fontWithName:kFontPreference size:16]];
+                [_password setFont:[UIFont systemFontOfSize:16]];
 
                 [_password setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
                 
@@ -97,9 +95,7 @@
             [[cell textLabel] setText:@"Password"];
         }
     }
-    
-    [cell prepareForTableView:tableView indexPath:indexPath];
-    
+        
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
     
     _rememberUsername = [[CPCheckBox alloc] initWithFrame:CGRectMake(88, 0, 210, 25)];
@@ -108,7 +104,7 @@
     [_rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [_rememberUsername setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
-    [[_rememberUsername titleLabel] setFont:[UIFont fontWithName:kFontPreference size:16]];
+    [[_rememberUsername titleLabel] setFont:[UIFont systemFontOfSize:16]];
     
     
     [footerView addSubview:_rememberUsername];
@@ -198,7 +194,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            loginDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+            loginDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             
             if (loginDict) {
                 NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"loggedIn" ofType:@"aiff"];
@@ -264,7 +260,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [self setTempFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setTempFeed:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             
             [[ActivityManager sharedManager] decrementActivityCount];
             

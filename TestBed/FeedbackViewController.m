@@ -27,7 +27,7 @@
 {
     [[[self feedbackTextView] layer] setCornerRadius:8];
     
-    [[self feedbackTextView] setFont:[UIFont fontWithName:kFontPreference size:14]];
+    [[self feedbackTextView] setFont:[UIFont systemFontOfSize:14]];
     
     [[self feedbackTextView] becomeFirstResponder];
     
@@ -42,9 +42,7 @@
 }
 
 -(IBAction)submitFeedBack:(id)sender
-{
-    [TestFlight submitFeedback:[[self feedbackTextView] text]];
-    
+{    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

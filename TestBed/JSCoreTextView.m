@@ -32,7 +32,7 @@
 //  Created by James Addyman on 16/12/2011.
 //  Copyright 2011 JamSoft. All rights reserved.
 //
-
+#import "UIColor+ColorWithHex.h"
 #import "JSCoreTextView.h"
 #import <CoreText/CoreText.h>
 #import <QuartzCore/QuartzCore.h>
@@ -139,8 +139,8 @@ float const yAdjustmentFactor = 1.3;
     self.paddingLeft = 0;
     
     self.textColor = [UIColor blackColor];
-    self.linkColor = [UIColor colorWithHex:0x4087cd];
-    self.highlightedLinkColor = [UIColor colorWithHex:0x4087cd];
+    self.linkColor = [UIColor blueColor];
+    self.highlightedLinkColor = [UIColor blueColor];
     self.highlightColor = [UIColor grayColor];
 	
 	self.underlined = NO;

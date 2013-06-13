@@ -7,7 +7,6 @@
 //  https://github.com/samvermette/SVWebViewController
 
 #import "SVWebViewController.h"
-#import "PrettyKit.h"
 #import "BlockActionSheet.h"
 
 @interface SVWebViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>

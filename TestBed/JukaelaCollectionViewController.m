@@ -8,26 +8,8 @@
 
 #import "JukaelaCollectionViewController.h"
 
-@interface JukaelaCollectionViewController ()
-
-@end
-
 @implementation JukaelaCollectionViewController
 
--(void)customizeNavigationBar
-{
-    PrettyNavigationBar *navBar = (PrettyNavigationBar *)[[self navigationController] navigationBar];
-    
-    [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
-    [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];
-    [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
-    [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
-    [navBar setTintColor:[navBar gradientEndColor]];
-    
-    [navBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [UIFont fontWithName:kFontPreference size:22], UITextAttributeFont,
-                                    nil]];
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -39,9 +21,7 @@
 }
 
 - (void)viewDidLoad
-{
-    [self customizeNavigationBar];
-    
+{    
     [super viewDidLoad];
 }
 

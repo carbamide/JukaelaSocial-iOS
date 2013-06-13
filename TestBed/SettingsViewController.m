@@ -10,7 +10,6 @@
 #import <Social/Social.h>
 #import "SettingsViewController.h"
 #import "SFHFKeychainUtils.h"
-#import "TestFlight.h"
 
 NS_ENUM(NSInteger, SocialTypes) {
     FacebookType,
@@ -142,15 +141,13 @@ NS_ENUM(NSInteger, SocialTypes) {
 {
     static NSString *CellIdentifier = @"Cell";
     
-    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
     [[cell textLabel] setFont:[UIFont fontWithName:kHelveticaLight size:18]];
-    
-    [cell prepareForTableView:tableView indexPath:indexPath];
-    
+        
     if ([indexPath section] == 0) {
         if ([indexPath row] == 0) {
             [[cell textLabel] setText:@"Post to Twitter?"];

@@ -51,11 +51,11 @@
     [self setPasswordTextField:[[UITextField alloc] init]];
     [self setPasswordConfirmTextField:[[UITextField alloc] init]];
     
-    [[self nameTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
-    [[self usernameTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
-    [[self emailTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
-    [[self passwordTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
-    [[self passwordConfirmTextField] setFont:[UIFont fontWithName:kFontPreference size:16]];
+    [[self nameTextField] setFont:[UIFont systemFontOfSize:16]];
+    [[self usernameTextField] setFont:[UIFont systemFontOfSize:16]];
+    [[self emailTextField] setFont:[UIFont systemFontOfSize:16]];
+    [[self passwordTextField] setFont:[UIFont systemFontOfSize:16]];
+    [[self passwordConfirmTextField] setFont:[UIFont systemFontOfSize:16]];
     
     [super viewDidLoad];
 }
@@ -108,7 +108,7 @@
         [[ActivityManager sharedManager] decrementActivityCount];
         
         if (data) {
-            if ([[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil] isKindOfClass:[NSDictionary class]]) {
+            if ([[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] isKindOfClass:[NSDictionary class]]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"new_user" object:nil userInfo:@{kEmail : [[self emailTextField] text]}];
                 
                 [self dismissViewControllerAnimated:YES completion:nil];
@@ -159,14 +159,14 @@
 {
     NSString *CellIdentifier = [NSString stringWithFormat:@"Cell%d", [indexPath row]];
     
-    PrettyTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[PrettyTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
     }
     
     [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
     
-    [[cell textLabel] setFont:[UIFont fontWithName:kFontPreference size:12]];
+    [[cell textLabel] setFont:[UIFont systemFontOfSize:12]];
     
     if ([indexPath row] == 0) {
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
@@ -182,7 +182,7 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [[self usernameTextField] setFrame:CGRectMake(110, 11, 185, 30)];
-        [[self usernameTextField] setAutocapitalizationType:UITextAutocorrectionTypeNo];
+        [[self usernameTextField] setAutocapitalizationType:UITextAutocapitalizationTypeNone];
         
         [cell addSubview:[self usernameTextField]];
     }
@@ -192,8 +192,8 @@
         
         [[self emailTextField] setFrame:CGRectMake(110, 10, 185, 30)];
         
-        [[self emailTextField] setKeyboardAppearance:UIKeyboardTypeEmailAddress];
-        [[self emailTextField] setAutocapitalizationType:UITextAutocorrectionTypeNo];
+        [[self emailTextField] setKeyboardType:UIKeyboardTypeEmailAddress];
+        [[self usernameTextField] setAutocapitalizationType:UITextAutocapitalizationTypeNone];
         
         [cell addSubview:[self emailTextField]];
     }
@@ -217,8 +217,6 @@
         
         [cell addSubview:[self passwordConfirmTextField]];
     }
-
-    [cell prepareForTableView:tableView indexPath:indexPath];
     
     return cell;
 }

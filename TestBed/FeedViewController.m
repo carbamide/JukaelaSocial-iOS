@@ -22,12 +22,10 @@
 #import "ShowUserViewController.h"
 #import "SVModalWebViewController.h"
 #import "ThreadedPostsViewController.h"
-#import "UIImageView+Curled.h"
 #import "UsersWhoLikedViewController.h"
 #import "WBErrorNoticeView.h"
 #import "WBStickyNoticeView.h"
 #import "WBSuccessNoticeView.h"
-#import "YISplashScreen.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSArray *photos;
@@ -40,7 +38,6 @@
 @property (strong, nonatomic) UIImage *tempImage;
 
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
-@property (strong, nonatomic) YIFullScreenScroll *fullScreenDelegate;
 
 @property (nonatomic) enum ChangeType currentChangeType;
 
@@ -68,8 +65,6 @@
 {
     [kAppDelegate setCurrentViewController:self];
     
-    [_fullScreenDelegate layoutTabBarController];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:kDoubleTapNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:kSendToUserNotification object:nil];
     
@@ -88,15 +83,13 @@
 {
     [self setExternalImageCache:[[NSCache alloc] init]];
     
-    JRefreshControl *refreshControl = [[JRefreshControl alloc] init];
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];
     
     [refreshControl addTarget:self action:@selector(refreshControlRefresh:) forControlEvents:UIControlEventValueChanged];
     
     [self setRefreshControl:refreshControl];
-    
-    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
     
     [self setDocumentsFolder:[Helpers documentsPath]];
     
@@ -135,7 +128,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                NSDictionary *loginDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+                NSDictionary *loginDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 if (loginDict) {
                     [[[[self tabBarController] tabBar] items][1] setEnabled:YES];
@@ -156,8 +149,8 @@
                 else {
                     [[self progressHUD] hide:YES];
                     
-                    BlockAlertView *loginFailedAlert = [[BlockAlertView alloc] initWithTitle:@"Login Failed" message:@"The login has failed. Sorry!"];
-                    
+                    UIAlertView *loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"The login has failed. Sorry!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                        
                     [loginFailedAlert setCancelButtonWithTitle:@"OK" block:^{
                         [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
                     }];
@@ -169,8 +162,6 @@
                 [[ActivityManager sharedManager] decrementActivityCount];
                 
                 [[self progressHUD] hide:YES];
-                
-                [YISplashScreen hide];
                 
                 [[self navigationController] popToRootViewControllerAnimated:YES];
                 
@@ -224,6 +215,8 @@
 {
     if (![self activityIndicator]) {
         [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
+        
+        [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
     }
     
     [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
@@ -287,7 +280,7 @@
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kShowImage object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
-        [self showImage:aNotification];
+        //[self showImage:aNotification];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kPostImage object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
@@ -305,48 +298,10 @@
     }];
 }
 
--(void)showImage:(NSNotification *)aNotification
-{
-    if ([kAppDelegate currentViewController] == self) {
-        [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
-        
-        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
-        
-        NSURL *urlOfImage = [NSURL URLWithString:[self theFeed][[indexPathOfTappedRow row]][kImageURL]];
-        
-        MWPhoto *tempPhoto = [MWPhoto photoWithURL:urlOfImage];
-        
-        [tempPhoto setCaption:[self theFeed][[indexPathOfTappedRow row]][kContent]];
-        
-        [self setPhotos:@[tempPhoto]];
-        
-        MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-        
-        [browser setDisplayActionButton:YES];
-        
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:browser];
-        
-        [self presentViewController:navController animated:YES completion:nil];
-    }
-}
-
-- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
-{
-    return [[self photos] count];
-}
-
-- (MWPhoto *)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
-{
-    if (index < [[self photos] count]) {
-        return [[self photos] objectAtIndex:index];
-    }
-    return nil;
-}
-
 -(void)switchToSelectedUser:(NSNotification *)aNotification
 {
     if ([kAppDelegate currentViewController] == self) {
-        [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+        
         
         if (![self progressHUD]) {
             [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
@@ -380,7 +335,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             }
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
@@ -464,7 +419,7 @@
         if (data) {
             NSArray *oldArray = [self theFeed];
             
-            [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             
             NSMutableSet *firstSet = [NSMutableSet setWithArray:[self theFeed]];
             NSMutableSet *secondSet = [NSMutableSet setWithArray:[self theFeed]];
@@ -555,10 +510,6 @@
                 }
                 
                 [[self tableView] reloadData];
-                
-                if (removeSplash) {
-                    [YISplashScreen hide];
-                }
             }
             
             [self setCurrentChangeType:-1];
@@ -599,7 +550,7 @@
     
     CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     if ([self theFeed][[indexPath row]][kRepostUserID] && [self theFeed][[indexPath row]][kRepostUserID] != [NSNull null]) {
         return contentSize.height + 50 + 10 + 20;
@@ -656,12 +607,12 @@
         
         if (![[cell externalImage] image]) {
             if ([[self externalImageCache] objectForKey:indexPath]) {
-                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath]];
             }
             else if ([[NSFileManager defaultManager] fileExistsAtPath:[[self documentsFolder] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
                 UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[self documentsFolder] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
                 
-                [[cell externalImage] setImage:externalImageFromDisk borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                [[cell externalImage] setImage:externalImageFromDisk];
                 
                 if (externalImageFromDisk) {
                     [[self externalImageCache] setObject:externalImageFromDisk forKey:indexPath];
@@ -681,7 +632,7 @@
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[cell externalImage] setImage:image borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                        [[cell externalImage] setImage:image];
                         
                         [Helpers saveImage:image withFileName:[tempString lastPathComponent]];
                         
@@ -737,16 +688,16 @@
         CGSize contentSize;
         
         if ([self theFeed][[indexPath row]][kImageURL] && [self theFeed][[indexPath row]][kImageURL] != [NSNull null]) {
-            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kFontPreference size:17]
+            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont systemFontOfSize:17]
                                                                 constrainedToSize:CGSizeMake(185 - (7.5 * 2), 20000)
                                                                     lineBreakMode:NSLineBreakByWordWrapping];
         }
         else {
-            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont fontWithName:kFontPreference size:17]
+            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont systemFontOfSize:17]
                                                                 constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                     lineBreakMode:NSLineBreakByWordWrapping];
         }
-        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont fontWithName:kFontPreference size:14]
+        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont systemFontOfSize:14]
                                                              constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                  lineBreakMode:NSLineBreakByWordWrapping];
         
@@ -840,13 +791,13 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+                NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 NSInteger oldTableViewCount = [[self theFeed] count];
                 
                 [[self theFeed] addObjectsFromArray:tempArray];
                 
-                NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]);
+                NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]);
                 
                 @try {
                     [[self tableView] beginUpdates];
@@ -887,7 +838,7 @@
 -(void)doubleTap:(NSNotification *)aNotification
 {
     if ([kAppDelegate currentViewController] == self) {
-        [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+        
         
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
         
@@ -984,7 +935,7 @@
                 NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
                 
                 [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                    [self setTempArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                    [self setTempArray:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
                     
                     [self performSegueWithIdentifier:kShowThread sender:self];
                 }];
@@ -1086,7 +1037,7 @@
 
 - (void)handleURL:(NSURL*)url
 {
-    [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+    
     
     SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
     
@@ -1126,7 +1077,7 @@
         if (data) {
             int oldNumberOfPosts = [[self theFeed] count];
             
-            [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             
             int newNumberOfPosts = [[self theFeed] count];
             
@@ -1163,35 +1114,10 @@
     }];
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    [_fullScreenDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
-}
-
-- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
-{
-    return [_fullScreenDelegate scrollViewShouldScrollToTop:scrollView];;
-}
-
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewDidScrollToTop:scrollView];
-}
-
 -(void)requestWithUsername:(NSString *)username
 {
     if ([kAppDelegate currentViewController] == self) {
-        [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+        
         
         if (![self progressHUD]) {
             [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
@@ -1214,7 +1140,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             }
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];

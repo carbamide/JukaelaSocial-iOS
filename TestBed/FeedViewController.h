@@ -11,7 +11,6 @@
 #import <UIKit/UIKit.h>
 #import "JSCoreTextView.h"
 #import "MBProgressHUD.h"
-#import "MWPhotoBrowser.h"
 
 NS_ENUM(NSInteger, ChangeType) {
     INSERT_POST,
@@ -19,7 +18,7 @@ NS_ENUM(NSInteger, ChangeType) {
     OTHER_CHANGE_TYPE
 };
 
-@interface FeedViewController : UITableViewController <MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, JSCoreTextViewDelegate, MWPhotoBrowserDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate>
+@interface FeedViewController : UITableViewController <MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, JSCoreTextViewDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) NSMutableArray *theFeed;

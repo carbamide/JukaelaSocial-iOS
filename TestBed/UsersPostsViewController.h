@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
-#import "MWPhotoBrowser.h"
 
-@interface UsersPostsViewController : UITableViewController <MBProgressHUDDelegate, MWPhotoBrowserDelegate>
+@interface UsersPostsViewController : UITableViewController <MBProgressHUDDelegate>
 
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSDictionary *tempDict;

@@ -85,7 +85,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             }
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
@@ -111,7 +111,7 @@
         if (data) {
             [[ActivityManager sharedManager] decrementActivityCount];
             
-            [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             
             [[self collectionView] reloadData];
         }
@@ -219,7 +219,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];

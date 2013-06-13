@@ -8,31 +8,10 @@
 
 #import "JukaelaTableViewController.h"
 
-@interface JukaelaTableViewController ()
--(void)customizeNavigationBar;
-@end
-
 @implementation JukaelaTableViewController
-
--(void)customizeNavigationBar
-{
-    PrettyNavigationBar *navBar = (PrettyNavigationBar *)[[self navigationController] navigationBar];
-    
-    [navBar setTopLineColor:[UIColor colorWithHex:0xafafaf]];
-    [navBar setGradientStartColor:[UIColor colorWithHex:0x969696]];
-    [navBar setGradientEndColor:[UIColor colorWithHex:0x3e3e3e]];
-    [navBar setBottomLineColor:[UIColor colorWithHex:0x303030]];
-    [navBar setTintColor:[navBar gradientEndColor]];
-    
-    [navBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [UIFont fontWithName:kFontPreference size:22], UITextAttributeFont,
-                                    nil]];
-}
 
 - (void)viewDidLoad
 {
-    [self customizeNavigationBar];
-
     [super viewDidLoad];
 }
 

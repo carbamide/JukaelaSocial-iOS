@@ -19,8 +19,6 @@
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) NSMutableArray *tempArray;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
-
-@property (strong, nonatomic) YIFullScreenScroll *fullScreenDelegate;
 @end
 
 @implementation UsersViewController
@@ -36,8 +34,6 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [_fullScreenDelegate layoutTabBarController];
-
     [kAppDelegate setCurrentViewController:self];
     
     [super viewDidAppear:animated];
@@ -51,11 +47,7 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
-
-    [[self collectionView] setContentInset:UIEdgeInsetsMake(44, 0, 0, 0)];
-    
+        
     [self getUsers:YES];
     
     [[self collectionView] setBackgroundColor:[UIColor clearColor]];
@@ -72,6 +64,8 @@
     if (showActivityIndicator) {
         if (![self activityIndicator]) {
             [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
+            
+            [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
         }
         
         [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
@@ -91,7 +85,7 @@
         if (data) {
             [[ActivityManager sharedManager] decrementActivityCount];
             
-            [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setUsersArray:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             
             [[self collectionView] reloadData];
         }
@@ -181,8 +175,6 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [_fullScreenDelegate showUIBarsWithScrollView:collectionView animated:YES];
-
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithWindow:[[self view] window]];
     [progressHUD setMode:MBProgressHUDModeIndeterminate];
     [progressHUD setLabelText:@"Loading User..."];
@@ -204,7 +196,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
         }
         else {
             [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
@@ -237,28 +229,4 @@
     [hud removeFromSuperview];
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    [_fullScreenDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
-}
-
-- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
-{
-    return [_fullScreenDelegate scrollViewShouldScrollToTop:scrollView];;
-}
-
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewDidScrollToTop:scrollView];
-}
 @end

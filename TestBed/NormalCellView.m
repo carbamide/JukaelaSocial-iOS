@@ -48,7 +48,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 9, 140, 16)];
         
         [nameLabel setTextAlignment:NSTextAlignmentLeft];
-        [nameLabel setFont:[UIFont fontWithName:kFontPreference size:18]];
+        [nameLabel setFont:[UIFont systemFontOfSize:18]];
         [nameLabel setBackgroundColor:[UIColor clearColor]];
         [nameLabel setTag:8];
         
@@ -62,7 +62,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         }
         
         [dateLabel setTextAlignment:NSTextAlignmentRight];
-        [dateLabel setFont:[UIFont fontWithName:kFontPreference size:14]];
+        [dateLabel setFont:[UIFont systemFontOfSize:14]];
         [dateLabel setBackgroundColor:[UIColor clearColor]];
         [dateLabel setTag:8];
         [dateLabel setTextColor:[UIColor colorWithWhite:0.5 alpha:1.0]];
@@ -71,7 +71,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         
         usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 30, 140, 15)];
         [usernameLabel setTextAlignment:NSTextAlignmentLeft];
-        [usernameLabel setFont:[UIFont fontWithName:kFontPreference size:14]];
+        [usernameLabel setFont:[UIFont systemFontOfSize:14]];
         [usernameLabel setBackgroundColor:[UIColor clearColor]];
         [usernameLabel setTextColor:[UIColor colorWithWhite:0.5 alpha:1.0]];
         [usernameLabel setTag:8];
@@ -82,7 +82,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         repostedNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, 228, 20)];
         
         [repostedNameLabel setTextAlignment:NSTextAlignmentLeft];
-        [repostedNameLabel setFont:[UIFont fontWithName:kFontPreference size:12]];
+        [repostedNameLabel setFont:[UIFont systemFontOfSize:12]];
         [repostedNameLabel setTextColor:[UIColor darkGrayColor]];
         [repostedNameLabel setBackgroundColor:[UIColor clearColor]];
         [repostedNameLabel setTag:8];
@@ -138,16 +138,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
     [[self imageView] setBounds:CGRectMake(5, 5, 40, 40)];
     [[self imageView] setFrame:CGRectMake(5, 5, 40, 40)];
     [[self imageView] setContentMode:UIViewContentModeScaleAspectFit];
-    
-    CGRect rect = self.imageView.frame;
-    
-    [[[self imageView] layer] setShadowOffset:CGSizeMake(0, 3)];
-    [[[self imageView] layer] setShadowColor:[[UIColor lightGrayColor] CGColor]];
-    [[[self imageView] layer] setShadowRadius:5];
-    [[[self imageView] layer] setShadowOpacity:0.8];
-    
-    [[[self imageView] layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:rect byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)] CGPath]];
-    
+
     [[self textLabel] setHidden:YES];
     
     [[self usernameLabel] setFrame:CGRectMake(53, 30, 140, 15)];

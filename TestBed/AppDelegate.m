@@ -10,10 +10,7 @@
 #import <objc/runtime.h>
 #import <Social/Social.h>
 #import "FeedViewController.h"
-#import "TestFlight.h"
 #import "TMImgurUploader.h"
-#import "YISplashScreen.h"
-#import "YISplashScreenAnimation.h"
 
 @implementation UIApplication (Private)
 
@@ -39,23 +36,15 @@
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [YISplashScreen show];
-    
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
-
-    [self setupAppearance];
     
     NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
     
     UIImage *tempImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-    
-    [TestFlight takeOff:kTestFlightAPIKey];
-    
+        
     [[TMImgurUploader sharedInstance] setAPIKey:kImgurAPIKey];
     
-    [TestFlight setDeviceIdentifier:[[[UIDevice currentDevice] identifierForVendor] UUIDString]];
-        
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{@NO: kPostToTwitterPreference,
      @NO: kPostToFacebookPreference,
      @"avatar_type": @"retro"}];
@@ -69,14 +58,10 @@
     method_exchangeImplementations(openUrl, customOpenUrl);
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference]) {
-        [YISplashScreen hide];
-        
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
     }
         
-    if (tempImage) {
-        [YISplashScreen hide];
-        
+    if (tempImage) {        
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kPostImage object:nil userInfo:@{kImageNotification : tempImage}];
@@ -111,9 +96,7 @@
     NSString *alertString = [NSString stringWithFormat:@"%@", userInfo[@"aps"][@"alert"]];
     
     if ([application applicationState] == UIApplicationStateActive) {
-        BlockAlertView *pushAlert = [[BlockAlertView alloc] initWithTitle:kJukaelaSocialServiceName message:alertString];
-        
-        [pushAlert setCancelButtonWithTitle:@"OK" block:nil];
+        UIAlertView *pushAlert = [[UIAlertView alloc] initWithTitle:kJukaelaSocialServiceName message:alertString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [pushAlert show];
     }
@@ -155,25 +138,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kPostImage object:nil userInfo:@{kImageNotification : tempImage}];
     
     return YES;
-}
-
-- (void)setupAppearance
-{
-    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                          [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
-                                                          nil] forState:UIControlStateNormal];
-    
-    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                          [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
-                                                          nil] forState:UIControlStateDisabled];
-    
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
-                                                       nil] forState:UIControlStateNormal];
-    
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       [UIFont fontWithName:kHelveticaLight size:0.0], UITextAttributeFont,
-                                                       nil] forState:UIControlStateSelected];
 }
 
 @end

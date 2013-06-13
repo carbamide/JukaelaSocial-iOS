@@ -18,7 +18,6 @@
 #import "SORelativeDateTransformer.h"
 #import "SVModalWebViewController.h"
 #import "WBSuccessNoticeView.h"
-#import "UIImageView+Curled.h"
 #import "WBErrorNoticeView.h"
 
 @interface MentionsViewController ()
@@ -28,7 +27,6 @@
 
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
 @property (strong, nonatomic) SORelativeDateTransformer *dateTransformer;
-@property (strong, nonatomic) YIFullScreenScroll *fullScreenDelegate;
 @end
 
 @implementation MentionsViewController
@@ -44,8 +42,6 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [_fullScreenDelegate layoutTabBarController];
-    
     [kAppDelegate setCurrentViewController:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:kDoubleTapNotification object:nil];
@@ -66,11 +62,9 @@
 {
     [self setExternalImageCache:[[NSCache alloc] init]];
     
-    _fullScreenDelegate = [[YIFullScreenScroll alloc] initWithViewController:self];
-    
     [self refreshTableInformation];
     
-    JRefreshControl *refreshControl = [[JRefreshControl alloc] init];
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];
     
@@ -130,7 +124,7 @@
     
     CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont fontWithName:kFontPreference size:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     if ([self mentions][[indexPath row]][kRepostUserID] && [self mentions][[indexPath row]][kRepostUserID] != [NSNull null]) {
         return contentSize.height + 50 + 10 + 20;
@@ -187,12 +181,12 @@
         
         if (![[cell externalImage] image]) {
             if ([[self externalImageCache] objectForKey:indexPath]) {
-                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath] borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath]];
             }
             else if ([[NSFileManager defaultManager] fileExistsAtPath:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
                 UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
                 
-                [[cell externalImage] setImage:externalImageFromDisk borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                [[cell externalImage] setImage:externalImageFromDisk];
                 
                 if (externalImageFromDisk) {
                     [[self externalImageCache] setObject:externalImageFromDisk forKey:indexPath];
@@ -212,7 +206,7 @@
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[cell externalImage] setImage:image borderWidth:2 shadowDepth:5 controlPointXOffset:20 controlPointYOffset:25];
+                        [[cell externalImage] setImage:image];
                         
                         [Helpers saveImage:image withFileName:[tempString lastPathComponent]];
                         
@@ -335,7 +329,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+                NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                 
                 NSInteger oldTableViewCount = [[self mentions] count];
                 
@@ -386,7 +380,7 @@
 {
     if ([kAppDelegate currentViewController] == self) {
         
-        [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+        
         
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
         
@@ -456,6 +450,8 @@
 {
     if (![self activityIndicator]) {
         [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
+        
+        [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
     }
     
     [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
@@ -476,7 +472,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [self setMentions:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+            [self setMentions:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             
             if ([[self mentions] count] == 0) {
                 [self goMakeFriends];
@@ -510,7 +506,7 @@
 -(void)switchToSelectedUser:(NSNotification *)aNotification
 {
     if ([kAppDelegate currentViewController] == self) {
-        [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+        
         
         if (![self progressHUD]) {
             [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
@@ -537,7 +533,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             }
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];
@@ -556,34 +552,9 @@
     [hud removeFromSuperview];
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewWillBeginDragging:scrollView];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    [_fullScreenDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
-}
-
-- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
-{
-    return [_fullScreenDelegate scrollViewShouldScrollToTop:scrollView];;
-}
-
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
-{
-    [_fullScreenDelegate scrollViewDidScrollToTop:scrollView];
-}
 
 - (void)handleURL:(NSURL*)url
 {
-    [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
     
     SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
     
@@ -595,7 +566,7 @@
 -(void)requestWithUsername:(NSString *)username
 {
     if ([kAppDelegate currentViewController] == self) {
-        [_fullScreenDelegate showUIBarsWithScrollView:[self tableView] animated:YES];
+        
         
         MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithWindow:[[self view] window]];
         [progressHUD setMode:MBProgressHUDModeIndeterminate];
@@ -616,7 +587,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
-                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil]];
+                [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
             }
             else {
                 [Helpers errorAndLogout:self withMessage:@"There was an error loading the user.  Please logout and log back in."];

@@ -111,25 +111,10 @@
         });
     }
     
-    CGRect backgroundRect = self.backgroundView.frame;
-    CGRect userImageRect = self.userProfileImage.frame;
-    
     [[self userProfileImage] setClipsToBounds:NO];
-    
-    [[[self userProfileImage] layer] setShadowColor:[[UIColor darkGrayColor] CGColor]];
-    [[[self userProfileImage] layer] setShadowRadius:8];
-    [[[self userProfileImage] layer] setShadowOpacity:0.8];
-    [[[self userProfileImage] layer] setShadowOffset:CGSizeMake(-12, -10)];
-    [[[self userProfileImage] layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:userImageRect byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)] CGPath]];
-    
+
     [[[self backgroundView] layer] setCornerRadius:8];
-    
-    [[[self backgroundView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
-    [[[self backgroundView] layer] setShadowRadius:8];
-    [[[self backgroundView] layer] setShadowOpacity:1.0];
-    [[[self backgroundView] layer] setShadowOffset:CGSizeMake(-8, -15)];
-    [[[self backgroundView] layer] setShadowPath:[[UIBezierPath bezierPathWithRoundedRect:backgroundRect byRoundingCorners:UIRectCornerAllCorners cornerRadii:CGSizeMake(8, 8)] CGPath]];
-    
+
     [[NSNotificationCenter defaultCenter] addObserverForName:UITextViewTextDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
         [self updateCount];
     }];
@@ -475,7 +460,7 @@
                     
                     [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                         if (responseData) {
-                            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
+                            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
                             
                             if (!jsonData[@"error"]) {
                                 NSLog(@"Successfully posted to Twitter");
@@ -506,7 +491,7 @@
                     
                     [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                         if (responseData) {
-                            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
+                            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
                             
                             if (!jsonData[@"error"]) {
                                 NSLog(@"Successfully posted to Twitter");
@@ -623,7 +608,7 @@
                         
                         [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
                             if (responseData) {
-                                NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
+                                NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
                                 
                                 if (!jsonData[@"error"]) {
                                     NSLog(@"Successfully posted to Facebook");
@@ -661,7 +646,7 @@
                         
                         [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
                             if (responseData) {
-                                NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONWritingPrettyPrinted error:nil];
+                                NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
                                 
                                 if (!jsonData[@"error"]) {
                                     NSLog(@"Successfully posted to Facebook");
@@ -832,7 +817,7 @@
         [cell setBackgroundView:[[CellBackground alloc] init]];
     }
     
-    [[cell textLabel] setFont:[UIFont fontWithName:kFontPreference size:14]];
+    [[cell textLabel] setFont:[UIFont systemFontOfSize:14]];
     
     [[cell textLabel] setText:[[self autocompleteUsernames] objectAtIndex:[indexPath row]]];
     
@@ -874,7 +859,7 @@
         if (data) {
             [[ActivityManager sharedManager] decrementActivityCount];
             
-            NSArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONWritingPrettyPrinted error:nil];
+            NSArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             
             [self setUsersArray:[tempArray mutableCopy]];
             

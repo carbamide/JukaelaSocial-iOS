@@ -40,9 +40,7 @@
 - (void)viewDidLoad
 {
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
-    
-    [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-    
+        
     [[ActivityManager sharedManager] incrementActivityCount];
         
     [self setNameTextField:[[UITextField alloc] init]];

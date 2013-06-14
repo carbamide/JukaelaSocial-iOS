@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JSTwitterCoreTextView.h"
 
 extern NSString * const kJKPrepareForReuseNotification;
 
@@ -23,7 +22,7 @@ extern NSString * const kJKPrepareForReuseNotification;
 @property (strong, nonatomic) UITapGestureRecognizer *imageTapGesture;
 @property (strong, nonatomic) UITapGestureRecognizer *tapGesture;
 
-@property (strong, retain) JSCoreTextView *contentText;
+@property (strong, retain) UITextView *contentText;
 
 @property (nonatomic, getter = isDisabled) BOOL disabled;
 

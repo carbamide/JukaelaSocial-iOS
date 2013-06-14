@@ -37,7 +37,11 @@
         
         NSRange rTest = NSMakeRange(rRemainingText.location, rWhitespace.location - rRemainingText.location);
         NSString *textTest = [self.text substringWithRange:rTest];
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         CGSize sizeTest = [textTest sizeWithFont:self.font forWidth:1024.0 lineBreakMode:NSLineBreakByWordWrapping];
+#pragma clang diagnostic pop
         
         if (sizeTest.width > self.bounds.size.width) {
             [lines addObject:[currentLine stringByTrimmingCharactersInSet:wordSeparators]];

@@ -74,8 +74,8 @@
 
 -(void)prepareForReuse
 {
-    [[self externalImage] setImage:nil];
-    
     [super prepareForReuse];
+
+    [[self externalImage] setImage:nil];
 }
 @end

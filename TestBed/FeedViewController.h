@@ -9,7 +9,6 @@
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMailComposeViewController.h>
 #import <UIKit/UIKit.h>
-#import "JSCoreTextView.h"
 #import "MBProgressHUD.h"
 
 NS_ENUM(NSInteger, ChangeType) {
@@ -18,7 +17,7 @@ NS_ENUM(NSInteger, ChangeType) {
     OTHER_CHANGE_TYPE
 };
 
-@interface FeedViewController : UITableViewController <MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, JSCoreTextViewDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate>
+@interface FeedViewController : UITableViewController <MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) NSMutableArray *theFeed;

@@ -352,7 +352,11 @@
     // Add label if label text was set
     if (nil != self.labelText) {
         // Get size of label text
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         CGSize dims = [self.labelText sizeWithFont:self.labelFont];
+#pragma clang diagnostic pop
 		
         // Compute label dimensions based on font metrics if size is larger than max then clip the label width
         float lHeight = dims.height;
@@ -404,11 +408,14 @@
             detailsLabel.text = self.detailsLabelText;
             detailsLabel.numberOfLines = 0;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 			CGFloat maxHeight = frame.size.height - self.height - 2*margin;
 			CGSize labelSize = [detailsLabel.text sizeWithFont:detailsLabel.font constrainedToSize:CGSizeMake(frame.size.width - 4*margin, maxHeight) lineBreakMode:detailsLabel.lineBreakMode];
             lHeight = labelSize.height;
             lWidth = labelSize.width;
-			
+#pragma clang diagnostic pop
+            
             // Update HUD size
             if (self.width < lWidth) {
                 self.width = lWidth + 2 * margin;

@@ -95,8 +95,6 @@
     
     [self setupNotifications];
     
-    [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-    
     UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
     
     [[self navigationItem] setRightBarButtonItem:composeButton];
@@ -514,8 +512,11 @@
     
     CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
     
-    CGSize contentSize = [contentText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+#pragma clang diagnostic pop
+
     if ([self theFeed][[indexPath row]][kRepostUserID] && [self theFeed][[indexPath row]][kRepostUserID] != [NSNull null]) {
         return contentSize.height + 50 + 10 + 20;
     }
@@ -571,13 +572,25 @@
         
         if (![[cell externalImage] image]) {
             if ([[self externalImageCache] objectForKey:indexPath]) {
-                [[cell externalImage] setImage:[[[self externalImageCache] objectForKey:indexPath] thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh]];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
+                    UIImage *tempImage = [[[self externalImageCache] objectForKey:indexPath] thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[cell externalImage] setImage:tempImage];
+                    });
+                });
             }
             else if ([[NSFileManager defaultManager] fileExistsAtPath:[[self documentsFolder] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
                 UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[self documentsFolder] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
                 
-                [[cell externalImage] setImage:[externalImageFromDisk thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh]];
-                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
+                    UIImage *tempImage = [externalImageFromDisk thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[cell externalImage] setImage:tempImage];
+                    });
+                });
+                                
                 if (externalImageFromDisk) {
                     [[self externalImageCache] setObject:externalImageFromDisk forKey:indexPath];
                 }
@@ -618,10 +631,7 @@
             }
         }
     }
-    
-    [[cell contentText] setFontName:kFontPreference];
-    [[cell contentText] setFontSize:17];
-    
+        
     if ([self theFeed][[indexPath row]][kContent]) {
         [[cell contentText] setText:[self theFeed][[indexPath row]][kContent]];
     }

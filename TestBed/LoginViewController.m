@@ -21,8 +21,6 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"This is a test");
-    
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -307,9 +305,7 @@
     if (tempWindow.frame.size.height > 500) {
         [[self imageView] setFrame:CGRectOffset(_imageView.frame, 0, 44)];
     }
-    
-    [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-    
+        
     for (UITabBarItem *item in [[[self tabBarController] tabBar] items]) {
         [item setEnabled:NO];
     }

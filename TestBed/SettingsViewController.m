@@ -83,9 +83,7 @@ NS_ENUM(NSInteger, SocialTypes) {
 }
 
 -(void)viewDidLoad
-{
-    [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-    
+{    
     [self setPickerView:[[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 320, 216)]];
     [[self pickerView] setDelegate:self];
     [[self pickerView] setShowsSelectionIndicator:YES];

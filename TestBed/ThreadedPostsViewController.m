@@ -55,13 +55,9 @@
     [[self navigationController] setToolbarHidden:YES animated:NO];
 
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf)]];
-    
-    NSLog(@"%@", [self threadedPosts]);
-    
-    [self setExternalImageCache:[[NSCache alloc] init]];
-    
-    [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
         
+    [self setExternalImageCache:[[NSCache alloc] init]];
+            
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
@@ -99,7 +95,10 @@
     
     CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CGSize contentSize = [contentText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+#pragma clang diagnostic pop
     
     if ([self threadedPosts][[indexPath row]][kRepostUserID] && [self threadedPosts][[indexPath row]][kRepostUserID] != [NSNull null]) {
         return contentSize.height + 50 + 10 + 20;
@@ -204,9 +203,6 @@
             }
         }
     }
-    
-    [[cell contentText] setFontName:kFontPreference];
-    [[cell contentText] setFontSize:17];
     
     if ([self threadedPosts][[indexPath row]][kContent]) {
         [[cell contentText] setText:[self threadedPosts][[indexPath row]][kContent]];

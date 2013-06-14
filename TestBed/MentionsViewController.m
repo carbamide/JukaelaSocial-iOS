@@ -75,9 +75,7 @@
     UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
     
     [[self navigationItem] setRightBarButtonItem:composeButton];
-    
-    [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-    
+        
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
@@ -124,7 +122,10 @@
     
     CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CGSize contentSize = [contentText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+#pragma clang diagnostic pop
     
     if ([self mentions][[indexPath row]][kRepostUserID] && [self mentions][[indexPath row]][kRepostUserID] != [NSNull null]) {
         return contentSize.height + 50 + 10 + 20;
@@ -230,10 +231,6 @@
         }
     }
     
-    
-    [[cell contentText] setFontName:kFontPreference];
-    [[cell contentText] setFontSize:17];
-    
     if ([self mentions][[indexPath row]][kContent]) {
         [[cell contentText] setText:[self mentions][[indexPath row]][kContent]];
     }
@@ -328,12 +325,16 @@
         NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            if (data) {
-                NSMutableArray *tempArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            if (data) {                
+                NSMutableArray *tempArray = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] mutableCopy];
                 
                 NSInteger oldTableViewCount = [[self mentions] count];
                 
-                [[self mentions] addObjectsFromArray:tempArray];
+                NSMutableArray *rehashOfOldArray = [NSMutableArray arrayWithArray:[self mentions]];
+                
+                [rehashOfOldArray addObjectsFromArray:tempArray];
+                
+                [self setMentions:rehashOfOldArray];
                 
                 @try {
                     [[self tableView] beginUpdates];
@@ -378,55 +379,49 @@
 
 -(void)doubleTap:(NSNotification *)aNotification
 {
-//    if ([kAppDelegate currentViewController] == self) {
-//        
-//        
-//        
-//        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
-//        
-//        [self setTempIndexPath:indexPathOfTappedRow];
-//        
-//        BlockActionSheet *cellActionSheet = [[BlockActionSheet alloc] initWithTitle:nil];
-//        
-//        [cellActionSheet addButtonWithTitle:@"Reply" block:^{
-//            [self performSegueWithIdentifier:kShowReplyView sender:self];
-//            
-//        }];
-//        
-//        if ([[NSString stringWithFormat:@"%@", [self mentions][[indexPathOfTappedRow row]][@"sender_user_id"]] isEqualToString:[kAppDelegate userID]]) {
-//            [cellActionSheet setDestructiveButtonWithTitle:@"Delete Post" block:^{
-//                [[ActivityManager sharedManager] incrementActivityCount];
-//                
-//                NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
-//                
-//                [tempCell disableCell];
-//                
-//                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][kID]]];
-//                
-//                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-//                
-//                [request setHTTPMethod:@"DELETE"];
-//                [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-//                [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-//                
-//                [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//                    [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
-//                    
-//                    [self refreshTableInformation];
-//                    
-//                    [[ActivityManager sharedManager] decrementActivityCount];
-//                }];
-//            }];
-//        }
-//        
-//        [cellActionSheet setCancelButtonWithTitle:@"Cancel" block:^{
-//            [[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow] setSelected:NO animated:YES];
-//            
-//            return;
-//        }];
-//        
-//        [cellActionSheet showInView:[self view]];
-//    }
+    if ([kAppDelegate currentViewController] == self) {
+
+        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
+        
+        [self setTempIndexPath:indexPathOfTappedRow];
+        
+        RIButtonItem *replyButton = [RIButtonItem itemWithLabel:@"Reply" action:^{
+            [self performSegueWithIdentifier:kShowReplyView sender:self];
+        }];
+        
+        RIButtonItem *deletePostButton = nil;
+                
+        
+        if ([[NSString stringWithFormat:@"%@", [self mentions][[indexPathOfTappedRow row]][@"sender_user_id"]] isEqualToString:[kAppDelegate userID]]) {
+            deletePostButton = [RIButtonItem itemWithLabel:@"Delete Post" action:^{
+                [[ActivityManager sharedManager] incrementActivityCount];
+                
+                NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+                
+                [tempCell disableCell];
+                
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][kID]]];
+                
+                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+                
+                [request setHTTPMethod:@"DELETE"];
+                [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+                [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+                
+                [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                    [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+                    
+                    [self refreshTableInformation];
+                    
+                    [[ActivityManager sharedManager] decrementActivityCount];
+                }];
+            }];
+        }
+        
+        UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:deletePostButton otherButtonItems:replyButton, nil];
+        
+        [cellActionSheet showFromTabBar:[[self tabBarController] tabBar]];
+    }
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

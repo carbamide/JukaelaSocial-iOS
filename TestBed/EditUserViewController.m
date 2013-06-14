@@ -90,8 +90,6 @@
 
 - (void)viewDidLoad
 {
-    [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-    
     [[ActivityManager sharedManager] incrementActivityCount];
     
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];

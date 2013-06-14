@@ -68,10 +68,6 @@
 		29AA10971557254500B8D3F5 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10961557254500B8D3F5 /* SettingsViewController.m */; };
 		29C251591672BFED00F27ABC /* ImageConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */; };
 		29CAEB7C1558C6F900663CF3 /* ShowUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */; };
-		29D433A715FE0EE700ABCB2F /* JSCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A015FE0EE700ABCB2F /* JSCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29D433A815FE0EE700ABCB2F /* JSTwitterCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A215FE0EE700ABCB2F /* JSTwitterCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29D433A915FE0EE700ABCB2F /* JSEmailCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A415FE0EE700ABCB2F /* JSEmailCoreTextView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		29D433AA15FE0EE700ABCB2F /* JSWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433A615FE0EE700ABCB2F /* JSWebViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29D433C715FE1F6400ABCB2F /* AHHyperlinkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C115FE1F6400ABCB2F /* AHHyperlinkScanner.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29D433C815FE1F6400ABCB2F /* AHLinkLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C315FE1F6400ABCB2F /* AHLinkLexer.l */; };
 		29D433C915FE1F6400ABCB2F /* AHMarkedHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C515FE1F6400ABCB2F /* AHMarkedHyperlink.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -87,7 +83,6 @@
 		29E517791608AC7200CA422F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E517781608AC7100CA422F /* ImageIO.framework */; };
 		29E5177C1608B2BE00CA422F /* NormalWithImageCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E5177B1608B2BE00CA422F /* NormalWithImageCellView.m */; };
 		29EA394515609BCE003A21E7 /* NSString+BackslashEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */; };
-		29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29EB71BD15E811D50072B97A /* CoreText.framework */; };
 		29F977EE1693E38C0075A4FF /* UsersWhoLikedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F977ED1693E38C0075A4FF /* UsersWhoLikedViewController.m */; };
 		29F99E971676C2D000ADC3D1 /* JukaelaCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F99E961676C2D000ADC3D1 /* JukaelaCollectionViewController.m */; };
 /* End PBXBuildFile section */
@@ -205,14 +200,6 @@
 		29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageConfirmationViewController.m; sourceTree = "<group>"; };
 		29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowUserViewController.h; sourceTree = "<group>"; };
 		29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowUserViewController.m; sourceTree = "<group>"; };
-		29D4339F15FE0EE700ABCB2F /* JSCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSCoreTextView.h; sourceTree = "<group>"; };
-		29D433A015FE0EE700ABCB2F /* JSCoreTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSCoreTextView.m; sourceTree = "<group>"; };
-		29D433A115FE0EE700ABCB2F /* JSTwitterCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTwitterCoreTextView.h; sourceTree = "<group>"; };
-		29D433A215FE0EE700ABCB2F /* JSTwitterCoreTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTwitterCoreTextView.m; sourceTree = "<group>"; };
-		29D433A315FE0EE700ABCB2F /* JSEmailCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSEmailCoreTextView.h; sourceTree = "<group>"; };
-		29D433A415FE0EE700ABCB2F /* JSEmailCoreTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSEmailCoreTextView.m; sourceTree = "<group>"; };
-		29D433A515FE0EE700ABCB2F /* JSWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSWebViewController.h; sourceTree = "<group>"; };
-		29D433A615FE0EE700ABCB2F /* JSWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSWebViewController.m; sourceTree = "<group>"; };
 		29D433C015FE1F6400ABCB2F /* AHHyperlinkScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHHyperlinkScanner.h; sourceTree = "<group>"; };
 		29D433C115FE1F6400ABCB2F /* AHHyperlinkScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHHyperlinkScanner.m; sourceTree = "<group>"; };
 		29D433C215FE1F6400ABCB2F /* AHLinkLexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHLinkLexer.h; sourceTree = "<group>"; };
@@ -257,7 +244,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				29E517791608AC7200CA422F /* ImageIO.framework in Frameworks */,
-				29EB71BE15E811D50072B97A /* CoreText.framework in Frameworks */,
 				293751F515EA65F10082864C /* MessageUI.framework in Frameworks */,
 				2975554315CF2DF800CAA9A7 /* libz.dylib in Frameworks */,
 				29295F6415C3373700F1968B /* Social.framework in Frameworks */,
@@ -476,21 +462,6 @@
 			name = "Block Action and Alerts";
 			sourceTree = "<group>";
 		};
-		29D4339E15FE0EDC00ABCB2F /* CoreTextView */ = {
-			isa = PBXGroup;
-			children = (
-				29D4339F15FE0EE700ABCB2F /* JSCoreTextView.h */,
-				29D433A015FE0EE700ABCB2F /* JSCoreTextView.m */,
-				29D433A115FE0EE700ABCB2F /* JSTwitterCoreTextView.h */,
-				29D433A215FE0EE700ABCB2F /* JSTwitterCoreTextView.m */,
-				29D433A315FE0EE700ABCB2F /* JSEmailCoreTextView.h */,
-				29D433A415FE0EE700ABCB2F /* JSEmailCoreTextView.m */,
-				29D433A515FE0EE700ABCB2F /* JSWebViewController.h */,
-				29D433A615FE0EE700ABCB2F /* JSWebViewController.m */,
-			);
-			name = CoreTextView;
-			sourceTree = "<group>";
-		};
 		29D433AB15FE0EF600ABCB2F /* AutoHyperlinks */ = {
 			isa = PBXGroup;
 			children = (
@@ -649,7 +620,6 @@
 				29D433AB15FE0EF600ABCB2F /* AutoHyperlinks */,
 				29D433D015FE27C100ABCB2F /* Categories */,
 				29D433CD15FE279900ABCB2F /* Checkbox for Login Screen */,
-				29D4339E15FE0EDC00ABCB2F /* CoreTextView */,
 				29D433CA15FE276700ABCB2F /* Date Transformer */,
 				29D433D115FE27E100ABCB2F /* Gravatar */,
 				29D5B82A15545CA4000D9374 /* Image Handling */,
@@ -705,6 +675,15 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Jukaela Enterprises";
+				TargetAttributes = {
+					295687551552C96700FE741C = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = 295687501552C96700FE741C /* Build configuration list for PBXProject "Jukaela" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -783,10 +762,6 @@
 				292C8CC115EE923700E8B046 /* MentionsViewController.m in Sources */,
 				292F052F15F1341200E6BC51 /* NSNull+DontCrash.m in Sources */,
 				2920235415FD5C4700DBDA6C /* NormalCellView.m in Sources */,
-				29D433A715FE0EE700ABCB2F /* JSCoreTextView.m in Sources */,
-				29D433A815FE0EE700ABCB2F /* JSTwitterCoreTextView.m in Sources */,
-				29D433A915FE0EE700ABCB2F /* JSEmailCoreTextView.m in Sources */,
-				29D433AA15FE0EE700ABCB2F /* JSWebViewController.m in Sources */,
 				29D433C715FE1F6400ABCB2F /* AHHyperlinkScanner.m in Sources */,
 				29D433C815FE1F6400ABCB2F /* AHLinkLexer.l in Sources */,
 				29D433C915FE1F6400ABCB2F /* AHMarkedHyperlink.m in Sources */,
@@ -906,6 +881,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
 				CLANG_WARN_ENUM_CONVERSION = YES;
@@ -930,7 +908,7 @@
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = "TestBed/Jukaela-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -953,6 +931,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = NO;
 				CLANG_WARN_ENUM_CONVERSION = YES;
@@ -978,7 +959,7 @@
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_LABEL = YES;
 				INFOPLIST_FILE = "TestBed/Jukaela-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",

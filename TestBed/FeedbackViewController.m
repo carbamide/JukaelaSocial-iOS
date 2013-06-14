@@ -31,8 +31,6 @@
     
     [[self feedbackTextView] becomeFirstResponder];
     
-    [[self view] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-
     [super viewDidLoad];
 }
 

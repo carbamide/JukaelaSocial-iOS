@@ -172,67 +172,57 @@
 }
 
 -(IBAction)takePhoto:(id)sender
-{
-//    if ([self imageAdded]) {
-//        BlockActionSheet *removePhotoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
-//        
-//        [removePhotoActionSheet setDestructiveButtonWithTitle:@"Remove Photo" block:^{
-//            [self setTempImageData:nil];
-//            
-//            [[self photoButton] setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
-//            
-//            [self setImageAdded:NO];
-//        }];
-//        
-//        [removePhotoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-//        
-//        [removePhotoActionSheet showInView:[self view]];
-//    }
-//    else {
-//        if ([self tempImageData]) {
-//            BlockActionSheet *removePhoto = [[BlockActionSheet alloc] initWithTitle:@"Remove photo?"];
-//            
-//            [removePhoto setDestructiveButtonWithTitle:@"Remove Photo" block:^{
-//                [self setUrlString:nil];
-//                [self setTempImageData:nil];
-//            }];
-//            
-//            [removePhoto setCancelButtonWithTitle:@"Cancel" block:nil];
-//            
-//            [removePhoto showInView:[self view]];
-//        }
-//        else {
-//            BlockActionSheet *photoActionSheet = [[BlockActionSheet alloc] initWithTitle:@"Photo Source"];
-//            
-//            [self setCurrentString:[[self theTextView] text]];
-//            
-//            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-//                [photoActionSheet addButtonWithTitle:@"Take Photo" block:^{
-//                    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-//                    
-//                    [imagePicker setDelegate:self];
-//                    [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-//                    [imagePicker setAllowsEditing:NO];
-//                    
-//                    [self presentViewController:imagePicker animated:YES completion:nil];
-//                }];
-//            }
-//            
-//            [photoActionSheet addButtonWithTitle:@"Choose Existing" block:^{
-//                UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-//                
-//                [imagePicker setDelegate:self];
-//                [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-//                [imagePicker setAllowsEditing:NO];
-//                
-//                [self presentViewController:imagePicker animated:YES completion:nil];
-//            }];
-//            
-//            [photoActionSheet setCancelButtonWithTitle:@"Cancel" block:nil];
-//            
-//            [photoActionSheet showInView:[self view]];
-//        }
-//    }
+{    
+    if ([self imageAdded]) {
+        RIButtonItem *removePhotoButton = [RIButtonItem itemWithLabel:@"Remove Photo" action:^{
+            [self setTempImageData:nil];
+            
+            [[self photoButton] setImage:[UIImage imageNamed:@"camera"] forState:UIControlStateNormal];
+            
+            [self setImageAdded:NO];
+        }];
+        
+        UIActionSheet *removePhotoActionSheet = [[UIActionSheet alloc] initWithTitle:@"Remove Photo?" cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:removePhotoButton otherButtonItems:nil, nil];
+        
+        [removePhotoActionSheet showInView:[self backgroundView]];
+    }
+    else {
+        if ([self tempImageData]) {
+            RIButtonItem *removePhotoButton = [RIButtonItem itemWithLabel:@"Remove Photo" action:^{
+                [self setUrlString:nil];
+                [self setTempImageData:nil];
+            }];
+            
+            UIActionSheet *removePhotoActionSheet = [[UIActionSheet alloc] initWithTitle:@"Remove Photo?" cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:removePhotoButton otherButtonItems:nil, nil];
+            
+            [removePhotoActionSheet showInView:[self backgroundView]];
+        }
+        else {
+            RIButtonItem *takePhoto = [RIButtonItem itemWithLabel:@"Take Photo" action:^{
+                UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+                
+                [imagePicker setDelegate:self];
+                [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+                [imagePicker setAllowsEditing:NO];
+                
+                [self presentViewController:imagePicker animated:YES completion:nil];
+            }];
+            
+            RIButtonItem *chooseExisting = [RIButtonItem itemWithLabel:@"Choose Existing" action:^{
+                UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+                
+                [imagePicker setDelegate:self];
+                [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+                [imagePicker setAllowsEditing:NO];
+                
+                [self presentViewController:imagePicker animated:YES completion:nil];
+            }];
+            
+            UIActionSheet *photoActionSheet = [[UIActionSheet alloc] initWithTitle:@"Photo Source" cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:nil otherButtonItems:takePhoto, chooseExisting, nil];
+            
+            [photoActionSheet showInView:[self backgroundView]];
+        }
+    }
 }
 
 -(void)setupNavbarForPosting

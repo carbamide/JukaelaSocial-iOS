@@ -7,6 +7,7 @@
 //
 
 #import "ActivityManager.h"
+#import "AppDelegate.h"
 #import "Helpers.h"
 #import "JukaelaViewController.h"
 #import "JukaelaTableViewController.h"

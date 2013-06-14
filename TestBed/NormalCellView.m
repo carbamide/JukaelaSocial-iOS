@@ -32,23 +32,24 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 	
 	if (self) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            contentText = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(0, 50, 760, 170)];
+            contentText = [[UITextView alloc] initWithFrame:CGRectMake(8, 45, 760, 170)];
         }
         else {
-            contentText = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(0, 50, 315, 170)];
+            contentText = [[UITextView alloc] initWithFrame:CGRectMake(8, 45, 315, 170)];
         }
         [contentText setBackgroundColor:[UIColor clearColor]];
         [contentText setClipsToBounds:YES];
-        [contentText setPaddingLeft:8];
-        [contentText setPaddingTop:5];
         [contentText setUserInteractionEnabled:YES];
+        [contentText setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+        [contentText setEditable:NO];
+        [contentText setScrollsToTop:NO];
         
         [[self contentView] addSubview:contentText];
         
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 9, 140, 16)];
         
         [nameLabel setTextAlignment:NSTextAlignmentLeft];
-        [nameLabel setFont:[UIFont systemFontOfSize:18]];
+        [nameLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline1]];
         [nameLabel setBackgroundColor:[UIColor clearColor]];
         [nameLabel setTag:8];
         
@@ -62,7 +63,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         }
         
         [dateLabel setTextAlignment:NSTextAlignmentRight];
-        [dateLabel setFont:[UIFont systemFontOfSize:14]];
+        [dateLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]];
         [dateLabel setBackgroundColor:[UIColor clearColor]];
         [dateLabel setTag:8];
         [dateLabel setTextColor:[UIColor colorWithWhite:0.5 alpha:1.0]];
@@ -71,7 +72,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         
         usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 30, 140, 15)];
         [usernameLabel setTextAlignment:NSTextAlignmentLeft];
-        [usernameLabel setFont:[UIFont systemFontOfSize:14]];
+        [usernameLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline1]];
         [usernameLabel setBackgroundColor:[UIColor clearColor]];
         [usernameLabel setTextColor:[UIColor colorWithWhite:0.5 alpha:1.0]];
         [usernameLabel setTag:8];
@@ -82,7 +83,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         repostedNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 90, 228, 20)];
         
         [repostedNameLabel setTextAlignment:NSTextAlignmentLeft];
-        [repostedNameLabel setFont:[UIFont systemFontOfSize:12]];
+        [repostedNameLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]];
         [repostedNameLabel setTextColor:[UIColor darkGrayColor]];
         [repostedNameLabel setBackgroundColor:[UIColor clearColor]];
         [repostedNameLabel setTag:8];
@@ -123,7 +124,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     [[NSNotificationCenter defaultCenter] addObserverForName:kEnableCellNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
         [self setDisabled:NO];
         
@@ -226,7 +227,6 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
     NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kSendToUserNotification object:nil userInfo:@{kIndexPath : indexPath}];
-    
 }
 
 -(void)repostSendToUser:(UIGestureRecognizer *)gesture
@@ -252,11 +252,6 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         
         [self setUserInteractionEnabled:YES];
     }];
-}
-
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    
 }
 
 -(void)setDate:(NSString *)date

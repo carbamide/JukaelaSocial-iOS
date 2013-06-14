@@ -47,9 +47,7 @@
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)]];
     
     [[self navigationItem] setTitle:@"Show User"];
-    
-    [[self tableView] setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-    
+        
     [self setFollowers:nil];
     [self setFollowing:nil];
     [self setPosts:nil];
@@ -313,7 +311,10 @@
         
         CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
         
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         CGSize contentSize = [contentText sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+#pragma clang diagnostic pop
         
         return contentSize.height + 20;
     }

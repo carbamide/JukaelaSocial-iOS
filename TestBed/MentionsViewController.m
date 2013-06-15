@@ -124,7 +124,7 @@
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    CGSize contentSize = [contentText sizeWithFont:[UIFont systemFontOfSize:17] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
 #pragma clang diagnostic pop
     
     if ([self mentions][[indexPath row]][kRepostUserID] && [self mentions][[indexPath row]][kRepostUserID] != [NSNull null]) {

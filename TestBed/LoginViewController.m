@@ -27,7 +27,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
-        [[cell textLabel] setFont:[UIFont systemFontOfSize:18]];
+        [[cell textLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline1]];
         
         if ([indexPath section] == 0) {
             
@@ -48,7 +48,7 @@
                 [_username setBackgroundColor:[UIColor clearColor]];
                 [_username setTextAlignment:NSTextAlignmentRight];
                 [_username setPlaceholder:kEmail];
-                [_username setFont:[UIFont systemFontOfSize:16]];
+                [_username setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline2]];
                 
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
                     [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:kUsername]];
@@ -76,7 +76,7 @@
                 [_password setBackgroundColor:[UIColor clearColor]];
                 [_password setTextAlignment:NSTextAlignmentRight];
                 [_password setPlaceholder:@"password"];
-                [_password setFont:[UIFont systemFontOfSize:16]];
+                [_password setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline2]];
                 
                 [cell addSubview:_password];
             }
@@ -99,7 +99,7 @@
     [_rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [_rememberUsername setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
-    [[_rememberUsername titleLabel] setFont:[UIFont systemFontOfSize:16]];
+    [[_rememberUsername titleLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline2]];
     
     
     [footerView addSubview:_rememberUsername];

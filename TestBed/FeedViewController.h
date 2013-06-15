@@ -17,7 +17,7 @@ NS_ENUM(NSInteger, ChangeType) {
     OTHER_CHANGE_TYPE
 };
 
-@interface FeedViewController : UITableViewController <MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate>
+@interface FeedViewController : JukaelaTableViewController <MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) NSMutableArray *theFeed;

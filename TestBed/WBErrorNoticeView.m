@@ -38,14 +38,14 @@
     self.titleLabel.textColor = [UIColor whiteColor];
     self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     self.titleLabel.shadowColor = [UIColor blackColor];
-    self.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleFootnote];
     
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.text = self.title;
     
     // Make the message label
     self.messageLabel = [[UILabel alloc]initWithFrame:CGRectMake(55.0, 20.0 + 10.0, viewWidth - 70.0, 12.0)];
-    self.messageLabel.font = [UIFont systemFontOfSize:13];
+    self.messageLabel.font = [UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleCaption1];
     self.messageLabel.textColor = [UIColor colorWithRed:239.0/255.0 green:167.0/255.0 blue:163.0/255.0 alpha:1.0];
     self.messageLabel.backgroundColor = [UIColor clearColor];
     self.messageLabel.text = self.message;

@@ -81,6 +81,10 @@
 
 -(void)viewDidLoad
 {
+    UIView *test = [[kAppDelegate window] snapshot];
+    
+    NSLog(@"%@", NSStringFromClass([test class]));
+    
     [self setExternalImageCache:[[NSCache alloc] init]];
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -661,16 +665,16 @@
         CGSize contentSize;
         
         if ([self theFeed][[indexPath row]][kImageURL] && [self theFeed][[indexPath row]][kImageURL] != [NSNull null]) {
-            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont systemFontOfSize:17]
+            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]
                                                                 constrainedToSize:CGSizeMake(185 - (7.5 * 2), 20000)
                                                                     lineBreakMode:NSLineBreakByWordWrapping];
         }
         else {
-            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont systemFontOfSize:17]
+            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]
                                                                 constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                     lineBreakMode:NSLineBreakByWordWrapping];
         }
-        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont systemFontOfSize:14]
+        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline1]
                                                              constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                  lineBreakMode:NSLineBreakByWordWrapping];
         
@@ -938,14 +942,14 @@
     if ([[segue identifier] isEqualToString:kShowUser]) {
         UINavigationController *navigationController = [segue destinationViewController];
         ShowUserViewController *viewController = (ShowUserViewController *)[navigationController topViewController];
-        
+                
         [viewController setUserDict:_tempDict];
     }
     else if ([[segue identifier] isEqualToString:kShowPostView]) {
+        UINavigationController *navigationController = [segue destinationViewController];
+        PostViewController *viewController = (PostViewController *)[navigationController topViewController];
+        
         if ([self tempImage]) {
-            UINavigationController *navigationController = [segue destinationViewController];
-            PostViewController *viewController = (PostViewController *)[navigationController topViewController];
-            
             [viewController setImageFromExternalSource:[self tempImage]];
             [viewController setModalPresentationStyle:UIModalPresentationFormSheet];
         }

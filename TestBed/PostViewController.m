@@ -38,10 +38,26 @@
 {
     [super viewDidLoad];
     
+    UIInterpolatingMotionEffect *horizontalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    UIInterpolatingMotionEffect *verticalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+
+    [horizontalMotionEffect1 setMinimumRelativeValue:@-10];
+    [horizontalMotionEffect1 setMaximumRelativeValue:@10];
+    [verticalMotionEffect1 setMinimumRelativeValue:@-10];
+    [verticalMotionEffect1 setMaximumRelativeValue:@10];
+    
+    [[self userProfileImage] addMotionEffect:horizontalMotionEffect1];
+    [[self userProfileImage] addMotionEffect:verticalMotionEffect1];
+    [[self photoButton] addMotionEffect:horizontalMotionEffect1];
+    [[self photoButton] addMotionEffect:verticalMotionEffect1];
+    [[self countDownLabel] addMotionEffect:horizontalMotionEffect1];
+    [[self countDownLabel] addMotionEffect:verticalMotionEffect1];
+    [[self theTextView] addMotionEffect:horizontalMotionEffect1];
+    [[self theTextView] addMotionEffect:verticalMotionEffect1];
+    
     [self getUsers];
     
     [self setAutocompleteUsernames:[[NSMutableArray alloc] init]];
-    
     
     UIWindow *tempWindow = [kAppDelegate window];
     
@@ -62,17 +78,37 @@
     
     if (![self replyString]) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
-            [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn)];
+            UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn);
+            
+            [facebookButton addMotionEffect:horizontalMotionEffect1];
+            [facebookButton addMotionEffect:verticalMotionEffect1];
+            
+            [[self view] addSubview:facebookButton];
         }
         else {
-            [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn)];
+            UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
+            
+            [facebookButton addMotionEffect:horizontalMotionEffect1];
+            [facebookButton addMotionEffect:verticalMotionEffect1];
+            
+            [[self view] addSubview:facebookButton];
         }
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
-            [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn)];
+            UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn);
+            
+            [twitterButton addMotionEffect:horizontalMotionEffect1];
+            [twitterButton addMotionEffect:verticalMotionEffect1];
+            
+            [[self view] addSubview:twitterButton];
         }
         else {
-            [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn)];
+            UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn);
+            
+            [twitterButton addMotionEffect:horizontalMotionEffect1];
+            [twitterButton addMotionEffect:verticalMotionEffect1];
+            
+            [[self view] addSubview:twitterButton];
         }
     }
     _usernameTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -116,6 +152,8 @@
 
     [[[self backgroundView] layer] setCornerRadius:8];
 
+    [[self backgroundView] setBackgroundColor:[UIColor clearColor]];
+    
     [[NSNotificationCenter defaultCenter] addObserverForName:UITextViewTextDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
         [self updateCount];
     }];
@@ -131,13 +169,26 @@
 {
     UIButton *tempButton = sender;
     
+    UIInterpolatingMotionEffect *horizontalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    UIInterpolatingMotionEffect *verticalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    
+    [horizontalMotionEffect1 setMinimumRelativeValue:@-10];
+    [horizontalMotionEffect1 setMaximumRelativeValue:@10];
+    [verticalMotionEffect1 setMinimumRelativeValue:@-10];
+    [verticalMotionEffect1 setMaximumRelativeValue:@10];
+    
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kPostToTwitterPreference];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [tempButton removeFromSuperview];
         
-        [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn)];
+        UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn);
+        
+        [twitterButton addMotionEffect:horizontalMotionEffect1];
+        [twitterButton addMotionEffect:verticalMotionEffect1];
+        
+        [[self view] addSubview:twitterButton];
     }
     else {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kPostToTwitterPreference];
@@ -145,7 +196,12 @@
         
         [tempButton removeFromSuperview];
         
-        [[self view] addSubview:GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn)];
+        UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn);
+        
+        [twitterButton addMotionEffect:horizontalMotionEffect1];
+        [twitterButton addMotionEffect:verticalMotionEffect1];
+
+        [[self view] addSubview:twitterButton];
     }
 }
 
@@ -153,13 +209,26 @@
 {
     UIButton *tempButton = sender;
     
+    UIInterpolatingMotionEffect *horizontalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    UIInterpolatingMotionEffect *verticalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    
+    [horizontalMotionEffect1 setMinimumRelativeValue:@-10];
+    [horizontalMotionEffect1 setMaximumRelativeValue:@10];
+    [verticalMotionEffect1 setMinimumRelativeValue:@-10];
+    [verticalMotionEffect1 setMaximumRelativeValue:@10];
+    
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kPostToFacebookPreference];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [tempButton removeFromSuperview];
         
-        [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn)];
+        UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
+        
+        [facebookButton addMotionEffect:horizontalMotionEffect1];
+        [facebookButton addMotionEffect:verticalMotionEffect1];
+        
+        [[self view] addSubview:facebookButton];
     }
     else {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kPostToFacebookPreference];
@@ -167,7 +236,12 @@
         
         [tempButton removeFromSuperview];
         
-        [[self view] addSubview:GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn)];
+        UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn);
+        
+        [facebookButton addMotionEffect:horizontalMotionEffect1];
+        [facebookButton addMotionEffect:verticalMotionEffect1];
+        
+        [[self view] addSubview:facebookButton];
     }
 }
 
@@ -801,7 +875,7 @@
         [cell setBackgroundView:[[CellBackground alloc] init]];
     }
     
-    [[cell textLabel] setFont:[UIFont systemFontOfSize:14]];
+    [[cell textLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]];
     
     [[cell textLabel] setText:[[self autocompleteUsernames] objectAtIndex:[indexPath row]]];
     

@@ -35,6 +35,8 @@
 {
     [kAppDelegate setCurrentViewController:self];
     
+    [[self view] snapshot];
+    
     [[self navigationController] setToolbarHidden:NO animated:YES];
     
     [super viewDidAppear:animated];
@@ -47,7 +49,7 @@
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)]];
     
     [[self navigationItem] setTitle:@"Show User"];
-        
+    
     [self setFollowers:nil];
     [self setFollowing:nil];
     [self setPosts:nil];
@@ -91,131 +93,131 @@
 
 -(void)followActionSheet:(id)sender
 {
-//    BOOL following = NO;
-//    
-//    BlockActionSheet *followOrUnfollow = [[BlockActionSheet alloc] initWithTitle:nil];
-//    
-//    NSNumber *unfollowID = nil;
-//    
-//    NSString *followOrUnfollowString = @"Now following ";
-//    
-//    for (NSDictionary *dict in [self imFollowing]) {
-//        if ([dict[kID] isEqualToNumber:[self userDict][kID]]) {
-//            followOrUnfollowString = @"Unfollowed ";
-//            following = YES;
-//        }
-//    }
-//    
-//    for (NSDictionary *dict in [self relationships]) {
-//        if ([dict[@"followed_id"] isEqualToNumber:[self userDict][kID]]) {
-//            unfollowID = dict[kID];
-//        }
-//    }
-//    if (following == YES) {
-//        [followOrUnfollow setDestructiveButtonWithTitle:@"Unfollow" block:^{
-//            [self setImFollowing:nil];
-//            [self setRelationships:nil];
-//            
-//            [self changeToActivityIndicator];
-//            
-//            [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
-//            
-//            [[ActivityManager sharedManager] incrementActivityCount];
-//            
-//            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships/%@.json", kSocialURL, unfollowID]];
-//            
-//            NSLog(@"%@", [url absoluteString]);
-//            
-//            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-//            
-//            [request setHTTPMethod:@"DELETE"];
-//            [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-//            [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-//            
-//            NSString *requestString = [RequestFactory unfollowRequestWithUserID:[self userDict][kID]];
-//            
-//            NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
-//            
-//            [request setHTTPBody:requestData];
-//            
-//            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//                WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"%@%@", followOrUnfollowString, [self userDict][kName]]];
-//                
-//                [successNotice show];
-//                
-//                [[ActivityManager sharedManager] decrementActivityCount];
-//                
-//                [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
-//            }];
-//        }];
-//    }
-//    else {
-//        [followOrUnfollow addButtonWithTitle:@"Follow" block:^{
-//            [self setImFollowing:nil];
-//            [self setRelationships:nil];
-//            
-//            [self changeToActivityIndicator];
-//            
-//            [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
-//            
-//            [[ActivityManager sharedManager] incrementActivityCount];
-//            
-//            UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
-//            
-//            [activityView sizeToFit];
-//            
-//            [activityView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin |
-//                                               UIViewAutoresizingFlexibleRightMargin |
-//                                               UIViewAutoresizingFlexibleTopMargin |
-//                                               UIViewAutoresizingFlexibleBottomMargin)];
-//            [activityView startAnimating];
-//            
-//            UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
-//            
-//            UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//            
-//            [self setToolbarItems:@[flexSpace, loadingView]];
-//            
-//            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships.json", kSocialURL]];
-//            
-//            NSString *requestString = [RequestFactory followRequestWithUserID:[self userDict][kID]];
-//            
-//            NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
-//            
-//            NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
-//            
-//            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//                if (data) {
-//                    [[ActivityManager sharedManager] decrementActivityCount];
-//                    
-//                    WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"Now following %@", [self userDict][kName]]];
-//                    
-//                    [successNotice show];
-//                    
-//                    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//                    
-//                    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
-//                    
-//                    [self setToolbarItems:@[flexSpace, actionItem]];
-//                    
-//                    [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
-//                }
-//                else {
-//                    [[ActivityManager sharedManager] decrementActivityCount];
-//                    
-//                    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//                    
-//                    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
-//                    
-//                    [self setToolbarItems:@[flexSpace, actionItem]];
-//                }
-//            }];
-//        }];
-//    }
-//    
-//    [followOrUnfollow setCancelButtonWithTitle:@"Cancel" block:nil];
-//    
-//    [followOrUnfollow showInView:[self view]];
+    RIButtonItem *followOrUnfollowButton = nil;
+    
+    BOOL following = NO;
+    
+    NSNumber *unfollowID = nil;
+    
+    NSString *followOrUnfollowString = @"Now following ";
+    
+    for (NSDictionary *dict in [self imFollowing]) {
+        if ([dict[kID] isEqualToNumber:[self userDict][kID]]) {
+            followOrUnfollowString = @"Unfollowed ";
+            following = YES;
+        }
+    }
+    
+    for (NSDictionary *dict in [self relationships]) {
+        if ([dict[@"followed_id"] isEqualToNumber:[self userDict][kID]]) {
+            unfollowID = dict[kID];
+        }
+    }
+    if (following == YES) {
+        followOrUnfollowButton = [RIButtonItem itemWithLabel:@"Unfollow" action:^{
+            [self setImFollowing:nil];
+            [self setRelationships:nil];
+            
+            [self changeToActivityIndicator];
+            
+            [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
+            
+            [[ActivityManager sharedManager] incrementActivityCount];
+            
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships/%@.json", kSocialURL, unfollowID]];
+            
+            NSLog(@"%@", [url absoluteString]);
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+            
+            [request setHTTPMethod:@"DELETE"];
+            [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+            [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+            
+            NSString *requestString = [RequestFactory unfollowRequestWithUserID:[self userDict][kID]];
+            
+            NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+            
+            [request setHTTPBody:requestData];
+            
+            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"%@%@", followOrUnfollowString, [self userDict][kName]]];
+                
+                [successNotice show];
+                
+                [[ActivityManager sharedManager] decrementActivityCount];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
+            }];
+        }];
+    }
+    else {
+        followOrUnfollowButton = [RIButtonItem itemWithLabel:@"Follow" action:^{
+            [self setImFollowing:nil];
+            [self setRelationships:nil];
+            
+            [self changeToActivityIndicator];
+            
+            [self performSelector:@selector(followingAndRelationshipsDispatch) withObject:nil afterDelay:0];
+            
+            [[ActivityManager sharedManager] incrementActivityCount];
+            
+            UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+            
+            [activityView sizeToFit];
+            
+            [activityView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin |
+                                               UIViewAutoresizingFlexibleRightMargin |
+                                               UIViewAutoresizingFlexibleTopMargin |
+                                               UIViewAutoresizingFlexibleBottomMargin)];
+            [activityView startAnimating];
+            
+            UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+            
+            UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            
+            [self setToolbarItems:@[flexSpace, loadingView]];
+            
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/relationships.json", kSocialURL]];
+            
+            NSString *requestString = [RequestFactory followRequestWithUserID:[self userDict][kID]];
+            
+            NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+            
+            NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+            
+            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                if (data) {
+                    [[ActivityManager sharedManager] decrementActivityCount];
+                    
+                    WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"Now following %@", [self userDict][kName]]];
+                    
+                    [successNotice show];
+                    
+                    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+                    
+                    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
+                    
+                    [self setToolbarItems:@[flexSpace, actionItem]];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
+                }
+                else {
+                    [[ActivityManager sharedManager] decrementActivityCount];
+                    
+                    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+                    
+                    UIBarButtonItem *actionItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(followActionSheet:)];
+                    
+                    [self setToolbarItems:@[flexSpace, actionItem]];
+                }
+            }];
+        }];
+    }
+    
+    UIActionSheet *followOrUnfollow = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:following ? followOrUnfollowButton : nil otherButtonItems:following ? nil : followOrUnfollowButton, nil];
+    
+    [followOrUnfollow showFromToolbar:[[self navigationController] toolbar]];
 }
 
 -(void)followingAndRelationshipsDispatch
@@ -313,7 +315,7 @@
         
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        CGSize contentSize = [contentText sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
 #pragma clang diagnostic pop
         
         return contentSize.height + 20;
@@ -326,9 +328,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    //static NSString *SegmentedCellIdentifier = @"SegmentedCell";
-    
-    // PrettyGridTableViewCell *segmentedCell;
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -343,8 +342,8 @@
             [[cell textLabel] setText:[self userDict][kName]];
             [[cell detailTextLabel] setTextAlignment:NSTextAlignmentRight];
             
-            [[cell textLabel] setFont:[UIFont systemFontOfSize:18]];
-            [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:16]];
+            [[cell textLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline1]];
+            [[cell detailTextLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline2]];
             
             if ([self userDict][kUsername] && [self userDict][kUsername] != [NSNull null]) {
                 [[cell detailTextLabel] setText:[NSString stringWithFormat:@"@%@", [self userDict][kUsername]]];
@@ -406,7 +405,7 @@
             
             [[cell detailTextLabel] setNumberOfLines:6];
             
-            [[cell detailTextLabel] setFont:[UIFont systemFontOfSize:16]];
+            [[cell detailTextLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]];
             
             if ([self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ) {
                 [[cell detailTextLabel] setText:[self userDict][@"profile"]];
@@ -420,96 +419,84 @@
             return cell;
         }
         case 2: {
-            //            segmentedCell = [tableView dequeueReusableCellWithIdentifier:SegmentedCellIdentifier];
-            //
-            //            if (segmentedCell == nil) {
-            //                segmentedCell = [[PrettySegmentedControlTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SegmentedCellIdentifier];
-            //            }
-            //
-            //            __weak PrettyGridTableViewCell *tempSegContCell = segmentedCell;
-            //
-            //            [segmentedCell prepareForTableView:tableView indexPath:indexPath];
-            //
-            //            [segmentedCell setNumberOfElements:3];
-            //
-            //            if ([[self followingCount] intValue] > 0) {
-            //                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self followingCount]] atIndex:0];
-            //            }
-            //            else {
-            //                [segmentedCell setText:@"0" atIndex:0];
-            //            }
-            //
-            //            if ([[self followerCount] intValue] > 0) {
-            //                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self followerCount]] atIndex:1];
-            //            }
-            //            else {
-            //                [segmentedCell setText:@"0" atIndex:1];
-            //            }
-            //
-            //            if ([[self postCount] intValue] > 0) {
-            //                [segmentedCell setText:[NSString stringWithFormat:@"%@", [self postCount]] atIndex:2];
-            //            }
-            //            else {
-            //                [segmentedCell setText:@"0" atIndex:2];
-            //            }
-            //
-            //            [segmentedCell setDetailText:@"Following" atIndex:0];
-            //            [segmentedCell setDetailText:@"Followers" atIndex:1];
-            //            [segmentedCell setDetailText:@"Posts" atIndex:2];
-            //
-            //            [segmentedCell setActionBlock:^(NSIndexPath *indexPath, int selectedIndex) {
-            //                if (selectedIndex == 0) {
-            //                    [tempSegContCell deselectAnimated:YES];
-            //
-            //                    [self performSegueWithIdentifier:kShowFollowing sender:nil];
-            //                }
-            //                else if (selectedIndex == 1) {
-            //                    [tempSegContCell deselectAnimated:YES];
-            //
-            //                    [self performSegueWithIdentifier:kShowFollowers sender:nil];
-            //                }
-            //                else if (selectedIndex == 2) {
-            //                    [tempSegContCell deselectAnimated:YES];
-            //
-            //                    [self getPosts];
-            //                }
-            //            }];
-            //        }
-            //            return segmentedCell;
+            UIButton *tempFollowing = [UIButton buttonWithType:UIButtonTypeSystem];
+            
+            [tempFollowing setFrame:CGRectMake(0, 0, 106, 55)];
+            [tempFollowing addTarget:self action:@selector(showFollowing:) forControlEvents:UIControlEventTouchUpInside];
+            
+            if ([[self followingCount] intValue] > 0) {
+                [tempFollowing setTitle:[NSString stringWithFormat:@"Following %@", [self followingCount]] forState:UIControlStateNormal];
+            }
+            else {
+                [tempFollowing setTitle:@"Following 0" forState:UIControlStateNormal];
+            }
+            
+            [cell addSubview:tempFollowing];
+            
+            UIButton *tempFollowers = [UIButton buttonWithType:UIButtonTypeSystem];
+            
+            [tempFollowers setFrame:CGRectMake(106, 0, 106, 55)];
+            [tempFollowers addTarget:self action:@selector(showFollowers:) forControlEvents:UIControlEventTouchUpInside];
+            
+            if ([[self followerCount] intValue] > 0) {
+                [tempFollowers setTitle:[NSString stringWithFormat:@"%@ Followers", [self followerCount]] forState:UIControlStateNormal];
+            }
+            else {
+                [tempFollowers setTitle:@"Following 0" forState:UIControlStateNormal];
+            }
+            
+            [cell addSubview:tempFollowers];
+            
+            UIButton *tempPosts = [UIButton buttonWithType:UIButtonTypeSystem];
+            
+            [tempPosts setFrame:CGRectMake(212, 0, 106, 55)];
+            [tempPosts addTarget:self action:@selector(getPosts) forControlEvents:UIControlEventTouchUpInside];
+            
+            if ([[self followerCount] intValue] > 0) {
+                [tempPosts setTitle:[NSString stringWithFormat:@"%@ Posts", [self followerCount]] forState:UIControlStateNormal];
+            }
+            else {
+                [tempPosts setTitle:@"0 Posts" forState:UIControlStateNormal];
+            }
+            
+            [cell addSubview:tempPosts];
+        }
+
             break;
         default:
             break;
-        }
     }
     return cell;
 }
 
+-(void)showFollowing:(id)sender
+{
+    [self performSegueWithIdentifier:kShowFollowing sender:nil];
+}
+
+-(void)showFollowers:(id)sender
+{
+    [self performSegueWithIdentifier:kShowFollowers sender:nil];
+}
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-//    if ([[segue identifier] isEqualToString:@"ShowFollowers"]) {
-//        PrettySegmentedControlTableViewCell *tempCell = (PrettySegmentedControlTableViewCell *)[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
-//        
-//        [tempCell deselectAnimated:YES];
-//        
-//        FollowerViewController *viewController = [segue destinationViewController];
-//        
-//        
-//        [viewController setUsersArray:[self followers]];
-//        [viewController setTitle:@"Followers"];
-//    }
-//    else if ([[segue identifier] isEqualToString:@"ShowFollowing"]) {
-//        PrettySegmentedControlTableViewCell *tempCell = (PrettySegmentedControlTableViewCell *)[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
-//        
-//        [tempCell deselectAnimated:YES];
-//        
-//        FollowerViewController *viewController = [segue destinationViewController];
-//        
-//        [viewController setUsersArray:[self following][@"user"]];
-//        
-//        [viewController setTitle:@"Following"];
-//    }
-   // else
-        if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
+   if ([[segue identifier] isEqualToString:@"ShowFollowers"]) {
+       FollowerViewController *viewController = [segue destinationViewController];
+   
+   
+       [viewController setUsersArray:[self followers]];
+       [viewController setTitle:@"Followers"];
+   }
+   else if ([[segue identifier] isEqualToString:@"ShowFollowing"]) {
+       FollowerViewController *viewController = [segue destinationViewController];
+   
+       [viewController setUsersArray:[self following][@"user"]];
+   
+       [viewController setTitle:@"Following"];
+   }
+   else
+    if ([[segue identifier] isEqualToString:@"ShowUserPosts"]) {
         UsersPostsViewController *viewController = [segue destinationViewController];
         
         [viewController setUserID:[self userDict][kID]];

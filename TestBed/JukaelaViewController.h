@@ -10,4 +10,6 @@
 
 @interface JukaelaViewController : UIViewController
 
+- (UIImage *) imageWithView:(UIView *)view;
+
 @end

@@ -43,6 +43,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         [contentText setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
         [contentText setEditable:NO];
         [contentText setScrollsToTop:NO];
+        [contentText setSelectable:NO];
         
         [[self contentView] addSubview:contentText];
         
@@ -111,7 +112,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
     if (![self longPressGesture]) {
         longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
         
-        [contentText addGestureRecognizer:longPressGesture];
+        [self addGestureRecognizer:longPressGesture];
     }
     
     if (![self imageTapGesture]) {

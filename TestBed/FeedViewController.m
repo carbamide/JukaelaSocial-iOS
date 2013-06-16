@@ -16,6 +16,7 @@
 #import "LoginViewController.h"
 #import "NormalCellView.h"
 #import "NormalWithImageCellView.h"
+#import "PhotoViewerViewController.h"
 #import "PostViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "ShareObject.h"
@@ -28,7 +29,6 @@
 #import "WBSuccessNoticeView.h"
 
 @interface FeedViewController ()
-@property (strong, nonatomic) NSArray *photos;
 @property (strong, nonatomic) NSCache *externalImageCache;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
 @property (strong, nonatomic) NSMutableArray *tempArray;
@@ -81,10 +81,6 @@
 
 -(void)viewDidLoad
 {
-    UIView *test = [[kAppDelegate window] snapshot];
-    
-    NSLog(@"%@", NSStringFromClass([test class]));
-    
     [self setExternalImageCache:[[NSCache alloc] init]];
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -249,7 +245,7 @@
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kShowImage object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
-        //[self showImage:aNotification];
+        [self showImage:aNotification];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kPostImage object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
@@ -264,6 +260,41 @@
         NSString *usernameString = [aNotification userInfo][@"username"];
         
         [self requestWithUsername:usernameString];
+    }];
+}
+
+-(void)showImage:(NSNotification *)aNotification
+{
+    NSIndexPath *indexPath = [aNotification userInfo][kIndexPath];
+    
+    NSURL *tempURL = [NSURL URLWithString:[self theFeed][[indexPath row]][kImageURL]];
+    
+    
+    NSMutableURLRequest *request = [NSURLRequest requestWithURL:tempURL];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+            
+            PhotoViewerViewController *viewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"ShowPhotos"];
+            
+            [viewController setMainImage:[UIImage imageWithData:data]];
+            
+            UIImage *tempImage = [[self imageWithView:[self view]] applyBlurWithRadius:10 tintColor:[UIColor clearColor] saturationDeltaFactor:1.0 maskImage:nil];
+            
+            [viewController setBackgroundImage:tempImage];
+                        
+            [self presentViewController:viewController animated:YES completion:nil];
+        }
+        else {
+            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                 message:@"There has been an error downloading the requested image."
+                                                                delegate:nil
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil, nil];
+            
+            [errorAlert show];
+        }
     }];
 }
 
@@ -949,11 +980,18 @@
         UINavigationController *navigationController = [segue destinationViewController];
         PostViewController *viewController = (PostViewController *)[navigationController topViewController];
         
+        UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:[[self view] frame]];
+        
+        UIImage *tempImage = [[self imageWithView:[self view]] applyBlurWithRadius:10 tintColor:[UIColor clearColor] saturationDeltaFactor:1.0 maskImage:nil];
+        
+        [tempImageView setImage:tempImage];
+        
+        [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
+        
         if ([self tempImage]) {
             [viewController setImageFromExternalSource:[self tempImage]];
-            [viewController setModalPresentationStyle:UIModalPresentationFormSheet];
         }
-        
+                
         [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
     }
     else if ([[segue identifier] isEqualToString:kShowReplyView]) {
@@ -994,8 +1032,6 @@
 
 - (void)handleURL:(NSURL*)url
 {
-    
-    
     SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
     
     [webViewController setBarsTintColor:[UIColor darkGrayColor]];
@@ -1072,8 +1108,6 @@
 -(void)requestWithUsername:(NSString *)username
 {
     if ([kAppDelegate currentViewController] == self) {
-        
-        
         if (![self progressHUD]) {
             [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
         }

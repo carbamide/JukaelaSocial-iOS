@@ -46,7 +46,6 @@
 		2975554315CF2DF800CAA9A7 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2975554215CF2DF800CAA9A7 /* libz.dylib */; };
 		2976435D16826DB600D79876 /* RequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2976435C16826DB600D79876 /* RequestFactory.m */; };
 		2979C6851676C83400B61F3E /* UsersCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2979C6841676C83400B61F3E /* UsersCollectionViewCell.m */; };
-		2979DC7316C6B35D00CD5316 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2979DC7216C6B35D00CD5316 /* MainStoryboard_iPad.storyboard */; };
 		297CE45916967B3A00802445 /* NoticeView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 297CE44716967B3A00802445 /* NoticeView.bundle */; };
 		297CE45A16967B3A00802445 /* UILabel+WBExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 297CE44916967B3A00802445 /* UILabel+WBExtensions.m */; };
 		297CE45B16967B3A00802445 /* WBBlueGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 297CE44B16967B3A00802445 /* WBBlueGradientView.m */; };
@@ -60,12 +59,14 @@
 		2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2986775A15B5148B0027C7CA /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		2988B25E1605534A00D0202E /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988B25D1605534A00D0202E /* FeedbackViewController.m */; };
 		298F7E071569821200516858 /* EditUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298F7E061569821200516858 /* EditUserViewController.m */; };
+		29973DBC176D074E000C11B7 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 29973DBB176D074E000C11B7 /* UIImage+ImageEffects.m */; };
 		29AA10531556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10521556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m */; };
 		29AA10561556AD6500B8D3F5 /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10551556AD6500B8D3F5 /* Helpers.m */; };
 		29AA10611556AEAC00B8D3F5 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10601556AEAC00B8D3F5 /* MBProgressHUD.m */; };
 		29AA10891557161A00B8D3F5 /* NSDate+RailsDateParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10881557161A00B8D3F5 /* NSDate+RailsDateParser.m */; };
 		29AA109015571BD700B8D3F5 /* CPCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA108F15571BD600B8D3F5 /* CPCheckBox.m */; };
 		29AA10971557254500B8D3F5 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10961557254500B8D3F5 /* SettingsViewController.m */; };
+		29B18F75176E5AF000020DF3 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29973DBE176E4F0F000C11B7 /* PhotoViewerViewController.m */; };
 		29C251591672BFED00F27ABC /* ImageConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */; };
 		29CAEB7C1558C6F900663CF3 /* ShowUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */; };
 		29D433C715FE1F6400ABCB2F /* AHHyperlinkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C115FE1F6400ABCB2F /* AHHyperlinkScanner.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -155,7 +156,6 @@
 		2976435C16826DB600D79876 /* RequestFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestFactory.m; sourceTree = "<group>"; };
 		2979C6831676C83400B61F3E /* UsersCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersCollectionViewCell.h; sourceTree = "<group>"; };
 		2979C6841676C83400B61F3E /* UsersCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersCollectionViewCell.m; sourceTree = "<group>"; };
-		2979DC7216C6B35D00CD5316 /* MainStoryboard_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		297CE44716967B3A00802445 /* NoticeView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = NoticeView.bundle; sourceTree = "<group>"; };
 		297CE44816967B3A00802445 /* UILabel+WBExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+WBExtensions.h"; sourceTree = "<group>"; };
 		297CE44916967B3A00802445 /* UILabel+WBExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+WBExtensions.m"; sourceTree = "<group>"; };
@@ -183,6 +183,10 @@
 		2988B25D1605534A00D0202E /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		298F7E051569821200516858 /* EditUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditUserViewController.h; sourceTree = "<group>"; };
 		298F7E061569821200516858 /* EditUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditUserViewController.m; sourceTree = "<group>"; };
+		29973DBA176D074E000C11B7 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		29973DBB176D074E000C11B7 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		29973DBD176E4F0F000C11B7 /* PhotoViewerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoViewerViewController.h; sourceTree = "<group>"; };
+		29973DBE176E4F0F000C11B7 /* PhotoViewerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoViewerViewController.m; sourceTree = "<group>"; };
 		299BB4FB160E7A4700898A7C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		29AA10511556AD3D00B8D3F5 /* UIView+FindAndResignFirstResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FindAndResignFirstResponder.h"; sourceTree = "<group>"; };
 		29AA10521556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FindAndResignFirstResponder.m"; sourceTree = "<group>"; };
@@ -445,6 +449,8 @@
 				291EB58215649366005FB66D /* PostViewController.m */,
 				29AA10951557254400B8D3F5 /* SettingsViewController.h */,
 				29AA10961557254500B8D3F5 /* SettingsViewController.m */,
+				29973DBD176E4F0F000C11B7 /* PhotoViewerViewController.h */,
+				29973DBE176E4F0F000C11B7 /* PhotoViewerViewController.m */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -596,7 +602,6 @@
 		29D5B85E15547695000D9374 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				2979DC7216C6B35D00CD5316 /* MainStoryboard_iPad.storyboard */,
 				2956876C1552C96700FE741C /* MainStoryboard.storyboard */,
 			);
 			name = "User Interface";
@@ -616,6 +621,8 @@
 		29D5B860155476A4000D9374 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				29973DBA176D074E000C11B7 /* UIImage+ImageEffects.h */,
+				29973DBB176D074E000C11B7 /* UIImage+ImageEffects.m */,
 				298062F617695A060006F281 /* Block Action and Alerts */,
 				29D433AB15FE0EF600ABCB2F /* AutoHyperlinks */,
 				29D433D015FE27C100ABCB2F /* Categories */,
@@ -713,7 +720,6 @@
 				293751EF15EA63E10082864C /* SVWebViewController.bundle in Resources */,
 				2954BBC51767DA04007D5004 /* Media.xcassets in Resources */,
 				297CE45916967B3A00802445 /* NoticeView.bundle in Resources */,
-				2979DC7316C6B35D00CD5316 /* MainStoryboard_iPad.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,6 +730,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29B18F75176E5AF000020DF3 /* PhotoViewerViewController.m in Sources */,
 				2954BBCE1767DC38007D5004 /* UIAlertView+Blocks.m in Sources */,
 				295687671552C96700FE741C /* main.m in Sources */,
 				2956876B1552C96700FE741C /* AppDelegate.m in Sources */,
@@ -782,6 +789,7 @@
 				297CE45C16967B3A00802445 /* WBErrorNoticeView.m in Sources */,
 				297CE45D16967B3A00802445 /* WBGrayGradientView.m in Sources */,
 				297CE45E16967B3A00802445 /* WBNoticeView.m in Sources */,
+				29973DBC176D074E000C11B7 /* UIImage+ImageEffects.m in Sources */,
 				297CE45F16967B3A00802445 /* WBRedGradientView.m in Sources */,
 				297CE46016967B3A00802445 /* WBStickyNoticeView.m in Sources */,
 				297CE46116967B3A00802445 /* WBSuccessNoticeView.m in Sources */,
@@ -920,7 +928,7 @@
 				PRODUCT_NAME = Jukaela;
 				PROVISIONING_PROFILE = "EDF330D7-ADA5-48F8-8967-D4AD500748B7";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EDF330D7-ADA5-48F8-8967-D4AD500748B7";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -970,7 +978,7 @@
 				PRODUCT_NAME = Jukaela;
 				PROVISIONING_PROFILE = "EDF330D7-ADA5-48F8-8967-D4AD500748B7";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "EDF330D7-ADA5-48F8-8967-D4AD500748B7";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

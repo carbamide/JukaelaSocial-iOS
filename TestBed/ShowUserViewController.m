@@ -56,7 +56,7 @@
     [self setImFollowing:nil];
     [self setupToolbar];
     
-    [[self navigationController] setToolbarHidden:NO];
+    [[self navigationController] setToolbarHidden:NO animated:YES];
     
     [self changeToActivityIndicator];
     

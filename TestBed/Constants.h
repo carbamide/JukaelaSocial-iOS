@@ -21,6 +21,7 @@
 #import "RIButtonItem.h"
 #import "UIAlertView+Blocks.h"
 #import "UIActionSheet+Blocks.h"
+#import "UIImage+ImageEffects.h"
 
 static const CGFloat KEYBOARD_ANIMATION_DURATION = 0.3;
 static const CGFloat MINIMUM_SCROLL_FRACTION = 0.2;

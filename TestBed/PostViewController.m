@@ -78,7 +78,7 @@
     
     if (![self replyString]) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
-            UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn);
+            UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn);
             
             [facebookButton addMotionEffect:horizontalMotionEffect1];
             [facebookButton addMotionEffect:verticalMotionEffect1];
@@ -86,7 +86,7 @@
             [[self view] addSubview:facebookButton];
         }
         else {
-            UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
+            UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
             
             [facebookButton addMotionEffect:horizontalMotionEffect1];
             [facebookButton addMotionEffect:verticalMotionEffect1];
@@ -95,7 +95,7 @@
         }
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
-            UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn);
+            UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn);
             
             [twitterButton addMotionEffect:horizontalMotionEffect1];
             [twitterButton addMotionEffect:verticalMotionEffect1];
@@ -103,7 +103,7 @@
             [[self view] addSubview:twitterButton];
         }
         else {
-            UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn);
+            UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn);
             
             [twitterButton addMotionEffect:horizontalMotionEffect1];
             [twitterButton addMotionEffect:verticalMotionEffect1];
@@ -183,7 +183,7 @@
         
         [tempButton removeFromSuperview];
         
-        UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn);
+        UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn);
         
         [twitterButton addMotionEffect:horizontalMotionEffect1];
         [twitterButton addMotionEffect:verticalMotionEffect1];
@@ -196,7 +196,7 @@
         
         [tempButton removeFromSuperview];
         
-        UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn);
+        UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn);
         
         [twitterButton addMotionEffect:horizontalMotionEffect1];
         [twitterButton addMotionEffect:verticalMotionEffect1];
@@ -223,7 +223,7 @@
         
         [tempButton removeFromSuperview];
         
-        UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
+        UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
         
         [facebookButton addMotionEffect:horizontalMotionEffect1];
         [facebookButton addMotionEffect:verticalMotionEffect1];
@@ -236,7 +236,7 @@
         
         [tempButton removeFromSuperview];
         
-        UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 5, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn);
+        UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn);
         
         [facebookButton addMotionEffect:horizontalMotionEffect1];
         [facebookButton addMotionEffect:verticalMotionEffect1];

@@ -97,7 +97,7 @@
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
 #pragma clang diagnostic pop
     
     if ([self threadedPosts][[indexPath row]][kRepostUserID] && [self threadedPosts][[indexPath row]][kRepostUserID] != [NSNull null]) {
@@ -220,11 +220,11 @@
     }
     
     if ([self threadedPosts][[indexPath row]][kRepostUserID] && [self threadedPosts][[indexPath row]][kRepostUserID] != [NSNull null]) {
-        CGSize contentSize = [[self threadedPosts][[indexPath row]][kContent] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]
+        CGSize contentSize = [[self threadedPosts][[indexPath row]][kContent] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]
                                                                          constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                              lineBreakMode:NSLineBreakByWordWrapping];
         
-        CGSize nameSize = [[self threadedPosts][[indexPath row]][kName] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleFootnote]
+        CGSize nameSize = [[self threadedPosts][[indexPath row]][kName] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]
                                                                    constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                        lineBreakMode:NSLineBreakByWordWrapping];
         

@@ -35,8 +35,6 @@
 {
     [kAppDelegate setCurrentViewController:self];
     
-    [[self view] snapshot];
-    
     [[self navigationController] setToolbarHidden:NO animated:YES];
     
     [super viewDidAppear:animated];
@@ -315,7 +313,7 @@
         
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
 #pragma clang diagnostic pop
         
         return contentSize.height + 20;
@@ -342,8 +340,8 @@
             [[cell textLabel] setText:[self userDict][kName]];
             [[cell detailTextLabel] setTextAlignment:NSTextAlignmentRight];
             
-            [[cell textLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline1]];
-            [[cell detailTextLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline2]];
+            [[cell textLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline1]];
+            [[cell detailTextLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
             
             if ([self userDict][kUsername] && [self userDict][kUsername] != [NSNull null]) {
                 [[cell detailTextLabel] setText:[NSString stringWithFormat:@"@%@", [self userDict][kUsername]]];
@@ -405,7 +403,7 @@
             
             [[cell detailTextLabel] setNumberOfLines:6];
             
-            [[cell detailTextLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]];
+            [[cell detailTextLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
             
             if ([self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ) {
                 [[cell detailTextLabel] setText:[self userDict][@"profile"]];

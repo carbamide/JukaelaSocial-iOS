@@ -696,16 +696,16 @@
         CGSize contentSize;
         
         if ([self theFeed][[indexPath row]][kImageURL] && [self theFeed][[indexPath row]][kImageURL] != [NSNull null]) {
-            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]
+            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]
                                                                 constrainedToSize:CGSizeMake(185 - (7.5 * 2), 20000)
                                                                     lineBreakMode:NSLineBreakByWordWrapping];
         }
         else {
-            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]
+            contentSize = [[self theFeed][[indexPath row]][kContent] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]
                                                                 constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                     lineBreakMode:NSLineBreakByWordWrapping];
         }
-        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline1]
+        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline1]
                                                              constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                  lineBreakMode:NSLineBreakByWordWrapping];
         

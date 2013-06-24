@@ -118,13 +118,13 @@
     [self setPasswordConfirmTextField:[[UITextField alloc] init]];
     [self setProfileTextView:[[UITextView alloc] init]];
     
-    [[self nameTextField] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline2]];
-    [[self usernameTextField] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline2]];
-    [[self emailTextField] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline2]];
-    [[self passwordTextField] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline2]];
-    [[self passwordConfirmTextField] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleHeadline2]];
+    [[self nameTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
+    [[self usernameTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
+    [[self emailTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
+    [[self passwordTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
+    [[self passwordConfirmTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
 
-    [[self profileTextView] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]];
+    [[self profileTextView] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     
     [super viewDidLoad];
 }
@@ -223,7 +223,7 @@
     
     [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];
     
-    [[cell textLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleFootnote]];
+    [[cell textLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]];
     
     if ([indexPath row] == 0) {
         [[cell textLabel] setText:[self fieldsArray][[indexPath row]]];

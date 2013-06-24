@@ -38,7 +38,7 @@
     self.titleLabel.textColor = [UIColor blackColor];
     self.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
     self.titleLabel.shadowColor = [UIColor whiteColor];
-    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleCaption1];
+    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.text = self.title;
     [self.titleLabel sizeToFit];

@@ -27,7 +27,7 @@
 {
     [[[self feedbackTextView] layer] setCornerRadius:8];
     
-    [[self feedbackTextView] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]];
+    [[self feedbackTextView] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     
     [[self feedbackTextView] becomeFirstResponder];
     

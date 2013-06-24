@@ -875,7 +875,7 @@
         [cell setBackgroundView:[[CellBackground alloc] init]];
     }
     
-    [[cell textLabel] setFont:[UIFont preferredFontForTextStyle:UIFontDescriptorTextStyleBody]];
+    [[cell textLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     
     [[cell textLabel] setText:[[self autocompleteUsernames] objectAtIndex:[indexPath row]]];
     

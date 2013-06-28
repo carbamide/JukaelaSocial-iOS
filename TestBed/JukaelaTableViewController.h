@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <RESideMenu/RESideMenu.h>
 
 @interface JukaelaTableViewController : UITableViewController
 
 - (UIImage *) imageWithView:(UIView *)view;
+
+@property (strong, readonly, nonatomic) RESideMenu *sideMenu;
 
 @end

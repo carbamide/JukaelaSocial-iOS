@@ -450,7 +450,8 @@
 
     }
     
-    [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
+    //FIXME
+    //[[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
     
     if (![[self activityIndicator] isAnimating]) {
         [[self activityIndicator] startAnimating];

@@ -3,34 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>3EBDB278-FC6D-4661-873D-042D99C92328</string>
+	<string>C23C539D-8D64-4437-8CA2-F47E1DD13A08</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Jukaela</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>EE6CEC8A-7338-401F-8BBD-BEBF51DD0956</key>
+		<key>1E0D6E4F-4F1C-40ED-A4CA-FA415BA494A1</key>
 		<string>https://github.com/carbamide/JukaelaSocial-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Jukaela.xcodeproj/project.xcworkspace</string>
+	<string>Jukaela.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>EE6CEC8A-7338-401F-8BBD-BEBF51DD0956</key>
-		<string>../..</string>
+		<key>1E0D6E4F-4F1C-40ED-A4CA-FA415BA494A1</key>
+		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/carbamide/JukaelaSocial-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>EE6CEC8A-7338-401F-8BBD-BEBF51DD0956</string>
+	<string>1E0D6E4F-4F1C-40ED-A4CA-FA415BA494A1</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>EE6CEC8A-7338-401F-8BBD-BEBF51DD0956</string>
+			<string>1E0D6E4F-4F1C-40ED-A4CA-FA415BA494A1</string>
 			<key>IDESourceControlWCCName</key>
 			<string>JukaelaSocial-iOS</string>
 		</dict>

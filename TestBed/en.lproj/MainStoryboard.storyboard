@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4457.6" systemVersion="13A476u" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="dso-3y-mmV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4457.9" systemVersion="13A497d" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="i81-bH-OLq">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3682.6"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3682.9"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller - Feed-->
@@ -21,27 +21,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TjH-7c-oig" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="72" y="-563"/>
-        </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="Sbi-Lv-5Fo">
-            <objects>
-                <tabBarController restorationIdentifier="TabController" storyboardIdentifier="TabController" wantsFullScreenLayout="YES" definesPresentationContext="YES" id="dso-3y-mmV" sceneMemberID="viewController">
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="hKn-52-a6g">
-                        <rect key="frame" x="129" y="330" width="163" height="49"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="i81-bH-OLq" kind="relationship" relationship="viewControllers" id="lby-fh-tU8"/>
-                        <segue destination="DKi-a0-jxj" kind="relationship" relationship="viewControllers" id="8Lh-Mm-BR5"/>
-                        <segue destination="3ax-J6-0PH" kind="relationship" relationship="viewControllers" id="BYR-rz-K8R"/>
-                        <segue destination="txF-kK-p6a" kind="relationship" relationship="viewControllers" id="P1n-eo-94Q"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ro6-nM-llJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-511" y="-154"/>
         </scene>
         <!--Navigation Controller - Users-->
         <scene sceneID="O6d-ES-czq">
@@ -63,7 +42,7 @@
         <!--Users View Controller - Users-->
         <scene sceneID="Xrl-zU-8BB">
             <objects>
-                <collectionViewController restorationIdentifier="" autoresizesArchivedViewToFullSize="NO" wantsFullScreenLayout="YES" id="zuO-Ob-Abj" customClass="UsersViewController" sceneMemberID="viewController">
+                <collectionViewController restorationIdentifier="UsersViewController" storyboardIdentifier="UsersViewController" autoresizesArchivedViewToFullSize="NO" wantsFullScreenLayout="YES" id="zuO-Ob-Abj" customClass="UsersViewController" sceneMemberID="viewController">
                     <collectionView key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="Me0-X5-BFC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -130,7 +109,7 @@
             <objects>
                 <viewController restorationIdentifier="loginViewCont" id="2" customClass="LoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
-                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView contentMode="scaleAspectFit" image="JukaelaLogo.png" id="W4X-yi-ift">
@@ -171,7 +150,7 @@
         <!--Settings View Controller - Settings-->
         <scene sceneID="klu-EU-c06">
             <objects>
-                <tableViewController restorationIdentifier="" wantsFullScreenLayout="YES" id="Njp-R6-Agb" customClass="SettingsViewController" sceneMemberID="viewController">
+                <tableViewController restorationIdentifier="SettingsViewController" storyboardIdentifier="SettingsViewController" wantsFullScreenLayout="YES" id="Njp-R6-Agb" customClass="SettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="LE0-jr-upj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -190,7 +169,7 @@
         <!--Mentions View Controller - Mentions-->
         <scene sceneID="apJ-6f-eKg">
             <objects>
-                <tableViewController restorationIdentifier="" wantsFullScreenLayout="YES" id="rJh-ZE-bJ6" customClass="MentionsViewController" sceneMemberID="viewController">
+                <tableViewController restorationIdentifier="MentionsViewController" storyboardIdentifier="MentionsViewController" wantsFullScreenLayout="YES" id="rJh-ZE-bJ6" customClass="MentionsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" restorationIdentifier="" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="uBN-UR-TOj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -465,8 +444,7 @@
         <!--Navigation Controller-->
         <scene sceneID="3Wn-3g-Dd0">
             <objects>
-                <navigationController definesPresentationContext="YES" id="9YE-cx-WSu" sceneMemberID="viewController">
-                    <extendedEdge key="edgesForExtendedLayout"/>
+                <navigationController wantsFullScreenLayout="YES" extendedLayoutIncludesOpaqueBars="YES" definesPresentationContext="YES" id="9YE-cx-WSu" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="7gl-Cn-TE4">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -831,9 +809,9 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Nfd-q2-QYn"/>
-        <segue reference="g7k-VU-LQA"/>
+        <segue reference="kDe-0T-1hT"/>
         <segue reference="MPs-Bn-T3e"/>
-        <segue reference="vu7-99-zB5"/>
+        <segue reference="g7k-VU-LQA"/>
+        <segue reference="ilt-Mo-CmO"/>
     </inferredMetricsTieBreakers>
 </document>

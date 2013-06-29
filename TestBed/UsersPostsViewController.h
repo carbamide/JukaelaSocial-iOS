@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 
-@interface UsersPostsViewController : UITableViewController <MBProgressHUDDelegate>
+@interface UsersPostsViewController : JukaelaTableViewController <MBProgressHUDDelegate>
 
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSDictionary *tempDict;

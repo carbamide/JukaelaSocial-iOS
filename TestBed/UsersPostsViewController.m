@@ -115,19 +115,22 @@
 {
     NSString *contentText = [self userPostArray][[indexPath row]][kContent];
     
-    CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
+    CGSize constraint = CGSizeMake(300, 20000);
     
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-#pragma clang diagnostic pop
+    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    UIColor *color = [UIColor blackColor];
     
+    NSDictionary *attrDict = @{NSFontAttributeName: font, NSForegroundColorAttributeName: color};
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:contentText attributes:attrDict];
+    
+    CGRect rect = [string boundingRectWithSize:constraint options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil];
     
     if ([self userPostArray][[indexPath row]][kRepostUserID] && [self userPostArray][[indexPath row]][kRepostUserID] != [NSNull null]) {
-        return contentSize.height + 50 + 10 + 20;
+        return rect.size.height + 50 + 10 + 20;
     }
     else {
-        return contentSize.height + 50 + 10;
+        return rect.size.height + 50 + 10;
     }
 }
 
@@ -351,6 +354,14 @@
         UITableViewCell *tempCell = [[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
         
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
+        
+        UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:[[self view] frame]];
+        
+        UIImage *tempImage = [self imageWithView:[self view]];
+        
+        [tempImageView setImage:tempImage];
+        
+        [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
         
         [viewController setRepostString:[NSString stringWithFormat:@"%@", [[tempCell textLabel] text]]];
         

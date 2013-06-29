@@ -31,12 +31,8 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            contentText = [[UITextView alloc] initWithFrame:CGRectMake(8, 45, 760, 170)];
-        }
-        else {
-            contentText = [[UITextView alloc] initWithFrame:CGRectMake(8, 45, 315, 170)];
-        }
+        contentText = [[UITextView alloc] initWithFrame:CGRectMake(8, 45, 315, 170)];
+
         [contentText setBackgroundColor:[UIColor clearColor]];
         [contentText setClipsToBounds:YES];
         [contentText setUserInteractionEnabled:YES];
@@ -56,12 +52,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         
         [self addSubview:nameLabel];
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(620, 5, 140, 15)];
-        }
-        else {
-            dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 5, 140, 15)];
-        }
+        dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(175, 5, 140, 15)];
         
         [dateLabel setTextAlignment:NSTextAlignmentRight];
         [dateLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]];

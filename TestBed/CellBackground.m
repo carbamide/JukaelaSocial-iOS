@@ -21,14 +21,7 @@
     
 	if (self)
 	{
-        UIImageView *anImageView = nil;
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            anImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 768, 2)];
-        }
-        else {
-            anImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 2)];
-        }
+        UIImageView *anImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 2)];
         
         [anImageView setImage:[UIImage imageNamed:@"separator"]];
         [anImageView setAlpha:0.7];

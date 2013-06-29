@@ -266,37 +266,39 @@
 
 -(void)showImage:(NSNotification *)aNotification
 {
-    NSIndexPath *indexPath = [aNotification userInfo][kIndexPath];
-    
-    NSURL *tempURL = [NSURL URLWithString:[self theFeed][[indexPath row]][kImageURL]];
-    
-    
-    NSMutableURLRequest *request = [NSURLRequest requestWithURL:tempURL];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {
-            UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-            
-            PhotoViewerViewController *viewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"ShowPhotos"];
-            
-            [viewController setMainImage:[UIImage imageWithData:data]];
-            
-            UIImage *tempImage = [[self imageWithView:[self view]] applyBlurWithRadius:10 tintColor:[UIColor clearColor] saturationDeltaFactor:1.0 maskImage:nil];
-            
-            [viewController setBackgroundImage:tempImage];
-                        
-            [self presentViewController:viewController animated:YES completion:nil];
-        }
-        else {
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                 message:@"There has been an error downloading the requested image."
-                                                                delegate:nil
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles:nil, nil];
-            
-            [errorAlert show];
-        }
-    }];
+    if ([kAppDelegate currentViewController] == self) {
+        NSIndexPath *indexPath = [aNotification userInfo][kIndexPath];
+        
+        NSURL *tempURL = [NSURL URLWithString:[self theFeed][[indexPath row]][kImageURL]];
+        
+        NSMutableURLRequest *request = [NSURLRequest requestWithURL:tempURL];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+                
+                PhotoViewerViewController *viewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"ShowPhotos"];
+                
+                [viewController setMainImage:[UIImage imageWithData:data]];
+                
+                UIImage *tempImage = [[self imageWithView:[self view]] applyBlurWithRadius:10 tintColor:[UIColor clearColor] saturationDeltaFactor:1.0 maskImage:nil];
+                
+                [viewController setBackgroundImage:tempImage];
+                
+                [self presentViewController:viewController animated:YES completion:nil];
+            }
+            else {
+                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                     message:@"There has been an error downloading the requested image."
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"OK"
+                                                           otherButtonTitles:nil, nil];
+                
+                [errorAlert show];
+            }
+        }];
+
+    }
 }
 
 -(void)switchToSelectedUser:(NSNotification *)aNotification
@@ -546,18 +548,22 @@
 {
     NSString *contentText = [self theFeed][[indexPath row]][kContent];
     
-    CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
+    CGSize constraint = CGSizeMake(300, 20000);
     
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-#pragma clang diagnostic pop
-
+    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    UIColor *color = [UIColor blackColor];
+    
+    NSDictionary *attrDict = @{NSFontAttributeName: font, NSForegroundColorAttributeName: color};
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:contentText attributes:attrDict];
+    
+    CGRect rect = [string boundingRectWithSize:constraint options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil];
+        
     if ([self theFeed][[indexPath row]][kRepostUserID] && [self theFeed][[indexPath row]][kRepostUserID] != [NSNull null]) {
-        return contentSize.height + 50 + 10 + 20;
+        return rect.size.height + 50 + 10 + 20;
     }
     else {
-        return contentSize.height + 50 + 10;
+        return rect.size.height + 50 + 10;
     }
 }
 
@@ -617,7 +623,7 @@
                 });
             }
             else if ([[NSFileManager defaultManager] fileExistsAtPath:[[self documentsFolder] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
-                UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[self documentsFolder] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
+                UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
                     UIImage *tempImage = [externalImageFromDisk thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
@@ -965,7 +971,7 @@
         
         UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:cancelButton destructiveButtonItem:deleteThread otherButtonItems:replyButton, likeButton, usersWhoLiked, showThread, nil];
 
-        [cellActionSheet showFromTabBar:[[self tabBarController] tabBar]];
+        [cellActionSheet showInView:[self view]];
     }
 }
 
@@ -983,7 +989,7 @@
         
         UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:[[self view] frame]];
         
-        UIImage *tempImage = [[self imageWithView:[self view]] applyBlurWithRadius:10 tintColor:[UIColor clearColor] saturationDeltaFactor:1.0 maskImage:nil];
+        UIImage *tempImage = [self imageWithView:[self view]];
         
         [tempImageView setImage:tempImage];
         
@@ -997,6 +1003,14 @@
     }
     else if ([[segue identifier] isEqualToString:kShowReplyView]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
+        
+        UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:[[self view] frame]];
+        
+        UIImage *tempImage = [self imageWithView:[self view]];
+        
+        [tempImageView setImage:tempImage];
+        
+        [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
         
         [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self theFeed][[[self tempIndexPath] row]][kUsername]]];
         [viewController setInReplyTo:[self theFeed][[[self tempIndexPath] row]][kID]];

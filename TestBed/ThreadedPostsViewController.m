@@ -14,6 +14,7 @@
 #import "ThreadedPostsViewController.h"
 #import "NormalCellView.h"
 #import "NormalWithImageCellView.h"
+#import "PhotoViewerViewController.h"
 #import "PostViewController.h"
 #import "ShareObject.h"
 #import "ShowUserViewController.h"
@@ -52,6 +53,10 @@
 
 - (void)viewDidLoad
 {
+    [[NSNotificationCenter defaultCenter] addObserverForName:kShowImage object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self showImage:aNotification];
+    }];
+    
     [[self navigationController] setToolbarHidden:YES animated:NO];
 
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf)]];
@@ -93,18 +98,22 @@
 {
     NSString *contentText = [self threadedPosts][[indexPath row]][kContent];
     
-    CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
+    CGSize constraint = CGSizeMake(300, 20000);
     
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-#pragma clang diagnostic pop
+    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    UIColor *color = [UIColor blackColor];
+    
+    NSDictionary *attrDict = @{NSFontAttributeName: font, NSForegroundColorAttributeName: color};
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:contentText attributes:attrDict];
+    
+    CGRect rect = [string boundingRectWithSize:constraint options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil];
     
     if ([self threadedPosts][[indexPath row]][kRepostUserID] && [self threadedPosts][[indexPath row]][kRepostUserID] != [NSNull null]) {
-        return contentSize.height + 50 + 10 + 20;
+        return rect.size.height + 50 + 10 + 20;
     }
     else {
-        return contentSize.height + 50 + 10;
+        return rect.size.height + 50 + 10;
     }
 }
 
@@ -155,12 +164,23 @@
         
         if (![[cell externalImage] image]) {
             if ([[self externalImageCache] objectForKey:indexPath]) {
-                [[cell externalImage] setImage:[[self externalImageCache] objectForKey:indexPath]];
-            }
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
+                    UIImage *tempImage = [[[self externalImageCache] objectForKey:indexPath] thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[cell externalImage] setImage:tempImage];
+                    });
+                });            }
             else if ([[NSFileManager defaultManager] fileExistsAtPath:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
                 UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
                 
-                [[cell externalImage] setImage:externalImageFromDisk];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
+                    UIImage *tempImage = [externalImageFromDisk thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[cell externalImage] setImage:tempImage];
+                    });
+                });
                 
                 if (externalImageFromDisk) {
                     [[self externalImageCache] setObject:externalImageFromDisk forKey:indexPath];
@@ -172,7 +192,6 @@
                 objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
                 
                 dispatch_async(queue, ^{
-                    
                     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
                     
                     if (image) {
@@ -180,7 +199,7 @@
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[cell externalImage] setImage:image];
+                        [[cell externalImage] setImage:[image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh]];
                         
                         [Helpers saveImage:image withFileName:[tempString lastPathComponent]];
                         
@@ -320,6 +339,14 @@
     else if ([[segue identifier] isEqualToString:kShowReplyView]) {
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
         
+        UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:[[self view] frame]];
+        
+        UIImage *tempImage = [self imageWithView:[self view]];
+        
+        [tempImageView setImage:tempImage];
+        
+        [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
+        
         [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self threadedPosts][[[self tempIndexPath] row]][kUsername]]];
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
@@ -328,6 +355,14 @@
         UITableViewCell *tempCell = [[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]];
         
         PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
+        
+        UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:[[self view] frame]];
+        
+        UIImage *tempImage = [self imageWithView:[self view]];
+        
+        [tempImageView setImage:tempImage];
+        
+        [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
         
         [viewController setRepostString:[NSString stringWithFormat:@"%@", [[tempCell textLabel] text]]];
         
@@ -504,4 +539,40 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)showImage:(NSNotification *)aNotification
+{
+    if ([kAppDelegate currentViewController] == self) {
+        NSIndexPath *indexPath = [aNotification userInfo][kIndexPath];
+        
+        NSURL *tempURL = [NSURL URLWithString:[self threadedPosts][[indexPath row]][kImageURL]];
+        
+        NSMutableURLRequest *request = [NSURLRequest requestWithURL:tempURL];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+            if (data) {
+                UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+                
+                PhotoViewerViewController *viewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"ShowPhotos"];
+                
+                [viewController setMainImage:[UIImage imageWithData:data]];
+                
+                UIImage *tempImage = [[self imageWithView:[self view]] applyBlurWithRadius:10 tintColor:[UIColor clearColor] saturationDeltaFactor:1.0 maskImage:nil];
+                
+                [viewController setBackgroundImage:tempImage];
+                
+                [self presentViewController:viewController animated:YES completion:nil];
+            }
+            else {
+                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                     message:@"There has been an error downloading the requested image."
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"OK"
+                                                           otherButtonTitles:nil, nil];
+                
+                [errorAlert show];
+            }
+        }];
+        
+    }
+}
 @end

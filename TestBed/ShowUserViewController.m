@@ -309,14 +309,18 @@
     else if ([indexPath section] == 1) {
         NSString *contentText = [self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ? [self userDict][@"profile"] : @"This user hasn't set a profile!";
         
-        CGSize constraint = CGSizeMake(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 750 : 300, 20000);
+        CGSize constraint = CGSizeMake(300, 20000);        
         
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        CGSize contentSize = [contentText sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-#pragma clang diagnostic pop
+        UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        UIColor *color = [UIColor blackColor];
         
-        return contentSize.height + 20;
+        NSDictionary *attrDict = @{NSFontAttributeName: font, NSForegroundColorAttributeName: color};
+        
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:contentText attributes:attrDict];
+                 
+        CGRect rect = [string boundingRectWithSize:constraint options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil];
+        
+        return rect.size.height + 20;
     }
     else {
         return 55;
@@ -403,7 +407,7 @@
             
             [[cell detailTextLabel] setNumberOfLines:6];
             
-            [[cell detailTextLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+            [[cell detailTextLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]];
             
             if ([self userDict][@"profile"] && [self userDict][@"profile"] != [NSNull null] ) {
                 [[cell detailTextLabel] setText:[self userDict][@"profile"]];

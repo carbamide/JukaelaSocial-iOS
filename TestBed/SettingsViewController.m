@@ -70,7 +70,7 @@ NS_ENUM(NSInteger, SocialTypes) {
     
     UIActionSheet *logoutActionSheet = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:logoutButton otherButtonItems:nil, nil];
     
-    [logoutActionSheet showFromTabBar:[[self tabBarController] tabBar]];
+    [logoutActionSheet showInView:[self view]];
 }
 
 -(id)initWithStyle:(UITableViewStyle)style
@@ -344,8 +344,8 @@ NS_ENUM(NSInteger, SocialTypes) {
     }];
     
     UIActionSheet *eraseAction = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:buttonItem otherButtonItems:nil, nil];
-        
-    [eraseAction showFromTabBar:[[self tabBarController] tabBar]];
+    
+    [eraseAction showInView:[self view]];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView

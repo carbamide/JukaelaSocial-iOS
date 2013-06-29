@@ -41,41 +41,58 @@
     RESideMenuItem *feedItem = [[RESideMenuItem alloc] initWithTitle:@"Feed" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        FeedbackViewController *secondViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"FeedViewController"];
+        id feedViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"FeedViewController"];
+        [feedViewController setTitle:[item title]];
         
-        secondViewController.title = item.title;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:secondViewController];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:feedViewController];
         [menu setRootViewController:navigationController];
     }];
+    
     RESideMenuItem *mentionsItem = [[RESideMenuItem alloc] initWithTitle:@"Mentions" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        MentionsViewController *secondViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"MentionsViewController"];
-        secondViewController.title = item.title;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:secondViewController];
+        id mentionsViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"MentionsViewController"];
+        [mentionsViewController setTitle:[item title]];
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mentionsViewController];
         [menu setRootViewController:navigationController];
     }];
+    
     RESideMenuItem *usersItem = [[RESideMenuItem alloc] initWithTitle:@"Users" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        UsersViewController *secondViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"UsersViewController"];
-        secondViewController.title = item.title;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:secondViewController];
+        id usersViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"UsersViewController"];
+        [usersViewController setTitle:[item title]];
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:usersViewController];
         [menu setRootViewController:navigationController];
     }];
+    
     RESideMenuItem *settingsItem = [[RESideMenuItem alloc] initWithTitle:@"Settings" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        SettingsViewController *secondViewController = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"SettingsViewController"];
-        secondViewController.title = item.title;
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:secondViewController];
+        id settingsViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"SettingsViewController"];
+        [settingsViewController setTitle:[item title]];
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
         [menu setRootViewController:navigationController];
     }];
     
     _sideMenu = [[RESideMenu alloc] initWithItems:@[feedItem, mentionsItem, usersItem, settingsItem]];
-    _sideMenu.verticalOffset = 76;
-    _sideMenu.hideStatusBarArea = NO;
+    
+    [_sideMenu setVerticalOffset:76];
+    [_sideMenu setHideStatusBarArea:NO];
     
     [_sideMenu show];
 }
+
+-(instancetype)viewControllerFromStoryboardNamed:(NSString *)storyboardName andInstantationIdentifier:(NSString *)viewControllerName
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+    
+    id viewController = [storyboard instantiateViewControllerWithIdentifier:viewControllerName];
+    
+    return viewController;
+}
+
 @end

@@ -20,12 +20,7 @@
         
         [self setExternalImage:[[UIImageView alloc] initWithFrame:CGRectMake(tempWindow.frame.size.width - 46, 5, 37, 37)]];
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [[self dateLabel] setFrame:CGRectMake(570, 5, 140, 15)];
-        }
-        else {
-            [[self dateLabel] setFrame:CGRectMake(128, 5, 140, 15)];
-        }
+        [[self dateLabel] setFrame:CGRectMake(128, 5, 140, 15)];
         
         [self addSubview:[self externalImage]];
     }

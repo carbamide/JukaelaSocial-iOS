@@ -216,18 +216,24 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:kRefreshYourTablesNotification object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
         [self initializeActivityIndicator];
         
+        [[self externalImageCache] removeAllObjects];
+        
         [self refreshTableInformation:nil from:0 to:[[self theFeed] count] removeSplash:NO];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kSuccessfulTweetNotification object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
         [self setTwitterSuccess:YES];
         
+        [[self externalImageCache] removeAllObjects];
+
         [self checkForFBAndTwitterSucess];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kSuccessfulFacebookNotification object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
         [self setFbSuccess:YES];
         
+        [[self externalImageCache] removeAllObjects];
+
         [self checkForFBAndTwitterSucess];
     }];
     

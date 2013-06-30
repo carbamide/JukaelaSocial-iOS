@@ -38,23 +38,6 @@
 {
     [super viewDidLoad];
     
-    UIInterpolatingMotionEffect *horizontalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-    UIInterpolatingMotionEffect *verticalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-
-    [horizontalMotionEffect1 setMinimumRelativeValue:@-10];
-    [horizontalMotionEffect1 setMaximumRelativeValue:@10];
-    [verticalMotionEffect1 setMinimumRelativeValue:@-10];
-    [verticalMotionEffect1 setMaximumRelativeValue:@10];
-    
-    [[self userProfileImage] addMotionEffect:horizontalMotionEffect1];
-    [[self userProfileImage] addMotionEffect:verticalMotionEffect1];
-    [[self photoButton] addMotionEffect:horizontalMotionEffect1];
-    [[self photoButton] addMotionEffect:verticalMotionEffect1];
-    [[self countDownLabel] addMotionEffect:horizontalMotionEffect1];
-    [[self countDownLabel] addMotionEffect:verticalMotionEffect1];
-    [[self theTextView] addMotionEffect:horizontalMotionEffect1];
-    [[self theTextView] addMotionEffect:verticalMotionEffect1];
-    
     [self getUsers];
     
     [self setAutocompleteUsernames:[[NSMutableArray alloc] init]];
@@ -64,7 +47,7 @@
     if (tempWindow.frame.size.height > 500) {
         [[self photoButton] setFrame:CGRectOffset(_photoButton.frame, 0, 90)];
         [[self countDownLabel] setFrame:CGRectOffset(_countDownLabel.frame, 0, 90)];
-            
+        
         [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height + 100)];
     }
     
@@ -72,16 +55,11 @@
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
             UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn);
             
-            [facebookButton addMotionEffect:horizontalMotionEffect1];
-            [facebookButton addMotionEffect:verticalMotionEffect1];
-            
             [[self view] addSubview:facebookButton];
         }
         else {
             UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
             
-            [facebookButton addMotionEffect:horizontalMotionEffect1];
-            [facebookButton addMotionEffect:verticalMotionEffect1];
             
             [[self view] addSubview:facebookButton];
         }
@@ -89,16 +67,10 @@
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
             UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn);
             
-            [twitterButton addMotionEffect:horizontalMotionEffect1];
-            [twitterButton addMotionEffect:verticalMotionEffect1];
-            
             [[self view] addSubview:twitterButton];
         }
         else {
             UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn);
-            
-            [twitterButton addMotionEffect:horizontalMotionEffect1];
-            [twitterButton addMotionEffect:verticalMotionEffect1];
             
             [[self view] addSubview:twitterButton];
         }
@@ -141,9 +113,9 @@
     }
     
     [[self userProfileImage] setClipsToBounds:NO];
-
+    
     [[[self backgroundView] layer] setCornerRadius:8];
-
+    
     [[self backgroundView] setBackgroundColor:[UIColor clearColor]];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:UITextViewTextDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
@@ -161,14 +133,6 @@
 {
     UIButton *tempButton = sender;
     
-    UIInterpolatingMotionEffect *horizontalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-    UIInterpolatingMotionEffect *verticalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    
-    [horizontalMotionEffect1 setMinimumRelativeValue:@-10];
-    [horizontalMotionEffect1 setMaximumRelativeValue:@10];
-    [verticalMotionEffect1 setMinimumRelativeValue:@-10];
-    [verticalMotionEffect1 setMaximumRelativeValue:@10];
-    
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kPostToTwitterPreference];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -176,9 +140,6 @@
         [tempButton removeFromSuperview];
         
         UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn);
-        
-        [twitterButton addMotionEffect:horizontalMotionEffect1];
-        [twitterButton addMotionEffect:verticalMotionEffect1];
         
         [[self view] addSubview:twitterButton];
     }
@@ -190,9 +151,6 @@
         
         UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn);
         
-        [twitterButton addMotionEffect:horizontalMotionEffect1];
-        [twitterButton addMotionEffect:verticalMotionEffect1];
-
         [[self view] addSubview:twitterButton];
     }
 }
@@ -201,14 +159,6 @@
 {
     UIButton *tempButton = sender;
     
-    UIInterpolatingMotionEffect *horizontalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-    UIInterpolatingMotionEffect *verticalMotionEffect1 = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    
-    [horizontalMotionEffect1 setMinimumRelativeValue:@-10];
-    [horizontalMotionEffect1 setMaximumRelativeValue:@10];
-    [verticalMotionEffect1 setMinimumRelativeValue:@-10];
-    [verticalMotionEffect1 setMaximumRelativeValue:@10];
-    
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kPostToFacebookPreference];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -216,9 +166,6 @@
         [tempButton removeFromSuperview];
         
         UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
-        
-        [facebookButton addMotionEffect:horizontalMotionEffect1];
-        [facebookButton addMotionEffect:verticalMotionEffect1];
         
         [[self view] addSubview:facebookButton];
     }
@@ -230,15 +177,13 @@
         
         UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn);
         
-        [facebookButton addMotionEffect:horizontalMotionEffect1];
-        [facebookButton addMotionEffect:verticalMotionEffect1];
         
         [[self view] addSubview:facebookButton];
     }
 }
 
 -(IBAction)takePhoto:(id)sender
-{    
+{
     if ([self imageAdded]) {
         RIButtonItem *removePhotoButton = [RIButtonItem itemWithLabel:@"Remove Photo" action:^{
             [self setTempImageData:nil];
@@ -289,6 +234,7 @@
             [photoActionSheet showInView:[self backgroundView]];
         }
     }
+    
 }
 
 -(void)setupNavbarForPosting
@@ -477,7 +423,7 @@
             [self setIsPosting:NO];
             
             UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error posting to Jukaela Social!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-
+            
             [jukaelaSocialPostingError show];
             
             [[ActivityManager sharedManager] decrementActivityCount];
@@ -626,106 +572,104 @@
         urls = YES;
     }
     
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")) {
-        if (NSStringFromClass([SLRequest class])) {
-            if (_accountStore == nil) {
-                _accountStore = [[ACAccountStore alloc] init];
-            }
-            
-            ACAccountType *accountTypeFacebook = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-            
-            NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream"]};
-            
-            [_accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
-                if(granted) {
-                    NSArray *accounts = [self.accountStore accountsWithAccountType:accountTypeFacebook];
-                    
-                    [self setFacebookAccount:[accounts lastObject]];
-                    
-                    if (![[[self facebookAccount] credential] oauthToken]) {
-                        [_accountStore renewCredentialsForAccount:[self facebookAccount] completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
-                            if (error) {
-                                NSLog(@"error:%@", [error localizedDescription]);
-                            }
-                        }];
-                    }
-                    
-                    if ([self tempImageData]) {
-                        NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
-                        NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/photos"];
-                        
-                        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
-                        
-                        [request addMultipartData:[self tempImageData] withName:stringToSend type:@"multipart/form-data" filename:@"image.jpg"];
-                        
-                        [request setAccount:[self facebookAccount]];
-                        
-                        [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
-                            if (responseData) {
-                                NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-                                
-                                if (!jsonData[@"error"]) {
-                                    NSLog(@"Successfully posted to Facebook");
-                                    
-                                    [[NSNotificationCenter defaultCenter] postNotificationName:kSuccessfulFacebookNotification object:nil];
-                                }
-                                else {
-                                    NSLog(@"Not posted to Facebook");
-                                }
-                            }
-                            else {
-                                [self setIsPosting:NO];
-                                
-                                UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error posting your Jukaela Social post to Facebook." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                                
-                                [jukaelaSocialPostingError show];
-                            }
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
-                        }];
-                    }
-                    else {
-                        NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
-                        
-                        NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
-                        
-                        if (urls) {
-                            feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/links"];
-                            
-                            parameters = @{@"access_token" : [[[self facebookAccount] credential] oauthToken], @"message" : stringToSend, @"link" : urlArray[0]};
+    if (NSStringFromClass([SLRequest class])) {
+        if (_accountStore == nil) {
+            _accountStore = [[ACAccountStore alloc] init];
+        }
+        
+        ACAccountType *accountTypeFacebook = [self.accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+        
+        NSDictionary *options = @{ACFacebookAppIdKey:@"493749340639998", ACFacebookAudienceKey: ACFacebookAudienceEveryone, ACFacebookPermissionsKey: @[@"publish_stream"]};
+        
+        [_accountStore requestAccessToAccountsWithType:accountTypeFacebook options:options completion:^(BOOL granted, NSError *error) {
+            if(granted) {
+                NSArray *accounts = [self.accountStore accountsWithAccountType:accountTypeFacebook];
+                
+                [self setFacebookAccount:[accounts lastObject]];
+                
+                if (![[[self facebookAccount] credential] oauthToken]) {
+                    [_accountStore renewCredentialsForAccount:[self facebookAccount] completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
+                        if (error) {
+                            NSLog(@"error:%@", [error localizedDescription]);
                         }
-                        
-                        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
-                        
-                        [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
-                            if (responseData) {
-                                NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                    }];
+                }
+                
+                if ([self tempImageData]) {
+                    NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
+                    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/photos"];
+                    
+                    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
+                    
+                    [request addMultipartData:[self tempImageData] withName:stringToSend type:@"multipart/form-data" filename:@"image.jpg"];
+                    
+                    [request setAccount:[self facebookAccount]];
+                    
+                    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
+                        if (responseData) {
+                            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                            
+                            if (!jsonData[@"error"]) {
+                                NSLog(@"Successfully posted to Facebook");
                                 
-                                if (!jsonData[@"error"]) {
-                                    NSLog(@"Successfully posted to Facebook");
-                                    
-                                    [[NSNotificationCenter defaultCenter] postNotificationName:kSuccessfulFacebookNotification object:nil];
-                                }
-                                else {
-                                    NSLog(@"Not posted to Facebook");
-                                }
+                                [[NSNotificationCenter defaultCenter] postNotificationName:kSuccessfulFacebookNotification object:nil];
                             }
                             else {
-                                [self setIsPosting:NO];
-                                
-                                UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error posting your Jukaela Social post to Facebook." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                                
-                                [jukaelaSocialPostingError show];
+                                NSLog(@"Not posted to Facebook");
                             }
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
-                        }];
-                    }
+                        }
+                        else {
+                            [self setIsPosting:NO];
+                            
+                            UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error posting your Jukaela Social post to Facebook." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                            
+                            [jukaelaSocialPostingError show];
+                        }
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
+                    }];
                 }
                 else {
-                    NSLog(@"Facebook access not granted.");
-                    NSLog(@"%@", [error localizedDescription]);
+                    NSDictionary *parameters = @{@"access_token":[[[self facebookAccount] credential] oauthToken], @"message":stringToSend};
+                    
+                    NSURL *feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
+                    
+                    if (urls) {
+                        feedURL = [NSURL URLWithString:@"https://graph.facebook.com/me/links"];
+                        
+                        parameters = @{@"access_token" : [[[self facebookAccount] credential] oauthToken], @"message" : stringToSend, @"link" : urlArray[0]};
+                    }
+                    
+                    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook requestMethod:SLRequestMethodPOST URL:feedURL parameters:parameters];
+                    
+                    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *errorDOIS) {
+                        if (responseData) {
+                            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                            
+                            if (!jsonData[@"error"]) {
+                                NSLog(@"Successfully posted to Facebook");
+                                
+                                [[NSNotificationCenter defaultCenter] postNotificationName:kSuccessfulFacebookNotification object:nil];
+                            }
+                            else {
+                                NSLog(@"Not posted to Facebook");
+                            }
+                        }
+                        else {
+                            [self setIsPosting:NO];
+                            
+                            UIAlertView *jukaelaSocialPostingError = [[UIAlertView alloc] initWithTitle:@"Oh no!" message:@"There has been an error posting your Jukaela Social post to Facebook." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                            
+                            [jukaelaSocialPostingError show];
+                        }
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
+                    }];
                 }
-            }];
-        }
+            }
+            else {
+                NSLog(@"Facebook access not granted.");
+                NSLog(@"%@", [error localizedDescription]);
+            }
+        }];
     }
     
     if ([kAppDelegate onlyToFacebook]) {
@@ -796,9 +740,23 @@
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    CGPoint cursorPosition = [textView caretRectForPosition:textView.selectedTextRange.start].origin;
+    static int TableWidth = 166;
+    static int TableHeight = 82;
+    static int DeviceWidth = 320;
+    static int Spacing = 5;
     
-    [_usernameTableView setFrame:CGRectMake(cursorPosition.x, cursorPosition.y + 41, 166, 82)];
+    CGPoint cursorPosition = [textView caretRectForPosition:textView.selectedTextRange.start].origin;
+    CGPoint translatedPosition = [[self view] convertPoint:cursorPosition fromView:[self theTextView]];
+    
+    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    
+    CGPoint finalPoint = CGPointMake(translatedPosition.x, translatedPosition.y + [font pointSize] + Spacing);
+    
+    if ((finalPoint.x + TableWidth) > DeviceWidth) {
+        finalPoint = CGPointMake(finalPoint.x - ((finalPoint.x + TableWidth) - DeviceWidth), finalPoint.y);
+    }
+    
+    [_usernameTableView setFrame:CGRectMake(finalPoint.x, finalPoint.y, TableWidth, TableHeight)];
     
     [[self usernameTableView] setHidden:NO];
     
@@ -813,15 +771,14 @@
     
     [self searchAutocompleteEntriesWithSubstring:[tempArray lastObject]];
     
-    
     return YES;
 }
 
 -(void)updateCount
 {
-    NSUInteger maxCount = 256;
+    static NSUInteger maxCount = 256;
     
-    NSUInteger textCount = [self.theTextView.text length];
+    NSUInteger textCount = [[[self theTextView] text] length];
     
     [_countDownLabel setText:[NSString stringWithFormat:@"%d", maxCount-textCount]];
     
@@ -946,6 +903,7 @@
     
     for (NSString *curString in [self usernameArray]) {
         NSRange substringRange = [curString rangeOfString:substring options:NSCaseInsensitiveSearch];
+        
         if (substringRange.location == 0) {
             [_autocompleteUsernames addObject:[NSString stringWithFormat:@"@%@", curString]];
         }

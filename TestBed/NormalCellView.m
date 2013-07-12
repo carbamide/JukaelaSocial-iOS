@@ -46,7 +46,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 9, 140, 16)];
         
         [nameLabel setTextAlignment:NSTextAlignmentLeft];
-        [nameLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline1]];
+        [nameLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]];
         [nameLabel setBackgroundColor:[UIColor clearColor]];
         [nameLabel setTag:8];
         
@@ -64,7 +64,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         
         usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(53, 30, 140, 15)];
         [usernameLabel setTextAlignment:NSTextAlignmentLeft];
-        [usernameLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline1]];
+        [usernameLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
         [usernameLabel setBackgroundColor:[UIColor clearColor]];
         [usernameLabel setTextColor:[UIColor colorWithWhite:0.5 alpha:1.0]];
         [usernameLabel setTag:8];

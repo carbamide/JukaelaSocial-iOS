@@ -118,11 +118,11 @@
     [self setPasswordConfirmTextField:[[UITextField alloc] init]];
     [self setProfileTextView:[[UITextView alloc] init]];
     
-    [[self nameTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
-    [[self usernameTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
-    [[self emailTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
-    [[self passwordTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
-    [[self passwordConfirmTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline2]];
+    [[self nameTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+    [[self usernameTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+    [[self emailTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+    [[self passwordTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+    [[self passwordConfirmTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
 
     [[self profileTextView] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     

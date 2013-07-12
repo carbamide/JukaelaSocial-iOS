@@ -718,7 +718,7 @@
                                                                 constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                     lineBreakMode:NSLineBreakByWordWrapping];
         }
-        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline1]
+        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]
                                                              constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                  lineBreakMode:NSLineBreakByWordWrapping];
         

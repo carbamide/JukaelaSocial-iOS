@@ -48,7 +48,7 @@
                 [_username setBackgroundColor:[UIColor clearColor]];
                 [_username setTextAlignment:NSTextAlignmentRight];
                 [_username setPlaceholder:kEmail];
-                [_username setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]];
+                [_username setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
                 
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
                     [_username setText:[[NSUserDefaults standardUserDefaults] valueForKey:kUsername]];
@@ -76,7 +76,7 @@
                 [_password setBackgroundColor:[UIColor clearColor]];
                 [_password setTextAlignment:NSTextAlignmentRight];
                 [_password setPlaceholder:@"password"];
-                [_password setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]];
+                [_password setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
                 
                 [cell addSubview:_password];
             }
@@ -99,8 +99,7 @@
     [_rememberUsername setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [_rememberUsername setTitleShadowColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
-    [[_rememberUsername titleLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]];
-    
+    [[_rememberUsername titleLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
     
     [footerView addSubview:_rememberUsername];
     

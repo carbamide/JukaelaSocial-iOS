@@ -345,7 +345,7 @@
             [[cell detailTextLabel] setTextAlignment:NSTextAlignmentRight];
             
             [[cell textLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]];
-            [[cell detailTextLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]];
+            [[cell detailTextLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
             
             if ([self userDict][kUsername] && [self userDict][kUsername] != [NSNull null]) {
                 [[cell detailTextLabel] setText:[NSString stringWithFormat:@"@%@", [self userDict][kUsername]]];

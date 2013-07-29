@@ -718,7 +718,7 @@
                                                                 constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                     lineBreakMode:NSLineBreakByWordWrapping];
         }
-        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline1]
+        CGSize nameSize = [[self theFeed][[indexPath row]][kName] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]
                                                              constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
                                                                  lineBreakMode:NSLineBreakByWordWrapping];
         
@@ -1018,8 +1018,10 @@
         
         [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
         
-        [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self theFeed][[[self tempIndexPath] row]][kUsername]]];
-        [viewController setInReplyTo:[self theFeed][[[self tempIndexPath] row]][kID]];
+        NSDictionary *tempDict = [self theFeed][[[self tempIndexPath] row]];
+    
+        [viewController setReplyString:[NSString stringWithFormat:@"@%@", tempDict[kUsername]]];
+        [viewController setInReplyTo:tempDict[kID]];
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }

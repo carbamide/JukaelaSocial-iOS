@@ -11,6 +11,22 @@
 #import <Social/Social.h>
 #import "FeedViewController.h"
 #import "TMImgurUploader.h"
+#import "FeedbackViewController.h"
+#import "MentionsViewController.h"
+#import "UsersViewController.h"
+#import "SettingsViewController.h"
+#import <RESideMenu/RESideMenu.h>
+
+@interface AppDelegate ()
+
+@property (strong, readonly, nonatomic) RESideMenu *sideMenu;
+
+@property (strong, nonatomic) UINavigationController *feedViewNavigationController;
+@property (strong, nonatomic) UINavigationController *mentionsViewNavigationController;
+@property (strong, nonatomic) UINavigationController *usersViewNavigationController;
+@property (strong, nonatomic) UINavigationController *settingsViewNavigationController;
+
+@end
 
 @implementation UIApplication (Private)
 
@@ -42,12 +58,12 @@
     NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
     
     UIImage *tempImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-        
+    
     [[TMImgurUploader sharedInstance] setAPIKey:kImgurAPIKey];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{@NO: kPostToTwitterPreference,
-     @NO: kPostToFacebookPreference,
-     @"avatar_type": @"retro"}];
+                                                              @NO: kPostToFacebookPreference,
+                                                              @"avatar_type": @"retro"}];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |
                                                                            UIRemoteNotificationTypeSound)];
@@ -60,13 +76,15 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference]) {
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
     }
-        
-    if (tempImage) {        
+    
+    if (tempImage) {
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kPostImage object:nil userInfo:@{kImageNotification : tempImage}];
     }
-        
+    
+    [self configureViewControllers];
+    
     return YES;
 }
 
@@ -132,7 +150,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{    
+{
     UIImage *tempImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kPostImage object:nil userInfo:@{kImageNotification : tempImage}];
@@ -140,4 +158,66 @@
     return YES;
 }
 
+-(void)showNavigationMenu
+{
+    RESideMenuItem *feedItem = [[RESideMenuItem alloc] initWithTitle:@"Feed" action:^(RESideMenu *menu, RESideMenuItem *item) {
+        [menu hide];
+        
+        [menu setRootViewController:[self feedViewNavigationController]];
+    }];
+    
+    RESideMenuItem *mentionsItem = [[RESideMenuItem alloc] initWithTitle:@"Mentions" action:^(RESideMenu *menu, RESideMenuItem *item) {
+        [menu hide];
+        
+        [menu setRootViewController:[self mentionsViewNavigationController]];
+    }];
+    
+    RESideMenuItem *usersItem = [[RESideMenuItem alloc] initWithTitle:@"Users" action:^(RESideMenu *menu, RESideMenuItem *item) {
+        [menu hide];
+        
+        [menu setRootViewController:[self usersViewNavigationController]];
+    }];
+    
+    RESideMenuItem *settingsItem = [[RESideMenuItem alloc] initWithTitle:@"Settings" action:^(RESideMenu *menu, RESideMenuItem *item) {
+        [menu hide];
+        
+        [menu setRootViewController:[self settingsViewNavigationController]];
+    }];
+    
+    _sideMenu = [[RESideMenu alloc] initWithItems:@[feedItem, mentionsItem, usersItem, settingsItem]];
+    
+    [_sideMenu setVerticalOffset:76];
+    [_sideMenu setHideStatusBarArea:NO];
+    
+    [_sideMenu show];
+}
+
+-(instancetype)viewControllerFromStoryboardNamed:(NSString *)storyboardName andInstantationIdentifier:(NSString *)viewControllerName
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+    
+    id viewController = [storyboard instantiateViewControllerWithIdentifier:viewControllerName];
+    
+    return viewController;
+}
+
+-(void)configureViewControllers
+{
+    id feedViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"FeedViewController"];
+    [feedViewController setTitle:@"Feed"];
+    
+    id mentionsViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"MentionsViewController"];
+    [mentionsViewController setTitle:@"Mentions"];
+    
+    id usersViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"UsersViewController"];
+    [usersViewController setTitle:@"Users"];
+    
+    id settingsViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"SettingsViewController"];
+    [settingsViewController setTitle:@"Settings"];
+    
+    [self setFeedViewNavigationController:[[UINavigationController alloc] initWithRootViewController:feedViewController]];
+    [self setMentionsViewNavigationController:[[UINavigationController alloc] initWithRootViewController:mentionsViewController]];
+    [self setUsersViewNavigationController:[[UINavigationController alloc] initWithRootViewController:usersViewController]];
+    [self setSettingsViewNavigationController:[[UINavigationController alloc] initWithRootViewController:settingsViewController]];
+}
 @end

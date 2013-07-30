@@ -25,4 +25,6 @@
 @property (nonatomic) BOOL onlyToTwitter;
 @property (nonatomic) BOOL onlyToJukaela;
 
+-(void)showNavigationMenu;
+
 @end

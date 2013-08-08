@@ -121,12 +121,6 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:UITextViewTextDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
         [self updateCount];
     }];
-    
-    if (_replyString) {
-        [_theTextView setText:[_replyString stringByAppendingString:@" "]];
-        
-        [kAppDelegate setOnlyToJukaela:YES];
-    }
 }
 
 -(void)toggleTwitter:(id)sender
@@ -747,10 +741,8 @@
     
     CGPoint cursorPosition = [textView caretRectForPosition:textView.selectedTextRange.start].origin;
     CGPoint translatedPosition = [[self view] convertPoint:cursorPosition fromView:[self theTextView]];
-    
-    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    
-    CGPoint finalPoint = CGPointMake(translatedPosition.x, translatedPosition.y + [font pointSize] + Spacing);
+        
+    CGPoint finalPoint = CGPointMake(translatedPosition.x, translatedPosition.y + [[UIFont preferredFontForTextStyle:UIFontTextStyleBody] pointSize] + Spacing);
     
     if ((finalPoint.x + TableWidth) > DeviceWidth) {
         finalPoint = CGPointMake(finalPoint.x - ((finalPoint.x + TableWidth) - DeviceWidth), finalPoint.y);
@@ -912,11 +904,22 @@
     [[self usernameTableView] reloadData];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (_replyString) {
+        [_theTextView setText:[_replyString stringByAppendingString:@" "]];
+        
+        [kAppDelegate setOnlyToJukaela:YES];
+    }
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
-    [kAppDelegate setCurrentViewController:self];
-    
     [super viewDidAppear:animated];
+
+    [kAppDelegate setCurrentViewController:self];
 }
 
 @end

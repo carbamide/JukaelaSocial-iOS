@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <RESideMenu/RESideMenu.h>
+
 
 @interface JukaelaCollectionViewController : UICollectionViewController
-
-@property (strong, readonly, nonatomic) RESideMenu *sideMenu;
 
 @end

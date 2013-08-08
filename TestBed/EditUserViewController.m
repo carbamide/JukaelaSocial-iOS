@@ -124,6 +124,7 @@
     [[self passwordTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
     [[self passwordConfirmTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
 
+
     [[self profileTextView] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
     
     [super viewDidLoad];

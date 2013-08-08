@@ -100,10 +100,12 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 
 -(void)createGestureRecognizers
 {
-    if (![self longPressGesture]) {
-        longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
+    if (![self tapGesture]) {
+        tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapAction:)];
         
-        [self addGestureRecognizer:longPressGesture];
+        [tapGesture setNumberOfTapsRequired:1];
+        
+        [self addGestureRecognizer:tapGesture];
     }
     
     if (![self imageTapGesture]) {

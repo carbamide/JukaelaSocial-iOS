@@ -1018,8 +1018,10 @@
         
         [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
         
-        [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self theFeed][[[self tempIndexPath] row]][kUsername]]];
-        [viewController setInReplyTo:[self theFeed][[[self tempIndexPath] row]][kID]];
+        NSDictionary *tempDict = [self theFeed][[[self tempIndexPath] row]];
+    
+        [viewController setReplyString:[NSString stringWithFormat:@"@%@", tempDict[kUsername]]];
+        [viewController setInReplyTo:tempDict[kID]];
         
         [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
     }

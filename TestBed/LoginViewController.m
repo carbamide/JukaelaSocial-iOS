@@ -101,7 +101,6 @@
     
     [[_rememberUsername titleLabel] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
     
-    
     [footerView addSubview:_rememberUsername];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {

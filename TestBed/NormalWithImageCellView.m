@@ -7,15 +7,20 @@
 //
 
 #import "Constants.h"
-
 #import "NormalWithImageCellView.h"
+
+@interface NormalWithImageCellView ()
+@property (weak, nonatomic) UITableView *theTableView;
+@end
 
 @implementation NormalWithImageCellView
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        [self setTheTableView:tableView];
+        
         UIWindow *tempWindow = [kAppDelegate window];
         
         [self setExternalImage:[[UIImageView alloc] initWithFrame:CGRectMake(tempWindow.frame.size.width - 46, 5, 37, 37)]];

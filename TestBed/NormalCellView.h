@@ -29,4 +29,6 @@ extern NSString * const kJKPrepareForReuseNotification;
 -(void)disableCell;
 -(void)doubleTapAction:(UIGestureRecognizer *)gesture;
 
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView;
+
 @end

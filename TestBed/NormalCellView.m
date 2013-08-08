@@ -204,13 +204,13 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 {
     if([gesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
         if(UIGestureRecognizerStateBegan == gesture.state) {
-            NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+            NSIndexPath *indexPath = [(UITableView *)[[self superview] superview] indexPathForCell:self];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kDoubleTapNotification object:nil userInfo:@{kIndexPath : indexPath}];
         }
     }
     else {
-        NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+        NSIndexPath *indexPath = [(UITableView *)[[self superview] superview] indexPathForCell:self];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kDoubleTapNotification object:nil userInfo:@{kIndexPath : indexPath}];
     }

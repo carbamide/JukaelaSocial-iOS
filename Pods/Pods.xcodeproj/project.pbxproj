@@ -1,938 +1,329 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>46</string>
-	<key>objects</key>
-	<dict>
-		<key>026DD2F4F76249E89DB04A0A</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>Pods-acknowledgements.plist</string>
-			<key>path</key>
-			<string>Pods-acknowledgements.plist</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>09DBCF5D752349E8AF6B2604</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AEFE70E05CE744869C36B322</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc -DOS_OBJECT_USE_OBJC=0</string>
-			</dict>
-		</dict>
-		<key>0FA8BC6802BF45A9AD1FCFBF</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Foundation.framework</string>
-			<key>path</key>
-			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/Foundation.framework</string>
-			<key>sourceTree</key>
-			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>24274E8E59B84405A422BFB0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>848FBB54F7B746B5A1258D1B</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict/>
-		</dict>
-		<key>29593656FC5444628D95D703</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>UIWindow+RESideMenuExtensions.h</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/UIWindow+RESideMenuExtensions.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>2DC122D0F78948BCB929B090</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>RESideMenuItem.h</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/RESideMenuItem.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>2DE98D70B1C946B5B140D13D</key>
-		<dict>
-			<key>fileRef</key>
-			<string>2DC122D0F78948BCB929B090</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict/>
-		</dict>
-		<key>323103D077BE4F689762E2C0</key>
-		<dict>
-			<key>fileRef</key>
-			<string>7804B4C49A9D453DA5D4F02C</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc -DOS_OBJECT_USE_OBJC=0</string>
-			</dict>
-		</dict>
-		<key>32DEADDB29714B7587129B3C</key>
-		<dict>
-			<key>fileRef</key>
-			<string>DEF8A03447E24CFCA43D3461</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc -DOS_OBJECT_USE_OBJC=0</string>
-			</dict>
-		</dict>
-		<key>3A4BF404C1C54CCA8EF15CD2</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>E46F6E5F62CB4B4BBAED577F</string>
-			<key>buildPhases</key>
-			<array>
-				<string>B7EE0A98F4D54F3F93D550C7</string>
-				<string>D3594F39F0EA418B8DDF171E</string>
-				<string>5ABE42D3C67E49CF8B6F13FE</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>productName</key>
-			<string>Pods</string>
-			<key>productReference</key>
-			<string>576BDFDB1B66449DBB2DBBC8</string>
-			<key>productType</key>
-			<string>com.apple.product-type.library.static</string>
-		</dict>
-		<key>421CB600CD804817BBCCE73A</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0FA8BC6802BF45A9AD1FCFBF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict/>
-		</dict>
-		<key>482D60724C52443F87945A05</key>
-		<dict>
-			<key>fileRef</key>
-			<string>AA36AE7236284F088E129C38</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc -DOS_OBJECT_USE_OBJC=0</string>
-			</dict>
-		</dict>
-		<key>4B0E4B999A5E420981759C99</key>
-		<dict>
-			<key>fileRef</key>
-			<string>F328AD178EF14A4EB0CC714A</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc -DOS_OBJECT_USE_OBJC=0</string>
-			</dict>
-		</dict>
-		<key>51BDCE0D108849CFB50F6C6C</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>D0957C1C05CD4B7C89F8A5E1</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_32_BIT)</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Pods-prefix.pch</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>GCC_VERSION</key>
-				<string>com.apple.compilers.llvm.clang.1_0</string>
-				<key>INSTALL_PATH</key>
-				<string>$(BUILT_PRODUCTS_DIR)</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>5.0</string>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>PODS_HEADERS_SEARCH_PATHS</key>
-				<string>${PODS_BUILD_HEADERS_SEARCH_PATHS}</string>
-				<key>PODS_ROOT</key>
-				<string>${SRCROOT}</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>51DEFEA777F04CAF994E656D</key>
-		<dict>
-			<key>fileRef</key>
-			<string>65EED14C87BB4EE6B5DFFC91</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict/>
-		</dict>
-		<key>52DFE6D398B14E3E9FA1AF9B</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C8D2EC9D104949D6A390125A</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict/>
-		</dict>
-		<key>53D077050599434F893AD6E6</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>Pods-resources.sh</string>
-			<key>path</key>
-			<string>Pods-resources.sh</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>55EB2DA84F56455796DBF952</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>Evaluate.m</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/Evaluate.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>576BDFDB1B66449DBB2DBBC8</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>libPods.a</string>
-			<key>path</key>
-			<string>libPods.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>5A888CAF26CF455DB1B2B16C</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>0FA8BC6802BF45A9AD1FCFBF</string>
-				<string>8C05AD3518A34227AD39EAB2</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>5ABE42D3C67E49CF8B6F13FE</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>6A22A9FE5B184D71BB9BEC58</string>
-				<string>51DEFEA777F04CAF994E656D</string>
-				<string>BA20B0B2EF024E17B4E7A3A5</string>
-				<string>F5A4035A5FDB4EEB92FB966F</string>
-				<string>24274E8E59B84405A422BFB0</string>
-				<string>2DE98D70B1C946B5B140D13D</string>
-				<string>DADC2EE0D38E47A7BFF55661</string>
-			</array>
-			<key>isa</key>
-			<string>PBXHeadersBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>5D4419E8073D4769A275C494</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>AccelerationAnimation.h</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/AccelerationAnimation.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>5E35A161B2764B2C892DB592</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>5D4419E8073D4769A275C494</string>
-				<string>AA36AE7236284F088E129C38</string>
-				<string>65EED14C87BB4EE6B5DFFC91</string>
-				<string>55EB2DA84F56455796DBF952</string>
-				<string>DC4BC3EB492A40D3AFFB8EC7</string>
-				<string>C468D995281643D090240699</string>
-				<string>98E9871E1B4342C5B6FA555A</string>
-				<string>AEFE70E05CE744869C36B322</string>
-				<string>848FBB54F7B746B5A1258D1B</string>
-				<string>7804B4C49A9D453DA5D4F02C</string>
-				<string>2DC122D0F78948BCB929B090</string>
-				<string>DEF8A03447E24CFCA43D3461</string>
-				<string>29593656FC5444628D95D703</string>
-				<string>F328AD178EF14A4EB0CC714A</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>RESideMenu</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>65EED14C87BB4EE6B5DFFC91</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>Evaluate.h</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/Evaluate.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>6A22A9FE5B184D71BB9BEC58</key>
-		<dict>
-			<key>fileRef</key>
-			<string>5D4419E8073D4769A275C494</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict/>
-		</dict>
-		<key>71DE09BDE022473D97DB84EA</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>5A888CAF26CF455DB1B2B16C</string>
-				<string>BE8A5E60964F4335A05A6CFB</string>
-				<string>E2C79FF784CD4818B3B116C7</string>
-				<string>B7163E3AEBC94B55BA526B0C</string>
-				<string>E8CBF1BFB53048488DEA248B</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>7804B4C49A9D453DA5D4F02C</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>RESideMenuCell.m</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/RESideMenuCell.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>848FBB54F7B746B5A1258D1B</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>RESideMenuCell.h</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/RESideMenuCell.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>8C05AD3518A34227AD39EAB2</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>QuartzCore.framework</string>
-			<key>path</key>
-			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/QuartzCore.framework</string>
-			<key>sourceTree</key>
-			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>98E9871E1B4342C5B6FA555A</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>RESideMenu.h</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/RESideMenu.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>A1D0570FAAA74A4C81766F04</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>Pods-prefix.pch</string>
-			<key>path</key>
-			<string>Pods-prefix.pch</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>A5080BB657144C1B9F8D6DB4</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>D0957C1C05CD4B7C89F8A5E1</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>ARCHS</key>
-				<string>$(ARCHS_STANDARD_32_BIT)</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>YES</string>
-				<key>DSTROOT</key>
-				<string>/tmp/xcodeproj.dst</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Pods-prefix.pch</string>
-				<key>GCC_VERSION</key>
-				<string>com.apple.compilers.llvm.clang.1_0</string>
-				<key>INSTALL_PATH</key>
-				<string>$(BUILT_PRODUCTS_DIR)</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>5.0</string>
-				<key>OTHER_CFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_CPLUSPLUSFLAGS</key>
-				<array>
-					<string>-DNS_BLOCK_ASSERTIONS=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>OTHER_LDFLAGS</key>
-				<string></string>
-				<key>PODS_HEADERS_SEARCH_PATHS</key>
-				<string>${PODS_BUILD_HEADERS_SEARCH_PATHS}</string>
-				<key>PODS_ROOT</key>
-				<string>${SRCROOT}</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>PUBLIC_HEADERS_FOLDER_PATH</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>SKIP_INSTALL</key>
-				<string>YES</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>AA36AE7236284F088E129C38</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>AccelerationAnimation.m</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/AccelerationAnimation.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>AA44BC3C1B714D9DAED3305A</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>Pods-environment.h</string>
-			<key>path</key>
-			<string>Pods-environment.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>AEFE70E05CE744869C36B322</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>RESideMenu.m</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/RESideMenu.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>B7163E3AEBC94B55BA526B0C</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>DE6F90A0EABE43F580FE394F</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Targets Support Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>B7EE0A98F4D54F3F93D550C7</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>482D60724C52443F87945A05</string>
-				<string>C104D71BA4FC4139BA1E11D8</string>
-				<string>C591AD0F90EA45CA930388C3</string>
-				<string>09DBCF5D752349E8AF6B2604</string>
-				<string>323103D077BE4F689762E2C0</string>
-				<string>32DEADDB29714B7587129B3C</string>
-				<string>4B0E4B999A5E420981759C99</string>
-				<string>52DFE6D398B14E3E9FA1AF9B</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>BA20B0B2EF024E17B4E7A3A5</key>
-		<dict>
-			<key>fileRef</key>
-			<string>DC4BC3EB492A40D3AFFB8EC7</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict/>
-		</dict>
-		<key>BE8A5E60964F4335A05A6CFB</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>5E35A161B2764B2C892DB592</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>C104D71BA4FC4139BA1E11D8</key>
-		<dict>
-			<key>fileRef</key>
-			<string>55EB2DA84F56455796DBF952</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc -DOS_OBJECT_USE_OBJC=0</string>
-			</dict>
-		</dict>
-		<key>C468D995281643D090240699</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>REBackgroundView.m</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/REBackgroundView.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>C591AD0F90EA45CA930388C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C468D995281643D090240699</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict>
-				<key>COMPILER_FLAGS</key>
-				<string>-fobjc-arc -DOS_OBJECT_USE_OBJC=0</string>
-			</dict>
-		</dict>
-		<key>C8D2EC9D104949D6A390125A</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>Pods-dummy.m</string>
-			<key>path</key>
-			<string>Pods-dummy.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>D0957C1C05CD4B7C89F8A5E1</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods.xcconfig</string>
-			<key>path</key>
-			<string>Pods.xcconfig</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>D3594F39F0EA418B8DDF171E</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>421CB600CD804817BBCCE73A</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>DADC2EE0D38E47A7BFF55661</key>
-		<dict>
-			<key>fileRef</key>
-			<string>29593656FC5444628D95D703</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict/>
-		</dict>
-		<key>DAEFB47C5CAF4CE5AE9B42DE</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>5.0</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>DBE24EFDE7554E86ADA06E84</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>5.0</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>DC4BC3EB492A40D3AFFB8EC7</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>name</key>
-			<string>REBackgroundView.h</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/REBackgroundView.h</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>DE6F90A0EABE43F580FE394F</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>D0957C1C05CD4B7C89F8A5E1</string>
-				<string>AA44BC3C1B714D9DAED3305A</string>
-				<string>A1D0570FAAA74A4C81766F04</string>
-				<string>53D077050599434F893AD6E6</string>
-				<string>026DD2F4F76249E89DB04A0A</string>
-				<string>E6EE7CEB854642DEBCD32A2D</string>
-				<string>C8D2EC9D104949D6A390125A</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>DEF8A03447E24CFCA43D3461</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>RESideMenuItem.m</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/RESideMenuItem.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>E2C79FF784CD4818B3B116C7</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>576BDFDB1B66449DBB2DBBC8</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>E46F6E5F62CB4B4BBAED577F</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>A5080BB657144C1B9F8D6DB4</string>
-				<string>51BDCE0D108849CFB50F6C6C</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>E6EE7CEB854642DEBCD32A2D</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>Pods-acknowledgements.markdown</string>
-			<key>path</key>
-			<string>Pods-acknowledgements.markdown</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>E8CBF1BFB53048488DEA248B</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>name</key>
-			<string>Podfile</string>
-			<key>path</key>
-			<string>../Podfile</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-			<key>xcLanguageSpecificationIdentifier</key>
-			<string>xcode.lang.ruby</string>
-		</dict>
-		<key>EB7DD17D7AF34A519B23980A</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>LastUpgradeCheck</key>
-				<string>0450</string>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>FF9EE24CB1414764907291FB</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-			</array>
-			<key>mainGroup</key>
-			<string>71DE09BDE022473D97DB84EA</string>
-			<key>productRefGroup</key>
-			<string>E2C79FF784CD4818B3B116C7</string>
-			<key>projectReferences</key>
-			<array/>
-			<key>targets</key>
-			<array>
-				<string>3A4BF404C1C54CCA8EF15CD2</string>
-			</array>
-		</dict>
-		<key>F328AD178EF14A4EB0CC714A</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.objc</string>
-			<key>name</key>
-			<string>UIWindow+RESideMenuExtensions.m</string>
-			<key>path</key>
-			<string>RESideMenu/RESideMenu/UIWindow+RESideMenuExtensions.m</string>
-			<key>sourceTree</key>
-			<string>SOURCE_ROOT</string>
-		</dict>
-		<key>F5A4035A5FDB4EEB92FB966F</key>
-		<dict>
-			<key>fileRef</key>
-			<string>98E9871E1B4342C5B6FA555A</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-			<key>settings</key>
-			<dict/>
-		</dict>
-		<key>FF9EE24CB1414764907291FB</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>DBE24EFDE7554E86ADA06E84</string>
-				<string>DAEFB47C5CAF4CE5AE9B42DE</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>EB7DD17D7AF34A519B23980A</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		09DBCF5D752349E8AF6B2604 /* RESideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = AEFE70E05CE744869C36B322 /* RESideMenu.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		24274E8E59B84405A422BFB0 /* RESideMenuCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 848FBB54F7B746B5A1258D1B /* RESideMenuCell.h */; };
+		2DE98D70B1C946B5B140D13D /* RESideMenuItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DC122D0F78948BCB929B090 /* RESideMenuItem.h */; };
+		323103D077BE4F689762E2C0 /* RESideMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7804B4C49A9D453DA5D4F02C /* RESideMenuCell.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		32DEADDB29714B7587129B3C /* RESideMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF8A03447E24CFCA43D3461 /* RESideMenuItem.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		421CB600CD804817BBCCE73A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA8BC6802BF45A9AD1FCFBF /* Foundation.framework */; };
+		482D60724C52443F87945A05 /* AccelerationAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = AA36AE7236284F088E129C38 /* AccelerationAnimation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		4B0E4B999A5E420981759C99 /* UIWindow+RESideMenuExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = F328AD178EF14A4EB0CC714A /* UIWindow+RESideMenuExtensions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		51DEFEA777F04CAF994E656D /* Evaluate.h in Headers */ = {isa = PBXBuildFile; fileRef = 65EED14C87BB4EE6B5DFFC91 /* Evaluate.h */; };
+		52DFE6D398B14E3E9FA1AF9B /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C8D2EC9D104949D6A390125A /* Pods-dummy.m */; };
+		6A22A9FE5B184D71BB9BEC58 /* AccelerationAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5D4419E8073D4769A275C494 /* AccelerationAnimation.h */; };
+		BA20B0B2EF024E17B4E7A3A5 /* REBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = DC4BC3EB492A40D3AFFB8EC7 /* REBackgroundView.h */; };
+		C104D71BA4FC4139BA1E11D8 /* Evaluate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EB2DA84F56455796DBF952 /* Evaluate.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		C591AD0F90EA45CA930388C3 /* REBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = C468D995281643D090240699 /* REBackgroundView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
+		DADC2EE0D38E47A7BFF55661 /* UIWindow+RESideMenuExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 29593656FC5444628D95D703 /* UIWindow+RESideMenuExtensions.h */; };
+		F5A4035A5FDB4EEB92FB966F /* RESideMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = 98E9871E1B4342C5B6FA555A /* RESideMenu.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		026DD2F4F76249E89DB04A0A /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
+		0FA8BC6802BF45A9AD1FCFBF /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		29593656FC5444628D95D703 /* UIWindow+RESideMenuExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIWindow+RESideMenuExtensions.h"; path = "RESideMenu/RESideMenu/UIWindow+RESideMenuExtensions.h"; sourceTree = SOURCE_ROOT; };
+		2DC122D0F78948BCB929B090 /* RESideMenuItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RESideMenuItem.h; path = RESideMenu/RESideMenu/RESideMenuItem.h; sourceTree = SOURCE_ROOT; };
+		53D077050599434F893AD6E6 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = SOURCE_ROOT; };
+		55EB2DA84F56455796DBF952 /* Evaluate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Evaluate.m; path = RESideMenu/RESideMenu/Evaluate.m; sourceTree = SOURCE_ROOT; };
+		576BDFDB1B66449DBB2DBBC8 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D4419E8073D4769A275C494 /* AccelerationAnimation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AccelerationAnimation.h; path = RESideMenu/RESideMenu/AccelerationAnimation.h; sourceTree = SOURCE_ROOT; };
+		65EED14C87BB4EE6B5DFFC91 /* Evaluate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Evaluate.h; path = RESideMenu/RESideMenu/Evaluate.h; sourceTree = SOURCE_ROOT; };
+		7804B4C49A9D453DA5D4F02C /* RESideMenuCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RESideMenuCell.m; path = RESideMenu/RESideMenu/RESideMenuCell.m; sourceTree = SOURCE_ROOT; };
+		848FBB54F7B746B5A1258D1B /* RESideMenuCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RESideMenuCell.h; path = RESideMenu/RESideMenu/RESideMenuCell.h; sourceTree = SOURCE_ROOT; };
+		8C05AD3518A34227AD39EAB2 /* QuartzCore.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		98E9871E1B4342C5B6FA555A /* RESideMenu.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RESideMenu.h; path = RESideMenu/RESideMenu/RESideMenu.h; sourceTree = SOURCE_ROOT; };
+		A1D0570FAAA74A4C81766F04 /* Pods-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-prefix.pch"; sourceTree = SOURCE_ROOT; };
+		AA36AE7236284F088E129C38 /* AccelerationAnimation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AccelerationAnimation.m; path = RESideMenu/RESideMenu/AccelerationAnimation.m; sourceTree = SOURCE_ROOT; };
+		AA44BC3C1B714D9DAED3305A /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = SOURCE_ROOT; };
+		AEFE70E05CE744869C36B322 /* RESideMenu.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RESideMenu.m; path = RESideMenu/RESideMenu/RESideMenu.m; sourceTree = SOURCE_ROOT; };
+		C468D995281643D090240699 /* REBackgroundView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = REBackgroundView.m; path = RESideMenu/RESideMenu/REBackgroundView.m; sourceTree = SOURCE_ROOT; };
+		C8D2EC9D104949D6A390125A /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = SOURCE_ROOT; };
+		D0957C1C05CD4B7C89F8A5E1 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		DC4BC3EB492A40D3AFFB8EC7 /* REBackgroundView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = REBackgroundView.h; path = RESideMenu/RESideMenu/REBackgroundView.h; sourceTree = SOURCE_ROOT; };
+		DEF8A03447E24CFCA43D3461 /* RESideMenuItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RESideMenuItem.m; path = RESideMenu/RESideMenu/RESideMenuItem.m; sourceTree = SOURCE_ROOT; };
+		E6EE7CEB854642DEBCD32A2D /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = SOURCE_ROOT; };
+		E8CBF1BFB53048488DEA248B /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F328AD178EF14A4EB0CC714A /* UIWindow+RESideMenuExtensions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIWindow+RESideMenuExtensions.m"; path = "RESideMenu/RESideMenu/UIWindow+RESideMenuExtensions.m"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D3594F39F0EA418B8DDF171E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				421CB600CD804817BBCCE73A /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5A888CAF26CF455DB1B2B16C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0FA8BC6802BF45A9AD1FCFBF /* Foundation.framework */,
+				8C05AD3518A34227AD39EAB2 /* QuartzCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5E35A161B2764B2C892DB592 /* RESideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				5D4419E8073D4769A275C494 /* AccelerationAnimation.h */,
+				AA36AE7236284F088E129C38 /* AccelerationAnimation.m */,
+				65EED14C87BB4EE6B5DFFC91 /* Evaluate.h */,
+				55EB2DA84F56455796DBF952 /* Evaluate.m */,
+				DC4BC3EB492A40D3AFFB8EC7 /* REBackgroundView.h */,
+				C468D995281643D090240699 /* REBackgroundView.m */,
+				98E9871E1B4342C5B6FA555A /* RESideMenu.h */,
+				AEFE70E05CE744869C36B322 /* RESideMenu.m */,
+				848FBB54F7B746B5A1258D1B /* RESideMenuCell.h */,
+				7804B4C49A9D453DA5D4F02C /* RESideMenuCell.m */,
+				2DC122D0F78948BCB929B090 /* RESideMenuItem.h */,
+				DEF8A03447E24CFCA43D3461 /* RESideMenuItem.m */,
+				29593656FC5444628D95D703 /* UIWindow+RESideMenuExtensions.h */,
+				F328AD178EF14A4EB0CC714A /* UIWindow+RESideMenuExtensions.m */,
+			);
+			name = RESideMenu;
+			sourceTree = "<group>";
+		};
+		71DE09BDE022473D97DB84EA = {
+			isa = PBXGroup;
+			children = (
+				5A888CAF26CF455DB1B2B16C /* Frameworks */,
+				BE8A5E60964F4335A05A6CFB /* Pods */,
+				E2C79FF784CD4818B3B116C7 /* Products */,
+				B7163E3AEBC94B55BA526B0C /* Targets Support Files */,
+				E8CBF1BFB53048488DEA248B /* Podfile */,
+			);
+			sourceTree = "<group>";
+		};
+		B7163E3AEBC94B55BA526B0C /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				DE6F90A0EABE43F580FE394F /* Pods */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		BE8A5E60964F4335A05A6CFB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5E35A161B2764B2C892DB592 /* RESideMenu */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		DE6F90A0EABE43F580FE394F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D0957C1C05CD4B7C89F8A5E1 /* Pods.xcconfig */,
+				AA44BC3C1B714D9DAED3305A /* Pods-environment.h */,
+				A1D0570FAAA74A4C81766F04 /* Pods-prefix.pch */,
+				53D077050599434F893AD6E6 /* Pods-resources.sh */,
+				026DD2F4F76249E89DB04A0A /* Pods-acknowledgements.plist */,
+				E6EE7CEB854642DEBCD32A2D /* Pods-acknowledgements.markdown */,
+				C8D2EC9D104949D6A390125A /* Pods-dummy.m */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E2C79FF784CD4818B3B116C7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				576BDFDB1B66449DBB2DBBC8 /* libPods.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		5ABE42D3C67E49CF8B6F13FE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A22A9FE5B184D71BB9BEC58 /* AccelerationAnimation.h in Headers */,
+				51DEFEA777F04CAF994E656D /* Evaluate.h in Headers */,
+				BA20B0B2EF024E17B4E7A3A5 /* REBackgroundView.h in Headers */,
+				F5A4035A5FDB4EEB92FB966F /* RESideMenu.h in Headers */,
+				24274E8E59B84405A422BFB0 /* RESideMenuCell.h in Headers */,
+				2DE98D70B1C946B5B140D13D /* RESideMenuItem.h in Headers */,
+				DADC2EE0D38E47A7BFF55661 /* UIWindow+RESideMenuExtensions.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		3A4BF404C1C54CCA8EF15CD2 /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E46F6E5F62CB4B4BBAED577F /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				B7EE0A98F4D54F3F93D550C7 /* Sources */,
+				D3594F39F0EA418B8DDF171E /* Frameworks */,
+				5ABE42D3C67E49CF8B6F13FE /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Pods;
+			productName = Pods;
+			productReference = 576BDFDB1B66449DBB2DBBC8 /* libPods.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EB7DD17D7AF34A519B23980A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+			};
+			buildConfigurationList = FF9EE24CB1414764907291FB /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 71DE09BDE022473D97DB84EA;
+			productRefGroup = E2C79FF784CD4818B3B116C7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3A4BF404C1C54CCA8EF15CD2 /* Pods */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B7EE0A98F4D54F3F93D550C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				482D60724C52443F87945A05 /* AccelerationAnimation.m in Sources */,
+				C104D71BA4FC4139BA1E11D8 /* Evaluate.m in Sources */,
+				C591AD0F90EA45CA930388C3 /* REBackgroundView.m in Sources */,
+				09DBCF5D752349E8AF6B2604 /* RESideMenu.m in Sources */,
+				323103D077BE4F689762E2C0 /* RESideMenuCell.m in Sources */,
+				32DEADDB29714B7587129B3C /* RESideMenuItem.m in Sources */,
+				4B0E4B999A5E420981759C99 /* UIWindow+RESideMenuExtensions.m in Sources */,
+				52DFE6D398B14E3E9FA1AF9B /* Pods-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		51BDCE0D108849CFB50F6C6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0957C1C05CD4B7C89F8A5E1 /* Pods.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "";
+				PODS_HEADERS_SEARCH_PATHS = "${PODS_BUILD_HEADERS_SEARCH_PATHS}";
+				PODS_ROOT = "${SRCROOT}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		A5080BB657144C1B9F8D6DB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0957C1C05CD4B7C89F8A5E1 /* Pods.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_LDFLAGS = "";
+				PODS_HEADERS_SEARCH_PATHS = "${PODS_BUILD_HEADERS_SEARCH_PATHS}";
+				PODS_ROOT = "${SRCROOT}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DAEFB47C5CAF4CE5AE9B42DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
+			};
+			name = Debug;
+		};
+		DBE24EFDE7554E86ADA06E84 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E46F6E5F62CB4B4BBAED577F /* Build configuration list for PBXNativeTarget "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5080BB657144C1B9F8D6DB4 /* Release */,
+				51BDCE0D108849CFB50F6C6C /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FF9EE24CB1414764907291FB /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DBE24EFDE7554E86ADA06E84 /* Release */,
+				DAEFB47C5CAF4CE5AE9B42DE /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EB7DD17D7AF34A519B23980A /* Project object */;
+}

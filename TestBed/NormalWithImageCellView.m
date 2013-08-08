@@ -49,7 +49,7 @@
 
 -(void)tapAction:(UIGestureRecognizer *)aGesture
 {
-    NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+    NSIndexPath *indexPath = [[self theTableView] indexPathForCell:self];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kShowImage object:nil userInfo:@{kIndexPath : indexPath}];
 }

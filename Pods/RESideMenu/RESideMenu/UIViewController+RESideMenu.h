@@ -1,5 +1,5 @@
 //
-//  REBackgroundView.h
+//  UIViewController+RESideMenu.h
 // RESideMenu
 //
 // Copyright (c) 2013 Roman Efimov (https://github.com/romaonthego)
@@ -24,10 +24,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RESideMenu.h"
 
-@interface REBackgroundView : UIView
+@interface UIViewController (RESideMenu)
 
-@property (strong, readwrite, nonatomic) UIImage *backgroundImage;
-@property (strong, nonatomic) UIColor *fillColor;
+@property(nonatomic,readonly,retain) RESideMenu *sideMenu;
 
 @end

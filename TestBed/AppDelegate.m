@@ -15,11 +15,8 @@
 #import "MentionsViewController.h"
 #import "UsersViewController.h"
 #import "SettingsViewController.h"
-#import <RESideMenu/RESideMenu.h>
 
 @interface AppDelegate ()
-
-@property (strong, readonly, nonatomic) RESideMenu *sideMenu;
 
 @property (strong, nonatomic) UINavigationController *feedViewNavigationController;
 @property (strong, nonatomic) UINavigationController *mentionsViewNavigationController;
@@ -84,6 +81,8 @@
     }
     
     [self configureViewControllers];
+    
+    [self configureNavigationMenu];
     
     return YES;
 }
@@ -158,38 +157,36 @@
     return YES;
 }
 
--(void)showNavigationMenu
+-(void)configureNavigationMenu
 {
     RESideMenuItem *feedItem = [[RESideMenuItem alloc] initWithTitle:@"Feed" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        [menu setRootViewController:[self feedViewNavigationController]];
+        [menu displayContentController:[self feedViewNavigationController]];
     }];
     
     RESideMenuItem *mentionsItem = [[RESideMenuItem alloc] initWithTitle:@"Mentions" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        [menu setRootViewController:[self mentionsViewNavigationController]];
+        [menu displayContentController:[self mentionsViewNavigationController]];
     }];
     
     RESideMenuItem *usersItem = [[RESideMenuItem alloc] initWithTitle:@"Users" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        [menu setRootViewController:[self usersViewNavigationController]];
+        [menu displayContentController:[self usersViewNavigationController]];
     }];
     
     RESideMenuItem *settingsItem = [[RESideMenuItem alloc] initWithTitle:@"Settings" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        [menu setRootViewController:[self settingsViewNavigationController]];
+        [menu displayContentController:[self settingsViewNavigationController]];
     }];
     
     _sideMenu = [[RESideMenu alloc] initWithItems:@[feedItem, mentionsItem, usersItem, settingsItem]];
     
-    [_sideMenu setVerticalOffset:76];
+    [_sideMenu setVerticalPortraitOffset:76];
     [_sideMenu setHideStatusBarArea:NO];
-    
-    [_sideMenu show];
 }
 
 -(instancetype)viewControllerFromStoryboardNamed:(NSString *)storyboardName andInstantationIdentifier:(NSString *)viewControllerName

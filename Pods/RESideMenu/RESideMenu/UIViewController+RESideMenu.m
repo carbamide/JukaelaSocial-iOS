@@ -1,5 +1,5 @@
 //
-//  REBackgroundView.h
+//  UIViewController+RESideMenu.m
 // RESideMenu
 //
 // Copyright (c) 2013 Roman Efimov (https://github.com/romaonthego)
@@ -23,11 +23,18 @@
 // THE SOFTWARE.
 //
 
-#import <UIKit/UIKit.h>
+#import "UIViewController+RESideMenu.h"
 
-@interface REBackgroundView : UIView
+@implementation UIViewController (RESideMenu)
 
-@property (strong, readwrite, nonatomic) UIImage *backgroundImage;
-@property (strong, nonatomic) UIColor *fillColor;
+- (RESideMenu *)sideMenu{
+	if ([self isKindOfClass:[RESideMenu class]]) {
+		return (RESideMenu *)self;
+	} else if (self.parentViewController) {
+		return [self.parentViewController sideMenu];
+	} else {
+		return nil;
+	}
+}
 
 @end

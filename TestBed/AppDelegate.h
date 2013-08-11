@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SORelativeDateTransformer.h"
+#import <RESideMenu/RESideMenu.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -25,6 +26,8 @@
 @property (nonatomic) BOOL onlyToTwitter;
 @property (nonatomic) BOOL onlyToJukaela;
 
--(void)showNavigationMenu;
+@property (strong, readonly, nonatomic) RESideMenu *sideMenu;
+
+-(void)configureNavigationMenu;
 
 @end

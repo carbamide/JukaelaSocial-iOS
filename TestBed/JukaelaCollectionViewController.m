@@ -34,7 +34,7 @@
 
 -(void)showMenu
 {
-    [kAppDelegate showNavigationMenu];
+    [[kAppDelegate sideMenu] show];
 }
 
 @end

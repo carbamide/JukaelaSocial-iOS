@@ -12,6 +12,10 @@
 
 NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReuse2";
 
+@interface NormalCellView ()
+@property (weak, nonatomic) UITableView *theTableView;
+@end
+
 @implementation NormalCellView
 
 @synthesize nameLabel;
@@ -26,11 +30,13 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 @synthesize postDate;
 @synthesize dateTimer;
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView
 {
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
+        [self setTheTableView:tableView];
+        
         contentText = [[UITextView alloc] initWithFrame:CGRectMake(8, 45, 315, 170)];
 
         [contentText setBackgroundColor:[UIColor clearColor]];
@@ -204,13 +210,13 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 {
     if([gesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
         if(UIGestureRecognizerStateBegan == gesture.state) {
-            NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+            NSIndexPath *indexPath = [[self theTableView] indexPathForCell:self];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kDoubleTapNotification object:nil userInfo:@{kIndexPath : indexPath}];
         }
     }
     else {
-        NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+        NSIndexPath *indexPath = [[self theTableView] indexPathForCell:self];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kDoubleTapNotification object:nil userInfo:@{kIndexPath : indexPath}];
     }
@@ -218,14 +224,14 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 
 -(void)sendToUser:(UIGestureRecognizer *)gesture
 {
-    NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+    NSIndexPath *indexPath = [[self theTableView] indexPathForCell:self];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kSendToUserNotification object:nil userInfo:@{kIndexPath : indexPath}];
 }
 
 -(void)repostSendToUser:(UIGestureRecognizer *)gesture
 {
-    NSIndexPath *indexPath = [(UITableView *)[self superview] indexPathForCell:self];
+    NSIndexPath *indexPath = [[self theTableView] indexPathForCell:self];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kRepostSendToUserNotifiation object:nil userInfo:@{kIndexPath : indexPath}];
 }

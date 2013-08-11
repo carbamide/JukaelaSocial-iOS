@@ -13,4 +13,6 @@
 
 @property (strong, nonatomic) UIImageView *externalImage;
 
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView;
+
 @end

@@ -23,11 +23,6 @@
 // THE SOFTWARE.
 //
 
-typedef NS_ENUM(NSInteger, RESideMenuItemType) {
-    RESideMenuItemTypeNormal,
-    RESideMenuItemTypeField
-};
-
 #import <Foundation/Foundation.h>
 
 @class RESideMenu;
@@ -38,15 +33,11 @@ typedef NS_ENUM(NSInteger, RESideMenuItemType) {
 @property (strong, readwrite, nonatomic) UIImage *image;
 @property (strong, readwrite, nonatomic) UIImage *highlightedImage;
 @property (assign, readwrite, nonatomic) NSInteger tag;
-@property (copy, readwrite, nonatomic) void (^imageAction)(RESideMenu *menu, RESideMenuItem *item);
 @property (copy, readwrite, nonatomic) void (^action)(RESideMenu *menu, RESideMenuItem *item);
 
-@property (assign, readwrite, nonatomic) RESideMenuItemType type;
 @property (strong, readwrite, nonatomic) NSArray *subItems;
 
 - (id)initWithTitle:(NSString *)title action:(void(^)(RESideMenu *menu, RESideMenuItem *item))action;
-- (id)initWithTitle:(NSString *)title image:(UIImage *)image highlightedImage:(UIImage *)highlightedImage imageAction:(void(^)(RESideMenu *menu, RESideMenuItem *item))imageAction action:(void(^)(RESideMenu *menu, RESideMenuItem *item))action;
-- (id)initFieldWithPlaceholder:(NSString *)placeholder doneAction:(void(^)(RESideMenu *menu, RESideMenuItem *item))action;
-- (id)initFieldWithPlaceholder:(NSString *)placeholder image:(UIImage *)image highlightedImage:(UIImage *)highlightedImage imageAction:(void(^)(RESideMenu *menu, RESideMenuItem *item))imageAction doneAction:(void(^)(RESideMenu *menu, RESideMenuItem *item))action;
+- (id)initWithTitle:(NSString *)title image:(UIImage *)image highlightedImage:(UIImage *)highlightedImage action:(void(^)(RESideMenu *menu, RESideMenuItem *item))action;
 
 @end

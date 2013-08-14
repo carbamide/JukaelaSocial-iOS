@@ -162,30 +162,29 @@
     RESideMenuItem *feedItem = [[RESideMenuItem alloc] initWithTitle:@"Feed" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        [menu displayContentController:[self feedViewNavigationController]];
+        [menu setRootViewController:[self feedViewNavigationController]];
     }];
     
     RESideMenuItem *mentionsItem = [[RESideMenuItem alloc] initWithTitle:@"Mentions" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        [menu displayContentController:[self mentionsViewNavigationController]];
+        [menu setRootViewController:[self mentionsViewNavigationController]];
     }];
     
     RESideMenuItem *usersItem = [[RESideMenuItem alloc] initWithTitle:@"Users" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        [menu displayContentController:[self usersViewNavigationController]];
+        [menu setRootViewController:[self usersViewNavigationController]];
     }];
     
     RESideMenuItem *settingsItem = [[RESideMenuItem alloc] initWithTitle:@"Settings" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        [menu displayContentController:[self settingsViewNavigationController]];
+        [menu setRootViewController:[self settingsViewNavigationController]];
     }];
     
     _sideMenu = [[RESideMenu alloc] initWithItems:@[feedItem, mentionsItem, usersItem, settingsItem]];
     
-    [_sideMenu setVerticalPortraitOffset:76];
     [_sideMenu setHideStatusBarArea:NO];
 }
 

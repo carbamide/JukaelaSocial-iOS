@@ -55,16 +55,6 @@
     if (self.backgroundImage)
         return;
     
-    if(_fillColor) {
-        [_fillColor setFill];
-        UIRectFill(rect);
-    } else {
-        [self drawGradientInRect:rect];
-    }
-}
-
-- (void)drawGradientInRect:(CGRect)rect
-{    
     //// General Declarations
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = UIGraphicsGetCurrentContext();

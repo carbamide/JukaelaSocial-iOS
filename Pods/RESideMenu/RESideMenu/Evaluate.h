@@ -20,7 +20,8 @@
 
 @end
 
-@interface BezierEvaluator : NSObject <Evaluate> {
+@interface BezierEvaluator : NSObject <Evaluate>
+{
 	double firstControlPoint;
 	double secondControlPoint;
 }
@@ -29,7 +30,8 @@
 
 @end
 
-@interface ExponentialDecayEvaluator : NSObject <Evaluate> {
+@interface ExponentialDecayEvaluator : NSObject <Evaluate>
+{
 	double coeff;
 	double offset;
 	double scale;
@@ -39,7 +41,8 @@
 
 @end
 
-@interface SecondOrderResponseEvaluator : NSObject <Evaluate> {
+@interface SecondOrderResponseEvaluator : NSObject <Evaluate>
+{
 	double omega;
 	double zeta;
 }

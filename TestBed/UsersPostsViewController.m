@@ -15,7 +15,7 @@
 #import "NormalCellView.h"
 #import "NormalWithImageCellView.h"
 #import "PostViewController.h"
-#import "ShareObject.h"
+#import "ShareManager.h"
 #import "ShowUserViewController.h"
 #import "SORelativeDateTransformer.h"
 #import "SVModalWebViewController.h"

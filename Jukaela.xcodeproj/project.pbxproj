@@ -10,7 +10,7 @@
 		290045D615576D5D004F113A /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 290045D515576D5D004F113A /* UsersViewController.m */; };
 		29084D5B15D2B2BC00CB7FFF /* JukaelaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */; };
 		29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */; };
-		2915698D15FFAFCA0084A29C /* ShareObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2915698C15FFAFCA0084A29C /* ShareObject.m */; };
+		2915698D15FFAFCA0084A29C /* ShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2915698C15FFAFCA0084A29C /* ShareManager.m */; };
 		291EB58315649366005FB66D /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291EB58215649366005FB66D /* PostViewController.m */; };
 		2920235415FD5C4700DBDA6C /* NormalCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2920235315FD5C4700DBDA6C /* NormalCellView.m */; };
 		29204EF01553684200D5479D /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29204EEF1553684200D5479D /* FeedViewController.m */; };
@@ -84,6 +84,9 @@
 		29E2A8FB16866CF4003F05A4 /* ActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E2A8FA16866CF4003F05A4 /* ActivityManager.m */; };
 		29E517791608AC7200CA422F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E517781608AC7100CA422F /* ImageIO.framework */; };
 		29E5177C1608B2BE00CA422F /* NormalWithImageCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E5177B1608B2BE00CA422F /* NormalWithImageCellView.m */; };
+		29E6C03017BC6BE0005D57BF /* FeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E6C02F17BC6BE0005D57BF /* FeedItem.m */; };
+		29E6C03317BD16F7005D57BF /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E6C03217BD16F7005D57BF /* User.m */; };
+		29E6C03617BD1856005D57BF /* ObjectMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E6C03517BD1856005D57BF /* ObjectMapper.m */; };
 		29EA394515609BCE003A21E7 /* NSString+BackslashEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */; };
 		29F977EE1693E38C0075A4FF /* UsersWhoLikedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F977ED1693E38C0075A4FF /* UsersWhoLikedViewController.m */; };
 		29F99E971676C2D000ADC3D1 /* JukaelaCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F99E961676C2D000ADC3D1 /* JukaelaCollectionViewController.m */; };
@@ -96,8 +99,8 @@
 		29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaViewController.m; sourceTree = "<group>"; };
 		29084D5D15D2B36D00CB7FFF /* JukaelaTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaTableViewController.h; sourceTree = "<group>"; };
 		29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaTableViewController.m; sourceTree = "<group>"; };
-		2915698B15FFAFCA0084A29C /* ShareObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareObject.h; sourceTree = "<group>"; };
-		2915698C15FFAFCA0084A29C /* ShareObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareObject.m; sourceTree = "<group>"; };
+		2915698B15FFAFCA0084A29C /* ShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareManager.h; sourceTree = "<group>"; };
+		2915698C15FFAFCA0084A29C /* ShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareManager.m; sourceTree = "<group>"; };
 		291EB58115649366005FB66D /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
 		291EB58215649366005FB66D /* PostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostViewController.m; sourceTree = "<group>"; };
 		2920235215FD5C4700DBDA6C /* NormalCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalCellView.h; sourceTree = "<group>"; };
@@ -234,6 +237,12 @@
 		29E517781608AC7100CA422F /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		29E5177A1608B2BE00CA422F /* NormalWithImageCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalWithImageCellView.h; sourceTree = "<group>"; };
 		29E5177B1608B2BE00CA422F /* NormalWithImageCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NormalWithImageCellView.m; sourceTree = "<group>"; };
+		29E6C02E17BC6BE0005D57BF /* FeedItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedItem.h; sourceTree = "<group>"; };
+		29E6C02F17BC6BE0005D57BF /* FeedItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedItem.m; sourceTree = "<group>"; };
+		29E6C03117BD16F7005D57BF /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		29E6C03217BD16F7005D57BF /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		29E6C03417BD1856005D57BF /* ObjectMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectMapper.h; sourceTree = "<group>"; };
+		29E6C03517BD1856005D57BF /* ObjectMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectMapper.m; sourceTree = "<group>"; };
 		29EA394315609BCE003A21E7 /* NSString+BackslashEscape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BackslashEscape.h"; sourceTree = "<group>"; };
 		29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BackslashEscape.m"; sourceTree = "<group>"; };
 		29EB71BD15E811D50072B97A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -333,6 +342,7 @@
 		295687601552C96700FE741C /* Jukaela Social */ = {
 			isa = PBXGroup;
 			children = (
+				29E6C02D17BC6BC8005D57BF /* Models */,
 				29D5B85D1554768F000D9374 /* Singletons */,
 				29E2A8FC16867217003F05A4 /* Objects */,
 				29D5B85E15547695000D9374 /* User Interface */,
@@ -654,12 +664,25 @@
 			children = (
 				29E2A8F916866CF4003F05A4 /* ActivityManager.h */,
 				29E2A8FA16866CF4003F05A4 /* ActivityManager.m */,
-				2915698B15FFAFCA0084A29C /* ShareObject.h */,
-				2915698C15FFAFCA0084A29C /* ShareObject.m */,
+				2915698B15FFAFCA0084A29C /* ShareManager.h */,
+				2915698C15FFAFCA0084A29C /* ShareManager.m */,
 				2976435B16826DB600D79876 /* RequestFactory.h */,
 				2976435C16826DB600D79876 /* RequestFactory.m */,
 			);
 			name = Objects;
+			sourceTree = "<group>";
+		};
+		29E6C02D17BC6BC8005D57BF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				29E6C02E17BC6BE0005D57BF /* FeedItem.h */,
+				29E6C02F17BC6BE0005D57BF /* FeedItem.m */,
+				29E6C03117BD16F7005D57BF /* User.h */,
+				29E6C03217BD16F7005D57BF /* User.m */,
+				29E6C03417BD1856005D57BF /* ObjectMapper.h */,
+				29E6C03517BD1856005D57BF /* ObjectMapper.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -771,6 +794,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29E6C03317BD16F7005D57BF /* User.m in Sources */,
 				29B18F75176E5AF000020DF3 /* PhotoViewerViewController.m in Sources */,
 				2954BBCE1767DC38007D5004 /* UIAlertView+Blocks.m in Sources */,
 				295687671552C96700FE741C /* main.m in Sources */,
@@ -793,6 +817,7 @@
 				290045D615576D5D004F113A /* UsersViewController.m in Sources */,
 				29CAEB7C1558C6F900663CF3 /* ShowUserViewController.m in Sources */,
 				29EA394515609BCE003A21E7 /* NSString+BackslashEscape.m in Sources */,
+				29E6C03617BD1856005D57BF /* ObjectMapper.m in Sources */,
 				291EB58315649366005FB66D /* PostViewController.m in Sources */,
 				292434711565E330007C8E8C /* UsersPostsViewController.m in Sources */,
 				297FE039156846E0005FBFDA /* FollowerViewController.m in Sources */,
@@ -811,9 +836,10 @@
 				292F052F15F1341200E6BC51 /* NSNull+DontCrash.m in Sources */,
 				2920235415FD5C4700DBDA6C /* NormalCellView.m in Sources */,
 				29D433C715FE1F6400ABCB2F /* AHHyperlinkScanner.m in Sources */,
+				29E6C03017BC6BE0005D57BF /* FeedItem.m in Sources */,
 				29D433C815FE1F6400ABCB2F /* AHLinkLexer.l in Sources */,
 				29D433C915FE1F6400ABCB2F /* AHMarkedHyperlink.m in Sources */,
-				2915698D15FFAFCA0084A29C /* ShareObject.m in Sources */,
+				2915698D15FFAFCA0084A29C /* ShareManager.m in Sources */,
 				2988B25E1605534A00D0202E /* FeedbackViewController.m in Sources */,
 				29E5177C1608B2BE00CA422F /* NormalWithImageCellView.m in Sources */,
 				29C251591672BFED00F27ABC /* ImageConfirmationViewController.m in Sources */,

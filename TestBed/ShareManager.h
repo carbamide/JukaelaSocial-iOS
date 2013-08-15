@@ -10,7 +10,7 @@
 #import "FeedViewController.h"
 #import "NormalCellView.h"
 
-@interface ShareObject : NSObject
+@interface ShareManager : NSObject
 
 +(void)shareToTwitter:(NSString *)stringToSend withViewController:(FeedViewController *)feedViewController;
 +(void)shareToFacebook:(NSString *)stringToSend withViewController:(FeedViewController *)feedViewController;

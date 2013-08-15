@@ -39,6 +39,7 @@ static char *const kIndexPathAssociationKey = "Jukaela_index_path";
 #define COLOR_RGB(r,g,b,a)      [UIColor colorWithRed:((r)/255.0) green:((g)/255.0) blue:((b)/255.0) alpha:(a)]
 
 #define kHelveticaLight @"Helvetica-Light"
+
 #define kImageURL @"image_url"
 #define kContent @"content"
 #define kName @"name"

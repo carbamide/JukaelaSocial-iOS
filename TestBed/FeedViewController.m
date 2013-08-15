@@ -19,7 +19,7 @@
 #import "PhotoViewerViewController.h"
 #import "PostViewController.h"
 #import "SFHFKeychainUtils.h"
-#import "ShareObject.h"
+#import "ShareManager.h"
 #import "ShowUserViewController.h"
 #import "SVModalWebViewController.h"
 #import "ThreadedPostsViewController.h"
@@ -27,6 +27,7 @@
 #import "WBErrorNoticeView.h"
 #import "WBStickyNoticeView.h"
 #import "WBSuccessNoticeView.h"
+#import "ObjectMapper.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSCache *externalImageCache;
@@ -425,6 +426,8 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
+            [ObjectMapper convertToFeedItemObject:data];
+            
             NSArray *oldArray = [self theFeed];
             
             [self setTheFeed:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];

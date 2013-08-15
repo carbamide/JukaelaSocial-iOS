@@ -9,10 +9,10 @@
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 #import "NormalCellView.h"
-#import "ShareObject.h"
+#import "ShareManager.h"
 #import "WBSuccessNoticeView.h"
 
-@implementation ShareObject
+@implementation ShareManager
 
 +(void)shareToTwitter:(NSString *)stringToSend withViewController:(FeedViewController *)feedViewController
 {

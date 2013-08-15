@@ -60,11 +60,17 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     //// Color Declarations
-    UIColor* fillColor = [UIColor colorWithRed: 0.294 green: 0.2 blue: 0.353 alpha: 1];
-    UIColor* strokeColor = [UIColor colorWithRed: 0.294 green: 0.2 blue: 0.353 alpha: 1];
-    UIColor* gradientColor = [UIColor colorWithRed: 0.514 green: 0.333 blue: 0.4 alpha: 1];
-    UIColor* gradientColor2 = [UIColor colorWithRed: 0.667 green: 0.533 blue: 0.467 alpha: 1];
-    UIColor* gradientColor3 = [UIColor colorWithRed: 0.667 green: 0.467 blue: 0.467 alpha: 1];
+//    UIColor* fillColor = [UIColor colorWithRed: 0.294 green: 0.2 blue: 0.353 alpha: 1];
+//    UIColor* strokeColor = [UIColor colorWithRed: 0.294 green: 0.2 blue: 0.353 alpha: 1];
+//    UIColor* gradientColor = [UIColor colorWithRed: 0.514 green: 0.333 blue: 0.4 alpha: 1];
+//    UIColor* gradientColor2 = [UIColor colorWithRed: 0.667 green: 0.533 blue: 0.467 alpha: 1];
+//    UIColor* gradientColor3 = [UIColor colorWithRed: 0.667 green: 0.467 blue: 0.467 alpha: 1];
+    
+    UIColor* fillColor = [UIColor blackColor];
+    UIColor* strokeColor = [UIColor blackColor];
+    UIColor* gradientColor = [UIColor blackColor];
+    UIColor* gradientColor2 = [UIColor blackColor];
+    UIColor* gradientColor3 = [UIColor blackColor];
     
     //// Gradient Declarations
     NSArray* gradientColors = [NSArray arrayWithObjects:

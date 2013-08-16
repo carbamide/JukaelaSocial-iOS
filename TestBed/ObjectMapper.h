@@ -14,5 +14,5 @@
 @interface ObjectMapper : NSObject
 
 +(User *)convertToUserObject:(NSData *)json;
-+(FeedItem *)convertToFeedItemObject:(NSData *) json;
++(NSArray *)convertToFeedItemObject:(NSData *)json;
 @end

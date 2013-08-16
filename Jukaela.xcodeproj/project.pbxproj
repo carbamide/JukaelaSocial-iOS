@@ -87,6 +87,7 @@
 		29E6C03017BC6BE0005D57BF /* FeedItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E6C02F17BC6BE0005D57BF /* FeedItem.m */; };
 		29E6C03317BD16F7005D57BF /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E6C03217BD16F7005D57BF /* User.m */; };
 		29E6C03617BD1856005D57BF /* ObjectMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E6C03517BD1856005D57BF /* ObjectMapper.m */; };
+		29E6C03917BDBA97005D57BF /* ApiFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E6C03817BDBA97005D57BF /* ApiFactory.m */; };
 		29EA394515609BCE003A21E7 /* NSString+BackslashEscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */; };
 		29F977EE1693E38C0075A4FF /* UsersWhoLikedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F977ED1693E38C0075A4FF /* UsersWhoLikedViewController.m */; };
 		29F99E971676C2D000ADC3D1 /* JukaelaCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F99E961676C2D000ADC3D1 /* JukaelaCollectionViewController.m */; };
@@ -243,6 +244,8 @@
 		29E6C03217BD16F7005D57BF /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		29E6C03417BD1856005D57BF /* ObjectMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectMapper.h; sourceTree = "<group>"; };
 		29E6C03517BD1856005D57BF /* ObjectMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectMapper.m; sourceTree = "<group>"; };
+		29E6C03717BDBA97005D57BF /* ApiFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiFactory.h; sourceTree = "<group>"; };
+		29E6C03817BDBA97005D57BF /* ApiFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiFactory.m; sourceTree = "<group>"; };
 		29EA394315609BCE003A21E7 /* NSString+BackslashEscape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+BackslashEscape.h"; sourceTree = "<group>"; };
 		29EA394415609BCE003A21E7 /* NSString+BackslashEscape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+BackslashEscape.m"; sourceTree = "<group>"; };
 		29EB71BD15E811D50072B97A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -613,6 +616,8 @@
 				29D5B84A1554612A000D9374 /* Constants.h */,
 				295687691552C96700FE741C /* AppDelegate.h */,
 				2956876A1552C96700FE741C /* AppDelegate.m */,
+				29E6C03717BDBA97005D57BF /* ApiFactory.h */,
+				29E6C03817BDBA97005D57BF /* ApiFactory.m */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -799,6 +804,7 @@
 				2954BBCE1767DC38007D5004 /* UIAlertView+Blocks.m in Sources */,
 				295687671552C96700FE741C /* main.m in Sources */,
 				2956876B1552C96700FE741C /* AppDelegate.m in Sources */,
+				29E6C03917BDBA97005D57BF /* ApiFactory.m in Sources */,
 				295687711552C96700FE741C /* LoginViewController.m in Sources */,
 				29204EF01553684200D5479D /* FeedViewController.m in Sources */,
 				29D5B81515545B3A000D9374 /* GravatarHelper.m in Sources */,

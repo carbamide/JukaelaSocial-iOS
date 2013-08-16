@@ -17,7 +17,7 @@
     return (User *)nil;
 }
 
-+(NSArray *)convertToFeedItemObject:(NSData *) json
++(NSArray *)convertToFeedItemObject:(NSData *)json
 {
     NSMutableArray *returnArray = [NSMutableArray array];
     
@@ -35,6 +35,8 @@
         [tempFeedItem setRepostUserId:[self nullOrValue:tempDict[kRepostUserID]]];
         [tempFeedItem setOriginalPosterId:[self nullOrValue:tempDict[kOriginalPosterID]]];
         [tempFeedItem setRepostName:[self nullOrValue:tempDict[kRepostName]]];
+        [tempFeedItem setUsersWhoLiked:[self nullOrValue:tempDict[@"users_who_liked"]]];
+        [tempFeedItem setInReplyTo:[self nullOrValue:tempDict[@"in_reply_to"]]];
         
         User *tempUser = [[User alloc] init];
         

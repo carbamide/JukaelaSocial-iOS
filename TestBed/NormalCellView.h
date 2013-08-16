@@ -12,7 +12,7 @@ extern NSString * const kJKPrepareForReuseNotification;
 
 @interface NormalCellView : UITableViewCell <UIGestureRecognizerDelegate>
 
-@property (strong, nonatomic, setter = setDate:) NSString *postDate;
+@property (strong, nonatomic, setter = setDate:) NSDate *postDate;
 @property (strong, nonatomic) NSTimer *dateTimer;
 @property (nonatomic, retain) UILabel *dateLabel;
 @property (nonatomic, retain) UILabel *nameLabel;

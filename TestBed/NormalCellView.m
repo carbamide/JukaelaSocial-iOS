@@ -254,7 +254,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
     }];
 }
 
--(void)setDate:(NSString *)date
+-(void)setDate:(NSDate *)date
 {
     postDate = date;
     
@@ -262,16 +262,12 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
         dateTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(updateDateLabel) userInfo:nil repeats:YES];
     }
     
-    NSDate *tempDate = [NSDate dateWithISO8601String:self.postDate withFormatter:[kAppDelegate dateFormatter]];
-    
-    [[self dateLabel] setText:[[kAppDelegate dateTransformer] transformedValue:tempDate]];
+    [[self dateLabel] setText:[[kAppDelegate dateTransformer] transformedValue:postDate]];
 }
 
 -(void)updateDateLabel
 {
-    NSDate *tempDate = [NSDate dateWithISO8601String:self.postDate withFormatter:[kAppDelegate dateFormatter]];
-    
-    [[self dateLabel] setText:[[kAppDelegate dateTransformer] transformedValue:tempDate]];
+    [[self dateLabel] setText:[[kAppDelegate dateTransformer] transformedValue:postDate]];
 }
 
 @end

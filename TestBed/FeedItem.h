@@ -19,6 +19,8 @@
 @property (strong, nonatomic) NSNumber *repostUserId;
 @property (strong, nonatomic) NSNumber *originalPosterId;
 @property (strong, nonatomic) NSString *repostName;
+@property (strong, nonatomic) NSArray *usersWhoLiked;
 @property (strong, nonatomic) User *user;
+@property (strong, nonatomic) NSNumber *inReplyTo;
 
 @end

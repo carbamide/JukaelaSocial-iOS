@@ -1,6 +1,6 @@
 //
 //  AppDelegate.h
-//  TestBed
+//  Jukaela Social
 //
 //  Created by Josh Barrow on 5/3/12.
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
@@ -13,7 +13,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) NSString *userID;
+@property (strong, nonatomic) NSNumber *userID;
 @property (strong, nonatomic) NSString *userEmail;
 @property (strong, nonatomic) NSString *userUsername;
 

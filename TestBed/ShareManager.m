@@ -10,7 +10,6 @@
 #import <Social/Social.h>
 #import "NormalCellView.h"
 #import "ShareManager.h"
-#import "WBSuccessNoticeView.h"
 
 @implementation ShareManager
 
@@ -41,10 +40,6 @@
                         
                         if (!jsonData[@"error"]) {
                             NSLog(@"Successfully posted to Twitter");
-                            
-                            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[feedViewController view] title:@"Shared to Twitter"];
-                            
-                            [successNotice show];
                         }
                         else {
                             NSLog(@"%@", jsonData[@"error"]);
@@ -100,10 +95,6 @@
                         
                         if (!jsonData[@"error"]) {
                             NSLog(@"Successfully posted to Facebook");
-                            
-                            WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[feedViewController view] title:@"Shared to Facebook"];
-                            
-                            [successNotice show];
                         }
                         else {
                             NSLog(@"Not posted to Facebook");
@@ -122,30 +113,6 @@
         }];
     }
 }
-
-+(void)sharePostViaMail:(NormalCellView *)cellInformation  withViewController:(FeedViewController *)feedViewController
-{
-    if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *viewController = [[MFMailComposeViewController alloc] init];
-        
-        [viewController setMailComposeDelegate:feedViewController];
-        [viewController setSubject:[NSString stringWithFormat:@"Jukaela Social Post from %@", [[cellInformation nameLabel] text]]];
-        
-        if ([[cellInformation usernameLabel] text]) {
-            [viewController setMessageBody:[NSString stringWithFormat:@"%@\n\n--%@\n\nPosted on Jukaela Social", [[cellInformation contentText] text], [[cellInformation usernameLabel] text]] isHTML:NO];
-        }
-        else {
-            [viewController setMessageBody:[NSString stringWithFormat:@"%@\n\n--%@\n\nPosted on Jukaela Social", [[cellInformation contentText] text], [[cellInformation nameLabel] text]] isHTML:NO];
-            
-        }
-        
-        [feedViewController presentViewController:viewController animated:YES completion:nil];
-    }
-    else {
-
-    }
-}
-
 
 +(void)repost:(NSIndexPath *)indexPathOfCell fromArray:(NSArray *)theArray withViewController:(FeedViewController *)viewController
 {
@@ -170,10 +137,6 @@
             [[ActivityManager sharedManager] decrementActivityCount];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kStopAnimatingActivityIndicator object:nil];
-            
-            WBSuccessNoticeView *successNotice = [[WBSuccessNoticeView alloc] initWithView:[viewController view] title:@"Reposted"];
-            
-            [successNotice show];
         }
         else {
             NSLog(@"Error");

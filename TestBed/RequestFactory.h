@@ -14,7 +14,7 @@
 +(NSString *)loginRequestWithEmail:(NSString *)email password:(NSString *)password apns:(NSString *)apns;
 +(NSString *)feedRequestFrom:(int)from to:(int)to;
 +(NSString *)createNewUserRequestWithName:(NSString *)name username:(NSString *)username email:(NSString *)email password:(NSString *)password passwordConfirmation:(NSString *)passwordConfirmation;
-+(NSString *)postRequestWithContent:(NSString *)content userID:(NSString *)userID imageURL:(NSString *)imageURL withReplyTo:(NSNumber *)replyToID;
++(NSString *)postRequestWithContent:(NSString *)content userID:(NSNumber *)userID imageURL:(NSString *)imageURL withReplyTo:(NSNumber *)replyToID;
 +(NSString *)unfollowRequestWithUserID:(NSNumber *)userID;
 +(NSString *)followRequestWithUserID:(NSNumber *)userID;
 +(NSString *)userFromUsername:(NSString *)username;

@@ -14,5 +14,11 @@
 @property (strong, nonatomic) NSNumber *userId;
 @property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSString *email;
+@property (strong, nonatomic) NSDate *createdAt;
+@property (strong, nonatomic) NSString *profile;
+@property (strong, nonatomic) NSDate *updatedAt;
+
+@property (nonatomic) BOOL sendEmail;
+@property (nonatomic) BOOL isAdmin;
 
 @end

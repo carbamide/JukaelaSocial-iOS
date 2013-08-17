@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  TestBed
+//  Jukaela Social
 //
 //  Created by Josh Barrow on 5/3/12.
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
@@ -11,6 +11,7 @@
 #import "LoginViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "UIView+FindAndResignFirstResponder.h"
+#import "ObjectMapper.h"
 
 @interface LoginViewController ()
 @property (strong, nonatomic) NSArray *tempFeed;
@@ -195,7 +196,7 @@
                     [item setEnabled:YES];
                 }
 
-                [kAppDelegate setUserID:[NSString stringWithFormat:@"%@", loginDict[kID]]];
+                [kAppDelegate setUserID:loginDict[kID]];
                 [kAppDelegate setUserEmail:[NSString stringWithFormat:@"%@", loginDict[kEmail]]];
                 [kAppDelegate setUserUsername:[NSString stringWithFormat:@"%@", loginDict[kUsername]]];
                 
@@ -241,7 +242,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [self setTempFeed:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
+            [self setTempFeed:[ObjectMapper convertToFeedItemObject:data]];
             
             [[ActivityManager sharedManager] decrementActivityCount];
             

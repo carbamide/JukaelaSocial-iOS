@@ -1,6 +1,6 @@
 //
 //  AppDelegate.m
-//  TestBed
+//  Jukaela Social
 //
 //  Created by Josh Barrow on 5/3/12.
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
@@ -139,7 +139,7 @@
 -(void)applicationDidBecomeActive:(UIApplication *)application
 {
     if ([[self currentViewController] isKindOfClass:[FeedViewController class]]) {
-        [[self currentViewController] refreshControlRefresh:nil];
+        [[self currentViewController] refreshControlHandler:nil];
     }
 }
 

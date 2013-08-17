@@ -1,6 +1,6 @@
 //
 //  Constants.h
-//  TestBed
+//  Jukaela Social
 //
 //  Created by Josh Barrow on 5/4/12.
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
@@ -51,7 +51,7 @@ static NSString *kID = @"id";
 static NSString *kOriginalPosterID = @"original_poster_id";
 static NSString *kRepostName = @"repost_name";
 
-static NSString *kDoubleTapNotification = @"double_tap";
+static NSString *kTapNotification = @"double_tap";
 static NSString *kSendToUserNotification = @"send_to_user";
 static NSString *kRepostSendToUserNotifiation = @"repost_send_to_user";
 static NSString *kChangeTypeNotification = @"set_change_type";

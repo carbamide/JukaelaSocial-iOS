@@ -1,6 +1,6 @@
 //
 //  ViewController.h
-//  TestBed
+//  Jukaela Social
 //
 //  Created by Josh Barrow on 5/3/12.
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.

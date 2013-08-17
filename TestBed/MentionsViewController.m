@@ -18,8 +18,6 @@
 #import "ShowUserViewController.h"
 #import "SORelativeDateTransformer.h"
 #import "SVModalWebViewController.h"
-#import "WBSuccessNoticeView.h"
-#import "WBErrorNoticeView.h"
 
 @interface MentionsViewController ()
 @property (strong, nonatomic) NSCache *externalImageCache;
@@ -45,7 +43,7 @@
 {
     [kAppDelegate setCurrentViewController:self];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:kDoubleTapNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:kTapNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:kSendToUserNotification object:nil];
     
     [super viewDidAppear:animated];
@@ -53,7 +51,7 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kDoubleTapNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kTapNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kSendToUserNotification object:nil];
     
     [super viewDidDisappear:animated];
@@ -383,11 +381,7 @@
                     NSLog(@"Inside finally");
                 }
             }
-            else {
-                WBErrorNoticeView *notice = [[WBErrorNoticeView alloc] initWithView:[self view] title:@"Error reloading Feed"];
-                
-                [notice show];
-            }
+
             [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
         }];
         [[ActivityManager sharedManager] decrementActivityCount];
@@ -414,7 +408,7 @@
         RIButtonItem *deletePostButton = nil;
                 
         
-        if ([[NSString stringWithFormat:@"%@", [self mentions][[indexPathOfTappedRow row]][@"sender_user_id"]] isEqualToString:[kAppDelegate userID]]) {
+        if ([[self mentions][[indexPathOfTappedRow row]][@"sender_user_id"] isEqualToNumber:[kAppDelegate userID]]) {
             deletePostButton = [RIButtonItem itemWithLabel:@"Delete Post" action:^{
                 [[ActivityManager sharedManager] incrementActivityCount];
                 
@@ -589,16 +583,6 @@
 -(void)hudWasHidden:(MBProgressHUD *)hud
 {
     [hud removeFromSuperview];
-}
-
-
-- (void)handleURL:(NSURL*)url
-{
-    SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
-    
-    [webViewController setBarsTintColor:[UIColor darkGrayColor]];
-    
-    [self presentViewController:webViewController animated:YES completion:nil];
 }
 
 -(void)requestWithUsername:(NSString *)username

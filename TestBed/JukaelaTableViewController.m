@@ -7,6 +7,7 @@
 //
 
 #import "JukaelaTableViewController.h"
+#import "SVModalWebViewController.h"
 
 @implementation JukaelaTableViewController
 
@@ -43,6 +44,15 @@
 -(void)showMenu
 {
     [[kAppDelegate sideMenu] show];
+}
+
+- (void)handleURL:(NSURL*)url
+{
+    SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
+    
+    [webViewController setBarsTintColor:[UIColor darkGrayColor]];
+    
+    [self presentViewController:webViewController animated:YES completion:nil];
 }
 
 @end

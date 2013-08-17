@@ -35,7 +35,7 @@
     [super viewDidAppear:animated];
 }
 
--(void)getUserInfo:(NSString *)userID
+-(void)getUserInfo:(NSNumber *)userID
 {
     [[ActivityManager sharedManager] incrementActivityCount];
     

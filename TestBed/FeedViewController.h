@@ -1,6 +1,6 @@
 //
 //  FeedViewController.h
-//  TestBed
+//  Jukaela Social
 //
 //  Created by Josh Barrow on 5/3/12.
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
@@ -10,6 +10,7 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
+#import "JukaelaTableViewProtocol.h"
 
 NS_ENUM(NSInteger, ChangeType) {
     INSERT_POST,
@@ -17,7 +18,7 @@ NS_ENUM(NSInteger, ChangeType) {
     OTHER_CHANGE_TYPE
 };
 
-@interface FeedViewController : JukaelaTableViewController <MBProgressHUDDelegate, MFMailComposeViewControllerDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate>
+@interface FeedViewController : JukaelaTableViewController <MBProgressHUDDelegate, UIScrollViewDelegate, JukaelaTableViewProtocol>
 
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) NSMutableArray *theFeed;
@@ -28,6 +29,6 @@ NS_ENUM(NSInteger, ChangeType) {
 @property (nonatomic) BOOL loadedDirectly;
 
 -(void)initializeActivityIndicator;
--(void)refreshControlRefresh:(id)sender;
+-(void)refreshControlHandler:(id)sender;
 
 @end

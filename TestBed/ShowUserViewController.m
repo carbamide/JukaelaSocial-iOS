@@ -12,9 +12,6 @@
 #import "JEImages.h"
 #import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
-#import "WBErrorNoticeView.h"
-#import "WBSuccessNoticeView.h"
-#import "WBStickyNoticeView.h"
 
 @interface ShowUserViewController ()
 @property (strong, nonatomic) NSNumber *followerCount;
@@ -75,7 +72,7 @@
 
 -(void)setupToolbar
 {
-    if ([[kAppDelegate userID] isEqualToString:[NSString stringWithFormat:@"%@", [self userDict][kID]]]) {
+    if ([[kAppDelegate userID] isEqualToNumber:[self userDict][kID]]) {
         [self setToolbarItems:nil];
         
         return;
@@ -139,10 +136,6 @@
             [request setHTTPBody:requestData];
             
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"%@%@", followOrUnfollowString, [self userDict][kName]]];
-                
-                [successNotice show];
-                
                 [[ActivityManager sharedManager] decrementActivityCount];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:kRefreshYourTablesNotification object:nil];
@@ -187,10 +180,6 @@
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                 if (data) {
                     [[ActivityManager sharedManager] decrementActivityCount];
-                    
-                    WBSuccessNoticeView *successNotice = [WBSuccessNoticeView successNoticeInView:[self view] title:[NSString stringWithFormat:@"Now following %@", [self userDict][kName]]];
-                    
-                    [successNotice show];
                     
                     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
                     

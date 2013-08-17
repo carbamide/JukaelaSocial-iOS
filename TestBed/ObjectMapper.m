@@ -14,7 +14,23 @@
 
 +(User *)convertToUserObject:(NSData *)json
 {
-    return (User *)nil;
+    NSError *error = nil;
+    
+    NSDictionary *tempDict = [NSJSONSerialization JSONObjectWithData:json options:0 error:&error];
+    
+    User *tempUser = [[User alloc] init];
+    
+    [tempUser setName:[self nullOrValue:tempDict[kName]]];
+    [tempUser setUserId:[self nullOrValue:tempDict[kID]]];
+    [tempUser setUsername:[self nullOrValue:tempDict[kUsername]]];
+    [tempUser setEmail:[self nullOrValue:tempDict[kEmail]]];
+    [tempUser setCreatedAt:[NSDate dateWithISO8601String:[self nullOrValue:tempDict[kCreationDate]] withFormatter:[kAppDelegate dateFormatter]]];
+    [tempUser setUpdatedAt:[NSDate dateWithISO8601String:[self nullOrValue:tempDict[@"updated_at"]] withFormatter:[kAppDelegate dateFormatter]]];
+    [tempUser setProfile:[self nullOrValue:tempDict[@"profile"]]];
+    [tempUser setSendEmail:[(NSNumber *)tempDict[@"send_email"] boolValue]];
+    [tempUser setIsAdmin:[(NSNumber *)tempDict[@"admin"] boolValue]];
+    
+    return tempUser;
 }
 
 +(NSArray *)convertToFeedItemObject:(NSData *)json

@@ -20,8 +20,6 @@
 #import "ShowUserViewController.h"
 #import "SORelativeDateTransformer.h"
 #import "SVModalWebViewController.h"
-#import "WBSuccessNoticeView.h"
-#import "WBErrorNoticeView.h"
 
 @interface ThreadedPostsViewController ()
 @property (strong, nonatomic) NSArray *photos;
@@ -249,7 +247,7 @@
         
         CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 75);
         
-        if ([[NSString stringWithFormat:@"%@", [self threadedPosts][[indexPath row]][kUserID]] isEqualToString:[kAppDelegate userID]]) {
+        if ([[self threadedPosts][[indexPath row]][kUserID] isEqualToNumber:[kAppDelegate userID]]) {
             [[cell repostedNameLabel] setFrame:CGRectMake(12, height, 228, 20)];
         }
         else {
@@ -419,24 +417,11 @@
                     NSLog(@"Inside finally");
                 }
             }
-            else {
-                WBErrorNoticeView *notice = [[WBErrorNoticeView alloc] initWithView:[self view] title:@"Error reloading Feed"];
-                
-                [notice show];
-            }
+
             [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
         }];
         [[ActivityManager sharedManager] decrementActivityCount];
     }
-}
-
-- (void)handleURL:(NSURL*)url
-{
-    SVModalWebViewController *webViewController = [[SVModalWebViewController alloc] initWithAddress:[url absoluteString]];
-    
-    [webViewController setBarsTintColor:[UIColor darkGrayColor]];
-    
-    [self presentViewController:webViewController animated:YES completion:nil];
 }
 
 -(void)requestWithUsername:(NSString *)username

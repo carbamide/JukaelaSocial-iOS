@@ -12,6 +12,11 @@
 
 +(instancetype)sharedManager;
 
+-(void)login;
 -(void)getFeedFrom:(int)from to:(int)to;
+-(void)likePost:(NSNumber *)postId;
+-(void)showThreadForPost:(NSNumber *)postId;
+-(void)deletePost:(NSNumber *)postId;
+-(void)showImage:(NSURL *)imageUrl;
 
 @end

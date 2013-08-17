@@ -12,5 +12,6 @@
 
 - (UIImage *) imageWithView:(UIView *)view;
 
+- (void)handleURL:(NSURL*)url;
 
 @end

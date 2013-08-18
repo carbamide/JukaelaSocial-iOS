@@ -644,6 +644,10 @@
                             }
                             else {
                                 NSLog(@"Not posted to Facebook");
+                                
+                                if ([jsonData[@"error"][@"code"] isEqualToNumber:@190]) {
+                                    [self attemptRenewCredentials];
+                                }
                             }
                         }
                         else {
@@ -739,7 +743,7 @@
     
     CGPoint cursorPosition = [textView caretRectForPosition:textView.selectedTextRange.start].origin;
     CGPoint translatedPosition = [[self view] convertPoint:cursorPosition fromView:[self theTextView]];
-        
+    
     CGPoint finalPoint = CGPointMake(translatedPosition.x, translatedPosition.y + [[UIFont preferredFontForTextStyle:UIFontTextStyleBody] pointSize] + Spacing);
     
     if ((finalPoint.x + TableWidth) > DeviceWidth) {
@@ -916,8 +920,41 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
+    
     [kAppDelegate setCurrentViewController:self];
 }
 
+-(void)attemptRenewCredentials
+{
+    [[self accountStore] renewCredentialsForAccount:(ACAccount *)[self facebookAccount] completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
+        if(!error) {
+            switch (renewResult) {
+                case ACAccountCredentialRenewResultRenewed:
+                    NSLog(@"Facebook credentials restored");
+                    
+                    [self sendFacebookPost:[[self theTextView] text]];
+                    
+                    break;
+                case ACAccountCredentialRenewResultRejected:
+                    NSLog(@"User declined permission to renew Facebook credentials");
+                    
+                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kPostToFacebookPreference];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    break;
+                case ACAccountCredentialRenewResultFailed:
+                    NSLog(@"Something screwy happening renewing the credentials");
+                    
+                    [self attemptRenewCredentials];
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+        else {
+            NSLog(@"Error renewing credentials - %@\n", error);
+        }
+    }];
+}
 @end

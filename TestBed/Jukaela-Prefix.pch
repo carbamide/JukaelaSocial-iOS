@@ -13,4 +13,6 @@
     #import <Foundation/Foundation.h>
     #import <QuartzCore/QuartzCore.h>
     #import "Constants.h"
+#import "AppDelegate.h"
+#import "Helpers.h"
 #endif

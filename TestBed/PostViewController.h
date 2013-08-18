@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GRButtons.h"
+#import "JukaelaViewController.h"
 
 @interface PostViewController : JukaelaViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate>
 

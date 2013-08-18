@@ -7,7 +7,6 @@
 //
 
 #import "JukaelaCollectionViewController.h"
-#import "MBProgressHUD.h"
 
 @interface UsersWhoLikedViewController : JukaelaCollectionViewController <MBProgressHUDDelegate>
 

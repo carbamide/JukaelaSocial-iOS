@@ -6,7 +6,9 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-@interface ThreadedPostsViewController : JukaelaTableViewController <MBProgressHUDDelegate>
+#import "JukaelaTableViewController.h"
+
+@interface ThreadedPostsViewController : JukaelaTableViewController
 
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSDictionary *tempDict;

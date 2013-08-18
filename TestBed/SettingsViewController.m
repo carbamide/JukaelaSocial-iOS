@@ -9,6 +9,7 @@
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
 #import "SettingsViewController.h"
+#import "SFHFKeychainUtils.h"
 
 NS_ENUM(NSInteger, SocialTypes) {
     FacebookType,

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
+#import "JukaelaCollectionViewController.h"
 
 @interface UsersViewController : JukaelaCollectionViewController <MBProgressHUDDelegate>
 

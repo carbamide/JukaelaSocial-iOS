@@ -7,6 +7,9 @@
 //
 
 #import "Helpers.h"
+#import "RIButtonItem.h"
+#import "UIAlertView+Blocks.h"
+#import "UIActionSheet+Blocks.h"
 
 @implementation Helpers
 

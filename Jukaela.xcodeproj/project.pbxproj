@@ -418,12 +418,12 @@
 				2988B25D1605534A00D0202E /* FeedbackViewController.m */,
 				29C251571672BFED00F27ABC /* ImageConfirmationViewController.h */,
 				29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */,
+				29973DBD176E4F0F000C11B7 /* PhotoViewerViewController.h */,
+				29973DBE176E4F0F000C11B7 /* PhotoViewerViewController.m */,
 				291EB58115649366005FB66D /* PostViewController.h */,
 				291EB58215649366005FB66D /* PostViewController.m */,
 				29AA10951557254400B8D3F5 /* SettingsViewController.h */,
 				29AA10961557254500B8D3F5 /* SettingsViewController.m */,
-				29973DBD176E4F0F000C11B7 /* PhotoViewerViewController.h */,
-				29973DBE176E4F0F000C11B7 /* PhotoViewerViewController.m */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -545,11 +545,11 @@
 			children = (
 				29D5B83715545FC6000D9374 /* CellBackground.h */,
 				29D5B83815545FC6000D9374 /* CellBackground.m */,
+				29E6C03D17BF074F005D57BF /* JukaelaTableViewProtocol.h */,
 				2920235215FD5C4700DBDA6C /* NormalCellView.h */,
 				2920235315FD5C4700DBDA6C /* NormalCellView.m */,
 				29E5177A1608B2BE00CA422F /* NormalWithImageCellView.h */,
 				29E5177B1608B2BE00CA422F /* NormalWithImageCellView.m */,
-				29E6C03D17BF074F005D57BF /* JukaelaTableViewProtocol.h */,
 			);
 			name = "TableView Stuff";
 			sourceTree = "<group>";
@@ -566,11 +566,11 @@
 		29D5B85D1554768F000D9374 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
-				29D5B84A1554612A000D9374 /* Constants.h */,
-				295687691552C96700FE741C /* AppDelegate.h */,
-				2956876A1552C96700FE741C /* AppDelegate.m */,
 				29E6C03717BDBA97005D57BF /* ApiFactory.h */,
 				29E6C03817BDBA97005D57BF /* ApiFactory.m */,
+				295687691552C96700FE741C /* AppDelegate.h */,
+				2956876A1552C96700FE741C /* AppDelegate.m */,
+				29D5B84A1554612A000D9374 /* Constants.h */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -621,10 +621,10 @@
 			children = (
 				29E2A8F916866CF4003F05A4 /* ActivityManager.h */,
 				29E2A8FA16866CF4003F05A4 /* ActivityManager.m */,
-				2915698B15FFAFCA0084A29C /* ShareManager.h */,
-				2915698C15FFAFCA0084A29C /* ShareManager.m */,
 				2976435B16826DB600D79876 /* RequestFactory.h */,
 				2976435C16826DB600D79876 /* RequestFactory.m */,
+				2915698B15FFAFCA0084A29C /* ShareManager.h */,
+				2915698C15FFAFCA0084A29C /* ShareManager.m */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -634,12 +634,12 @@
 			children = (
 				29E6C02E17BC6BE0005D57BF /* FeedItem.h */,
 				29E6C02F17BC6BE0005D57BF /* FeedItem.m */,
-				29E6C03117BD16F7005D57BF /* User.h */,
-				29E6C03217BD16F7005D57BF /* User.m */,
-				29E6C03417BD1856005D57BF /* ObjectMapper.h */,
-				29E6C03517BD1856005D57BF /* ObjectMapper.m */,
 				290DF8F517C076F800CA1069 /* MentionItem.h */,
 				290DF8F617C076F800CA1069 /* MentionItem.m */,
+				29E6C03417BD1856005D57BF /* ObjectMapper.h */,
+				29E6C03517BD1856005D57BF /* ObjectMapper.m */,
+				29E6C03117BD16F7005D57BF /* User.h */,
+				29E6C03217BD16F7005D57BF /* User.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";

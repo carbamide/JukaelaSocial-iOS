@@ -6,15 +6,9 @@
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
 
-#import <Accounts/Accounts.h>
 #import <objc/runtime.h>
-#import <Social/Social.h>
-#import "FeedViewController.h"
 #import "TMImgurUploader.h"
-#import "FeedbackViewController.h"
-#import "MentionsViewController.h"
-#import "UsersViewController.h"
-#import "SettingsViewController.h"
+#import "FeedViewController.h"
 
 @interface AppDelegate ()
 

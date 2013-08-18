@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JukaelaViewController.h"
 
 @interface FeedbackViewController : JukaelaViewController
 

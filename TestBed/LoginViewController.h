@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CPCheckBox.h"
-#import "MBProgressHUD.h"
+#import "JukaelaViewController.h"
+
+@class CPCheckBox;
 
 @interface LoginViewController : JukaelaViewController <NSURLConnectionDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, MBProgressHUDDelegate>
 {

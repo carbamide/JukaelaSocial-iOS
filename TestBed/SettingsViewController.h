@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JukaelaTableViewController.h"
 
 @interface SettingsViewController : JukaelaTableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 

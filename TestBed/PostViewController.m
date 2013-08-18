@@ -8,9 +8,13 @@
 
 #import <Accounts/Accounts.h>
 #import <Social/Social.h>
+#import "GravatarHelper.h"
+#import "GRButtons.h"
 #import "ImageConfirmationViewController.h"
 #import "PostViewController.h"
 #import "TMImgurUploader.h"
+#import "NSString+BackslashEscape.h"
+
 @interface PostViewController ()
 @property (strong, nonatomic) ACAccountStore *accountStore;
 @property (strong, nonatomic) ACAccount *facebookAccount;

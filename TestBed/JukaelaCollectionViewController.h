@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "UsersCollectionViewCell.h"
+#import "MBProgressHUD.h"
+#import "UIImage+Resize.h"
+#import "UIImage+RoundedCorner.h"
+#import "UIImage+Alpha.h"
+#import "ActivityManager.h"
+#import "RIButtonItem.h"
+#import "UIAlertView+Blocks.h"
+#import "UIActionSheet+Blocks.h"
+#import "RequestFactory.h"
 
-@interface JukaelaCollectionViewController : UICollectionViewController
+@interface JukaelaCollectionViewController : UICollectionViewController <MBProgressHUDDelegate>
 
 @end

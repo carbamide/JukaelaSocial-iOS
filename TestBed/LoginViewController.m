@@ -8,6 +8,8 @@
 
 #import "FeedViewController.h"
 #import "LoginViewController.h"
+#import "CPCheckBox.h"
+#import "SFHFKeychainUtils.h"
 
 @interface LoginViewController ()
 @property (strong, nonatomic) NSArray *tempFeed;

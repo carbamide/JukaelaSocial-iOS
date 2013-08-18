@@ -6,23 +6,6 @@
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
 
-#import "ActivityManager.h"
-#import "AppDelegate.h"
-#import "Helpers.h"
-#import "JukaelaViewController.h"
-#import "JukaelaTableViewController.h"
-#import "JukaelaCollectionViewController.h"
-#import "NSDate+RailsDateParser.h"
-#import "NSString+BackslashEscape.h"
-#import "RequestFactory.h"
-#import "UIImage+Resize.h"
-#import "UIImage+RoundedCorner.h"
-#import "UIImage+Alpha.h"
-#import "RIButtonItem.h"
-#import "UIAlertView+Blocks.h"
-#import "UIActionSheet+Blocks.h"
-#import "UIImage+ImageEffects.h"
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-variable"
 

@@ -10,6 +10,8 @@
 #import "Constants.h"
 #import "ObjectMapper.h"
 #import "SFHFKeychainUtils.h"
+#import "ActivityManager.h"
+#import "RequestFactory.h"
 
 @implementation ApiFactory
 

@@ -37,4 +37,11 @@
     [[kAppDelegate sideMenu] show];
 }
 
+#pragma mark MBProgressHUD Delegate
+
+-(void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
+}
+
 @end

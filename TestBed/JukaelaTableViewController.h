@@ -22,6 +22,17 @@
 #import "User.h"
 #import "FeedItem.h"
 #import "MentionItem.h"
+#import "NSDate+RailsDateParser.h"
+#import "NSString+BackslashEscape.h"
+#import "UIImage+Resize.h"
+#import "UIImage+RoundedCorner.h"
+#import "UIImage+Alpha.h"
+#import "ActivityManager.h"
+#import "RIButtonItem.h"
+#import "UIAlertView+Blocks.h"
+#import "UIActionSheet+Blocks.h"
+#import "UIImage+ImageEffects.h"
+#import "RequestFactory.h"
 
 @interface JukaelaTableViewController : UITableViewController <MBProgressHUDDelegate>
 

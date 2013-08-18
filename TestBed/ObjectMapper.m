@@ -10,6 +10,7 @@
 #import "FeedItem.h"
 #import "User.h"
 #import "MentionItem.h"
+#import "NSDate+RailsDateParser.h"
 
 @implementation ObjectMapper
 

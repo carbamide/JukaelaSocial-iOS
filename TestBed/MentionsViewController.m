@@ -243,7 +243,7 @@
         cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
         
         if (!cell) {
-            cell = [[NormalWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellWithImageCellIdentifier withTableView:tableView];
+            cell = [[NormalWithImageCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellWithImageCellIdentifier withTableView:tableView withImageCache:[self externalImageCache] withIndexPath:indexPath];
             
             [cell setBackgroundView:[[CellBackground alloc] init]];
         }
@@ -259,74 +259,7 @@
     }
     
     if ([tempItem imageUrl]) {
-        NSMutableString *tempString = [NSMutableString stringWithString:[[tempItem imageUrl] absoluteString]];
-        
-        NSString *tempExtensionString = [NSString stringWithFormat:@".%@", [tempString pathExtension]];
-        
-        [tempString stringByReplacingOccurrencesOfString:tempExtensionString withString:@""];
-        [tempString appendFormat:@"s"];
-        [tempString appendString:tempExtensionString];
-        
-        if (![[cell externalImage] image]) {
-            if ([[self externalImageCache] objectForKey:indexPath]) {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
-                    UIImage *tempImage = [[[self externalImageCache] objectForKey:indexPath] thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [[cell externalImage] setImage:tempImage];
-                    });
-                });
-            }
-            else if ([[NSFileManager defaultManager] fileExistsAtPath:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
-                UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
-                
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
-                    UIImage *tempImage = [externalImageFromDisk thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [[cell externalImage] setImage:tempImage];
-                    });
-                });
-                
-                if (externalImageFromDisk) {
-                    [[self externalImageCache] setObject:externalImageFromDisk forKey:indexPath];
-                }
-            }
-            else {
-                dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-                
-                objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
-                
-                dispatch_async(queue, ^{
-                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:tempString]]];
-                    
-                    if (image) {
-                        [[self externalImageCache] setObject:image forKey:indexPath];
-                    }
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [[cell externalImage] setImage:[image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh]];
-                        
-                        [Helpers saveImage:image withFileName:[tempString lastPathComponent]];
-                        
-                        dispatch_async(dispatch_get_main_queue(), ^(void) {
-                            NSString *path = [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithString:[tempString lastPathComponent]]];
-                            
-                            NSData *data = nil;
-                            
-                            if ([[tempString pathExtension] isEqualToString:@".png"]) {
-                                data = UIImagePNGRepresentation(image);
-                            }
-                            else {
-                                data = UIImageJPEGRepresentation(image, 1.0);
-                            }
-                            
-                            [data writeToFile:path atomically:YES];
-                        });
-                    });
-                });
-            }
-        }
+        [cell setImageUrl:[tempItem imageUrl]];
     }
     
     if ([tempItem content]) {

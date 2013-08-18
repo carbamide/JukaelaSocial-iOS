@@ -12,7 +12,8 @@
 @interface NormalWithImageCellView : NormalCellView
 
 @property (strong, nonatomic) UIImageView *externalImage;
+@property (strong, nonatomic, setter = setImageUrl:) NSURL *imageUrl;
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView;
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView withImageCache:(NSCache *)cache withIndexPath:(NSIndexPath *)indexPath;
 
 @end

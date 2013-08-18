@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import "Constants.h"
 #import "NormalWithImageCellView.h"
 
 @interface NormalWithImageCellView ()

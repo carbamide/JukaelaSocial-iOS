@@ -7,12 +7,10 @@
 //
 
 #import <objc/runtime.h>
-#import "CellBackground.h"
 #import "FollowerViewController.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"
 #import "ShowUserViewController.h"
-#import "UsersCollectionViewCell.h"
 #import "UsersPostsViewController.h"
 
 @interface FollowerViewController ()

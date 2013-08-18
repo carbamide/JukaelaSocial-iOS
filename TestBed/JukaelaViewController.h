@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SFHFKeychainUtils.h"
+#import "UIView+FindAndResignFirstResponder.h"
+#import "ObjectMapper.h"
 
 @interface JukaelaViewController : UIViewController
 

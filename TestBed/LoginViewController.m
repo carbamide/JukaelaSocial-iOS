@@ -6,12 +6,8 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import <AudioToolbox/AudioToolbox.h>
 #import "FeedViewController.h"
 #import "LoginViewController.h"
-#import "SFHFKeychainUtils.h"
-#import "UIView+FindAndResignFirstResponder.h"
-#import "ObjectMapper.h"
 
 @interface LoginViewController ()
 @property (strong, nonatomic) NSArray *tempFeed;

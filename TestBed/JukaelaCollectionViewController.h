@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "UsersCollectionViewCell.h"
 
 @interface JukaelaCollectionViewController : UICollectionViewController
 

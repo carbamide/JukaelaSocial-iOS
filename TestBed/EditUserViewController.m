@@ -7,7 +7,6 @@
 //
 
 #import "EditUserViewController.h"
-#import "SFHFKeychainUtils.h"
 
 @interface EditUserViewController ()
 

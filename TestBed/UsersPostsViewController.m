@@ -6,19 +6,10 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import <objc/runtime.h>
-#import "CellBackground.h"
-#import "GravatarHelper.h"
-#import "JEImages.h"
-#import "NSDate+RailsDateParser.h"
-#import "UsersPostsViewController.h"
-#import "NormalCellView.h"
-#import "NormalWithImageCellView.h"
 #import "PostViewController.h"
-#import "ShareManager.h"
 #import "ShowUserViewController.h"
-#import "SORelativeDateTransformer.h"
-#import "SVModalWebViewController.h"
+#import "UsersPostsViewController.h"
+
 
 @interface UsersPostsViewController ()
 @property (strong, nonatomic) NSArray *photos;

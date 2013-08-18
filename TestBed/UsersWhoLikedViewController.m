@@ -6,13 +6,8 @@
 //  Copyright (c) 2013 Jukaela Enterprises. All rights reserved.
 //
 
-#import <objc/runtime.h>
-#import "CellBackground.h"
-#import "GravatarHelper.h"
-#import "JEImages.h"
 #import "ShowUserViewController.h"
 #import "UsersPostsViewController.h"
-#import "UsersCollectionViewCell.h"
 #import "UsersWhoLikedViewController.h"
 
 @interface UsersWhoLikedViewController ()

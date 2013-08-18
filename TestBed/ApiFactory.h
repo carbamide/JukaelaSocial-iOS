@@ -18,5 +18,6 @@
 -(void)showThreadForPost:(NSNumber *)postId;
 -(void)deletePost:(NSNumber *)postId;
 -(void)showImage:(NSURL *)imageUrl;
+-(void)getMentions;
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
 
 @interface UsersPostsViewController : JukaelaTableViewController <MBProgressHUDDelegate>
 

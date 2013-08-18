@@ -395,11 +395,6 @@
     }];
 }
 
--(void)hudWasHidden:(MBProgressHUD *)hud
-{
-    [hud removeFromSuperview];
-}
-
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath row] == ([[self userPostArray] count] - 1)) {

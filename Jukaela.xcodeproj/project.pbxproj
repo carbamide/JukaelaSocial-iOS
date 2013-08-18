@@ -10,6 +10,7 @@
 		290045D615576D5D004F113A /* UsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 290045D515576D5D004F113A /* UsersViewController.m */; };
 		29084D5B15D2B2BC00CB7FFF /* JukaelaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */; };
 		29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */; };
+		290DF8F717C076F800CA1069 /* MentionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 290DF8F617C076F800CA1069 /* MentionItem.m */; };
 		2915698D15FFAFCA0084A29C /* ShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2915698C15FFAFCA0084A29C /* ShareManager.m */; };
 		291EB58315649366005FB66D /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291EB58215649366005FB66D /* PostViewController.m */; };
 		2920235415FD5C4700DBDA6C /* NormalCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2920235315FD5C4700DBDA6C /* NormalCellView.m */; };
@@ -91,6 +92,8 @@
 		29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaViewController.m; sourceTree = "<group>"; };
 		29084D5D15D2B36D00CB7FFF /* JukaelaTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaTableViewController.h; sourceTree = "<group>"; };
 		29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaTableViewController.m; sourceTree = "<group>"; };
+		290DF8F517C076F800CA1069 /* MentionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MentionItem.h; sourceTree = "<group>"; };
+		290DF8F617C076F800CA1069 /* MentionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MentionItem.m; sourceTree = "<group>"; };
 		2915698B15FFAFCA0084A29C /* ShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareManager.h; sourceTree = "<group>"; };
 		2915698C15FFAFCA0084A29C /* ShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareManager.m; sourceTree = "<group>"; };
 		291EB58115649366005FB66D /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
@@ -635,6 +638,8 @@
 				29E6C03217BD16F7005D57BF /* User.m */,
 				29E6C03417BD1856005D57BF /* ObjectMapper.h */,
 				29E6C03517BD1856005D57BF /* ObjectMapper.m */,
+				290DF8F517C076F800CA1069 /* MentionItem.h */,
+				290DF8F617C076F800CA1069 /* MentionItem.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -760,6 +765,7 @@
 				29D5B82715545C9F000D9374 /* UIImage+Alpha.m in Sources */,
 				2954BBCD1767DC38007D5004 /* UIActionSheet+Blocks.m in Sources */,
 				29D5B82815545C9F000D9374 /* UIImage+Resize.m in Sources */,
+				290DF8F717C076F800CA1069 /* MentionItem.m in Sources */,
 				29D5B82915545C9F000D9374 /* UIImage+RoundedCorner.m in Sources */,
 				29D5B83C15545FC6000D9374 /* CellBackground.m in Sources */,
 				29AA10531556AD3E00B8D3F5 /* UIView+FindAndResignFirstResponder.m in Sources */,

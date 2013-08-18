@@ -1,23 +1,15 @@
 //
-//  MentionsViewController.m
+//  MentionsViewController
 //  Jukaela
 //
 //  Created by Josh Barrow on 8/29/12.
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import <objc/runtime.h>
-#import "CellBackground.h"
-#import "GravatarHelper.h"
-#import "JEImages.h"
 #import "MentionsViewController.h"
-#import "NormalCellView.h"
-#import "NormalWithImageCellView.h"
-#import "PhotoViewerViewController.h"
 #import "PostViewController.h"
 #import "ShowUserViewController.h"
-#import "SORelativeDateTransformer.h"
-#import "SVModalWebViewController.h"
+#import "PhotoViewerViewController.h"
 
 @interface MentionsViewController ()
 @property (strong, nonatomic) NSCache *externalImageCache;
@@ -30,6 +22,7 @@
 
 @implementation MentionsViewController
 
+#pragma mark Lifecycle
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -43,7 +36,7 @@
 {
     [kAppDelegate setCurrentViewController:self];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubleTap:) name:kTapNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tapHandler:) name:kTapNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:kSendToUserNotification object:nil];
     
     [super viewDidAppear:animated];
@@ -74,16 +67,10 @@
     UIBarButtonItem *composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composePost:)];
     
     [[self navigationItem] setRightBarButtonItem:composeButton];
-        
+    
     [self setDateTransformer:[[SORelativeDateTransformer alloc] init]];
     
     [self setDateFormatter:[[NSDateFormatter alloc] init]];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:kLoadUserWithUsernameNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
-        NSString *usernameString = [aNotification userInfo][@"username"];
-        
-        [self requestWithUsername:usernameString];
-    }];
     
     [self setupNotifications];
     
@@ -95,23 +82,50 @@
     [self performSegueWithIdentifier:kShowPostView sender:self];
 }
 
--(void)setupNotifications
-{
-    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-    
-    [defaultCenter addObserverForName:kRefreshYourTablesNotification object:nil queue:mainQueue usingBlock:^(NSNotification *notification) {
-        [self refreshTableInformation];
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:kShowImage object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
-        [self showImage:aNotification];
-    }];
-}
-
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:kShowReplyView]) {
+        MentionItem *tempItem = [self tableDataSource][[[self tempIndexPath] row]];
+        
+        PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
+        
+        UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:[[self view] frame]];
+        
+        UIImage *tempImage = [self imageWithView:[self view]];
+        
+        [tempImageView setImage:tempImage];
+        
+        [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
+        
+        [viewController setReplyString:[tempItem senderUsername]];
+        
+        [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
+    }
+    else if ([[segue identifier] isEqualToString:kShowUser]) {
+        UINavigationController *navigationController = [segue destinationViewController];
+        ShowUserViewController *viewController = (ShowUserViewController *)[navigationController topViewController];
+        
+        [viewController setUserDict:_tempDict];
+    }
+    else if ([[segue identifier] isEqualToString:kShowPostView]) {
+        UINavigationController *navigationController = [segue destinationViewController];
+        PostViewController *viewController = (PostViewController *)[navigationController topViewController];
+        
+        UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:[[self view] frame]];
+        
+        UIImage *tempImage = [self imageWithView:[self view]];
+        
+        [tempImageView setImage:tempImage];
+        
+        [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
+        
+        [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -119,11 +133,78 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+-(void)didReceiveMemoryWarning
+{
+    [[self externalImageCache] removeAllObjects];
+    
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark Init helpers
+
+-(void)setupNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"show_image_opener" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self showImageOpener:aNotification];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kRefreshYourTablesNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+        [self refreshTableInformation];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kShowImage object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self showImageHandler:aNotification];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"loaded_mentions" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self refreshTableHandler:aNotification];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kLoadUserWithUsernameNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self requestWithUsername:[aNotification userInfo][@"username"]];
+    }];
+}
+
+#pragma mark Refresh table
+-(void)refreshTableInformation
+{
+    if (![self activityIndicator]) {
+        [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
+        
+        [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    }
+    
+    if (![[self activityIndicator] isAnimating]) {
+        [[self activityIndicator] startAnimating];
+    }
+    
+    [[ActivityManager sharedManager] incrementActivityCount];
+    
+    [[ApiFactory sharedManager] getMentions];
+}
+
+-(void)refreshTableHandler:(NSNotification *)aNotification
+{
+    [self setTableDataSource:[[aNotification userInfo][@"feed"] mutableCopy]];
+    
+    [[self tableView] reloadData];
+    
+    [[self refreshControl] endRefreshing];
+    
+    [[ActivityManager sharedManager] decrementActivityCount];
+    
+    [[self activityIndicator] stopAnimating];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
+}
+
 #pragma mark - Table view data source
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *contentText = [self mentions][[indexPath row]][kContent];
+    MentionItem *tempItem = [self tableDataSource][[indexPath row]];
+    
+    NSString *contentText = [tempItem content];
     
     CGSize constraint = CGSizeMake(300, 20000);
     
@@ -136,12 +217,7 @@
     
     CGRect rect = [string boundingRectWithSize:constraint options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil];
     
-    if ([self mentions][[indexPath row]][kRepostUserID] && [self mentions][[indexPath row]][kRepostUserID] != [NSNull null]) {
-        return rect.size.height + 50 + 10 + 20;
-    }
-    else {
-        return rect.size.height + 50 + 10;
-    }
+    return rect.size.height + 50 + 10;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -151,7 +227,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self mentions] count];
+    return [[self tableDataSource] count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -161,7 +237,9 @@
     
     id cell = nil;
     
-    if ([self mentions][[indexPath row]][kImageURL] && [self mentions][[indexPath row]][kImageURL] != [NSNull null]) {
+    MentionItem *tempItem = [self tableDataSource][[indexPath row]];
+    
+    if ([tempItem imageUrl]) {
         cell = [tableView dequeueReusableCellWithIdentifier:CellWithImageCellIdentifier];
         
         if (!cell) {
@@ -180,8 +258,8 @@
         }
     }
     
-    if ([self mentions][[indexPath row]][kImageURL] && [self mentions][[indexPath row]][kImageURL] != [NSNull null]) {
-        NSMutableString *tempString = [NSMutableString stringWithString:[self mentions][[indexPath row]][kImageURL]];
+    if ([tempItem imageUrl]) {
+        NSMutableString *tempString = [NSMutableString stringWithString:[[tempItem imageUrl] absoluteString]];
         
         NSString *tempExtensionString = [NSString stringWithFormat:@".%@", [tempString pathExtension]];
         
@@ -251,32 +329,30 @@
         }
     }
     
-    if ([self mentions][[indexPath row]][kContent]) {
-        [[cell contentText] setText:[self mentions][[indexPath row]][kContent]];
+    if ([tempItem content]) {
+        [[cell contentText] setText:[tempItem content]];
     }
     else {
         [[cell contentText] setText:@"Loading..."];
     }
     
-    if ([self mentions][[indexPath row]][@"sender_name"] && [self mentions][[indexPath row]][@"sender_name"] != [NSNull null]) {
-        [[cell nameLabel] setText:[self mentions][[indexPath row]][@"sender_name"]];
+    if ([tempItem senderName]) {
+        [[cell nameLabel] setText:[tempItem senderName]];
     }
     
-    if ([self mentions][[indexPath row]][@"sender_username"] && [self mentions][[indexPath row]][@"sender_username"] != [NSNull null]) {
-        [[cell usernameLabel] setText:[NSString stringWithFormat:@"@%@", [self mentions][[indexPath row]][@"sender_username"]]];
+    if ([tempItem senderUsername]) {
+        [[cell usernameLabel] setText:[NSString stringWithFormat:@"@%@", [tempItem senderUsername]]];
     }
     
-    NSDate *tempDate = [NSDate dateWithISO8601String:[self mentions][[indexPath row]][kCreationDate] withFormatter:[self dateFormatter]];
+    [[cell dateLabel] setText:[[self dateTransformer] transformedValue:[tempItem createdAt]]];
     
-    [[cell dateLabel] setText:[[self dateTransformer] transformedValue:tempDate]];
-    
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self mentions][[indexPath row]][@"sender_user_id"]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]]]];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
     objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
     
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self mentions][[indexPath row]][@"sender_user_id"]]]] error:nil];
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]]] error:nil];
     
     if (image) {
         [[cell imageView] setImage:image];
@@ -285,7 +361,7 @@
         if (attributes) {
             if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
                 dispatch_async(queue, ^{
-                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self mentions][[indexPath row]][@"sender_email"] withSize:40]]];
+                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[tempItem senderEmail] withSize:40]]];
                     
 #if (TARGET_IPHONE_SIMULATOR)
                     image = [JEImages normalize:image];
@@ -300,7 +376,7 @@
                             [cell setNeedsDisplay];
                         }
                         
-                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self mentions][[indexPath row]][@"sender_user_id"]]];
+                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]];
                     });
                 });
             }
@@ -308,7 +384,7 @@
     }
     else {
 		dispatch_async(queue, ^{
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self mentions][[indexPath row]][@"sender_email"] withSize:40]]];
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[tempItem senderEmail] withSize:40]]];
 			
 #if (TARGET_IPHONE_SIMULATOR)
             image = [JEImages normalize:image];
@@ -323,7 +399,7 @@
                     [cell setNeedsDisplay];
 				}
 				
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [self mentions][[indexPath row]][@"sender_user_id"]]];
+                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]];
 			});
 		});
 	}
@@ -333,28 +409,28 @@
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath row] == ([[self mentions] count] - 1)) {
+    if ([indexPath row] == ([[self tableDataSource] count] - 1)) {
         [[ActivityManager sharedManager] incrementActivityCount];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/pages/mentions.json", kSocialURL]];
         
-        NSString *requestString = [RequestFactory feedRequestFrom:[[self mentions] count] to:[[self mentions] count] + 20];
+        NSString *requestString = [RequestFactory feedRequestFrom:[[self tableDataSource] count] to:[[self tableDataSource] count] + 20];
         
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
         NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            if (data) {                
+            if (data) {
                 NSMutableArray *tempArray = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] mutableCopy];
                 
-                NSInteger oldTableViewCount = [[self mentions] count];
+                NSInteger oldTableViewCount = [[self tableDataSource] count];
                 
-                NSMutableArray *rehashOfOldArray = [NSMutableArray arrayWithArray:[self mentions]];
+                NSMutableArray *rehashOfOldArray = [NSMutableArray arrayWithArray:[self tableDataSource]];
                 
                 [rehashOfOldArray addObjectsFromArray:tempArray];
                 
-                [self setMentions:rehashOfOldArray];
+                [self setTableDataSource:rehashOfOldArray];
                 
                 @try {
                     [[self tableView] beginUpdates];
@@ -381,169 +457,21 @@
                     NSLog(@"Inside finally");
                 }
             }
-
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
         }];
         [[ActivityManager sharedManager] decrementActivityCount];
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
-
--(void)doubleTap:(NSNotification *)aNotification
+#pragma mark JukaelaTableViewProtocol
+-(void)tappedUserHandler:(NSNotification *)aNotification
 {
     if ([kAppDelegate currentViewController] == self) {
-
-        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
-        
-        [self setTempIndexPath:indexPathOfTappedRow];
-        
-        RIButtonItem *replyButton = [RIButtonItem itemWithLabel:@"Reply" action:^{
-            [self performSegueWithIdentifier:kShowReplyView sender:self];
-        }];
-        
-        RIButtonItem *deletePostButton = nil;
-                
-        
-        if ([[self mentions][[indexPathOfTappedRow row]][@"sender_user_id"] isEqualToNumber:[kAppDelegate userID]]) {
-            deletePostButton = [RIButtonItem itemWithLabel:@"Delete Post" action:^{
-                [[ActivityManager sharedManager] incrementActivityCount];
-                
-                NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
-                
-                [tempCell disableCell];
-                
-                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][kID]]];
-                
-                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-                
-                [request setHTTPMethod:@"DELETE"];
-                [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-                [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
-                
-                [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                    [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
-                    
-                    [self refreshTableInformation];
-                    
-                    [[ActivityManager sharedManager] decrementActivityCount];
-                }];
-            }];
-        }
-        
-        UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:deletePostButton otherButtonItems:replyButton, nil];
-        
-        [cellActionSheet showInView:[self view]];
-    }
-}
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([[segue identifier] isEqualToString:kShowReplyView]) {
-        PostViewController *viewController = (PostViewController *)[[[segue destinationViewController] viewControllers] lastObject];
-        
-        UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:[[self view] frame]];
-        
-        UIImage *tempImage = [self imageWithView:[self view]];
-        
-        [tempImageView setImage:tempImage];
-        
-        [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
-        
-        [viewController setReplyString:[NSString stringWithFormat:@"@%@", [self mentions][[[self tempIndexPath] row]][@"sender_username"]]];
-        
-        [[[self tableView] cellForRowAtIndexPath:[self tempIndexPath]] setSelected:NO animated:YES];
-    }
-    else if ([[segue identifier] isEqualToString:kShowUser]) {
-        UINavigationController *navigationController = [segue destinationViewController];
-        ShowUserViewController *viewController = (ShowUserViewController *)[navigationController topViewController];
-        
-        [viewController setUserDict:_tempDict];
-    }
-    else if ([[segue identifier] isEqualToString:kShowPostView]) {
-        UINavigationController *navigationController = [segue destinationViewController];
-        PostViewController *viewController = (PostViewController *)[navigationController topViewController];
-        
-        UIImageView *tempImageView = [[UIImageView alloc] initWithFrame:[[self view] frame]];
-        
-        UIImage *tempImage = [self imageWithView:[self view]];
-        
-        [tempImageView setImage:tempImage];
-        
-        [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
-        
-        [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
-    }
-}
-
--(void)refreshTableInformation
-{
-    if (![self activityIndicator]) {
-        [self setActivityIndicator:[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)]];
-                
-        [[self activityIndicator] setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-
-    }
-    
-    //FIXME
-    //[[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:[self activityIndicator]]];
-    
-    if (![[self activityIndicator] isAnimating]) {
-        [[self activityIndicator] startAnimating];
-    }
-    
-    [[ActivityManager sharedManager] incrementActivityCount];
-    
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/pages/mentions.json", kSocialURL]];
-    
-    NSString *requestString = [RequestFactory feedRequestFrom:0 to:20];
-    
-    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
-    
-    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {
-            [self setMentions:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
-            
-            if ([[self mentions] count] == 0) {
-                [self goMakeFriends];
-            }
-            
-            [[self tableView] reloadData];
-            
-            [[self refreshControl] endRefreshing];
-            
-            [[ActivityManager sharedManager] decrementActivityCount];
-        }
-        else {
-            [Helpers errorAndLogout:self withMessage:@"There was an error loading the user's information.  Please logout and log back in."];
-        }
-        
-        [[self activityIndicator] stopAnimating];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
-    }];
-}
-
--(void)goMakeFriends
-{
-    UIAlertView *mentionsError = [[UIAlertView alloc] initWithTitle:@"No mentions!" message:@"Man, you need to make some friends!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    
-    [mentionsError show];
-}
-
--(void)switchToSelectedUser:(NSNotification *)aNotification
-{
-    if ([kAppDelegate currentViewController] == self) {
-        
-        
         if (![self progressHUD]) {
             [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
         }
+        
         [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];
         [[self progressHUD] setLabelText:@"Loading User..."];
         [[self progressHUD] setDelegate:self];
@@ -554,9 +482,11 @@
         
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
         
+        MentionItem *tempItem = [self tableDataSource][[indexPathOfTappedRow row]];
+        
         [[ActivityManager sharedManager] incrementActivityCount];
         
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [self mentions][[indexPathOfTappedRow row]][@"sender_user_id"]]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [tempItem senderUserId]]];
         
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
         
@@ -578,11 +508,6 @@
             [self performSegueWithIdentifier:kShowUser sender:nil];
         }];
     }
-}
-
--(void)hudWasHidden:(MBProgressHUD *)hud
-{
-    [hud removeFromSuperview];
 }
 
 -(void)requestWithUsername:(NSString *)username
@@ -621,47 +546,92 @@
     }
 }
 
--(void)didReceiveMemoryWarning
-{
-    [[self externalImageCache] removeAllObjects];
-    
-    [super didReceiveMemoryWarning];
-}
-
--(void)showImage:(NSNotification *)aNotification
+-(void)showImageHandler:(NSNotification *)aNotification
 {
     if ([kAppDelegate currentViewController] == self) {
         NSIndexPath *indexPath = [aNotification userInfo][kIndexPath];
         
-        NSURL *tempURL = [NSURL URLWithString:[self mentions][[indexPath row]][kImageURL]];
+        FeedItem *feedItem = [self tableDataSource][[indexPath row]];
         
-        NSMutableURLRequest *request = [NSURLRequest requestWithURL:tempURL];
+        [[ApiFactory sharedManager] showImage:[feedItem imageUrl]];
         
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-            if (data) {
-                UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-                
-                PhotoViewerViewController *viewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"ShowPhotos"];
-                
-                [viewController setMainImage:[UIImage imageWithData:data]];
-                
-                UIImage *tempImage = [[self imageWithView:[self view]] applyBlurWithRadius:10 tintColor:[UIColor clearColor] saturationDeltaFactor:1.0 maskImage:nil];
-                
-                [viewController setBackgroundImage:tempImage];
-                
-                [self presentViewController:viewController animated:YES completion:nil];
-            }
-            else {
-                UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                     message:@"There has been an error downloading the requested image."
-                                                                    delegate:nil
-                                                           cancelButtonTitle:@"OK"
-                                                           otherButtonTitles:nil, nil];
-                
-                [errorAlert show];
-            }
+    }
+}
+
+- (void)showImageOpener:(NSNotification *)aNotification
+{
+    NSData *data = [aNotification userInfo][@"data"];
+    
+    if (data) {
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+        
+        PhotoViewerViewController *viewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"ShowPhotos"];
+        
+        [viewController setMainImage:[UIImage imageWithData:data]];
+        
+        UIImage *tempImage = [[self imageWithView:[self view]] applyBlurWithRadius:10 tintColor:[UIColor clearColor] saturationDeltaFactor:1.0 maskImage:nil];
+        
+        [viewController setBackgroundImage:tempImage];
+        
+        [self presentViewController:viewController animated:YES completion:nil];
+    }
+    else {
+        UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                             message:@"There has been an error downloading the requested image."
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil, nil];
+        
+        [errorAlert show];
+    }
+}
+
+-(void)tapHandler:(NSNotification *)aNotification
+{
+    if ([kAppDelegate currentViewController] == self) {
+        
+        NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
+        
+        MentionItem *tempItem = [self tableDataSource][[[self tempIndexPath] row]];
+        
+        [self setTempIndexPath:indexPathOfTappedRow];
+        
+        RIButtonItem *replyButton = [RIButtonItem itemWithLabel:@"Reply" action:^{
+            [self performSegueWithIdentifier:kShowReplyView sender:self];
         }];
         
+        RIButtonItem *deletePostButton = nil;
+        
+        
+        if ([[tempItem senderUserId] isEqualToNumber:[kAppDelegate userID]]) {
+            deletePostButton = [RIButtonItem itemWithLabel:@"Delete Post" action:^{
+                [[ActivityManager sharedManager] incrementActivityCount];
+                
+                NormalCellView *tempCell = (NormalCellView *)[[self tableView] cellForRowAtIndexPath:indexPathOfTappedRow];
+                
+                [tempCell disableCell];
+                
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mentions/%@.json", kSocialURL, [tempItem postId]]];
+                
+                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+                
+                [request setHTTPMethod:@"DELETE"];
+                [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+                [request setValue:@"application/json" forHTTPHeaderField:@"aceept"];
+                
+                [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                    [[[self tableView] cellForRowAtIndexPath:[[self tableView] indexPathForSelectedRow]] setSelected:NO animated:YES];
+                    
+                    [self refreshTableInformation];
+                    
+                    [[ActivityManager sharedManager] decrementActivityCount];
+                }];
+            }];
+        }
+        
+        UIActionSheet *cellActionSheet = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:deletePostButton otherButtonItems:replyButton, nil];
+        
+        [cellActionSheet showInView:[self view]];
     }
 }
 @end

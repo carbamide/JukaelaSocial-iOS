@@ -6,14 +6,12 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
+#import "JukaelaTableViewController.h"
 
-@interface MentionsViewController : JukaelaTableViewController <MBProgressHUDDelegate>
+@interface MentionsViewController : JukaelaTableViewController <MBProgressHUDDelegate, JukaelaTableViewProtocol>
 
 @property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
-@property (strong, nonatomic) NSMutableArray *mentions;
 @property (strong, nonatomic) NSString *userID;
 
 @end

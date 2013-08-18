@@ -5,37 +5,19 @@
 //  Created by Josh Barrow on 5/3/12.
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
-#import <Accounts/Accounts.h>
-#import <objc/runtime.h>
-#import <Social/Social.h>
-#import "AHMarkedHyperlink.h"
+
 #import "FeedViewController.h"
-#import "CellBackground.h"
-#import "GravatarHelper.h"
-#import "JEImages.h"
-#import "LoginViewController.h"
-#import "NormalCellView.h"
-#import "NormalWithImageCellView.h"
+#import "ShowUserViewController.h"
 #import "PhotoViewerViewController.h"
 #import "PostViewController.h"
-#import "SFHFKeychainUtils.h"
-#import "ShareManager.h"
-#import "ShowUserViewController.h"
-#import "SVModalWebViewController.h"
 #import "ThreadedPostsViewController.h"
 #import "UsersWhoLikedViewController.h"
-#import "ObjectMapper.h"
-#import "ApiFactory.h"
-#import "FeedItem.h"
-#import "User.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSCache *externalImageCache;
 @property (strong, nonatomic) NSIndexPath *tempIndexPath;
 @property (strong, nonatomic) NSMutableArray *tempArray;
 @property (strong, nonatomic) NSString *documentsFolder;
-@property (strong, nonatomic) NSString *stringToPost;
-@property (strong, nonatomic) NSTimer *refreshTimer;
 @property (strong, nonatomic) UIImage *tempImage;
 
 @property (strong, nonatomic) MBProgressHUD *progressHUD;
@@ -85,8 +67,7 @@
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     
     [refreshControl setTintColor:[UIColor blackColor]];
-    
-    [refreshControl addTarget:self action:@selector(refreshControlRefresh:) forControlEvents:UIControlEventValueChanged];
+    [refreshControl addTarget:self action:@selector(refreshControlHandler:) forControlEvents:UIControlEventValueChanged];
     
     [self setRefreshControl:refreshControl];
     
@@ -107,7 +88,7 @@
         [[ApiFactory sharedManager] login];
     }
     else {
-        if (![self theFeed]) {
+        if (![self tableDataSource]) {
             [self refreshTableInformation:0 to:20];
         }
     }
@@ -167,7 +148,7 @@
         
         [[viewController view] insertSubview:tempImageView belowSubview:[viewController backgroundView]];
         
-        FeedItem *feedItem = [self theFeed][[[self tempIndexPath] row]];
+        FeedItem *feedItem = [self tableDataSource][[[self tempIndexPath] row]];
         
         [viewController setReplyString:[NSString stringWithFormat:@"@%@", [[feedItem user] username]]];
         [viewController setInReplyTo:[feedItem postId]];
@@ -227,7 +208,7 @@
         
         [self setCurrentChangeType:DELETE_POST];
         
-        [self refreshTableInformation:0 to:[[self theFeed] count]];
+        [self refreshTableInformation:0 to:[[self tableDataSource] count]];
         
         [[ActivityManager sharedManager] decrementActivityCount];
     }];
@@ -266,7 +247,7 @@
         
         [[self externalImageCache] removeAllObjects];
         
-        [self refreshTableInformation:0 to:[[self theFeed] count]];
+        [self refreshTableInformation:0 to:[[self tableDataSource] count]];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kSuccessfulTweetNotification object:nil queue:mainQueue usingBlock:^(NSNotification *aNotification) {
@@ -358,6 +339,7 @@
     [self performSegueWithIdentifier:kShowPostView sender:self];
 }
 
+#pragma mark Handlers
 - (void)insertPostHandler:(NSInteger)difference to:(NSInteger)to
 {
     if ([self justToJukaela]) {
@@ -396,7 +378,7 @@
         
         [self setCurrentChangeType:-1];
         
-        [self setTheFeed:nil];
+        [self setTableDataSource:nil];
         
         [self refreshTableInformation:0 to:20];
     }
@@ -421,7 +403,7 @@
             
             [self setCurrentChangeType:-1];
             
-            [self setTheFeed:nil];
+            [self setTableDataSource:nil];
             
             [self refreshTableInformation:0 to:20];
         }
@@ -462,16 +444,17 @@
     [[ActivityManager sharedManager] decrementActivityCount];
     
 }
+
 - (void)feedHandler:(NSNotification *)aNotification to:(NSInteger)to
 {
     NSArray *tempArray = [aNotification userInfo][@"feed"];
     
-    NSArray *oldArray = [self theFeed];
+    NSArray *oldArray = [self tableDataSource];
     
-    [self setTheFeed:[tempArray mutableCopy]];
+    [self setTableDataSource:[tempArray mutableCopy]];
     
-    NSMutableSet *firstSet = [NSMutableSet setWithArray:[self theFeed]];
-    NSMutableSet *secondSet = [NSMutableSet setWithArray:[self theFeed]];
+    NSMutableSet *firstSet = [NSMutableSet setWithArray:[self tableDataSource]];
+    NSMutableSet *secondSet = [NSMutableSet setWithArray:[self tableDataSource]];
     
     [firstSet unionSet:[NSSet setWithArray:oldArray]];
     [secondSet intersectSet:[NSSet setWithArray:oldArray]];
@@ -507,6 +490,12 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kEnableCellNotification object:nil];
 }
 
+-(void)refreshControlHandler:(id)sender
+{
+    [self refreshTableInformation:0 to:([[self tableDataSource] count] - 1)];
+}
+
+#pragma mark Refresh Table
 -(void)refreshTableInformation:(NSInteger)from to:(NSInteger)to
 {
     if (!from) {
@@ -526,16 +515,12 @@
     }];
 }
 
--(void)refreshControlHandler:(id)sender
-{
-    [self refreshTableInformation:0 to:([[self theFeed] count] - 1)];
-}
 
 #pragma mark - Table view data source
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FeedItem *feedItem = [self theFeed][[indexPath row]];
+    FeedItem *feedItem = [self tableDataSource][[indexPath row]];
     
     CGSize constraint = CGSizeMake(300, 20000);
     
@@ -563,12 +548,12 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self theFeed] count];
+    return [[self tableDataSource] count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FeedItem *feedItem = [self theFeed][[indexPath row]];
+    FeedItem *feedItem = [self tableDataSource][[indexPath row]];
     
     static NSString *CellIdentifier = @"FeedViewCell";
     static NSString *CellWithImageCellIdentifier = @"CellWithImageCellIdentifier";
@@ -784,12 +769,12 @@
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath row] == ([[self theFeed] count] - 1)) {
+    if ([indexPath row] == ([[self tableDataSource] count] - 1)) {
         [[ActivityManager sharedManager] incrementActivityCount];
         
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/home.json", kSocialURL]];
         
-        NSString *requestString = [RequestFactory feedRequestFrom:[[self theFeed] count] to:[[self theFeed] count] + 20];
+        NSString *requestString = [RequestFactory feedRequestFrom:[[self tableDataSource] count] to:[[self tableDataSource] count] + 20];
         
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
@@ -801,13 +786,13 @@
             if (data) {
                 NSMutableArray *tempArray = [[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] mutableCopy];
                 
-                NSInteger oldTableViewCount = [[self theFeed] count];
+                NSInteger oldTableViewCount = [[self tableDataSource] count];
                 
-                NSMutableArray *rehashOfOldArray = [NSMutableArray arrayWithArray:[self theFeed]];
+                NSMutableArray *rehashOfOldArray = [NSMutableArray arrayWithArray:[self tableDataSource]];
                 
                 [rehashOfOldArray addObjectsFromArray:tempArray];
                 
-                [self setTheFeed:rehashOfOldArray];
+                [self setTableDataSource:rehashOfOldArray];
                 
                 @try {
                     [[self tableView] beginUpdates];
@@ -841,13 +826,6 @@
     }
 }
 
-#pragma mark MBProgressHUD Delegate
-
--(void)hudWasHidden:(MBProgressHUD *)hud
-{
-    [hud removeFromSuperview];
-}
-
 #pragma mark JukaelaTableView Protocol Methods
 
 -(void)tapHandler:(NSNotification *)aNotification
@@ -862,7 +840,7 @@
     if ([kAppDelegate currentViewController] == self) {
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
         
-        FeedItem *feedItem = [self theFeed][[indexPathOfTappedRow row]];
+        FeedItem *feedItem = [self tableDataSource][[indexPathOfTappedRow row]];
         
         [self setTempIndexPath:indexPathOfTappedRow];
         
@@ -946,7 +924,7 @@
     if ([kAppDelegate currentViewController] == self) {
         NSIndexPath *indexPath = [aNotification userInfo][kIndexPath];
         
-        FeedItem *feedItem = [self theFeed][[indexPath row]];
+        FeedItem *feedItem = [self tableDataSource][[indexPath row]];
         
         [[ApiFactory sharedManager] showImage:[feedItem imageUrl]];
         
@@ -980,6 +958,7 @@
         [errorAlert show];
     }
 }
+
 -(void)tappedUserHandler:(NSNotification *)aNotification
 {
     if ([kAppDelegate currentViewController] == self) {
@@ -997,7 +976,7 @@
         
         NSIndexPath *indexPathOfTappedRow = (NSIndexPath *)[aNotification userInfo][kIndexPath];
         
-        FeedItem *feedItem = [self theFeed][[indexPathOfTappedRow row]];
+        FeedItem *feedItem = [self tableDataSource][[indexPathOfTappedRow row]];
         
         [[ActivityManager sharedManager] incrementActivityCount];
         

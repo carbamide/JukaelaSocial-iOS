@@ -6,11 +6,7 @@
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
 
-#import <MessageUI/MessageUI.h>
-#import <MessageUI/MFMailComposeViewController.h>
-#import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
-#import "JukaelaTableViewProtocol.h"
+#import "JukaelaTableViewController.h"
 
 NS_ENUM(NSInteger, ChangeType) {
     INSERT_POST,
@@ -18,10 +14,9 @@ NS_ENUM(NSInteger, ChangeType) {
     OTHER_CHANGE_TYPE
 };
 
-@interface FeedViewController : JukaelaTableViewController <MBProgressHUDDelegate, UIScrollViewDelegate, JukaelaTableViewProtocol>
+@interface FeedViewController : JukaelaTableViewController <UIScrollViewDelegate, JukaelaTableViewProtocol>
 
 @property (strong, nonatomic) NSDictionary *tempDict;
-@property (strong, nonatomic) NSMutableArray *theFeed;
 @property (strong, nonatomic) NSMutableDictionary *nameDict;
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) UITextView *textView;

@@ -55,4 +55,11 @@
     [self presentViewController:webViewController animated:YES completion:nil];
 }
 
+#pragma mark MBProgressHUD Delegate
+
+-(void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
+}
+
 @end

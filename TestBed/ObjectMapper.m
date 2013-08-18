@@ -9,6 +9,7 @@
 #import "ObjectMapper.h"
 #import "FeedItem.h"
 #import "User.h"
+#import "MentionItem.h"
 
 @implementation ObjectMapper
 
@@ -33,7 +34,7 @@
     return tempUser;
 }
 
-+(NSArray *)convertToFeedItemObject:(NSData *)json
++(NSArray *)convertToFeedItemArray:(NSData *)json
 {
     NSMutableArray *returnArray = [NSMutableArray array];
     
@@ -64,6 +65,34 @@
         [tempFeedItem setUser:tempUser];
         
         [returnArray addObject:tempFeedItem];
+    }
+    
+    return returnArray;
+}
+
++(NSArray *)convertToMentionItemArray:(NSData *)json
+{
+    NSMutableArray *returnArray = [NSMutableArray array];
+    
+    NSError *error = nil;
+    
+    NSArray *tempArray = [NSJSONSerialization JSONObjectWithData:json options:0 error:&error];
+    
+    for (NSDictionary *tempDict in tempArray) {
+        MentionItem *tempItem = [[MentionItem alloc] init];
+        
+        [tempItem setContent:tempDict[kContent]];
+        [tempItem setCreatedAt:[NSDate dateWithISO8601String:[self nullOrValue:tempDict[kCreationDate]] withFormatter:[kAppDelegate dateFormatter]]];
+        [tempItem setPostId:[self nullOrValue:tempDict[kID]]];
+        [tempItem setImageUrl:[NSURL URLWithString:[self nullOrValue:tempDict[kImageURL]]]];
+        [tempItem setSenderEmail:[self nullOrValue:tempDict[@"sender_email"]]];
+        [tempItem setSenderName:[self nullOrValue:tempDict[@"sender_name"]]];
+        [tempItem setSenderUserId:[self nullOrValue:tempDict[@"sender_user_id"]]];
+        [tempItem setSenderUsername:[self nullOrValue:tempDict[@"sender_username"]]];
+        [tempItem setUpdatedAt:[NSDate dateWithISO8601String:[self nullOrValue:tempDict[@"updated_at"]] withFormatter:[kAppDelegate dateFormatter]]];
+        [tempItem setUserId:[self nullOrValue:tempDict[@"user_id"]]];
+        
+        [returnArray addObject:tempItem];
     }
     
     return returnArray;

@@ -6,9 +6,6 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
-
 @interface ThreadedPostsViewController : JukaelaTableViewController <MBProgressHUDDelegate>
 
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;

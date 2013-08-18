@@ -242,7 +242,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [self setTempFeed:[ObjectMapper convertToFeedItemObject:data]];
+            [self setTempFeed:[ObjectMapper convertToFeedItemArray:data]];
             
             [[ActivityManager sharedManager] decrementActivityCount];
             
@@ -286,7 +286,7 @@
     if ([[segue identifier] isEqualToString:@"ShowFeed"]) {
         FeedViewController *viewController = [segue destinationViewController];
         
-        [viewController setTheFeed:(NSMutableArray *)[self tempFeed]];
+        [viewController setTableDataSource:(NSMutableArray *)[self tempFeed]];
     }
 }
 

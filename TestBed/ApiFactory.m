@@ -62,7 +62,26 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kLoadedFeed object:nil userInfo:@{@"feed": [ObjectMapper convertToFeedItemObject:data]}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kLoadedFeed object:nil userInfo:@{@"feed": [ObjectMapper convertToFeedItemArray:data]}];
+        }
+    }];
+}
+
+-(void)getMentions
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/pages/mentions.json", kSocialURL]];
+    
+    NSString *requestString = [RequestFactory feedRequestFrom:0 to:20];
+    
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+    
+    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+        
+        if (data) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"loaded_mentions" object:nil userInfo:@{@"feed": [ObjectMapper convertToMentionItemArray:data]}];
         }
     }];
 }

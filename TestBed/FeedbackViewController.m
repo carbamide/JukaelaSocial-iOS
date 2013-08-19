@@ -25,6 +25,8 @@
 
 - (void)viewDidLoad
 {
+    [self setTitle:@"Feedback"];
+    
     UIImage *image = [Helpers loginImage];
     
     [[self backgroundView] setImage:image];

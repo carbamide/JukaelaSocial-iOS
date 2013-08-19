@@ -10,12 +10,20 @@
 #import "SVModalWebViewController.h"
 #import "FeedViewController.h"
 
+@interface JukaelaTableViewController()
+
+@property (strong, nonatomic) UIImageView *backgroundImageView;
+
+@end
+
 @implementation JukaelaTableViewController
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setupBackground];
     
     if (self == [[self navigationController] viewControllers][0] || [self isKindOfClass:[FeedViewController class]]) {
         [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self action:@selector(showMenu)]];
@@ -27,7 +35,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 - (UIImage *) imageWithView:(UIView *)view
 {
@@ -47,6 +54,25 @@
 -(void)showMenu
 {
     [[kAppDelegate sideMenu] show];
+}
+
+-(void)setupBackground
+{
+    UIImage *image = [Helpers loginImage];
+    
+    [self setBackgroundImageView:[[UIImageView alloc] initWithImage:image]];
+    
+    [[self backgroundImageView] setFrame:[[self tableView] frame]];
+    [[self backgroundImageView] setContentMode:UIViewContentModeScaleAspectFill];
+    
+    [[self tableView] setBackgroundView:[self backgroundImageView]];
+}
+
+-(void)setShowBackgroundImage:(BOOL)showBackgroundImage
+{
+    _showBackgroundImage = showBackgroundImage;
+    
+    [[self backgroundImageView] setHidden:!showBackgroundImage];
 }
 
 - (void)handleURL:(NSURL*)url

@@ -37,6 +37,7 @@
 @interface JukaelaTableViewController : UITableViewController <MBProgressHUDDelegate>
 
 @property (strong, nonatomic) NSMutableArray *tableDataSource;
+@property (nonatomic) BOOL showBackgroundImage;
 
 - (UIImage *) imageWithView:(UIView *)view;
 

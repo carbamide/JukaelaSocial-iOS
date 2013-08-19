@@ -38,13 +38,7 @@
 {
     [super viewDidLoad];
     
-    UIImage *image = [Helpers loginImage];
-    
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:image];
-    [bgImageView setFrame:[[self tableView] frame]];
-    [bgImageView setContentMode:UIViewContentModeScaleAspectFill];
-    
-    [[self tableView] setBackgroundView:bgImageView];
+    [self setShowBackgroundImage:YES];
     
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSelf:)]];
     

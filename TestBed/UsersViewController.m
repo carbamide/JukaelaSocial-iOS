@@ -43,13 +43,7 @@
 {
     [super viewDidLoad];
     
-    UIImage *image = [Helpers loginImage];
-    
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:image];
-    [bgImageView setFrame:[[self collectionView] frame]];
-    [bgImageView setContentMode:UIViewContentModeScaleAspectFill];
-    
-    [[self collectionView] setBackgroundView:bgImageView];
+    [self setShowBackgroundImage:YES];
     
     [self getUsers:YES];
     

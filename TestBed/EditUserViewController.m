@@ -96,13 +96,7 @@
     
     [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)]];
     
-    UIImage *image = [Helpers loginImage];
-    
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:image];
-    [bgImageView setFrame:[[self tableView] frame]];
-    [bgImageView setContentMode:UIViewContentModeScaleAspectFill];
-    
-    [[self tableView] setBackgroundView:bgImageView];
+    [self setShowBackgroundImage:YES];
     
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     

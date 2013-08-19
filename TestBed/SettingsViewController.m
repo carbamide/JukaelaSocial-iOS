@@ -64,7 +64,7 @@ NS_ENUM(NSInteger, SocialTypes) {
         [[kAppDelegate rootViewNavigationController] popToRootViewControllerAnimated:NO];
     }];
     
-    UIActionSheet *logoutActionSheet = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:logoutButton otherButtonItems:nil, nil];
+    UIActionSheet *logoutActionSheet = [[UIActionSheet alloc] initWithTitle:@"You will be taken to the sign in screen." cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:logoutButton otherButtonItems:nil, nil];
     
     [logoutActionSheet showInView:[self view]];
 }
@@ -86,13 +86,7 @@ NS_ENUM(NSInteger, SocialTypes) {
     [[self pickerView] setDelegate:self];
     [[self pickerView] setShowsSelectionIndicator:YES];
     
-    UIImage *image = [Helpers loginImage];
-    
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:image];
-    [bgImageView setFrame:[[self tableView] frame]];
-    [bgImageView setContentMode:UIViewContentModeScaleAspectFill];
-    
-    [[self tableView] setBackgroundView:bgImageView];
+    [self setShowBackgroundImage:YES];
 }
 
 -(void)viewDidUnload
@@ -347,7 +341,7 @@ NS_ENUM(NSInteger, SocialTypes) {
         [[self tableView] deselectRowAtIndexPath:[[self tableView] indexPathForSelectedRow] animated:YES];
     }];
     
-    UIActionSheet *eraseAction = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:buttonItem otherButtonItems:nil, nil];
+    UIActionSheet *eraseAction = [[UIActionSheet alloc] initWithTitle:@"This will cause all feeds to reload." cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:buttonItem otherButtonItems:nil, nil];
     
     [eraseAction showInView:[self view]];
 }

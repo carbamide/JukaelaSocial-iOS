@@ -20,4 +20,6 @@
 
 @interface JukaelaCollectionViewController : UICollectionViewController <MBProgressHUDDelegate>
 
+@property (nonatomic) BOOL showBackgroundImage;
+
 @end

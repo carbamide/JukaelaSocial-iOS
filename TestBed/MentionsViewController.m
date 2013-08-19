@@ -37,7 +37,7 @@
     [kAppDelegate setCurrentViewController:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tapHandler:) name:kTapNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:kSendToUserNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tappedUserHandler:) name:kSendToUserNotification object:nil];
     
     [super viewDidAppear:animated];
 }

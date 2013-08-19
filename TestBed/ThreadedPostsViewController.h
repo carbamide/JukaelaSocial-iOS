@@ -7,12 +7,8 @@
 //
 
 #import "JukaelaTableViewController.h"
+#import "JukaelaTableViewProtocol.h"
 
 @interface ThreadedPostsViewController : JukaelaTableViewController
-
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
-@property (strong, nonatomic) NSDictionary *tempDict;
-@property (strong, nonatomic) NSMutableArray *threadedPosts;
-@property (strong, nonatomic) NSString *userID;
 
 @end

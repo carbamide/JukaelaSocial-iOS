@@ -168,7 +168,7 @@
         UINavigationController *navigationController = [segue destinationViewController];
         ThreadedPostsViewController *viewController = (ThreadedPostsViewController *)[navigationController topViewController];
         
-        [viewController setThreadedPosts:[self tempArray]];
+        [viewController setTableDataSource:[self tempArray]];
     }
     else if ([[segue identifier] isEqualToString:@"UsersWhoLiked"]) {
         UINavigationController *navigationController = [segue destinationViewController];
@@ -197,7 +197,7 @@
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tapHandler:) name:kTapNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToSelectedUser:) name:kSendToUserNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tappedUserHandler:) name:kSendToUserNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"show_image_opener" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
         [self showImageOpener:aNotification];

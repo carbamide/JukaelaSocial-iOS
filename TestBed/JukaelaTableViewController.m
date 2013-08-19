@@ -8,6 +8,7 @@
 
 #import "JukaelaTableViewController.h"
 #import "SVModalWebViewController.h"
+#import "FeedViewController.h"
 
 @implementation JukaelaTableViewController
 
@@ -16,7 +17,9 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self action:@selector(showMenu)];
+    if (self == [[self navigationController] viewControllers][0] || [self isKindOfClass:[FeedViewController class]]) {
+        [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self action:@selector(showMenu)]];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -29,7 +32,7 @@
 - (UIImage *) imageWithView:(UIView *)view
 {
     UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, [[[[self view] window] screen] scale]);
-
+    
     [view drawViewHierarchyInRect:CGRectMake(view.frame.origin.x, view.frame.origin.y, CGRectGetWidth(view.frame), CGRectGetHeight(view.frame)) afterScreenUpdates:NO];
     
     UIImage *newBGImage = UIGraphicsGetImageFromCurrentImageContext();

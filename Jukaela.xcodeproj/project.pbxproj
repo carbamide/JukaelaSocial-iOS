@@ -11,6 +11,7 @@
 		29084D5B15D2B2BC00CB7FFF /* JukaelaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5A15D2B2BC00CB7FFF /* JukaelaViewController.m */; };
 		29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */; };
 		290DF8F717C076F800CA1069 /* MentionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 290DF8F617C076F800CA1069 /* MentionItem.m */; };
+		290FC4F417C1AFBC0070F999 /* LoginImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 290FC4F317C1AFBC0070F999 /* LoginImage.m */; };
 		2915698D15FFAFCA0084A29C /* ShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2915698C15FFAFCA0084A29C /* ShareManager.m */; };
 		291EB58315649366005FB66D /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291EB58215649366005FB66D /* PostViewController.m */; };
 		2920235415FD5C4700DBDA6C /* NormalCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2920235315FD5C4700DBDA6C /* NormalCellView.m */; };
@@ -94,6 +95,8 @@
 		29084D5E15D2B36D00CB7FFF /* JukaelaTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaTableViewController.m; sourceTree = "<group>"; };
 		290DF8F517C076F800CA1069 /* MentionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MentionItem.h; sourceTree = "<group>"; };
 		290DF8F617C076F800CA1069 /* MentionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MentionItem.m; sourceTree = "<group>"; };
+		290FC4F217C1AFBC0070F999 /* LoginImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginImage.h; sourceTree = "<group>"; };
+		290FC4F317C1AFBC0070F999 /* LoginImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginImage.m; sourceTree = "<group>"; };
 		2915698B15FFAFCA0084A29C /* ShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareManager.h; sourceTree = "<group>"; };
 		2915698C15FFAFCA0084A29C /* ShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareManager.m; sourceTree = "<group>"; };
 		291EB58115649366005FB66D /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
@@ -640,6 +643,8 @@
 				29E6C03517BD1856005D57BF /* ObjectMapper.m */,
 				29E6C03117BD16F7005D57BF /* User.h */,
 				29E6C03217BD16F7005D57BF /* User.m */,
+				290FC4F217C1AFBC0070F999 /* LoginImage.h */,
+				290FC4F317C1AFBC0070F999 /* LoginImage.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -782,6 +787,7 @@
 				292434711565E330007C8E8C /* UsersPostsViewController.m in Sources */,
 				297FE039156846E0005FBFDA /* FollowerViewController.m in Sources */,
 				298F7E071569821200516858 /* EditUserViewController.m in Sources */,
+				290FC4F417C1AFBC0070F999 /* LoginImage.m in Sources */,
 				29714EA015C7204300109E5A /* SORelativeDateTransformer.m in Sources */,
 				29084D5B15D2B2BC00CB7FFF /* JukaelaViewController.m in Sources */,
 				29084D5F15D2B36D00CB7FFF /* JukaelaTableViewController.m in Sources */,

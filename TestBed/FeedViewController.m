@@ -416,10 +416,6 @@
 -(void)loginHandler:(User *)tempUser
 {
     if (tempUser) {
-        for (UITabBarItem *item in [[[self tabBarController] tabBar] items]) {
-            [item setEnabled:YES];
-        }
-        
         [kAppDelegate setUserID:[tempUser userId]];
         [kAppDelegate setUserEmail:[NSString stringWithFormat:@"%@", [tempUser email]]];
         [kAppDelegate setUserUsername:[NSString stringWithFormat:@"%@", [tempUser username]]];
@@ -433,9 +429,9 @@
     else {
         [[self progressHUD] hide:YES];
         
-        UIAlertView *loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Your login has failed." cancelButtonItem:[RIButtonItem itemWithLabel:@"OK" action:^{
-            [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
-        }]
+        UIAlertView *loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Login Failed"
+                                                                   message:@"Your login has failed."
+                                                          cancelButtonItem:[RIButtonItem itemWithLabel:@"OK" action:nil]
                                                           otherButtonItems:nil, nil];
         
         [loginFailedAlert show];

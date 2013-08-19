@@ -10,10 +10,12 @@
 
 @class User;
 @class FeedItem;
+@class LoginImage;
 
 @interface ObjectMapper : NSObject
 
 +(User *)convertToUserObject:(NSData *)json;
++(LoginImage *)convertToLoginImageObject:(NSData *)json;
 
 +(NSArray *)convertToFeedItemArray:(NSData *)json;
 +(NSArray *)convertToMentionItemArray:(NSData *)json;

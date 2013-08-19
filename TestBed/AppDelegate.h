@@ -28,6 +28,8 @@
 
 @property (strong, readonly, nonatomic) RESideMenu *sideMenu;
 
+@property (strong, nonatomic) UINavigationController *rootViewNavigationController;
+
 -(void)configureNavigationMenu;
 
 @end

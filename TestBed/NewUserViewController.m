@@ -39,8 +39,11 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
-        
+    [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)]];
+    
     [[ActivityManager sharedManager] incrementActivityCount];
         
     [self setNameTextField:[[UITextField alloc] init]];
@@ -54,8 +57,6 @@
     [[self emailTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
     [[self passwordTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
     [[self passwordConfirmTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
-    
-    [super viewDidLoad];
 }
 
 -(IBAction)cancel:(id)sender

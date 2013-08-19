@@ -10,6 +10,7 @@
 #import "FeedItem.h"
 #import "User.h"
 #import "MentionItem.h"
+#import "LoginImage.h"
 #import "NSDate+RailsDateParser.h"
 
 @implementation ObjectMapper
@@ -97,6 +98,23 @@
     }
     
     return returnArray;
+}
+
++(LoginImage *)convertToLoginImageObject:(NSData *)json
+{
+    NSError *error = nil;
+    
+    NSDictionary *tempDict = [NSJSONSerialization JSONObjectWithData:json options:0 error:&error];
+    
+    LoginImage *loginImage = [[LoginImage alloc] init];
+    
+    [loginImage setImageUrl:[NSURL URLWithString:[self nullOrValue:tempDict[@"image_url"]]]];
+    
+    NSData *imageData = [NSData dataWithContentsOfURL:[loginImage imageUrl]];
+    
+    [loginImage setImage:[UIImage imageWithData:imageData]];
+    
+    return loginImage;
 }
 
 +(instancetype)nullOrValue:(id)value

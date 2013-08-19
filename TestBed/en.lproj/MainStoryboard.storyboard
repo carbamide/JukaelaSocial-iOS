@@ -107,17 +107,17 @@
         <!--Login View Controller - Login-->
         <scene sceneID="5">
             <objects>
-                <viewController restorationIdentifier="loginViewCont" id="2" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController restorationIdentifier="loginViewCont" storyboardIdentifier="LoginViewController" id="2" customClass="LoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleAspectFit" image="JukaelaLogo.png" id="W4X-yi-ift">
-                                <rect key="frame" x="20" y="14" width="280" height="119"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="r0m-8Z-A0i">
+                                <rect key="frame" x="0.0" y="-64" width="326" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="TCt-vC-S5I">
-                                <rect key="frame" x="0.0" y="141" width="320" height="198"/>
+                                <rect key="frame" x="0.0" y="148" width="320" height="198"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -138,7 +138,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="imageView" destination="W4X-yi-ift" id="4Z3-CN-bku"/>
+                        <outlet property="imageView" destination="r0m-8Z-A0i" id="Knx-1L-Upl"/>
                         <outlet property="loginTableView" destination="TCt-vC-S5I" id="OWx-iI-aLn"/>
                         <segue destination="vsZ-IR-rVz" kind="push" identifier="ShowFeed" id="Osj-d6-2cc"/>
                     </connections>
@@ -227,7 +227,7 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="w75-Pd-duh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
                             <outlet property="dataSource" destination="8At-Ku-Tcl" id="Kex-C8-mbO"/>
                             <outlet property="delegate" destination="8At-Ku-Tcl" id="lHV-GQ-ySf"/>
@@ -623,7 +623,7 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="grl-Ki-Uk3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
                             <outlet property="dataSource" destination="kpd-3f-tb7" id="CeA-WQ-HLn"/>
                             <outlet property="delegate" destination="kpd-3f-tb7" id="TuU-uP-8En"/>
@@ -797,7 +797,6 @@
     </scenes>
     <resources>
         <image name="Feed.png" width="320" height="44"/>
-        <image name="JukaelaLogo.png" width="120" height="79.199996948242188"/>
         <image name="Settings.png" width="30" height="30"/>
         <image name="Users.png" width="30" height="30"/>
         <image name="camera" width="30" height="30"/>

@@ -109,14 +109,6 @@
 {
     RIButtonItem *logoutButton = [RIButtonItem itemWithLabel:@"Logout" action:^{
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kReadUsernameFromDefaultsPreference];
-        
-        [[[aViewController tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
-        
-        [[aViewController tabBarController] setSelectedIndex:0];
-        
-        for (UITabBarItem *item in [[[aViewController tabBarController] tabBar] items]) {
-            [item setEnabled:NO];
-        }
     }];
     
     UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:aMessage cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] otherButtonItems:logoutButton, nil];

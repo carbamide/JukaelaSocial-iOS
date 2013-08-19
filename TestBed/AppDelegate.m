@@ -12,7 +12,6 @@
 
 @interface AppDelegate ()
 
-@property (strong, nonatomic) UINavigationController *feedViewNavigationController;
 @property (strong, nonatomic) UINavigationController *mentionsViewNavigationController;
 @property (strong, nonatomic) UINavigationController *usersViewNavigationController;
 @property (strong, nonatomic) UINavigationController *settingsViewNavigationController;
@@ -145,7 +144,7 @@
     RESideMenuItem *feedItem = [[RESideMenuItem alloc] initWithTitle:@"Feed" action:^(RESideMenu *menu, RESideMenuItem *item) {
         [menu hide];
         
-        [menu setRootViewController:[self feedViewNavigationController]];
+        [menu setRootViewController:[self rootViewNavigationController]];
     }];
     
     RESideMenuItem *mentionsItem = [[RESideMenuItem alloc] initWithTitle:@"Mentions" action:^(RESideMenu *menu, RESideMenuItem *item) {
@@ -182,8 +181,8 @@
 
 -(void)configureViewControllers
 {
-    id feedViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"FeedViewController"];
-    [feedViewController setTitle:@"Feed"];
+    id loginViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"LoginViewController"];
+    [loginViewController setTitle:@"Login"];
     
     id mentionsViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"MentionsViewController"];
     [mentionsViewController setTitle:@"Mentions"];
@@ -194,7 +193,7 @@
     id settingsViewController = [self viewControllerFromStoryboardNamed:@"MainStoryboard" andInstantationIdentifier:@"SettingsViewController"];
     [settingsViewController setTitle:@"Settings"];
     
-    [self setFeedViewNavigationController:[[UINavigationController alloc] initWithRootViewController:feedViewController]];
+    [self setRootViewNavigationController:[[UINavigationController alloc] initWithRootViewController:loginViewController]];
     [self setMentionsViewNavigationController:[[UINavigationController alloc] initWithRootViewController:mentionsViewController]];
     [self setUsersViewNavigationController:[[UINavigationController alloc] initWithRootViewController:usersViewController]];
     [self setSettingsViewNavigationController:[[UINavigationController alloc] initWithRootViewController:settingsViewController]];

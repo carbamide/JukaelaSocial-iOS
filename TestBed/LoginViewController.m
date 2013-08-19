@@ -10,6 +10,8 @@
 #import "LoginViewController.h"
 #import "CPCheckBox.h"
 #import "SFHFKeychainUtils.h"
+#import "LoginImage.h"
+#import "UIImage+ImageEffects.h"
 
 @interface LoginViewController ()
 @property (strong, nonatomic) NSArray *tempFeed;
@@ -190,10 +192,6 @@
             loginDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             
             if (loginDict) {
-                for (UITabBarItem *item in [[[self tabBarController] tabBar] items]) {
-                    [item setEnabled:YES];
-                }
-
                 [kAppDelegate setUserID:loginDict[kID]];
                 [kAppDelegate setUserEmail:[NSString stringWithFormat:@"%@", loginDict[kEmail]]];
                 [kAppDelegate setUserUsername:[NSString stringWithFormat:@"%@", loginDict[kUsername]]];
@@ -290,8 +288,14 @@
 
 -(void)viewDidLoad
 {
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:@"Login"]]];
+    
+    [[self imageView] setImage:image];
+
     [kAppDelegate setCurrentViewController:self];
 
+    [[ApiFactory sharedManager] loginImage];
+    
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMyLove:)];
     
     [recognizer setNumberOfTapsRequired:2];
@@ -302,10 +306,6 @@
     
     if (tempWindow.frame.size.height > 500) {
         [[self imageView] setFrame:CGRectOffset(_imageView.frame, 0, 44)];
-    }
-        
-    for (UITabBarItem *item in [[[self tabBarController] tabBar] items]) {
-        [item setEnabled:NO];
     }
 
     [[[self imageView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
@@ -329,6 +329,23 @@
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"new_user" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
         [[self username] setText:[aNotification userInfo][kEmail]];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"image_for_login" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
+        LoginImage *loginImageObject = [aNotification userInfo][@"login"];
+        
+        UIImage *image = [[loginImageObject image] applyLightEffect];
+        
+        [Helpers saveImage:image withFileName:@"Login"];
+        
+        [[self imageView] setImage:[[loginImageObject image] applyLightEffect]];
+        
+        CATransition *transition = [CATransition animation];
+        transition.duration = 1.0f;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionFade;
+        
+        [[[self imageView] layer] addAnimation:transition forKey:nil];
     }];
     
     _username = [[UITextField alloc] init];

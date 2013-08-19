@@ -59,13 +59,9 @@ NS_ENUM(NSInteger, SocialTypes) {
         
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[[self tabBarController] viewControllers][0] popToRootViewControllerAnimated:NO];
+        [[kAppDelegate sideMenu] setRootViewController:[kAppDelegate rootViewNavigationController]];
         
-        [[self tabBarController] setSelectedIndex:0];
-        
-        for (UITabBarItem *item in [[[self tabBarController] tabBar] items]) {
-            [item setEnabled:NO];
-        }
+        [[kAppDelegate rootViewNavigationController] popToRootViewControllerAnimated:NO];
     }];
     
     UIActionSheet *logoutActionSheet = [[UIActionSheet alloc] initWithTitle:nil cancelButtonItem:[RIButtonItem itemWithLabel:@"Cancel" action:nil] destructiveButtonItem:logoutButton otherButtonItems:nil, nil];

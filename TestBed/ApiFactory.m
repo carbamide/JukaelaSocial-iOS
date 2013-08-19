@@ -106,7 +106,7 @@
     NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"thread_for_micropost" object:nil userInfo:@{@"thread": [NSJSONSerialization JSONObjectWithData:data options:0 error:nil]}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"thread_for_micropost" object:nil userInfo:@{@"thread": [ObjectMapper convertToFeedItemArray:data]}];
     }];
 }
 
@@ -132,6 +132,17 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"show_image_opener" object:nil userInfo:@{@"data": data}];
+    }];
+}
+
+-(void)loginImage
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/random_image.json", kSocialURL]];
+    
+    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"image_for_login" object:nil userInfo:@{@"login": [ObjectMapper convertToLoginImageObject:data]}];
     }];
 }
 @end

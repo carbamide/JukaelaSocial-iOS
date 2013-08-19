@@ -19,5 +19,6 @@
 -(void)deletePost:(NSNumber *)postId;
 -(void)showImage:(NSURL *)imageUrl;
 -(void)getMentions;
+-(void)loginImage;
 
 @end

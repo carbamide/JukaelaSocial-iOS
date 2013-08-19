@@ -161,4 +161,10 @@
 	}
     return tempArray;
 }
+
++(UIImage *)loginImage
+{
+    return [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:@"Login"]]];
+}
+
 @end

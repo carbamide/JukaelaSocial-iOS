@@ -16,4 +16,5 @@
 -(IBAction)submitFeedBack:(id)sender;
 -(IBAction)cancel:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundView;
 @end

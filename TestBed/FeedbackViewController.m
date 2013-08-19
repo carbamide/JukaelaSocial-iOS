@@ -25,6 +25,10 @@
 
 - (void)viewDidLoad
 {
+    UIImage *image = [Helpers loginImage];
+    
+    [[self backgroundView] setImage:image];
+    
     [[[self feedbackTextView] layer] setCornerRadius:8];
     
     [[self feedbackTextView] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];

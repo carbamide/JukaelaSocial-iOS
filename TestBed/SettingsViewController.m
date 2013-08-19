@@ -86,7 +86,7 @@ NS_ENUM(NSInteger, SocialTypes) {
     [[self pickerView] setDelegate:self];
     [[self pickerView] setShowsSelectionIndicator:YES];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:@"Login"]]];
+    UIImage *image = [Helpers loginImage];
     
     UIImageView *bgImageView = [[UIImageView alloc] initWithImage:image];
     [bgImageView setFrame:[[self tableView] frame]];

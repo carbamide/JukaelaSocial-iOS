@@ -44,7 +44,7 @@
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
     [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)]];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:@"Login"]]];
+    UIImage *image = [Helpers loginImage];
 
     UIImageView *bgImageView = [[UIImageView alloc] initWithImage:image];
     [bgImageView setFrame:[[self tableView] frame]];

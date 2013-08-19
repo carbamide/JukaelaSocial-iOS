@@ -297,7 +297,7 @@
 {
     [super viewDidLoad];
 
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:@"Login"]]];
+    UIImage *image = [Helpers loginImage];
     
     [[self imageView] setImage:image];
 

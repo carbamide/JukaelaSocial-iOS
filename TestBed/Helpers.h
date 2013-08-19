@@ -25,4 +25,6 @@
 +(NSArray *)arrayOfURLsFromString:(NSString *)httpLine error:(NSError *)error;
 +(NSArray *)splitString:(NSString*)str maxCharacters:(NSInteger)maxLength;
 
++(UIImage *)loginImage;
+
 @end

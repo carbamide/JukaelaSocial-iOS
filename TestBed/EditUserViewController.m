@@ -90,7 +90,19 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+
     [[ActivityManager sharedManager] incrementActivityCount];
+    
+    [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)]];
+    
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:@"Login"]]];
+    
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:image];
+    [bgImageView setFrame:[[self tableView] frame]];
+    [bgImageView setContentMode:UIViewContentModeScaleAspectFill];
+    
+    [[self tableView] setBackgroundView:bgImageView];
     
     UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     
@@ -124,10 +136,7 @@
     [[self passwordTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
     [[self passwordConfirmTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
 
-
     [[self profileTextView] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
-    
-    [super viewDidLoad];
 }
 
 -(IBAction)cancel:(id)sender

@@ -44,6 +44,14 @@
     [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
     [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)]];
     
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:@"Login"]]];
+
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:image];
+    [bgImageView setFrame:[[self tableView] frame]];
+    [bgImageView setContentMode:UIViewContentModeScaleAspectFill];
+    
+    [[self tableView] setBackgroundView:bgImageView];
+    
     [[ActivityManager sharedManager] incrementActivityCount];
         
     [self setNameTextField:[[UITextField alloc] init]];

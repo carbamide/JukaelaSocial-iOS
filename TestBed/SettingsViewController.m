@@ -79,12 +79,20 @@ NS_ENUM(NSInteger, SocialTypes) {
 }
 
 -(void)viewDidLoad
-{    
+{
+    [super viewDidLoad];
+
     [self setPickerView:[[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 320, 216)]];
     [[self pickerView] setDelegate:self];
     [[self pickerView] setShowsSelectionIndicator:YES];
     
-    [super viewDidLoad];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:@"Login"]]];
+    
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:image];
+    [bgImageView setFrame:[[self tableView] frame]];
+    [bgImageView setContentMode:UIViewContentModeScaleAspectFill];
+    
+    [[self tableView] setBackgroundView:bgImageView];
 }
 
 -(void)viewDidUnload

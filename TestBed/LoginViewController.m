@@ -286,34 +286,31 @@
     }
 }
 
+-(void)loginImage
+{
+    if (self == [kAppDelegate currentViewController]) {
+        [[ApiFactory sharedManager] loginImage];
+    }
+}
+
 -(void)viewDidLoad
 {
+    [super viewDidLoad];
+
     UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:@"Login"]]];
     
     [[self imageView] setImage:image];
 
     [kAppDelegate setCurrentViewController:self];
 
-    [[ApiFactory sharedManager] loginImage];
+    [self loginImage];
     
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showMyLove:)];
+    [NSTimer scheduledTimerWithTimeInterval:10.0
+                                     target:self
+                                   selector:@selector(loginImage)
+                                   userInfo:nil
+                                    repeats:YES];
     
-    [recognizer setNumberOfTapsRequired:2];
-    
-    [[self imageView] addGestureRecognizer:recognizer];
-    
-    UIWindow *tempWindow = [kAppDelegate window];
-    
-    if (tempWindow.frame.size.height > 500) {
-        [[self imageView] setFrame:CGRectOffset(_imageView.frame, 0, 44)];
-    }
-
-    [[[self imageView] layer] setShadowColor:[[UIColor blackColor] CGColor]];
-    [[[self imageView] layer] setShadowOffset:CGSizeMake(0, 1)];
-    [[[self imageView] layer] setShadowOpacity:0.75];
-    [[[self imageView] layer] setShadowRadius:3.0];
-    [[self imageView] setClipsToBounds:NO];
-
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
         [kAppDelegate setUserID:[[NSUserDefaults standardUserDefaults] valueForKey:kUserID]];
 
@@ -325,7 +322,6 @@
         
         [[self navigationController] pushViewController:feedViewController animated:NO];
     }
-    [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:@"new_user" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
         [[self username] setText:[aNotification userInfo][kEmail]];
@@ -350,11 +346,6 @@
     
     _username = [[UITextField alloc] init];
     _password = [[UITextField alloc] init];
-}
-
--(void)showMyLove:(id)sender
-{
-
 }
 
 -(void)viewDidAppear:(BOOL)animated

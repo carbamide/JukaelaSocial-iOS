@@ -10,8 +10,8 @@
 
 @interface JukaelaTextView : UITextView
 
-@property (nonatomic, retain) NSString *placeholder;
-@property (nonatomic, retain) UIColor *placeholderColor;
+@property (strong, nonatomic) NSString *placeholder;
+@property (strong, nonatomic) UIColor *placeholderColor;
 
 -(void)textChanged:(NSNotification*)notification;
 

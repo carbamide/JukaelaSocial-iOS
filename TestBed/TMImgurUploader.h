@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Tony Million. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "TMHTTPRequest.h"
 
 typedef void (^uploadBlock)(NSDictionary *result, NSError * error);

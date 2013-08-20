@@ -6,8 +6,9 @@
 //  Copyright 2010 Random Ideas, LLC. All rights reserved.
 //
 
+@import ObjectiveC.runtime;
+
 #import "UIAlertView+Blocks.h"
-#import <objc/runtime.h>
 
 static NSString *RI_BUTTON_ASS_KEY = @"com.random-ideas.BUTTONS";
 

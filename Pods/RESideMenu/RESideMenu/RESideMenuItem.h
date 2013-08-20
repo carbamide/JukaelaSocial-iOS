@@ -24,7 +24,6 @@
 //
 
 #import <Foundation/Foundation.h>
-
 @class RESideMenu;
 
 @interface RESideMenuItem : NSObject

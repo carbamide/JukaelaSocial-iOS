@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Göncz Róbert. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "QuartzCore/QuartzCore.h"
 
 typedef enum {

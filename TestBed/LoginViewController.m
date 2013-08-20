@@ -27,7 +27,7 @@
     NSError *error = nil;
     
     [SFHFKeychainUtils storeUsername:[_usernameTextField text] andPassword:[_passwordTextField text] forServiceName:kJukaelaSocialServiceName updateExisting:YES error:&error];
-
+    
     if (error) {
         NSLog(@"There has been an error storing the password to the iOS keychain!");
     }
@@ -47,7 +47,7 @@
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/sessions.json", kSocialURL]];
     
     NSString *requestString = [RequestFactory loginRequestWithEmail:[_usernameTextField text] password:[_passwordTextField text] apns:[[NSUserDefaults standardUserDefaults] valueForKey:kDeviceTokenPreference]];
-            
+    
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
     NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
@@ -172,7 +172,7 @@
     
     [[self usernameTextField] setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.3]];
     [[self passwordTextField] setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.3]];
-
+    
     if (![[[self navigationController] navigationBar] isHidden]) {
         [[[self navigationController] navigationBar] setHidden:YES];
     }
@@ -180,9 +180,9 @@
     UIImage *image = [Helpers loginImage];
     
     [[self imageView] setImage:image];
-
+    
     [kAppDelegate setCurrentViewController:self];
-
+    
     [self loginImage];
     
     [NSTimer scheduledTimerWithTimeInterval:10.0
@@ -193,7 +193,7 @@
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
         [kAppDelegate setUserID:[[NSUserDefaults standardUserDefaults] valueForKey:kUserID]];
-
+        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
         
         FeedViewController *feedViewController = [storyboard instantiateViewControllerWithIdentifier:@"FeedViewController"];
@@ -213,19 +213,32 @@
         UIImage *image = [[loginImageObject image] applyLightEffect];
         
         [Helpers saveImage:image withFileName:@"Login"];
+        dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
         
-        CATransition *transition = [CATransition animation];
+        dispatch_async(aQueue, ^{
+            CATransition *transition = [CATransition animation];
+            
+            [transition setDuration:1.0];
+            [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+            [transition setType:kCATransitionFade];
+            
+            [[[self imageView] layer] addAnimation:transition forKey:nil];
+            
+            __block UIImage *image = [[loginImageObject image] applyLightEffect];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self changeBackgroundImage:image];
+            });
+        });
         
-        [transition setDuration:1.0];
-        [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-        [transition setType:kCATransitionFade];
-        
-        [[[self imageView] layer] addAnimation:transition forKey:nil];
-
-        [[self imageView] setImage:[[loginImageObject image] applyLightEffect]];
-        
-        [CATransaction commit];
     }];
+}
+
+-(void)changeBackgroundImage:(UIImage *)anImage
+{
+    [[self imageView] setImage:anImage];
+    
+    [CATransaction commit];
 }
 
 -(void)viewDidAppear:(BOOL)animated

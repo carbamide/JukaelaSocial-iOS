@@ -2,16 +2,10 @@
 // Prefix header for all source files of the 'Jukaela Social' target in the 'Jukaela Social' project
 //
 
-#import <Availability.h>
-
-#ifndef __IPHONE_5_1
-#warning "This project uses features only available in iOS SDK 5.1 and later."
-#endif
-
 #ifdef __OBJC__
-    #import <UIKit/UIKit.h>
-    #import <Foundation/Foundation.h>
-    #import <QuartzCore/QuartzCore.h>
+    @import UIKit;
+    @import Foundation;
+    @import QuartzCore;
     #import "Constants.h"
 #import "AppDelegate.h"
 #import "Helpers.h"

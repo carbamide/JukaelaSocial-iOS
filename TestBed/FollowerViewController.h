@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "JukaelaCollectionViewController.h"
 
 @interface FollowerViewController : JukaelaCollectionViewController <MBProgressHUDDelegate>

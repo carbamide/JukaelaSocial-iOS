@@ -6,8 +6,9 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import <Accounts/Accounts.h>
-#import <Social/Social.h>
+@import Accounts;
+@import Social;
+
 #import "NormalCellView.h"
 #import "ShareManager.h"
 

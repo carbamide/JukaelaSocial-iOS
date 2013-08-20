@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import <objc/runtime.h>
+@import ObjectiveC.runtime;
 #import "FollowerViewController.h"
 #import "GravatarHelper.h"
 #import "JEImages.h"

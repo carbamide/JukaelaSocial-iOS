@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "UsersCollectionViewCell.h"
 #import "MBProgressHUD.h"
 #import "UIImage+Resize.h"

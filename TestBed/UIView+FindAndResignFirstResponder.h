@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 - 2012 ConnectPoint Resolution Systems, Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface UIView (FindAndResignFirstResponder)
 

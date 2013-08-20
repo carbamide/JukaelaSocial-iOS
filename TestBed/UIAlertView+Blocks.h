@@ -6,7 +6,7 @@
 //  Copyright 2010 Random Ideas, LLC. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "RIButtonItem.h"
 
 @interface UIAlertView (Blocks)

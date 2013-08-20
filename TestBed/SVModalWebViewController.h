@@ -6,7 +6,7 @@
 //
 //  https://github.com/samvermette/SVWebViewController
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 enum {
     SVWebViewControllerAvailableActionsNone             = 0,

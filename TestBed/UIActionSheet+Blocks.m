@@ -6,8 +6,9 @@
 //  Copyright 2011 Random Ideas, LLC. All rights reserved.
 //
 
+@import ObjectiveC.runtime;
+
 #import "UIActionSheet+Blocks.h"
-#import <objc/runtime.h>
 
 static NSString *RI_BUTTON_ASS_KEY = @"com.random-ideas.BUTTONS";
 static NSString *RI_DISMISSAL_ACTION_KEY = @"com.random-ideas.DISMISSAL_ACTION";

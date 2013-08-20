@@ -6,7 +6,7 @@
 //
 //  https://github.com/samvermette/SVWebViewController
 
-#import <MessageUI/MessageUI.h>
+@import MessageUI;
 
 #import "SVModalWebViewController.h"
 

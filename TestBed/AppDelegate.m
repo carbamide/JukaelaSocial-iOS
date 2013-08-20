@@ -6,7 +6,8 @@
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
 
-#import <objc/runtime.h>
+@import ObjectiveC.runtime;
+
 #import "TMImgurUploader.h"
 #import "FeedViewController.h"
 

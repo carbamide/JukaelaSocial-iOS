@@ -6,7 +6,8 @@
 //  Copyright (c) 2012 Jukaela Enterprises All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+
 #import "SORelativeDateTransformer.h"
 #import <RESideMenu/RESideMenu.h>
 

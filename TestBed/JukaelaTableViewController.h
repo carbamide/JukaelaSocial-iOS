@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 Jukaela Enterprises. All rights reserved.
 //
 
-#import <MessageUI/MessageUI.h>
-#import <MessageUI/MFMailComposeViewController.h>
-#import <objc/runtime.h>
+@import MessageUI;
+@import ObjectiveC.runtime;
+
 #import "ApiFactory.h"
 #import "CellBackground.h"
 #import "GravatarHelper.h"

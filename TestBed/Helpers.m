@@ -67,7 +67,9 @@
 +(void)saveImage:(UIImage *)image withFileName:(NSString *)emailAddress
 {
     if (image != nil) {
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        
+        dispatch_async(queue, ^{
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             
             NSString *documentsDirectory = paths[0];

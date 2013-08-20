@@ -26,7 +26,7 @@ SORelativeDateTransformer is a value transformer that generates a human-readable
  Copy and modify the SORelativeDateTransformer.strings file with your own localizations.
  */
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface SORelativeDateTransformer : NSValueTransformer
 {

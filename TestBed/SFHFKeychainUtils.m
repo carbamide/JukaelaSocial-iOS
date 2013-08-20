@@ -31,8 +31,9 @@
 #error This file must be compiled with ARC.
 #endif
 
+@import Security;
+
 #import "SFHFKeychainUtils.h"
-#import <Security/Security.h>
 
 static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
 

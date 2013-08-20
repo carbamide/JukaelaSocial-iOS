@@ -12,13 +12,11 @@
 //  appreciated but not required.
 //
 
-#import <QuartzCore/CoreAnimation.h>
+#import <QuartzCore/QuartzCore.h>
 
 @protocol Evaluate;
 
 @interface AccelerationAnimation : CAKeyframeAnimation
-{
-}
 
 + (id)animationWithKeyPath:(NSString *)keyPath
 	startValue:(double)startValue

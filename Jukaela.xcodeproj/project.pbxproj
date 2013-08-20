@@ -57,7 +57,6 @@
 		29AA10561556AD6500B8D3F5 /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10551556AD6500B8D3F5 /* Helpers.m */; };
 		29AA10611556AEAC00B8D3F5 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10601556AEAC00B8D3F5 /* MBProgressHUD.m */; };
 		29AA10891557161A00B8D3F5 /* NSDate+RailsDateParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10881557161A00B8D3F5 /* NSDate+RailsDateParser.m */; };
-		29AA109015571BD700B8D3F5 /* CPCheckBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA108F15571BD600B8D3F5 /* CPCheckBox.m */; };
 		29AA10971557254500B8D3F5 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AA10961557254500B8D3F5 /* SettingsViewController.m */; };
 		29B18F75176E5AF000020DF3 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29973DBE176E4F0F000C11B7 /* PhotoViewerViewController.m */; };
 		29BE441A177F5461000BAD53 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BE4419177F5461000BAD53 /* libPods.a */; };
@@ -180,8 +179,6 @@
 		29AA10601556AEAC00B8D3F5 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		29AA10871557161A00B8D3F5 /* NSDate+RailsDateParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+RailsDateParser.h"; sourceTree = "<group>"; };
 		29AA10881557161A00B8D3F5 /* NSDate+RailsDateParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RailsDateParser.m"; sourceTree = "<group>"; };
-		29AA108E15571BD600B8D3F5 /* CPCheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPCheckBox.h; sourceTree = "<group>"; };
-		29AA108F15571BD600B8D3F5 /* CPCheckBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPCheckBox.m; sourceTree = "<group>"; };
 		29AA10951557254400B8D3F5 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		29AA10961557254500B8D3F5 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		29BE4419177F5461000BAD53 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
@@ -477,15 +474,6 @@
 			name = "KeyChain Utility";
 			sourceTree = "<group>";
 		};
-		29D433CD15FE279900ABCB2F /* Checkbox for Login Screen */ = {
-			isa = PBXGroup;
-			children = (
-				29AA108E15571BD600B8D3F5 /* CPCheckBox.h */,
-				29AA108F15571BD600B8D3F5 /* CPCheckBox.m */,
-			);
-			name = "Checkbox for Login Screen";
-			sourceTree = "<group>";
-		};
 		29D433CE15FE27A600ABCB2F /* ProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -605,7 +593,6 @@
 				298062F617695A060006F281 /* Block Action and Alerts */,
 				29D433AB15FE0EF600ABCB2F /* AutoHyperlinks */,
 				29D433D015FE27C100ABCB2F /* Categories */,
-				29D433CD15FE279900ABCB2F /* Checkbox for Login Screen */,
 				29D433CA15FE276700ABCB2F /* Date Transformer */,
 				29D433D115FE27E100ABCB2F /* Gravatar */,
 				29D5B82A15545CA4000D9374 /* Image Handling */,
@@ -777,7 +764,6 @@
 				29AA10561556AD6500B8D3F5 /* Helpers.m in Sources */,
 				29AA10611556AEAC00B8D3F5 /* MBProgressHUD.m in Sources */,
 				29AA10891557161A00B8D3F5 /* NSDate+RailsDateParser.m in Sources */,
-				29AA109015571BD700B8D3F5 /* CPCheckBox.m in Sources */,
 				29AA10971557254500B8D3F5 /* SettingsViewController.m in Sources */,
 				290045D615576D5D004F113A /* UsersViewController.m in Sources */,
 				29CAEB7C1558C6F900663CF3 /* ShowUserViewController.m in Sources */,

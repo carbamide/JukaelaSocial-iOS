@@ -62,6 +62,10 @@
 {
     [super viewDidLoad];
     
+    if ([[[self navigationController] navigationBar] isHidden]) {
+        [[[self navigationController] navigationBar] setHidden:NO];
+    }
+    
     [self setExternalImageCache:[[NSCache alloc] init]];
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];

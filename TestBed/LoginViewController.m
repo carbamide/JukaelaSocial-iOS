@@ -156,6 +156,10 @@
         [UIView animateWithDuration:0.5 animations:^{
             [[self usernameTextField] setAlpha:1.0];
             [[self passwordTextField] setAlpha:1.0];
+        } completion:^(BOOL complete){
+            if (complete) {
+                [[self usernameTextField] becomeFirstResponder];
+            }
         }];
     }
     else {

@@ -37,6 +37,8 @@
 {
     [super viewDidLoad];
     
+    [[self theTextView] setPlaceholder:@"What's on your mind?"];
+    
     [self getUsers];
     
     [self setAutocompleteUsernames:[[NSMutableArray alloc] init]];
@@ -44,32 +46,32 @@
     UIWindow *tempWindow = [kAppDelegate window];
     
     if (tempWindow.frame.size.height > 500) {
-        [[self photoButton] setFrame:CGRectOffset(_photoButton.frame, 0, 90)];
-        [[self countDownLabel] setFrame:CGRectOffset(_countDownLabel.frame, 0, 90)];
+        [[self photoButton] setFrame:CGRectOffset(_photoButton.frame, 0, 80)];
+        [[self countDownLabel] setFrame:CGRectOffset(_countDownLabel.frame, 15, 80)];
         
         [[self theTextView] setFrame:CGRectMake(_theTextView.frame.origin.x, _theTextView.frame.origin.y, _theTextView.frame.size.width, _theTextView.frame.size.height + 100)];
     }
     
     if (![self replyString]) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
-            UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn);
+            UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 25, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), COLOR_RGB(60, 90, 154, 1), GRStyleIn);
             
             [[self view] addSubview:facebookButton];
         }
         else {
-            UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
+            UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 25, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
             
             
             [[self view] addSubview:facebookButton];
         }
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
-            UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn);
+            UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 60, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), COLOR_RGB(0, 172, 238, 1), GRStyleIn);
             
             [[self view] addSubview:twitterButton];
         }
         else {
-            UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 55, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn);
+            UIButton *twitterButton = GRButton(GRTypeTwitterRect, _countDownLabel.frame.origin.x - 60, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleTwitter:), [UIColor darkGrayColor], GRStyleIn);
             
             [[self view] addSubview:twitterButton];
         }
@@ -115,7 +117,7 @@
     
     [[[self backgroundView] layer] setCornerRadius:8];
     
-    [[self backgroundView] setBackgroundColor:[UIColor clearColor]];
+    [[self backgroundView] setBackgroundColor:[UIColor whiteColor]];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:UITextViewTextDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
         [self updateCount];

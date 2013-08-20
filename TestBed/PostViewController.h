@@ -8,6 +8,7 @@
 
 @import UIKit;
 #import "JukaelaViewController.h"
+#import "JukaelaTextView.h"
 
 @interface PostViewController : JukaelaViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -16,7 +17,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *photoButton;
 @property (strong, nonatomic) IBOutlet UIImageView *userProfileImage;
 @property (strong, nonatomic) IBOutlet UILabel *countDownLabel;
-@property (strong, nonatomic) IBOutlet UITextView *theTextView;
+@property (strong, nonatomic) IBOutlet JukaelaTextView *theTextView;
 @property (strong, nonatomic) IBOutlet UIView *backgroundView;
 
 @property (strong, nonatomic) NSNumber *inReplyTo;

@@ -61,6 +61,7 @@
 		29B18F75176E5AF000020DF3 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29973DBE176E4F0F000C11B7 /* PhotoViewerViewController.m */; };
 		29BE441A177F5461000BAD53 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BE4419177F5461000BAD53 /* libPods.a */; };
 		29C251591672BFED00F27ABC /* ImageConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */; };
+		29C59AA317C4031E0025C8A6 /* JukaelaTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C59AA217C4031E0025C8A6 /* JukaelaTextView.m */; };
 		29CAEB7C1558C6F900663CF3 /* ShowUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */; };
 		29D433C715FE1F6400ABCB2F /* AHHyperlinkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C115FE1F6400ABCB2F /* AHHyperlinkScanner.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		29D433C815FE1F6400ABCB2F /* AHLinkLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = 29D433C315FE1F6400ABCB2F /* AHLinkLexer.l */; };
@@ -184,6 +185,8 @@
 		29BE4419177F5461000BAD53 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		29C251571672BFED00F27ABC /* ImageConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageConfirmationViewController.h; sourceTree = "<group>"; };
 		29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageConfirmationViewController.m; sourceTree = "<group>"; };
+		29C59AA117C4031E0025C8A6 /* JukaelaTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaTextView.h; sourceTree = "<group>"; };
+		29C59AA217C4031E0025C8A6 /* JukaelaTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaTextView.m; sourceTree = "<group>"; };
 		29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowUserViewController.h; sourceTree = "<group>"; };
 		29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowUserViewController.m; sourceTree = "<group>"; };
 		29D433C015FE1F6400ABCB2F /* AHHyperlinkScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHHyperlinkScanner.h; sourceTree = "<group>"; };
@@ -562,6 +565,8 @@
 				295687691552C96700FE741C /* AppDelegate.h */,
 				2956876A1552C96700FE741C /* AppDelegate.m */,
 				29D5B84A1554612A000D9374 /* Constants.h */,
+				29C59AA117C4031E0025C8A6 /* JukaelaTextView.h */,
+				29C59AA217C4031E0025C8A6 /* JukaelaTextView.m */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -786,6 +791,7 @@
 				293B952315EB0B740036A7FF /* NewUserViewController.m in Sources */,
 				292C8CC115EE923700E8B046 /* MentionsViewController.m in Sources */,
 				292F052F15F1341200E6BC51 /* NSNull+DontCrash.m in Sources */,
+				29C59AA317C4031E0025C8A6 /* JukaelaTextView.m in Sources */,
 				2920235415FD5C4700DBDA6C /* NormalCellView.m in Sources */,
 				29D433C715FE1F6400ABCB2F /* AHHyperlinkScanner.m in Sources */,
 				29E6C03017BC6BE0005D57BF /* FeedItem.m in Sources */,

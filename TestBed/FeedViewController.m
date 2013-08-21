@@ -447,24 +447,35 @@
 
 - (void)feedHandler:(NSNotification *)aNotification to:(NSInteger)to
 {
-    NSArray *tempArray = [aNotification userInfo][@"feed"];
+    //
+    // This doesn't work because these are objects, and not just dictionarys.  They take up
+    // different memory space and are, therefore "different"
+    //
     
-    NSArray *oldArray = [self tableDataSource];
+    
+    // AAGGGGGGGHHHHH THIS IS BROKEN!~!!!!!!!!! NOOOOO IT's A TRAP!!!!!!!!!!!!
+    
+    NSMutableArray *tempArray = [[aNotification userInfo][@"feed"] mutableCopy];
+    
+//    NSArray *oldArray = [self tableDataSource];
     
     [self setTableDataSource:[tempArray mutableCopy]];
-    
-    NSMutableSet *firstSet = [NSMutableSet setWithArray:[self tableDataSource]];
-    NSMutableSet *secondSet = [NSMutableSet setWithArray:[self tableDataSource]];
-    
-    [firstSet unionSet:[NSSet setWithArray:oldArray]];
-    [secondSet intersectSet:[NSSet setWithArray:oldArray]];
-    
-    [firstSet minusSet:secondSet];
-    
-    NSInteger difference = [firstSet count];
+//
+//    NSSet *set1 = [NSSet setWithArray:tempArray];
+//    NSSet *set2 = [NSSet setWithArray:oldArray];
+//    
+//    NSMutableSet *notInSet1 = [NSMutableSet setWithSet:set2];
+//    [notInSet1 minusSet:set1];
+//    NSMutableSet *notInSet2 = [NSMutableSet setWithSet:set1];
+//    [notInSet2 minusSet:set2];
+//    
+//    NSMutableSet *symmetricDifference = [NSMutableSet setWithSet:notInSet1];
+//    [symmetricDifference unionSet:notInSet2];
+//    
+//    int difference = [symmetricDifference count];
     
     if ([self currentChangeType] == INSERT_POST) {
-        [self insertPostHandler:difference to:to];
+        [self insertPostHandler:1 to:to];
     }
     else if ([self currentChangeType] == DELETE_POST) {
         [self deletePostHandler:[self tempIndexPath]];

@@ -43,7 +43,7 @@
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
-    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
@@ -60,7 +60,7 @@
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
-    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
@@ -77,7 +77,7 @@
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
-    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
@@ -92,7 +92,7 @@
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/like.json", kSocialURL, postId]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest getRequestWithURL:url timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"liked_post" object:nil];
@@ -103,7 +103,7 @@
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/%@/thread_for_micropost.json", kSocialURL, postId]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest getRequestWithURL:url timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"thread_for_micropost" object:nil userInfo:@{@"thread": [ObjectMapper convertToFeedItemArray:data]}];
@@ -139,7 +139,7 @@
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/microposts/random_image.json", kSocialURL]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest getRequestWithURL:url timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"image_for_login" object:nil userInfo:@{@"login": [ObjectMapper convertToLoginImageObject:data]}];

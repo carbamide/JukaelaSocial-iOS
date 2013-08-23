@@ -6,6 +6,7 @@
     @import UIKit;
     @import Foundation;
     @import QuartzCore;
+#import <JukaelaCore/JukaelaCore.h>
     #import "Constants.h"
 #import "AppDelegate.h"
 #import "Helpers.h"

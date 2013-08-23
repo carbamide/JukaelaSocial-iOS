@@ -7,11 +7,9 @@
 //
 
 @import UIKit;
+
 #import "UsersCollectionViewCell.h"
 #import "MBProgressHUD.h"
-#import "UIImage+Resize.h"
-#import "UIImage+RoundedCorner.h"
-#import "UIImage+Alpha.h"
 #import "ActivityManager.h"
 #import "RIButtonItem.h"
 #import "UIAlertView+Blocks.h"

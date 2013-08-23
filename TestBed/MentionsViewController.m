@@ -279,20 +279,20 @@
     
     [[cell dateLabel] setText:[[self dateTransformer] transformedValue:[tempItem createdAt]]];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[NSString documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]]]];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
     objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
     
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]]] error:nil];
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[NSString documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]]] error:nil];
     
     if (image) {
         [[cell imageView] setImage:image];
         [cell setNeedsDisplay];
         
         if (attributes) {
-            if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
+            if ([NSDate daysBetweenDate:[NSDate date] andDate:attributes[NSFileCreationDate] options:0] > 1) {
                 dispatch_async(queue, ^{
                     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[tempItem senderEmail] withSize:40]]];
                     
@@ -309,7 +309,7 @@
                             [cell setNeedsDisplay];
                         }
                         
-                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]];
+                        [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]];
                     });
                 });
             }
@@ -332,7 +332,7 @@
                     [cell setNeedsDisplay];
 				}
 				
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]];
+                [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [tempItem senderUserId]]];
 			});
 		});
 	}
@@ -351,7 +351,7 @@
         
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
-        NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+        NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {
@@ -461,7 +461,7 @@
         
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
-        NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+        NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {

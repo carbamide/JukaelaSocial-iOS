@@ -11,7 +11,6 @@
 #import "User.h"
 #import "MentionItem.h"
 #import "LoginImage.h"
-#import "NSDate+RailsDateParser.h"
 
 @implementation ObjectMapper
 

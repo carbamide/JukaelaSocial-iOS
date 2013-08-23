@@ -11,19 +11,7 @@
 
 @interface Helpers : NSObject
 
-+(void)moveViewUpFromTextField:(UITextField *)aTextField withView:(UIView *)aView;
-+(void)moveViewDown:(UIView *)aView;
-+(void)saveImage:(UIImage *)image withFileName:(NSString *)emailAddress;
-
-+(NSMutableURLRequest *)getRequestWithURL:(NSURL *)url;
-+(NSMutableURLRequest *)postRequestWithURL:(NSURL *)url withData:(NSData *)data;
-
 +(void)errorAndLogout:(UIViewController *)aViewController withMessage:(NSString *)aMessage;
-
-+(NSString *)documentsPath;
-
-+(NSArray *)arrayOfURLsFromString:(NSString *)httpLine error:(NSError *)error;
-+(NSArray *)splitString:(NSString*)str maxCharacters:(NSInteger)maxLength;
 
 +(UIImage *)loginImage;
 

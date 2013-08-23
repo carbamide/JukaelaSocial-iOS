@@ -101,7 +101,7 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users.json", kSocialURL]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest getRequestWithURL:url timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
@@ -161,7 +161,7 @@
         [[cell usernameLabel] setText:[NSString stringWithFormat:@"@%@", [self usersArray][[indexPath row]][kUsername]]];
     }
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][kID]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[NSString documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][kID]]]]];
     
     if (image) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -184,7 +184,7 @@
                 [[cell imageView] setImage:resizedImage];
                 [cell setNeedsDisplay];
                 
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self usersArray][[indexPath row]][kID]]];
+                [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self usersArray][[indexPath row]][kID]]];
             });
         });
     }

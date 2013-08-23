@@ -174,7 +174,7 @@
             
             NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
             
-            NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+            NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
             
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                 if (data) {
@@ -342,18 +342,18 @@
                 [[cell detailTextLabel] setText:@"No username"];
             }
             
-            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][kID]]]]];
+            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[NSString documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][kID]]]]];
             
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
             
-            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][kID]]]] error:nil];
+            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@-large.png", [[NSString documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [self userDict][kID]]]] error:nil];
             
             if (image) {
                 [[cell imageView] setImage:image];
                 [cell setNeedsDisplay];
                 
                 if (attributes) {
-                    if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
+                    if ([NSDate daysBetweenDate:[NSDate date] andDate:attributes[NSFileCreationDate] options:0] > 1) {
                         dispatch_async(queue, ^{
                             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userDict][kEmail] withSize:65]]];
                             
@@ -364,7 +364,7 @@
                             
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 [[cell imageView] setImage:resizedImage];
-                                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self userDict][kID]]];
+                                [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self userDict][kID]]];
                             });
                         });
                     }
@@ -384,7 +384,7 @@
                         
                         [cell setNeedsDisplay];
                         
-                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self userDict][kID]]];
+                        [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [self userDict][kID]]];
                     });
                 });
             }
@@ -508,7 +508,7 @@
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
-    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
@@ -596,7 +596,7 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/following.json", kSocialURL, [self userDict][kID]]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest getRequestWithURL:url timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
@@ -616,7 +616,7 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/following.json", kSocialURL, [kAppDelegate userID]]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest getRequestWithURL:url timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
@@ -639,7 +639,7 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@/followers.json", kSocialURL, [self userDict][kID]]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest getRequestWithURL:url timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {

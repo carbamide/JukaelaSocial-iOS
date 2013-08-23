@@ -14,7 +14,6 @@
 #import "ImageConfirmationViewController.h"
 #import "PostViewController.h"
 #import "TMImgurUploader.h"
-#import "NSString+BackslashEscape.h"
 
 @interface PostViewController ()
 @property (strong, nonatomic) ACAccountStore *accountStore;
@@ -92,7 +91,7 @@
     [[self theTextView] becomeFirstResponder];
     [[self theTextView] setDelegate:self];
     
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [kAppDelegate userID]]]]];
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@-large.png", [[NSString documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [kAppDelegate userID]]]]];
     
     if (image) {
         [[self userProfileImage] setImage:image];
@@ -108,7 +107,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[self userProfileImage] setImage:resizedImage];
                 
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [kAppDelegate userID]]];
+                [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@-large", [kAppDelegate userID]]];
             });
         });
     }
@@ -270,7 +269,7 @@
     
     if ([kAppDelegate onlyToTwitter]) {
         if ([[[self theTextView] text] length] > 140) {
-            NSArray *tempArray = [Helpers splitString:[[self theTextView] text] maxCharacters:140];
+            NSArray *tempArray = [NSArray splitString:[[self theTextView] text] maxCharacters:140];
             
             for (NSString *tempString in [tempArray reverseObjectEnumerator]) {
                 [self sendTweet:tempString];
@@ -339,7 +338,7 @@
                 if (continuePosting) {
                     if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
                         if ([[[self theTextView] text] length] > 140) {
-                            NSArray *tempArray = [Helpers splitString:[[self theTextView] text] maxCharacters:140];
+                            NSArray *tempArray = [NSArray splitString:[[self theTextView] text] maxCharacters:140];
                             
                             for (NSString *tempString in [tempArray reverseObjectEnumerator]) {
                                 [self sendTweet:tempString];
@@ -363,7 +362,7 @@
         if (continuePosting) {
             if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
                 if ([[[self theTextView] text] length] > 140) {
-                    NSArray *tempArray = [Helpers splitString:[[self theTextView] text] maxCharacters:140];
+                    NSArray *tempArray = [NSArray splitString:[[self theTextView] text] maxCharacters:140];
                     
                     for (NSString *tempString in [tempArray reverseObjectEnumerator]) {
                         [self sendTweet:tempString];
@@ -398,7 +397,7 @@
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
-    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
@@ -559,7 +558,7 @@
         stringToSend = [stringToSend stringByReplacingOccurrencesOfString:[self urlString] withString:@""];
     }
     
-    NSArray *urlArray = [Helpers arrayOfURLsFromString:stringToSend error:nil];
+    NSArray *urlArray = [NSArray arrayOfURLsFromString:stringToSend error:nil];
     
     BOOL urls = NO;
     
@@ -857,7 +856,7 @@
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users.json", kSocialURL]];
     
-    NSMutableURLRequest *request = [Helpers getRequestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest getRequestWithURL:url timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {

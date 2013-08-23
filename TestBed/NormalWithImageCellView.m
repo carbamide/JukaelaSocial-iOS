@@ -111,8 +111,8 @@
                     });
                 });
             }
-            else if ([[NSFileManager defaultManager] fileExistsAtPath:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
-                UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[Helpers documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
+            else if ([[NSFileManager defaultManager] fileExistsAtPath:[[NSString documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]) {
+                UIImage *externalImageFromDisk = [UIImage imageWithData:[NSData dataWithContentsOfFile:[[NSString documentsPath] stringByAppendingPathComponent:[tempString lastPathComponent]]]];
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
                     UIImage *tempImage = [externalImageFromDisk thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
@@ -141,10 +141,10 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[self externalImage] setImage:[image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh]];
                         
-                        [Helpers saveImage:image withFileName:[tempString lastPathComponent]];
+                        [UIImage saveImage:image withFileName:[tempString lastPathComponent]];
                         
                         dispatch_async(dispatch_get_main_queue(), ^(void) {
-                            NSString *path = [[Helpers documentsPath] stringByAppendingPathComponent:[NSString stringWithString:[tempString lastPathComponent]]];
+                            NSString *path = [[NSString documentsPath] stringByAppendingPathComponent:[NSString stringWithString:[tempString lastPathComponent]]];
                             
                             NSData *data = nil;
                             

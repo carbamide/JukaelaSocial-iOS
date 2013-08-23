@@ -75,7 +75,7 @@
     
     [self setRefreshControl:refreshControl];
     
-    [self setDocumentsFolder:[Helpers documentsPath]];
+    [self setDocumentsFolder:[NSString documentsPath]];
     
     [self setupNotifications];
     
@@ -663,7 +663,7 @@
         [cell setNeedsDisplay];
         
         if (attributes) {
-            if ([NSDate daysBetween:[NSDate date] and:attributes[NSFileCreationDate]] > 1) {
+            if ([NSDate daysBetweenDate:[NSDate date] andDate:attributes[NSFileCreationDate] options:0] > 1) {
                 dispatch_async(queue, ^{
                     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[feedItem user] email] withSize:40]]];
                     
@@ -680,7 +680,7 @@
                             [cell setNeedsDisplay];
                         }
                         
-                        [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]];
+                        [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]];
                     });
                 });
             }
@@ -703,7 +703,7 @@
                     [cell setNeedsDisplay];
                 }
                 
-                [Helpers saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]];
+                [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]];
             });
         });
     }
@@ -722,7 +722,7 @@
         
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
-        NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+        NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
         
         [self initializeActivityIndicator];
         
@@ -975,7 +975,7 @@
         
         NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
         
-        NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+        NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
             if (data) {

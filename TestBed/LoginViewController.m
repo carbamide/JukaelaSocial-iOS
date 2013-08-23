@@ -10,7 +10,6 @@
 #import "LoginViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "LoginImage.h"
-#import "UIImage+ImageEffects.h"
 
 @interface LoginViewController ()
 @property (strong, nonatomic) NSArray *tempFeed;
@@ -50,7 +49,7 @@
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
-    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
     
     [request setTimeoutInterval:30];
     
@@ -101,7 +100,7 @@
     
     NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
     
-    NSMutableURLRequest *request = [Helpers postRequestWithURL:url withData:requestData];
+    NSMutableURLRequest *request = [NSMutableURLRequest postRequestWithURL:url withData:requestData timeout:60];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
@@ -216,7 +215,7 @@
         
         UIImage *image = [[loginImageObject image] applyLightEffect];
         
-        [Helpers saveImage:image withFileName:@"Login"];
+        [UIImage saveImage:image withFileName:@"Login"];
         dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
         
         dispatch_async(aQueue, ^{

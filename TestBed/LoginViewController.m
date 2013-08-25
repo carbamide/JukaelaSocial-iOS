@@ -248,20 +248,18 @@
 {
     [super viewDidAppear:animated];
     
+    NSString *passwordString = [SFHFKeychainUtils getPasswordForUsername:[[NSUserDefaults standardUserDefaults] stringForKey:kUsername] andServiceName:kJukaelaSocialServiceName error:nil];
+    
+    if ([passwordString length] > 0) {
+        [_usernameTextField setText:[[NSUserDefaults standardUserDefaults] stringForKey:kUsername]];
+        [_passwordTextField setText:passwordString];
+        
+        [self loginAction:nil];
+    }
+    
     [kAppDelegate setCurrentViewController:self];
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
-        if (![self doNotLogin]) {
-            [self loginAction:nil];
-            
-            [self setDoNotLogin:NO];
-        }
-    }
-    else {
-        [[self passwordTextField] setText:nil];
-    }
 }
 
 -(void)viewDidUnload

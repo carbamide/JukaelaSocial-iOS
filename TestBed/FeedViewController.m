@@ -12,6 +12,7 @@
 #import "PostViewController.h"
 #import "ThreadedPostsViewController.h"
 #import "UsersWhoLikedViewController.h"
+#import "DataManager.h"
 
 @interface FeedViewController ()
 @property (strong, nonatomic) NSCache *externalImageCache;
@@ -28,6 +29,8 @@
 @property (nonatomic) BOOL jukaelaSuccess;
 @property (nonatomic) BOOL justToJukaela;
 @property (nonatomic) BOOL twitterSuccess;
+
+@property (nonatomic) NSInteger toPost;
 
 -(void)refreshTableInformation:(NSInteger)from to:(NSInteger)to;
 
@@ -445,37 +448,10 @@
     
 }
 
-- (void)feedHandler:(NSNotification *)aNotification to:(NSInteger)to
+- (void)refreshTable
 {
-    //
-    // This doesn't work because these are objects, and not just dictionarys.  They take up
-    // different memory space and are, therefore "different"
-    //
-    
-    
-    // AAGGGGGGGHHHHH THIS IS BROKEN!~!!!!!!!!! NOOOOO IT's A TRAP!!!!!!!!!!!!
-    
-    NSMutableArray *tempArray = [[aNotification userInfo][@"feed"] mutableCopy];
-    
-//    NSArray *oldArray = [self tableDataSource];
-    
-    [self setTableDataSource:[tempArray mutableCopy]];
-//
-//    NSSet *set1 = [NSSet setWithArray:tempArray];
-//    NSSet *set2 = [NSSet setWithArray:oldArray];
-//    
-//    NSMutableSet *notInSet1 = [NSMutableSet setWithSet:set2];
-//    [notInSet1 minusSet:set1];
-//    NSMutableSet *notInSet2 = [NSMutableSet setWithSet:set1];
-//    [notInSet2 minusSet:set2];
-//    
-//    NSMutableSet *symmetricDifference = [NSMutableSet setWithSet:notInSet1];
-//    [symmetricDifference unionSet:notInSet2];
-//    
-//    int difference = [symmetricDifference count];
-    
     if ([self currentChangeType] == INSERT_POST) {
-        [self insertPostHandler:1 to:to];
+        [self insertPostHandler:1 to:[self toPost]];
     }
     else if ([self currentChangeType] == DELETE_POST) {
         [self deletePostHandler:[self tempIndexPath]];
@@ -521,9 +497,7 @@
     
     [[ApiFactory sharedManager] getFeedFrom:from to:to];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:kLoadedFeed object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
-        [self feedHandler:aNotification to:to];
-    }];
+    [self setToPost:to];
 }
 
 

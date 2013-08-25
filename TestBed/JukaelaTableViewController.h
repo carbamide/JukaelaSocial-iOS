@@ -37,4 +37,6 @@
 
 - (void)handleURL:(NSURL*)url;
 
+-(void)refreshTable;
+
 @end

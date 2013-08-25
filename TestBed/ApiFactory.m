@@ -12,6 +12,7 @@
 #import "SFHFKeychainUtils.h"
 #import "ActivityManager.h"
 #import "RequestFactory.h"
+#import "DataManager.h"
 
 @implementation ApiFactory
 
@@ -64,7 +65,7 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (data) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kLoadedFeed object:nil userInfo:@{@"feed": [ObjectMapper convertToFeedItemArray:data]}];
+            [[DataManager sharedInstance] setFeedDataSource:[[ObjectMapper convertToFeedItemArray:data] mutableCopy]];
         }
     }];
 }
@@ -83,7 +84,7 @@
         NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
         
         if (data) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"loaded_mentions" object:nil userInfo:@{@"feed": [ObjectMapper convertToMentionItemArray:data]}];
+            [[DataManager sharedInstance] setMentionsDataSource:[[ObjectMapper convertToMentionItemArray:data] mutableCopy]];
         }
     }];
 }

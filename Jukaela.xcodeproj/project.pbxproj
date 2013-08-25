@@ -42,9 +42,9 @@
 		295CB26D15E528EA001A43DA /* TMImgurUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB26C15E528EA001A43DA /* TMImgurUploader.m */; };
 		295CB27515E528F4001A43DA /* TMHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB27115E528F4001A43DA /* TMHTTPClient.m */; };
 		295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB27315E528F4001A43DA /* TMHTTPRequest.m */; };
-		2960716017C70F5000BBC5B6 /* JukaelaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2960715F17C70F5000BBC5B6 /* JukaelaCore.framework */; };
 		29714EA015C7204300109E5A /* SORelativeDateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */; };
 		29714EA115C7204300109E5A /* SORelativeDateTransformer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29714E9F15C7204300109E5A /* SORelativeDateTransformer.bundle */; };
+		2972166B17C7E8DE0003B177 /* JukaelaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2972166A17C7E8DE0003B177 /* JukaelaCore.framework */; };
 		2975554315CF2DF800CAA9A7 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2975554215CF2DF800CAA9A7 /* libz.dylib */; };
 		2976435D16826DB600D79876 /* RequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2976435C16826DB600D79876 /* RequestFactory.m */; };
 		2979C6851676C83400B61F3E /* UsersCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2979C6841676C83400B61F3E /* UsersCollectionViewCell.m */; };
@@ -75,6 +75,7 @@
 		29E6C03917BDBA97005D57BF /* ApiFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E6C03817BDBA97005D57BF /* ApiFactory.m */; };
 		29F977EE1693E38C0075A4FF /* UsersWhoLikedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F977ED1693E38C0075A4FF /* UsersWhoLikedViewController.m */; };
 		29F99E971676C2D000ADC3D1 /* JukaelaCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F99E961676C2D000ADC3D1 /* JukaelaCollectionViewController.m */; };
+		29FE9C3617CAB4F7007D8200 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE9C3517CAB4F7007D8200 /* DataManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -139,10 +140,10 @@
 		295CB27115E528F4001A43DA /* TMHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMHTTPClient.m; sourceTree = "<group>"; };
 		295CB27215E528F4001A43DA /* TMHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMHTTPRequest.h; sourceTree = "<group>"; };
 		295CB27315E528F4001A43DA /* TMHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMHTTPRequest.m; sourceTree = "<group>"; };
-		2960715F17C70F5000BBC5B6 /* JukaelaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JukaelaCore.framework; path = "../Core/build/Debug-iphoneos/JukaelaCore.framework"; sourceTree = "<group>"; };
 		29714E9D15C7204300109E5A /* SORelativeDateTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SORelativeDateTransformer.h; sourceTree = "<group>"; };
 		29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SORelativeDateTransformer.m; sourceTree = "<group>"; };
 		29714E9F15C7204300109E5A /* SORelativeDateTransformer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SORelativeDateTransformer.bundle; sourceTree = "<group>"; };
+		2972166A17C7E8DE0003B177 /* JukaelaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JukaelaCore.framework; path = TestBed/JukaelaCore.framework; sourceTree = "<group>"; };
 		2975554215CF2DF800CAA9A7 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		2976435B16826DB600D79876 /* RequestFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestFactory.h; sourceTree = "<group>"; };
 		2976435C16826DB600D79876 /* RequestFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestFactory.m; sourceTree = "<group>"; };
@@ -175,6 +176,7 @@
 		29C59AA217C4031E0025C8A6 /* JukaelaTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaTextView.m; sourceTree = "<group>"; };
 		29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowUserViewController.h; sourceTree = "<group>"; };
 		29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowUserViewController.m; sourceTree = "<group>"; };
+		29D1566217C7B6D0009FDF7D /* JukaelaCore.Framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JukaelaCore.Framework; path = ../Core/JukaelaCore.Framework; sourceTree = "<group>"; };
 		29D5115D168B9E1200FF298B /* ThreadedPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadedPostsViewController.h; sourceTree = "<group>"; };
 		29D5115E168B9E1200FF298B /* ThreadedPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadedPostsViewController.m; sourceTree = "<group>"; };
 		29D5B81315545B3A000D9374 /* GravatarHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GravatarHelper.h; sourceTree = "<group>"; };
@@ -204,6 +206,8 @@
 		29F977ED1693E38C0075A4FF /* UsersWhoLikedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersWhoLikedViewController.m; sourceTree = "<group>"; };
 		29F99E951676C2D000ADC3D1 /* JukaelaCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaCollectionViewController.h; sourceTree = "<group>"; };
 		29F99E961676C2D000ADC3D1 /* JukaelaCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaCollectionViewController.m; sourceTree = "<group>"; };
+		29FE9C3417CAB4F7007D8200 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		29FE9C3517CAB4F7007D8200 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		609D6CA22A594CD6BDAA18EA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		66D28CA37D7D4956BFAE05B5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		HYXIFWTDXJPPRRMDCEPMDTJH /* SparkInspector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SparkInspector.framework; path = "/Applications/Spark Inspector.app/Contents/Resources/Frameworks/SparkInspector.framework"; sourceTree = "<group>"; };
@@ -214,7 +218,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2960716017C70F5000BBC5B6 /* JukaelaCore.framework in Frameworks */,
 				29BE441A177F5461000BAD53 /* libPods.a in Frameworks */,
 				29E517791608AC7200CA422F /* ImageIO.framework in Frameworks */,
 				293751F515EA65F10082864C /* MessageUI.framework in Frameworks */,
@@ -222,6 +225,7 @@
 				29295F6415C3373700F1968B /* Social.framework in Frameworks */,
 				2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */,
 				293A7426155F68AA004D27D2 /* Security.framework in Frameworks */,
+				2972166B17C7E8DE0003B177 /* JukaelaCore.framework in Frameworks */,
 				29D5B84915546055000D9374 /* QuartzCore.framework in Frameworks */,
 				2956875B1552C96700FE741C /* UIKit.framework in Frameworks */,
 				2956875D1552C96700FE741C /* Foundation.framework in Frameworks */,
@@ -274,7 +278,8 @@
 		295687591552C96700FE741C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2960715F17C70F5000BBC5B6 /* JukaelaCore.framework */,
+				2972166A17C7E8DE0003B177 /* JukaelaCore.framework */,
+				29D1566217C7B6D0009FDF7D /* JukaelaCore.Framework */,
 				29BE4419177F5461000BAD53 /* libPods.a */,
 				299BB4FB160E7A4700898A7C /* AudioToolbox.framework */,
 				29E517781608AC7100CA422F /* ImageIO.framework */,
@@ -512,8 +517,8 @@
 				295687691552C96700FE741C /* AppDelegate.h */,
 				2956876A1552C96700FE741C /* AppDelegate.m */,
 				29D5B84A1554612A000D9374 /* Constants.h */,
-				29C59AA117C4031E0025C8A6 /* JukaelaTextView.h */,
-				29C59AA217C4031E0025C8A6 /* JukaelaTextView.m */,
+				29FE9C3417CAB4F7007D8200 /* DataManager.h */,
+				29FE9C3517CAB4F7007D8200 /* DataManager.m */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -540,6 +545,8 @@
 		29D5B860155476A4000D9374 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				29C59AA117C4031E0025C8A6 /* JukaelaTextView.h */,
+				29C59AA217C4031E0025C8A6 /* JukaelaTextView.m */,
 				298062F617695A060006F281 /* Block Action and Alerts */,
 				29D433D015FE27C100ABCB2F /* Categories */,
 				29D433CA15FE276700ABCB2F /* Date Transformer */,
@@ -738,6 +745,7 @@
 				29C251591672BFED00F27ABC /* ImageConfirmationViewController.m in Sources */,
 				29F99E971676C2D000ADC3D1 /* JukaelaCollectionViewController.m in Sources */,
 				2979C6851676C83400B61F3E /* UsersCollectionViewCell.m in Sources */,
+				29FE9C3617CAB4F7007D8200 /* DataManager.m in Sources */,
 				2954F9E8167B892A000695EC /* GRButtons.m in Sources */,
 				29324FD4167FBD07001B1E0C /* SFHFKeychainUtils.m in Sources */,
 				2976435D16826DB600D79876 /* RequestFactory.m in Sources */,
@@ -854,8 +862,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joshua Barrow (VV74J74MG8)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"/Applications/Spark\\ Inspector.app/Contents/Resources/Frameworks",
+					"${SRCROOT}/**",
 					"/Users/jbarrow/Projects/iOS/Jukaela\\ Social",
 					"/Users/jbarrow/Projects/iOS/Core/build/Debug-iphoneos/**",
+					/Users/jbarrow/Projects/iOS/Core,
+					"/Users/jbarrow/Projects/iOS/Jukaela\\ Social/TestBed",
+					/Users/jbarrow/Projects/iOS/Core/Products,
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -871,12 +883,16 @@
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_LABEL = YES;
+				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
+					"${SRCROOT}/**",
+				);
 				INFOPLIST_FILE = "TestBed/Jukaela-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
-					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)\"/**",
 					"\"$(SRCROOT)/Bitly\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
@@ -910,8 +926,12 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"/Applications/Spark\\ Inspector.app/Contents/Resources/Frameworks",
+					"${SRCROOT}/**",
 					"/Users/jbarrow/Projects/iOS/Jukaela\\ Social",
 					"/Users/jbarrow/Projects/iOS/Core/build/Debug-iphoneos/**",
+					/Users/jbarrow/Projects/iOS/Core,
+					"/Users/jbarrow/Projects/iOS/Jukaela\\ Social/TestBed",
+					/Users/jbarrow/Projects/iOS/Core/Products,
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -927,12 +947,16 @@
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				GCC_WARN_UNUSED_FUNCTION = NO;
 				GCC_WARN_UNUSED_LABEL = YES;
+				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
+					"${SRCROOT}/**",
+				);
 				INFOPLIST_FILE = "TestBed/Jukaela-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
-					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)\"/**",
 					"\"$(SRCROOT)/Bitly\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";

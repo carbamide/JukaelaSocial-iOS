@@ -9,6 +9,7 @@
 #import "JukaelaTableViewController.h"
 #import "SVModalWebViewController.h"
 #import "FeedViewController.h"
+#import "DataManager.h"
 
 @interface JukaelaTableViewController()
 
@@ -18,16 +19,59 @@
 
 @implementation JukaelaTableViewController
 
+-(void)dealloc
+{
+    [[DataManager sharedInstance] removeObserver:self forKeyPath:@"feedDataSource"];
+    [[DataManager sharedInstance] removeObserver:self forKeyPath:@"mentionsDataSource"];
+
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[DataManager sharedInstance] addObserver:self
+                                   forKeyPath:@"feedDataSource"
+                                      options:(NSKeyValueObservingOptionNew |
+                                               NSKeyValueObservingOptionOld)
+                                      context:NULL];
+    
+    [[DataManager sharedInstance] addObserver:self
+                                   forKeyPath:@"mentionsDataSource"
+                                      options:(NSKeyValueObservingOptionNew |
+                                               NSKeyValueObservingOptionOld)
+                                      context:NULL];
     
     [self setupBackground];
     
     if (self == [[self navigationController] viewControllers][0] || [self isKindOfClass:[FeedViewController class]]) {
         [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"Menu" style:UIBarButtonItemStyleBordered target:self action:@selector(showMenu)]];
     }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    
+    if ([keyPath isEqual:@"feedDataSource"]) {
+        NSMutableArray *tempArray = [object valueForKey:keyPath];
+        
+        [self setTableDataSource:tempArray];
+        [self refreshTable];
+    }
+    else if ([keyPath isEqual:@"mentionsDataSource"]) {
+        NSMutableArray *tempArray = [object valueForKey:keyPath];
+        
+        [self setTableDataSource:tempArray];
+        [self refreshTable];
+    }
+}
+
+-(void)refreshTable
+{
+    [NSException raise:NSInternalInconsistencyException
+                format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
 }
 
 - (void)didReceiveMemoryWarning

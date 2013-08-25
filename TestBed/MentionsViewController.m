@@ -156,10 +156,6 @@
         [self showImageHandler:aNotification];
     }];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"loaded_mentions" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
-        [self refreshTableHandler:aNotification];
-    }];
-    
     [[NSNotificationCenter defaultCenter] addObserverForName:kLoadUserWithUsernameNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
         [self requestWithUsername:[aNotification userInfo][@"username"]];
     }];
@@ -183,10 +179,8 @@
     [[ApiFactory sharedManager] getMentions];
 }
 
--(void)refreshTableHandler:(NSNotification *)aNotification
-{
-    [self setTableDataSource:[[aNotification userInfo][@"feed"] mutableCopy]];
-    
+-(void)refreshTable
+{    
     [[self tableView] reloadData];
     
     [[self refreshControl] endRefreshing];

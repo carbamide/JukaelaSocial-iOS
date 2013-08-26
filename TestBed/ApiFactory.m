@@ -13,6 +13,7 @@
 #import "ActivityManager.h"
 #import "RequestFactory.h"
 #import "DataManager.h"
+#import "User.h"
 
 @implementation ApiFactory
 
@@ -144,6 +145,75 @@
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"image_for_login" object:nil userInfo:@{@"login": [ObjectMapper convertToLoginImageObject:data]}];
+    }];
+}
+
+-(void)getCurrentUser
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, [kAppDelegate userID]]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest getRequestWithURL:url timeout:60];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [[DataManager sharedInstance] setCurrentUser:[ObjectMapper convertToUserObject:data]];
+        }
+    }];
+}
+
+-(void)updateUser:(User *)user password:(NSString *)password
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@", kSocialURL, [kAppDelegate userID]]];
+    
+    NSString *requestString = [RequestFactory editUserRequestWithName:[user name]
+                                                             username:[user username]
+                                                                email:[user email]
+                                                             password:password
+                                                 passwordConfirmation:password
+                                                              profile:[user profile]
+                                                            sendEmail:[NSNumber numberWithBool:[user sendEmail]]];
+    
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"PUT"];
+    [request setHTTPBody:requestData];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"updated_user" object:nil userInfo:nil];
+        }
+    }];
+}
+
+-(void)createNewUser:(User *)user password:(NSString *)password
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users.json", kSocialURL]];
+    
+    NSString *requestString = [RequestFactory createNewUserRequestWithName:[user name]
+                                                                  username:[user username]
+                                                                     email:[user email]
+                                                                  password:password
+                                                      passwordConfirmation:password];
+    
+    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:requestData];
+    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (data) {
+            if ([[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] isKindOfClass:[NSDictionary class]]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"new_user" object:nil userInfo:@{kEmail : [user email]}];
+            }
+        }
     }];
 }
 @end

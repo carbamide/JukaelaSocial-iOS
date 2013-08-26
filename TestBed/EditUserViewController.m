@@ -8,13 +8,15 @@
 
 #import "EditUserViewController.h"
 #import "SFHFKeychainUtils.h"
+#import "DataManager.h"
+#import "User.h"
 
 @interface EditUserViewController ()
 
 -(NSArray *)fieldsArray;
 
-@property (strong, nonatomic) NSDictionary *tempDict;
 @property (strong, nonatomic) UISwitch *emailSwitch;
+
 @end
 
 @implementation EditUserViewController
@@ -37,61 +39,42 @@
 
 -(void)getUserInfo:(NSNumber *)userID
 {
-    [[ActivityManager sharedManager] incrementActivityCount];
+    User *currentUser = [[DataManager sharedInstance] currentUser];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@.json", kSocialURL, userID]];
+    [[self nameTextField] setText:[currentUser name]];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest getRequestWithURL:url timeout:60];
+    [[self usernameTextField] setText:[currentUser username]];
     
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        if (data) {
-            [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
+    [[self emailTextField] setText:[currentUser email]];
+    
+    [[self profileTextView] setText:[currentUser profile]];
+    
+    [[self emailSwitch] setOn:[currentUser sendEmail]];
+    
+    NSError *error = nil;
+    
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:[currentUser email] andServiceName:kJukaelaSocialServiceName error:&error];
+    
+    [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
 
-            [self setTempDict:[NSJSONSerialization JSONObjectWithData:data options:0 error:nil]];
-            
-            [[ActivityManager sharedManager] decrementActivityCount];
-            
-            if ([self tempDict][kName] && [self tempDict][kName] != [NSNull null]) {
-                [[self nameTextField] setText:[self tempDict][kName]];
-            }
-            
-            if ([self tempDict][kUsername] && [self tempDict][kUsername] != [NSNull null]) {
-                [[self usernameTextField] setText:[self tempDict][kUsername]];
-            }
-            
-            if ([self tempDict][kEmail] && [self tempDict][kEmail] != [NSNull null]) {
-                [[self emailTextField] setText:[self tempDict][kEmail]];
-            }
-            
-            if ([self tempDict][@"profile"] && [self tempDict][@"profile"] != [NSNull null]) {
-                [[self profileTextView] setText:[self tempDict][@"profile"]];
-            }
-            
-            if ([self tempDict][@"send_email"] && [self tempDict][@"send_email"] != [NSNull null]) {
-                [[self emailSwitch] setOn:[[self tempDict][@"send_email"] boolValue]];
-            }
-            
-            NSString *password = [SFHFKeychainUtils getPasswordForUsername:[self tempDict][kEmail] andServiceName:kJukaelaSocialServiceName error:&error];
-
-            if (password) {
-                [[self passwordTextField] setText:password];
-                [[self passwordConfirmTextField] setText:password];
-            }
-        }
-        else {
-            [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
-            
-            [[[self navigationItem] rightBarButtonItem] setEnabled:NO];
-            
-            [Helpers errorAndLogout:self withMessage:@"There was an error downloading user information.  Please logout and log back in."];
-        }
-    }];
+    if (password) {
+        [[self passwordTextField] setText:password];
+        [[self passwordConfirmTextField] setText:password];
+    }
+    
+    if (error) {
+        [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
+        
+        [[[self navigationItem] rightBarButtonItem] setEnabled:NO];
+        
+        [Helpers errorAndLogout:self withMessage:@"There was an error downloading user information.  Please logout and log back in."];
+    }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     [[ActivityManager sharedManager] incrementActivityCount];
     
     [[self navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)]];
@@ -115,8 +98,6 @@
     
     [[self navigationItem] setRightBarButtonItem:loadingView];
     
-    [self getUserInfo:[kAppDelegate userID]];
-    
     [self setNameTextField:[[UITextField alloc] init]];
     [self setUsernameTextField:[[UITextField alloc] init]];
     [self setEmailTextField:[[UITextField alloc] init]];
@@ -129,8 +110,14 @@
     [[self emailTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
     [[self passwordTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
     [[self passwordConfirmTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
-
+    
     [[self profileTextView] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]];
+    
+    [self getUserInfo:[kAppDelegate userID]];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"updated_user" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
 }
 
 -(IBAction)cancel:(id)sender
@@ -150,7 +137,7 @@
                                        UIViewAutoresizingFlexibleBottomMargin)];
     
     [activityView setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-
+    
     [activityView startAnimating];
     
     UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
@@ -159,7 +146,7 @@
     
     if (![[[self passwordTextField] text] isEqualToString:[[self passwordConfirmTextField] text]]) {
         [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
-
+        
         UIAlertView *passwordsDontMatchAlert = [[UIAlertView alloc] initWithTitle:@"Password" message:@"The passwords must match" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [passwordsDontMatchAlert show];
@@ -167,33 +154,15 @@
         return;
     }
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users/%@", kSocialURL, [kAppDelegate userID]]];
+    User *tempUser = [[DataManager sharedInstance] currentUser];
     
-    NSString *requestString = [RequestFactory editUserRequestWithName:[[self nameTextField] text] username:[[self usernameTextField] text] email:[[self emailTextField] text] password:[[self passwordTextField] text] passwordConfirmation:[[self passwordConfirmTextField] text] profile:[[self profileTextView] text] sendEmail:[NSNumber numberWithBool:[[self emailSwitch] isOn]]];
+    [tempUser setName:[[self nameTextField] text]];
+    [tempUser setUsername:[[self usernameTextField] text]];
+    [tempUser setEmail:[[self emailTextField] text]];
+    [tempUser setSendEmail:[[self emailSwitch] isOn]];
+    [tempUser setProfile:[[self profileTextView] text]];
     
-    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    [request setHTTPMethod:@"PUT"];
-    [request setHTTPBody:requestData];
-    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[ActivityManager sharedManager] decrementActivityCount];
-        
-        if (data) {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else {
-            [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveProfile:)]];
-
-            UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Error editing your user account. Please try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                        
-            [errorAlert show];
-        }
-    }];
+    [[ApiFactory sharedManager] updateUser:tempUser password:[[self passwordTextField] text]];
 }
 
 - (void)viewDidUnload
@@ -285,7 +254,7 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [self setEmailSwitch:[[UISwitch alloc] initWithFrame:CGRectZero]];
-    
+        
         [cell setAccessoryView:[self emailSwitch]];
     }
     if ([indexPath row] == 6) {

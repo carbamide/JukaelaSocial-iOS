@@ -59,6 +59,10 @@
     [[self emailTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
     [[self passwordTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
     [[self passwordConfirmTextField] setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"new_user" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
 }
 
 -(IBAction)cancel:(id)sender
@@ -85,44 +89,37 @@
     
     [[self navigationItem] setRightBarButtonItem:loadingView];
     
+    if ([[[self passwordTextField] text] length] < 6) {
+        UIAlertView *passwordTooShortAlert = [[UIAlertView alloc] initWithTitle:@"Password"
+                                                                        message:@"The password you've selected is too short!  Must be 6 characters long."
+                                                                       delegate:nil
+                                                              cancelButtonTitle:@"OK"
+                                                              otherButtonTitles:nil, nil];
+        
+        [passwordTooShortAlert show];
+        
+        return;
+    }
+    
     if (![[[self passwordTextField] text] isEqualToString:[[self passwordConfirmTextField] text]]) {
-        UIAlertView *passwordsDontMatchAlert = [[UIAlertView alloc] initWithTitle:@"Password" message:@"The passwords must match" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *passwordsDontMatchAlert = [[UIAlertView alloc] initWithTitle:@"Password"
+                                                                          message:@"The passwords must match"
+                                                                         delegate:nil
+                                                                cancelButtonTitle:@"OK"
+                                                                otherButtonTitles:nil, nil];
         
         [passwordsDontMatchAlert show];
         
         return;
     }
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/users.json", kSocialURL]];
+    User *tempUser = [[User alloc] init];
     
-    NSString *requestString = [RequestFactory createNewUserRequestWithName:[[self nameTextField] text] username:[[self usernameTextField] text] email:[[self emailTextField] text] password:[[self passwordTextField] text] passwordConfirmation:[[self passwordConfirmTextField] text]];
-        
-    NSData *requestData = [NSData dataWithBytes:[requestString UTF8String] length:[requestString length]];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:requestData];
-    [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"accept"];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-        [[ActivityManager sharedManager] decrementActivityCount];
-        
-        if (data) {
-            if ([[NSJSONSerialization JSONObjectWithData:data options:0 error:nil] isKindOfClass:[NSDictionary class]]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"new_user" object:nil userInfo:@{kEmail : [[self emailTextField] text]}];
-                
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-            else {
-                [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
-            }
-        }
-        else {
-            [[self navigationItem] setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(attemptToCreateUser:)]];
-        }
-    }];
+    [tempUser setName:[[self nameTextField] text]];
+    [tempUser setUsername:[[self usernameTextField] text]];
+    [tempUser setEmail:[[self emailTextField] text]];
+
+    [[ApiFactory sharedManager] createNewUser:tempUser password:[[self passwordTextField] text]];
 }
 
 - (void)viewDidUnload

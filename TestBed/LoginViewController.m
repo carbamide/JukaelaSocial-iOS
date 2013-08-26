@@ -17,6 +17,34 @@
 
 @implementation LoginViewController
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    NSString *passwordString = [SFHFKeychainUtils getPasswordForUsername:[[NSUserDefaults standardUserDefaults] stringForKey:kUsername] andServiceName:kJukaelaSocialServiceName error:nil];
+    
+    if ([passwordString length] > 0) {
+        [_usernameTextField setText:[[NSUserDefaults standardUserDefaults] stringForKey:kUsername]];
+        [_passwordTextField setText:passwordString];
+        
+        [self loginAction:nil];
+    }
+    
+    [kAppDelegate setCurrentViewController:self];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+}
+
+-(void)viewDidUnload
+{
+    [super viewDidUnload];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [[self progressHUD] hide:YES];
+}
+
 -(void)loginAction:(id)sender
 {
     [[ActivityManager sharedManager] incrementActivityCount];
@@ -85,6 +113,76 @@
         }
         
         [[ActivityManager sharedManager] decrementActivityCount];
+    }];
+}
+
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [[self usernameTextField] setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.3]];
+    [[self passwordTextField] setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.3]];
+    
+    if (![[[self navigationController] navigationBar] isHidden]) {
+        [[[self navigationController] navigationBar] setHidden:YES];
+    }
+    
+    UIImage *image = [Helpers loginImage];
+    
+    [[self imageView] setImage:image];
+    
+    [kAppDelegate setCurrentViewController:self];
+    
+    [self loginImage];
+    
+    [NSTimer scheduledTimerWithTimeInterval:10.0
+                                     target:self
+                                   selector:@selector(loginImage)
+                                   userInfo:nil
+                                    repeats:YES];
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
+        [kAppDelegate setUserID:[[NSUserDefaults standardUserDefaults] valueForKey:kUserID]];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+        
+        FeedViewController *feedViewController = [storyboard instantiateViewControllerWithIdentifier:@"FeedViewController"];
+        
+        [feedViewController setLoadedDirectly:YES];
+        
+        [[self navigationController] pushViewController:feedViewController animated:NO];
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"new_user" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification) {
+        [self showLoginTextFields:nil];
+        
+        [[self usernameTextField] setText:[aNotification userInfo][kEmail]];
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"image_for_login" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
+        LoginImage *loginImageObject = [aNotification userInfo][@"login"];
+        
+        UIImage *image = [[loginImageObject image] applyLightEffect];
+        
+        [UIImage saveImage:image withFileName:@"Login"];
+        dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+        
+        dispatch_async(aQueue, ^{
+            CATransition *transition = [CATransition animation];
+            
+            [transition setDuration:1.0];
+            [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+            [transition setType:kCATransitionFade];
+            
+            [[[self imageView] layer] addAnimation:transition forKey:nil];
+            
+            __block UIImage *image = [[loginImageObject image] applyLightEffect];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self changeBackgroundImage:image];
+            });
+        });
+        
     }];
 }
 
@@ -169,107 +267,11 @@
     }
 }
 
--(void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [[self usernameTextField] setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.3]];
-    [[self passwordTextField] setBackgroundColor:[UIColor colorWithWhite:0.2 alpha:0.3]];
-    
-    if (![[[self navigationController] navigationBar] isHidden]) {
-        [[[self navigationController] navigationBar] setHidden:YES];
-    }
-    
-    UIImage *image = [Helpers loginImage];
-    
-    [[self imageView] setImage:image];
-    
-    [kAppDelegate setCurrentViewController:self];
-    
-    [self loginImage];
-    
-    [NSTimer scheduledTimerWithTimeInterval:10.0
-                                     target:self
-                                   selector:@selector(loginImage)
-                                   userInfo:nil
-                                    repeats:YES];
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kReadUsernameFromDefaultsPreference] == YES) {
-        [kAppDelegate setUserID:[[NSUserDefaults standardUserDefaults] valueForKey:kUserID]];
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-        
-        FeedViewController *feedViewController = [storyboard instantiateViewControllerWithIdentifier:@"FeedViewController"];
-        
-        [feedViewController setLoadedDirectly:YES];
-        
-        [[self navigationController] pushViewController:feedViewController animated:NO];
-    }
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"new_user" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
-        [[self usernameTextField] setText:[aNotification userInfo][kEmail]];
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"image_for_login" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *aNotification){
-        LoginImage *loginImageObject = [aNotification userInfo][@"login"];
-        
-        UIImage *image = [[loginImageObject image] applyLightEffect];
-        
-        [UIImage saveImage:image withFileName:@"Login"];
-        dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
-        
-        dispatch_async(aQueue, ^{
-            CATransition *transition = [CATransition animation];
-            
-            [transition setDuration:1.0];
-            [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-            [transition setType:kCATransitionFade];
-            
-            [[[self imageView] layer] addAnimation:transition forKey:nil];
-            
-            __block UIImage *image = [[loginImageObject image] applyLightEffect];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self changeBackgroundImage:image];
-            });
-        });
-        
-    }];
-}
-
 -(void)changeBackgroundImage:(UIImage *)anImage
 {
     [[self imageView] setImage:anImage];
     
     [CATransaction commit];
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    NSString *passwordString = [SFHFKeychainUtils getPasswordForUsername:[[NSUserDefaults standardUserDefaults] stringForKey:kUsername] andServiceName:kJukaelaSocialServiceName error:nil];
-    
-    if ([passwordString length] > 0) {
-        [_usernameTextField setText:[[NSUserDefaults standardUserDefaults] stringForKey:kUsername]];
-        [_passwordTextField setText:passwordString];
-        
-        [self loginAction:nil];
-    }
-    
-    [kAppDelegate setCurrentViewController:self];
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-}
-
--(void)viewDidUnload
-{
-    [super viewDidUnload];
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [[self progressHUD] hide:YES];
 }
 
 @end

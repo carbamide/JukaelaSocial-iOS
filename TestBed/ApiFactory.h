@@ -8,6 +8,8 @@
 
 @import Foundation;
 
+@class User;
+
 @interface ApiFactory : NSObject <NSURLConnectionDelegate>
 
 +(instancetype)sharedManager;
@@ -20,5 +22,8 @@
 -(void)showImage:(NSURL *)imageUrl;
 -(void)getMentions;
 -(void)loginImage;
+-(void)getCurrentUser;
+-(void)updateUser:(User *)user password:(NSString *)password;
+-(void)createNewUser:(User *)user password:(NSString *)password;
 
 @end

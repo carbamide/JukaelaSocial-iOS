@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class User;
+
 @interface DataManager : NSObject
 
 +(instancetype)sharedInstance;
 
 @property (strong, nonatomic) NSMutableArray *feedDataSource;
 @property (strong, nonatomic) NSMutableArray *mentionsDataSource;
-
--(void)setFeedDataSource:(NSMutableArray *)feedDataSource;
--(void)setMentionsDataSource:(NSMutableArray *)mentionsDataSource;
+@property (strong, nonatomic) User *currentUser;
 
 @end

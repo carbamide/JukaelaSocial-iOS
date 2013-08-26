@@ -29,6 +29,8 @@ NS_ENUM(NSInteger, SocialTypes) {
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [[ApiFactory sharedManager] getCurrentUser];
+
     [kAppDelegate setCurrentViewController:self];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {

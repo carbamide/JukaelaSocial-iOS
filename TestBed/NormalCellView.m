@@ -353,7 +353,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
                     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[feedItem user] email] withSize:40]]];
                     
 #if (TARGET_IPHONE_SIMULATOR)
-//                    image = [UIImage normalize:image];
+                    image = [UIImage normalize:image];
 #endif
                     UIImage *resizedImage = [image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
                     
@@ -376,7 +376,7 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[feedItem user] email] withSize:40]]];
             
 #if (TARGET_IPHONE_SIMULATOR)
-//            image = [JEImages normalize:image];
+            image = [UIImage normalize:image];
 #endif
             UIImage *resizedImage = [image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
             

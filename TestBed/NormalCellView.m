@@ -6,14 +6,19 @@
 //  Copyright 2012 Josh Barrow. All rights reserved.
 //
 
-#import "Constants.h"
+@import ObjectiveC.runtime;
 
+#import "Constants.h"
 #import "NormalCellView.h"
+#import "User.h"
+#import "GravatarHelper.h"
 
 NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReuse2";
 
 @interface NormalCellView ()
 @property (weak, nonatomic) UITableView *theTableView;
+@property (strong, nonatomic) NSIndexPath *indexPath;
+
 @end
 
 @implementation NormalCellView
@@ -30,11 +35,12 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
 @synthesize postDate;
 @synthesize dateTimer;
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath
 {
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
 	if (self) {
+        [self setIndexPath:indexPath];
         [self setTheTableView:tableView];
         
         contentText = [[UITextView alloc] initWithFrame:CGRectMake(8, 45, 315, 170)];
@@ -270,4 +276,122 @@ NSString * const kJKPrepareForReuseNotification = @"TableViewCell_PrepareForReus
     [[self dateLabel] setText:[[kAppDelegate dateTransformer] transformedValue:postDate]];
 }
 
+-(void)configureCellForFeedItem:(FeedItem *)feedItem nameDict:(NSDictionary *)nameDict
+{
+    if ([feedItem content]) {
+        [[self contentText] setText:[feedItem content]];
+    }
+    else {
+        [[self contentText] setText:@"Loading..."];
+    }
+    
+    if ([[feedItem user] name]) {
+        [[self nameLabel] setText:[[feedItem user] name]];
+    }
+    else {
+        if ([[feedItem user] userId]) {
+            [[self nameLabel] setText:[NSString stringWithFormat:@"%@", nameDict[[[feedItem user] userId]]]];
+        }
+        else {
+            [[self nameLabel] setText:@"Loading..."];
+        }
+    }
+    
+    if ([[feedItem user] username]) {
+        [[self usernameLabel] setText:[NSString stringWithFormat:@"@%@", [[feedItem user] username]]];
+    }
+    
+    if ([feedItem repostUserId]) {
+        [[self repostedNameLabel] setUserInteractionEnabled:YES];
+        
+        CGSize contentSize;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        if ([feedItem imageUrl]) {
+            contentSize = [[feedItem content] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]
+                                         constrainedToSize:CGSizeMake(185 - (7.5 * 2), 20000)
+                                             lineBreakMode:NSLineBreakByWordWrapping];
+        }
+        else {
+            contentSize = [[feedItem content] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]
+                                         constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
+                                             lineBreakMode:NSLineBreakByWordWrapping];
+        }
+        
+        CGSize nameSize = [[[feedItem user] name] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]
+                                             constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
+                                                 lineBreakMode:NSLineBreakByWordWrapping];
+#pragma clang diagnostic pop
+        
+        CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 85);
+        
+        [[self repostedNameLabel] setFrame:CGRectMake(7, height - 5, 228, 20)];
+        
+        [[self repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [feedItem repostName]]];
+    }
+    else {
+        [[self repostedNameLabel] setUserInteractionEnabled:NO];
+    }
+    
+    [self setDate:[feedItem createdAt]];
+    
+    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[NSString documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]]]];
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    
+    objc_setAssociatedObject(self, kIndexPathAssociationKey, [self indexPath], OBJC_ASSOCIATION_RETAIN);
+    
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[NSString documentsPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]]] error:nil];
+    
+    if (image) {
+        [[self imageView] setImage:image];
+        [self setNeedsDisplay];
+        
+        if (attributes) {
+            if ([NSDate daysBetweenDate:[NSDate date] andDate:attributes[NSFileCreationDate] options:0] > 1) {
+                dispatch_async(queue, ^{
+                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[feedItem user] email] withSize:40]]];
+                    
+#if (TARGET_IPHONE_SIMULATOR)
+//                    image = [UIImage normalize:image];
+#endif
+                    UIImage *resizedImage = [image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSIndexPath *selfIndexPath = (NSIndexPath *)objc_getAssociatedObject(self, kIndexPathAssociationKey);
+                        
+                        if ([[self indexPath] isEqual:selfIndexPath]) {
+                            [[self imageView] setImage:resizedImage];
+                            [self setNeedsDisplay];
+                        }
+                        
+                        [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]];
+                    });
+                });
+            }
+        }
+    }
+    else {
+        dispatch_async(queue, ^{
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[feedItem user] email] withSize:40]]];
+            
+#if (TARGET_IPHONE_SIMULATOR)
+//            image = [JEImages normalize:image];
+#endif
+            UIImage *resizedImage = [image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSIndexPath *selfIndexPath = (NSIndexPath *)objc_getAssociatedObject(self, kIndexPathAssociationKey);
+                
+                if ([[self indexPath] isEqual:selfIndexPath]) {
+                    [[self imageView] setImage:resizedImage];
+                    [self setNeedsDisplay];
+                }
+                
+                [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]];
+            });
+        });
+    }
+
+}
 @end

@@ -8,6 +8,7 @@
 
 @import UIKit;
 #import "NormalCellView.h"
+#import "FeedItem.h"
 
 @interface NormalWithImageCellView : NormalCellView
 
@@ -15,5 +16,7 @@
 @property (strong, nonatomic, setter = setImageUrl:) NSURL *imageUrl;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView withImageCache:(NSCache *)cache withIndexPath:(NSIndexPath *)indexPath;
+
+-(void)configureCellForFeedItem:(FeedItem *)feedItem nameDict:(NSDictionary *)nameDict;
 
 @end

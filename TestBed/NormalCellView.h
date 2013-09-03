@@ -8,6 +8,8 @@
 
 @import UIKit;
 
+#import "FeedItem.h"
+
 extern NSString * const kJKPrepareForReuseNotification;
 
 @interface NormalCellView : UITableViewCell <UIGestureRecognizerDelegate>
@@ -29,6 +31,8 @@ extern NSString * const kJKPrepareForReuseNotification;
 -(void)disableCell;
 -(void)doubleTapAction:(UIGestureRecognizer *)gesture;
 
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView;
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier withTableView:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath;
+
+-(void)configureCellForFeedItem:(FeedItem *)feedItem nameDict:(NSDictionary *)nameDict;
 
 @end

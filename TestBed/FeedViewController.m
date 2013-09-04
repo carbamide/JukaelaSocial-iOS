@@ -558,129 +558,13 @@
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
         if (!cell) {
-            cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier withTableView:tableView];
+            cell = [[NormalCellView alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier withTableView:tableView withIndexPath:indexPath];
             
             [cell setBackgroundView:[[CellBackground alloc] init]];
         }
     }
-    
-    if ([feedItem imageUrl]) {
-        [cell setImageUrl:[feedItem imageUrl]];
-    }
-    
-    if ([feedItem content]) {
-        [[cell contentText] setText:[feedItem content]];
-    }
-    else {
-        [[cell contentText] setText:@"Loading..."];
-    }
-    
-    if ([[feedItem user] name]) {
-        [[cell nameLabel] setText:[[feedItem user] name]];
-    }
-    else {
-        if ([[feedItem user] userId]) {
-            [[cell nameLabel] setText:[NSString stringWithFormat:@"%@", [self nameDict][[[feedItem user] userId]]]];
-        }
-        else {
-            [[cell nameLabel] setText:@"Loading..."];
-        }
-    }
-    
-    if ([[feedItem user] username]) {
-        [[cell usernameLabel] setText:[NSString stringWithFormat:@"@%@", [[feedItem user] username]]];
-    }
-    
-    if ([feedItem repostUserId]) {
-        [[cell repostedNameLabel] setUserInteractionEnabled:YES];
-        
-        CGSize contentSize;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        if ([feedItem imageUrl]) {
-            contentSize = [[feedItem content] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]
-                                         constrainedToSize:CGSizeMake(185 - (7.5 * 2), 20000)
-                                             lineBreakMode:NSLineBreakByWordWrapping];
-        }
-        else {
-            contentSize = [[feedItem content] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleBody]
-                                         constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
-                                             lineBreakMode:NSLineBreakByWordWrapping];
-        }
-        CGSize nameSize = [[[feedItem user] name] sizeWithFont:[UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]
-                                             constrainedToSize:CGSizeMake(215 - (7.5 * 2), 20000)
-                                                 lineBreakMode:NSLineBreakByWordWrapping];
-#pragma clang diagnostic pop
-        
-        CGFloat height = jMAX(contentSize.height + nameSize.height + 10, 85);
-        
-        [[cell repostedNameLabel] setFrame:CGRectMake(7, height - 5, 228, 20)];
-        
-        [[cell repostedNameLabel] setText:[NSString stringWithFormat:@"Reposted by %@", [feedItem repostName]]];
-    }
-    else {
-        [[cell repostedNameLabel] setUserInteractionEnabled:NO];
-    }
-    
-    [cell setDate:[feedItem createdAt]];
-    
-    UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@.png", [[self documentsFolder] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]]]];
-    
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    
-    objc_setAssociatedObject(cell, kIndexPathAssociationKey, indexPath, OBJC_ASSOCIATION_RETAIN);
-    
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@.png", [[self documentsFolder] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]]] error:nil];
-    
-    if (image) {
-        [[cell imageView] setImage:image];
-        [cell setNeedsDisplay];
-        
-        if (attributes) {
-            if ([NSDate daysBetweenDate:[NSDate date] andDate:attributes[NSFileCreationDate] options:0] > 1) {
-                dispatch_async(queue, ^{
-                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[feedItem user] email] withSize:40]]];
-                    
-#if (TARGET_IPHONE_SIMULATOR)
-                    image = [UIImage normalize:image];
-#endif
-                    UIImage *resizedImage = [image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
-                        
-                        if ([indexPath isEqual:cellIndexPath]) {
-                            [[cell imageView] setImage:resizedImage];
-                            [cell setNeedsDisplay];
-                        }
-                        
-                        [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]];
-                    });
-                });
-            }
-        }
-    }
-    else {
-        dispatch_async(queue, ^{
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[[feedItem user] email] withSize:40]]];
-            
-#if (TARGET_IPHONE_SIMULATOR)
-            image = [UIImage normalize:image];
-#endif
-            UIImage *resizedImage = [image thumbnailImage:75 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSIndexPath *cellIndexPath = (NSIndexPath *)objc_getAssociatedObject(cell, kIndexPathAssociationKey);
-                
-                if ([indexPath isEqual:cellIndexPath]) {
-                    [[cell imageView] setImage:resizedImage];
-                    [cell setNeedsDisplay];
-                }
-                
-                [UIImage saveImage:resizedImage withFileName:[NSString stringWithFormat:@"%@", [[feedItem user] userId]]];
-            });
-        });
-    }
+
+    [cell configureCellForFeedItem:feedItem nameDict:[self nameDict]];
     
     return cell;
 }

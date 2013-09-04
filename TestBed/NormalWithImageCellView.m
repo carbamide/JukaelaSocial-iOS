@@ -8,6 +8,7 @@
 
 #import "NormalWithImageCellView.h"
 #import "FeedViewController.h"
+#import "User.h"
 
 @interface NormalWithImageCellView ()
 @property (weak, nonatomic) UITableView *theTableView;
@@ -23,7 +24,7 @@
      withImageCache:(NSCache *)cache
       withIndexPath:(NSIndexPath *)indexPath
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier withTableView:tableView];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier withTableView:tableView withIndexPath:indexPath];
     
     if (self) {
         [self setTheTableView:tableView];
@@ -164,4 +165,12 @@
     }
 }
 
+-(void)configureCellForFeedItem:(FeedItem *)feedItem nameDict:(NSDictionary *)nameDict
+{
+    [super configureCellForFeedItem:feedItem nameDict:nameDict];
+    
+    if ([feedItem imageUrl]) {
+        [self setImageUrl:[feedItem imageUrl]];
+    }
+}
 @end

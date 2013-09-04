@@ -19,8 +19,7 @@
 {
     self = [super initWithFrame:frame];
     
-	if (self)
-	{
+	if (self) {
         UIImageView *anImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 2)];
         
         [anImageView setImage:[UIImage imageNamed:@"separator"]];

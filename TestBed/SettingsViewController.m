@@ -30,7 +30,7 @@ NS_ENUM(NSInteger, SocialTypes) {
 -(void)viewDidAppear:(BOOL)animated
 {
     [[ApiFactory sharedManager] getCurrentUser];
-
+    
     [kAppDelegate setCurrentViewController:self];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
@@ -57,10 +57,8 @@ NS_ENUM(NSInteger, SocialTypes) {
         
         [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] valueForKey:kUsername] andServiceName:kJukaelaSocialServiceName error:nil];
         
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUsername];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserID];
-        
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [NSUserDefaults deleteObjectForKey:kUsername];
+        [NSUserDefaults deleteObjectForKey:kUserID];
         
         [[kAppDelegate sideMenu] setRootViewController:[kAppDelegate rootViewNavigationController]];
         
@@ -84,7 +82,7 @@ NS_ENUM(NSInteger, SocialTypes) {
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     [self setPickerView:[[UIPickerView alloc] initWithFrame:CGRectMake(0, 0, 320, 216)]];
     [[self pickerView] setDelegate:self];
     [[self pickerView] setShowsSelectionIndicator:YES];
@@ -228,8 +226,7 @@ NS_ENUM(NSInteger, SocialTypes) {
                 [accountStore requestAccessToAccountsWithType:accountType options:options completion:^(BOOL granted, NSError *error) {
                     if(granted) {
                         if ([accountsArray count] > 0) {
-                            [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:kPostToFacebookPreference];
-                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            [NSUserDefaults saveObject:[NSNumber numberWithBool:[[self facebookSwitch] isOn]] forKey:kPostToFacebookPreference];
                         }
                         else {
                             [[self facebookSwitch] setOn:NO animated:YES];
@@ -239,8 +236,7 @@ NS_ENUM(NSInteger, SocialTypes) {
                 
             }
             else {
-                [[NSUserDefaults standardUserDefaults] setBool:[[self facebookSwitch] isOn] forKey:kPostToFacebookPreference];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                [NSUserDefaults saveObject:[NSNumber numberWithBool:[[self facebookSwitch] isOn]] forKey:kPostToFacebookPreference];
             }
         }
             break;
@@ -255,8 +251,8 @@ NS_ENUM(NSInteger, SocialTypes) {
                     if (granted) {
                         NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
                         if ([accountsArray count] > 0) {
-                            [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:kPostToTwitterPreference];
-                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            [NSUserDefaults saveObject:[NSNumber numberWithBool:[[self twitterSwitch] isOn]] forKey:kPostToTwitterPreference];
+                            
                         }
                         else {
                             [[self twitterSwitch] setOn:NO animated:YES];
@@ -266,8 +262,7 @@ NS_ENUM(NSInteger, SocialTypes) {
                 
             }
             else {
-                [[NSUserDefaults standardUserDefaults] setBool:[[self twitterSwitch] isOn] forKey:kPostToTwitterPreference];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                [NSUserDefaults saveObject:[NSNumber numberWithBool:[[self twitterSwitch] isOn]] forKey:kPostToTwitterPreference];
             }
         }
             break;

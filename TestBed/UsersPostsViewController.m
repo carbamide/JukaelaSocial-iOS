@@ -276,7 +276,7 @@
                     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userPostArray][[indexPath row]][kEmail] withSize:40]]];
                     
 #if (TARGET_IPHONE_SIMULATOR)
-                    image = [JEImages normalize:image];
+                    image = [UIImage normalize:image];
 #endif
                     UIImage *resizedImage = [image thumbnailImage:40 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
                     
@@ -299,7 +299,7 @@
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[self userPostArray][[indexPath row]][kEmail] withSize:40]]];
             
 #if (TARGET_IPHONE_SIMULATOR)
-            image = [JEImages normalize:image];
+            image = [UIImage normalize:image];
 #endif
             UIImage *resizedImage = [image thumbnailImage:40 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
             

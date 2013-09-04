@@ -116,7 +116,7 @@
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[GravatarHelper getGravatarURL:[NSString stringWithFormat:@"%@", [self usersArray][[indexPath row]][kEmail]] withSize:65]]];
             
 #if (TARGET_IPHONE_SIMULATOR)
-            image = [JEImages normalize:image];
+            image = [UIImage normalize:image];
 #endif
             UIImage *resizedImage = [image thumbnailImage:65 transparentBorder:5 cornerRadius:8 interpolationQuality:kCGInterpolationHigh];
             

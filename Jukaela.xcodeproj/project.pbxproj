@@ -13,6 +13,7 @@
 		290DF8F717C076F800CA1069 /* MentionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 290DF8F617C076F800CA1069 /* MentionItem.m */; };
 		290FC4F417C1AFBC0070F999 /* LoginImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 290FC4F317C1AFBC0070F999 /* LoginImage.m */; };
 		2915698D15FFAFCA0084A29C /* ShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2915698C15FFAFCA0084A29C /* ShareManager.m */; };
+		291C11A917CC3FCD008FB8DC /* JukaelaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291C11A817CC3FCD008FB8DC /* JukaelaCore.framework */; };
 		291EB58315649366005FB66D /* PostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291EB58215649366005FB66D /* PostViewController.m */; };
 		2920235415FD5C4700DBDA6C /* NormalCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2920235315FD5C4700DBDA6C /* NormalCellView.m */; };
 		29204EF01553684200D5479D /* FeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29204EEF1553684200D5479D /* FeedViewController.m */; };
@@ -44,7 +45,6 @@
 		295CB27615E528F4001A43DA /* TMHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 295CB27315E528F4001A43DA /* TMHTTPRequest.m */; };
 		29714EA015C7204300109E5A /* SORelativeDateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 29714E9E15C7204300109E5A /* SORelativeDateTransformer.m */; };
 		29714EA115C7204300109E5A /* SORelativeDateTransformer.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29714E9F15C7204300109E5A /* SORelativeDateTransformer.bundle */; };
-		2972166B17C7E8DE0003B177 /* JukaelaCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2972166A17C7E8DE0003B177 /* JukaelaCore.framework */; };
 		2975554315CF2DF800CAA9A7 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2975554215CF2DF800CAA9A7 /* libz.dylib */; };
 		2976435D16826DB600D79876 /* RequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2976435C16826DB600D79876 /* RequestFactory.m */; };
 		2979C6851676C83400B61F3E /* UsersCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2979C6841676C83400B61F3E /* UsersCollectionViewCell.m */; };
@@ -59,11 +59,9 @@
 		29B18F75176E5AF000020DF3 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29973DBE176E4F0F000C11B7 /* PhotoViewerViewController.m */; };
 		29BE441A177F5461000BAD53 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BE4419177F5461000BAD53 /* libPods.a */; };
 		29C251591672BFED00F27ABC /* ImageConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */; };
-		29C59AA317C4031E0025C8A6 /* JukaelaTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C59AA217C4031E0025C8A6 /* JukaelaTextView.m */; };
 		29CAEB7C1558C6F900663CF3 /* ShowUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */; };
 		29D5115F168B9E1200FF298B /* ThreadedPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5115E168B9E1200FF298B /* ThreadedPostsViewController.m */; };
 		29D5B81515545B3A000D9374 /* GravatarHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B81415545B3A000D9374 /* GravatarHelper.m */; };
-		29D5B82015545C8D000D9374 /* JEImages.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B81F15545C8D000D9374 /* JEImages.m */; };
 		29D5B83C15545FC6000D9374 /* CellBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5B83815545FC6000D9374 /* CellBackground.m */; };
 		29D5B84915546055000D9374 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D5B84815546055000D9374 /* QuartzCore.framework */; };
 		29E2A8FB16866CF4003F05A4 /* ActivityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E2A8FA16866CF4003F05A4 /* ActivityManager.m */; };
@@ -91,6 +89,7 @@
 		290FC4F317C1AFBC0070F999 /* LoginImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginImage.m; sourceTree = "<group>"; };
 		2915698B15FFAFCA0084A29C /* ShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareManager.h; sourceTree = "<group>"; };
 		2915698C15FFAFCA0084A29C /* ShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareManager.m; sourceTree = "<group>"; };
+		291C11A817CC3FCD008FB8DC /* JukaelaCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JukaelaCore.framework; path = ../Core/Products/JukaelaCore.framework; sourceTree = "<group>"; };
 		291EB58115649366005FB66D /* PostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostViewController.h; sourceTree = "<group>"; };
 		291EB58215649366005FB66D /* PostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostViewController.m; sourceTree = "<group>"; };
 		2920235215FD5C4700DBDA6C /* NormalCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalCellView.h; sourceTree = "<group>"; };
@@ -172,17 +171,12 @@
 		29BE4419177F5461000BAD53 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		29C251571672BFED00F27ABC /* ImageConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageConfirmationViewController.h; sourceTree = "<group>"; };
 		29C251581672BFED00F27ABC /* ImageConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageConfirmationViewController.m; sourceTree = "<group>"; };
-		29C59AA117C4031E0025C8A6 /* JukaelaTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaTextView.h; sourceTree = "<group>"; };
-		29C59AA217C4031E0025C8A6 /* JukaelaTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaTextView.m; sourceTree = "<group>"; };
 		29CAEB7A1558C6F900663CF3 /* ShowUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowUserViewController.h; sourceTree = "<group>"; };
 		29CAEB7B1558C6F900663CF3 /* ShowUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowUserViewController.m; sourceTree = "<group>"; };
-		29D1566217C7B6D0009FDF7D /* JukaelaCore.Framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JukaelaCore.Framework; path = ../Core/JukaelaCore.Framework; sourceTree = "<group>"; };
 		29D5115D168B9E1200FF298B /* ThreadedPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadedPostsViewController.h; sourceTree = "<group>"; };
 		29D5115E168B9E1200FF298B /* ThreadedPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadedPostsViewController.m; sourceTree = "<group>"; };
 		29D5B81315545B3A000D9374 /* GravatarHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GravatarHelper.h; sourceTree = "<group>"; };
 		29D5B81415545B3A000D9374 /* GravatarHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GravatarHelper.m; sourceTree = "<group>"; };
-		29D5B81E15545C8D000D9374 /* JEImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JEImages.h; sourceTree = "<group>"; };
-		29D5B81F15545C8D000D9374 /* JEImages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JEImages.m; sourceTree = "<group>"; };
 		29D5B83715545FC6000D9374 /* CellBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellBackground.h; sourceTree = "<group>"; };
 		29D5B83815545FC6000D9374 /* CellBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellBackground.m; sourceTree = "<group>"; };
 		29D5B84815546055000D9374 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -225,8 +219,8 @@
 				29295F6415C3373700F1968B /* Social.framework in Frameworks */,
 				2986775B15B5148B0027C7CA /* Accounts.framework in Frameworks */,
 				293A7426155F68AA004D27D2 /* Security.framework in Frameworks */,
-				2972166B17C7E8DE0003B177 /* JukaelaCore.framework in Frameworks */,
 				29D5B84915546055000D9374 /* QuartzCore.framework in Frameworks */,
+				291C11A917CC3FCD008FB8DC /* JukaelaCore.framework in Frameworks */,
 				2956875B1552C96700FE741C /* UIKit.framework in Frameworks */,
 				2956875D1552C96700FE741C /* Foundation.framework in Frameworks */,
 				2956875F1552C96700FE741C /* CoreGraphics.framework in Frameworks */,
@@ -278,8 +272,8 @@
 		295687591552C96700FE741C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				291C11A817CC3FCD008FB8DC /* JukaelaCore.framework */,
 				2972166A17C7E8DE0003B177 /* JukaelaCore.framework */,
-				29D1566217C7B6D0009FDF7D /* JukaelaCore.Framework */,
 				29BE4419177F5461000BAD53 /* libPods.a */,
 				299BB4FB160E7A4700898A7C /* AudioToolbox.framework */,
 				29E517781608AC7100CA422F /* ImageIO.framework */,
@@ -477,15 +471,6 @@
 			name = Gravatar;
 			sourceTree = "<group>";
 		};
-		29D5B82A15545CA4000D9374 /* Image Handling */ = {
-			isa = PBXGroup;
-			children = (
-				29D5B81E15545C8D000D9374 /* JEImages.h */,
-				29D5B81F15545C8D000D9374 /* JEImages.m */,
-			);
-			name = "Image Handling";
-			sourceTree = "<group>";
-		};
 		29D5B84715545FD6000D9374 /* TableView Stuff */ = {
 			isa = PBXGroup;
 			children = (
@@ -545,13 +530,10 @@
 		29D5B860155476A4000D9374 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				29C59AA117C4031E0025C8A6 /* JukaelaTextView.h */,
-				29C59AA217C4031E0025C8A6 /* JukaelaTextView.m */,
 				298062F617695A060006F281 /* Block Action and Alerts */,
 				29D433D015FE27C100ABCB2F /* Categories */,
 				29D433CA15FE276700ABCB2F /* Date Transformer */,
 				29D433D115FE27E100ABCB2F /* Gravatar */,
-				29D5B82A15545CA4000D9374 /* Image Handling */,
 				29D433CF15FE27B400ABCB2F /* Jukaela Helpers */,
 				29D433CC15FE277E00ABCB2F /* KeyChain Utility */,
 				29D433CE15FE27A600ABCB2F /* ProgressHUD */,
@@ -709,7 +691,6 @@
 				295687711552C96700FE741C /* LoginViewController.m in Sources */,
 				29204EF01553684200D5479D /* FeedViewController.m in Sources */,
 				29D5B81515545B3A000D9374 /* GravatarHelper.m in Sources */,
-				29D5B82015545C8D000D9374 /* JEImages.m in Sources */,
 				2954BBCD1767DC38007D5004 /* UIActionSheet+Blocks.m in Sources */,
 				290DF8F717C076F800CA1069 /* MentionItem.m in Sources */,
 				29D5B83C15545FC6000D9374 /* CellBackground.m in Sources */,
@@ -736,7 +717,6 @@
 				293751EE15EA63E10082864C /* SVWebViewController.m in Sources */,
 				293B952315EB0B740036A7FF /* NewUserViewController.m in Sources */,
 				292C8CC115EE923700E8B046 /* MentionsViewController.m in Sources */,
-				29C59AA317C4031E0025C8A6 /* JukaelaTextView.m in Sources */,
 				2920235415FD5C4700DBDA6C /* NormalCellView.m in Sources */,
 				29E6C03017BC6BE0005D57BF /* FeedItem.m in Sources */,
 				2915698D15FFAFCA0084A29C /* ShareManager.m in Sources */,
@@ -864,7 +844,6 @@
 					"/Applications/Spark\\ Inspector.app/Contents/Resources/Frameworks",
 					"${SRCROOT}/**",
 					"/Users/jbarrow/Projects/iOS/Jukaela\\ Social",
-					"/Users/jbarrow/Projects/iOS/Core/build/Debug-iphoneos/**",
 					/Users/jbarrow/Projects/iOS/Core,
 					"/Users/jbarrow/Projects/iOS/Jukaela\\ Social/TestBed",
 					/Users/jbarrow/Projects/iOS/Core/Products,
@@ -928,7 +907,6 @@
 					"/Applications/Spark\\ Inspector.app/Contents/Resources/Frameworks",
 					"${SRCROOT}/**",
 					"/Users/jbarrow/Projects/iOS/Jukaela\\ Social",
-					"/Users/jbarrow/Projects/iOS/Core/build/Debug-iphoneos/**",
 					/Users/jbarrow/Projects/iOS/Core,
 					"/Users/jbarrow/Projects/iOS/Jukaela\\ Social/TestBed",
 					/Users/jbarrow/Projects/iOS/Core/Products,

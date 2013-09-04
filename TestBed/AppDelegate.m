@@ -88,8 +88,7 @@
     if (![[NSUserDefaults standardUserDefaults] valueForKey:kDeviceTokenPreference]) {
         NSString *deviceTokenString = [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<"withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
         
-        [[NSUserDefaults standardUserDefaults] setValue:deviceTokenString forKey:kDeviceTokenPreference];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [NSUserDefaults saveObject:deviceTokenString forKey:kDeviceTokenPreference];
     }
 }
 

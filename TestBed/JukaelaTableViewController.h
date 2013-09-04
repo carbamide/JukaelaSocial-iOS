@@ -12,7 +12,6 @@
 #import "ApiFactory.h"
 #import "CellBackground.h"
 #import "GravatarHelper.h"
-#import "JEImages.h"
 #import "NormalCellView.h"
 #import "NormalWithImageCellView.h"
 #import "SORelativeDateTransformer.h"

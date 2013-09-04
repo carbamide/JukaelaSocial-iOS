@@ -128,8 +128,7 @@
     UIButton *tempButton = sender;
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToTwitterPreference]) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kPostToTwitterPreference];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [NSUserDefaults saveObject:[NSNumber numberWithBool:NO] forKey:kPostToTwitterPreference];
         
         [tempButton removeFromSuperview];
         
@@ -138,8 +137,7 @@
         [[self view] addSubview:twitterButton];
     }
     else {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kPostToTwitterPreference];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [NSUserDefaults saveObject:[NSNumber numberWithBool:YES] forKey:kPostToTwitterPreference];
         
         [tempButton removeFromSuperview];
         
@@ -154,9 +152,8 @@
     UIButton *tempButton = sender;
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kPostToFacebookPreference]) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kPostToFacebookPreference];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
+        [NSUserDefaults saveObject:[NSNumber numberWithBool:NO] forKey:kPostToFacebookPreference];
+
         [tempButton removeFromSuperview];
         
         UIButton *facebookButton = GRButton(GRTypeFacebookRect, _countDownLabel.frame.origin.x - 20, _countDownLabel.frame.origin.y + 75, 30, self, @selector(toggleFacebook:), [UIColor darkGrayColor], GRStyleIn);
@@ -164,8 +161,7 @@
         [[self view] addSubview:facebookButton];
     }
     else {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kPostToFacebookPreference];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [NSUserDefaults saveObject:[NSNumber numberWithBool:YES] forKey:kPostToFacebookPreference];
         
         [tempButton removeFromSuperview];
         
@@ -940,8 +936,7 @@
                 case ACAccountCredentialRenewResultRejected:
                     NSLog(@"User declined permission to renew Facebook credentials");
                     
-                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kPostToFacebookPreference];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [NSUserDefaults saveObject:[NSNumber numberWithBool:NO] forKey:kPostToFacebookPreference];
                     
                     break;
                 case ACAccountCredentialRenewResultFailed:

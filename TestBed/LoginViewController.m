@@ -59,8 +59,7 @@
         NSLog(@"There has been an error storing the password to the iOS keychain!");
     }
     
-    [[NSUserDefaults standardUserDefaults] setValue:[_usernameTextField text] forKey:kUsername];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [NSUserDefaults saveObject:[_usernameTextField text] forKey:kUsername];
     
     [self setProgressHUD:[[MBProgressHUD alloc] initWithWindow:[[self view] window]]];
     [[self progressHUD] setMode:MBProgressHUDModeIndeterminate];

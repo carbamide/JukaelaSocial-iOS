@@ -7,8 +7,8 @@
 //
 
 @import UIKit;
+
 #import "JukaelaViewController.h"
-#import "JukaelaTextView.h"
 
 @interface PostViewController : JukaelaViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
